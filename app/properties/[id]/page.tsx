@@ -19,6 +19,7 @@ import Header from "@/components/layout/Header";
 import ProgressiveImage from "@/components/property/images/ProgressiveImage";
 import AuctionAgencyCard from "@/components/property/AuctionAgencyCard";
 import ComparableSalesSection from "@/components/property/ComparableSalesSection";
+import ListingProvenanceCard from "@/components/property/ListingProvenanceCard";
 import PriceSpreadCard from "@/components/property/PriceSpreadCard";
 import {
   calcSavingPercent,
@@ -159,9 +160,17 @@ export default async function PropertyPage({ params }: PageProps) {
                   className={`inline-flex rounded-lg px-3 py-1.5 text-xs font-bold uppercase tracking-wide ${statusStyle}`}
                 >
                   {formatStatus(
-                    displayText(property.status, "Status not listed"),
+                    displayText(
+                      property.listing_status ?? property.status,
+                      "Status not listed",
+                    ),
                   )}
                 </span>
+                {property.isSeedOrDemo ? (
+                  <span className="ml-2 inline-flex rounded-lg bg-amber-400 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-amber-950">
+                    Seed data
+                  </span>
+                ) : null}
                 <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
                   {displayText(property.title, "Untitled auction listing")}
                 </h1>
@@ -336,7 +345,29 @@ export default async function PropertyPage({ params }: PageProps) {
                   </p>
                 </div>
 
-                <AuctionAgencyCard source={property.source} />
+                <AuctionAgencyCard
+                  source={property.source}
+                  auctionAgency={property.auction_agency}
+                  agencyContact={property.agency_contact}
+                  agencyWebsite={property.agency_website}
+                  sourceName={property.source_name}
+                  sourceUrl={property.source_url}
+                />
+
+                <ListingProvenanceCard
+                  dataClassification={property.data_classification}
+                  sourceName={property.source_name}
+                  sourceUrl={property.source_url}
+                  sourceLegacy={property.source}
+                  externalListingId={property.external_listing_id}
+                  importedAt={property.imported_at}
+                  lastVerifiedAt={property.last_verified_at}
+                  listingStatus={
+                    property.listing_status ?? property.status
+                  }
+                  dataQualityScore={property.data_quality_score}
+                  provenanceNotes={property.provenance_notes}
+                />
 
                 <PriceSpreadCard
                   estimatedValue={property.estimated_value}

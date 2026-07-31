@@ -92,6 +92,11 @@ export default function AuctionCard({ property }: { property: PropertyDTO }) {
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-navy-950/20 to-transparent" />
 
         <div className="absolute left-4 top-4 flex flex-col gap-2">
+          {property.isSeedOrDemo ? (
+            <span className="rounded-lg bg-amber-400 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-amber-950 shadow-sm">
+              Seed data
+            </span>
+          ) : null}
           {property.featured ? (
             <span className="rounded-lg bg-gold-500 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-navy-950 shadow-sm">
               Featured

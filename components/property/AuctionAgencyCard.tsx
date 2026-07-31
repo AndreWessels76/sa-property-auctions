@@ -5,12 +5,33 @@ import {
 } from "@/lib/auction/agencyDisplay";
 
 type Props = {
-  source: string | null | undefined;
+  source?: string | null;
+  auctionAgency?: string | null;
+  agencyContact?: string | null;
+  agencyWebsite?: string | null;
+  sourceName?: string | null;
+  sourceUrl?: string | null;
 };
 
-export default function AuctionAgencyCard({ source }: Props) {
-  const agency = resolveAuctionAgency(source);
-  const available = hasAgencyDetails(agency);
+export default function AuctionAgencyCard({
+  source,
+  auctionAgency,
+  agencyContact,
+  agencyWebsite,
+  sourceName,
+  sourceUrl,
+}: Props) {
+  const parsed = resolveAuctionAgency(source);
+  const name = auctionAgency || sourceName || parsed.name;
+  const contact = agencyContact || parsed.contact;
+  const website = agencyWebsite || sourceUrl || parsed.website;
+  const sourceLabel = sourceName || parsed.sourceLabel || source;
+  const available = hasAgencyDetails({
+    name: name ?? null,
+    contact: contact ?? null,
+    website: website ?? null,
+    sourceLabel: sourceLabel ?? null,
+  });
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -32,7 +53,7 @@ export default function AuctionAgencyCard({ source }: Props) {
                 Agency name
               </dt>
               <dd className="mt-0.5 font-semibold text-navy-900">
-                {agency.name ?? "Agency information not yet available."}
+                {name ?? "Agency information not yet available."}
               </dd>
             </div>
           </div>
@@ -44,7 +65,7 @@ export default function AuctionAgencyCard({ source }: Props) {
                 Contact
               </dt>
               <dd className="mt-0.5 text-slate-700">
-                {agency.contact ??
+                {contact ??
                   "Contact details not yet available for this agency."}
               </dd>
             </div>
@@ -57,14 +78,14 @@ export default function AuctionAgencyCard({ source }: Props) {
                 Website
               </dt>
               <dd className="mt-0.5 text-slate-700">
-                {agency.website ? (
+                {website ? (
                   <a
-                    href={agency.website}
+                    href={website}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium text-navy-900 underline"
                   >
-                    {agency.website.replace(/^https?:\/\//, "")}
+                    {website.replace(/^https?:\/\//, "")}
                   </a>
                 ) : (
                   "Website not yet available for this agency."
@@ -80,8 +101,7 @@ export default function AuctionAgencyCard({ source }: Props) {
                 Source
               </dt>
               <dd className="mt-0.5 text-slate-700">
-                {agency.sourceLabel ??
-                  "Source attribution not yet available."}
+                {sourceLabel ?? "Source attribution not yet available."}
               </dd>
             </div>
           </div>
