@@ -94,6 +94,30 @@ function mapSort(sortBy: string): "auction" | "price-low" | "price-high" | "valu
   return "auction";
 }
 
+/** True when AI produced structured filters — do not also send the raw NL query as `search`. */
+function hasStructuredAiFilters(ai?: AISearchDTO | null): boolean {
+  const filters = ai?.filters;
+  if (!filters) {
+    return false;
+  }
+
+  return Boolean(
+    filters.town ||
+      filters.province ||
+      filters.suburb ||
+      filters.propertyType ||
+      filters.minBedrooms != null ||
+      filters.maxBedrooms != null ||
+      filters.minBathrooms != null ||
+      filters.minPrice != null ||
+      filters.maxPrice != null ||
+      filters.auctionFrom ||
+      filters.auctionTo ||
+      filters.status ||
+      filters.source,
+  );
+}
+
 export default function PropertySearch({ initialResult }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -178,7 +202,14 @@ export default function PropertySearch({ initialResult }: Props) {
       params.set("pageSize", String(DEFAULT_PAGE_SIZE));
       params.set("sort", mapSort(sort));
 
-      if (q) params.set("search", q);
+      const structuredAi = hasStructuredAiFilters(ai);
+      // Prefer explicit AI search text; never AND the full NL query with structured filters
+      // (that zeroes results — title/town cannot match "4 bedroom house in Pretoria").
+      const searchText =
+        ai?.filters.search?.trim() ||
+        (!structuredAi ? q.trim() : "");
+      if (searchText) params.set("search", searchText);
+
       if (prov !== "All") params.set("province", prov);
       if (type !== "All") params.set("propertyType", type);
       if (bounds.minPrice != null) params.set("minPrice", String(bounds.minPrice));
@@ -188,8 +219,17 @@ export default function PropertySearch({ initialResult }: Props) {
       if (ai?.filters.minBedrooms != null) {
         params.set("minBedrooms", String(ai.filters.minBedrooms));
       }
+      if (ai?.filters.maxBedrooms != null) {
+        params.set("maxBedrooms", String(ai.filters.maxBedrooms));
+      }
+      if (ai?.filters.minBathrooms != null) {
+        params.set("minBathrooms", String(ai.filters.minBathrooms));
+      }
       if (ai?.filters.maxPrice != null && !bounds.maxPrice) {
         params.set("maxPrice", String(ai.filters.maxPrice));
+      }
+      if (ai?.filters.minPrice != null && !bounds.minPrice) {
+        params.set("minPrice", String(ai.filters.minPrice));
       }
       if (ai?.filters.province && prov === "All") {
         params.set("province", ai.filters.province);
@@ -197,6 +237,7 @@ export default function PropertySearch({ initialResult }: Props) {
       if (ai?.filters.propertyType && type === "All") {
         params.set("propertyType", ai.filters.propertyType);
       }
+      if (ai?.filters.suburb) params.set("suburb", ai.filters.suburb);
 
       setLoading(true);
       setError(null);
@@ -297,14 +338,17 @@ export default function PropertySearch({ initialResult }: Props) {
         setPriceRange(nextPrice);
         setSortBy(nextSort);
 
-        await fetchPage({
-          q: query,
-          page: 1,
-          province: nextProvince,
-          propertyType: nextType,
-          priceRange: nextPrice,
-          sort: nextSort,
-          ai: data.ai,
+        // Use repository results from the AI search response directly.
+        // Re-fetching with the raw NL query as `search` AND structured filters
+        // previously returned zero rows for valid Pretoria listings.
+        setResult({
+          data: data.data,
+          total: data.total,
+          page: data.page,
+          pageSize: data.pageSize,
+          totalPages: data.totalPages,
+          hasNext: data.hasNext,
+          hasPrevious: data.hasPrevious,
         });
       } catch {
         setAiMeta(null);
@@ -343,9 +387,13 @@ export default function PropertySearch({ initialResult }: Props) {
   function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const query = normalizeSearchQuery(search);
-    syncUrl({ q: query, page: 1 });
     startTransition(() => {
-      void runAiThenPage(query);
+      void (async () => {
+        // Run search before URL sync so the URL effect cannot overwrite AI results
+        // with a stale free-text fetch (NL `search` AND structured filters → 0 rows).
+        await runAiThenPage(query);
+        syncUrl({ q: query, page: 1 });
+      })();
     });
   }
 

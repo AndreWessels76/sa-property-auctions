@@ -189,7 +189,20 @@ address.ilike.%${filters.search}%
     }
 
     if (filters.status) {
-      query = query.eq("status", filters.status);
+      const normalized = filters.status.trim().toLowerCase();
+      // Only apply known auction statuses. AI often invents "Active"/"Available",
+      // which would zero results against real rows (Upcoming/upcoming).
+      const knownStatuses = new Set([
+        "upcoming",
+        "sold",
+        "withdrawn",
+        "cancelled",
+        "closed",
+      ]);
+
+      if (knownStatuses.has(normalized)) {
+        query = query.ilike("status", normalized);
+      }
     }
 
     if (filters.source) {
