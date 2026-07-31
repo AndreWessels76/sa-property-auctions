@@ -77,7 +77,7 @@ export default async function FeaturedAuctions({
               </p>
             </div>
             <Link
-              href="/#featured"
+              href="/auctions"
               className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-navy-900 shadow-sm transition-all hover:border-navy-900 hover:shadow-md"
             >
               View all auctions

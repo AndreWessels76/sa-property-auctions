@@ -76,7 +76,7 @@ export default function Hero() {
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
-              href="#featured"
+              href="/auctions"
               className="inline-flex items-center gap-2.5 rounded-xl border-2 border-white/25 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white/40 hover:bg-white/10"
             >
               Browse Properties

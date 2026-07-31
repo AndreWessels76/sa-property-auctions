@@ -17,6 +17,9 @@ import { PropertyIntelligence } from "@/lib/intelligence";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import ProgressiveImage from "@/components/property/images/ProgressiveImage";
+import AuctionAgencyCard from "@/components/property/AuctionAgencyCard";
+import ComparableSalesSection from "@/components/property/ComparableSalesSection";
+import PriceSpreadCard from "@/components/property/PriceSpreadCard";
 import {
   calcSavingPercent,
   formatAuctionDate,
@@ -37,6 +40,29 @@ type PageProps = {
     id: string;
   }>;
 };
+
+function displayText(
+  value: string | null | undefined,
+  fallback: string,
+): string {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : fallback;
+}
+
+function displayCount(
+  value: number | null | undefined,
+  singular: string,
+  plural: string,
+  notApplicable?: boolean,
+): string {
+  if (notApplicable) {
+    return "Not applicable for this property type";
+  }
+  if (value == null) {
+    return `${singular} count not listed`;
+  }
+  return `${value} ${value === 1 ? singular : plural}`;
+}
 
 export default async function PropertyPage({ params }: PageProps) {
   const { id } = await params;
@@ -59,6 +85,7 @@ export default async function PropertyPage({ params }: PageProps) {
   } catch {
     comparables = [];
   }
+
   const hero = selectHeroImage(images);
   const savingPercent = calcSavingPercent(
     property.estimated_value ?? 0,
@@ -71,6 +98,35 @@ export default async function PropertyPage({ params }: PageProps) {
     getPropertyImage(property.property_type ?? "Property");
   const statusStyle = getStatusStyle(property.status ?? "");
   const intelligence = PropertyIntelligence.analyse(property);
+  const isNonResidential =
+    /land|commercial|farm|vacant/i.test(property.property_type ?? "");
+
+  const locationLine = [
+    property.suburb,
+    property.town,
+    property.province,
+  ]
+    .map((part) => part?.trim())
+    .filter(Boolean)
+    .join(", ");
+
+  const comparableRows = comparables.map((sale) => ({
+    id: sale.id,
+    address: sale.address,
+    saleDate: sale.saleDate,
+    salePrice: sale.salePrice,
+    bedrooms: sale.bedrooms ?? null,
+    bathrooms: sale.bathrooms ?? null,
+    distanceKm: Number.isFinite(sale.distanceKm) ? sale.distanceKm : null,
+    priceDifference:
+      property.auction_price != null && sale.salePrice > 0
+        ? sale.salePrice - property.auction_price
+        : null,
+    sameTown: Boolean(sale.sameTown),
+  }));
+
+  const hasEstimate =
+    (property.estimated_value ?? 0) > 0 && (property.auction_price ?? 0) > 0;
 
   return (
     <>
@@ -78,7 +134,7 @@ export default async function PropertyPage({ params }: PageProps) {
       <main className="bg-slate-50">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
           <Link
-            href="/#featured"
+            href="/auctions"
             className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-navy-900"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -102,14 +158,17 @@ export default async function PropertyPage({ params }: PageProps) {
                 <span
                   className={`inline-flex rounded-lg px-3 py-1.5 text-xs font-bold uppercase tracking-wide ${statusStyle}`}
                 >
-                  {formatStatus(property.status ?? "")}
+                  {formatStatus(
+                    displayText(property.status, "Status not listed"),
+                  )}
                 </span>
                 <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
-                  {property.title}
+                  {displayText(property.title, "Untitled auction listing")}
                 </h1>
                 <p className="mt-2 flex items-center gap-2 text-slate-200">
                   <MapPin className="h-4 w-4 text-gold-400" />
-                  {property.town}, {property.province}
+                  {locationLine ||
+                    "Location details have not been provided for this listing."}
                 </p>
               </div>
             </div>
@@ -128,124 +187,225 @@ export default async function PropertyPage({ params }: PageProps) {
                       placeholder={
                         image.blur_placeholder ? "blur" : "empty"
                       }
-                      blurDataURL={
-                        image.blur_placeholder ?? undefined
-                      }
+                      blurDataURL={image.blur_placeholder ?? undefined}
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   </div>
                 ))}
               </div>
-            ) : null}
+            ) : (
+              <div className="border-b border-slate-200 px-6 py-4 text-sm text-slate-500">
+                A photo gallery is not available yet for this property. A
+                category placeholder image is shown above until provider photos
+                are added.
+              </div>
+            )}
 
             <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-3 lg:p-10">
-              <div className="lg:col-span-2">
-                <h2 className="text-xl font-bold text-navy-900">
-                  Property Details
-                </h2>
+              <div className="space-y-8 lg:col-span-2">
+                <div>
+                  <h2 className="text-xl font-bold text-navy-900">
+                    Property details
+                  </h2>
 
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-xl bg-slate-50 p-4">
-                    <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                      Property Type
-                    </p>
-                    <p className="mt-1 font-semibold text-navy-900">
-                      {property.property_type}
-                    </p>
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Property type
+                      </p>
+                      <p className="mt-1 font-semibold text-navy-900">
+                        {displayText(
+                          property.property_type,
+                          "Type not listed",
+                        )}
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Auction date
+                      </p>
+                      <p className="mt-1 flex items-center gap-2 font-semibold text-navy-900">
+                        <Calendar className="h-4 w-4 text-gold-500" />
+                        {property.auction_date
+                          ? formatAuctionDate(property.auction_date)
+                          : "Auction date not listed"}
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Province
+                      </p>
+                      <p className="mt-1 font-semibold text-navy-900">
+                        {displayText(property.province, "Province not listed")}
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Town
+                      </p>
+                      <p className="mt-1 font-semibold text-navy-900">
+                        {displayText(property.town, "Town not listed")}
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Suburb
+                      </p>
+                      <p className="mt-1 font-semibold text-navy-900">
+                        {displayText(
+                          property.suburb,
+                          "Suburb not listed for this property",
+                        )}
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Address
+                      </p>
+                      <p className="mt-1 font-semibold text-navy-900">
+                        {displayText(
+                          property.address,
+                          "Street address not listed",
+                        )}
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Status
+                      </p>
+                      <p className="mt-1 font-semibold text-navy-900">
+                        {formatStatus(
+                          displayText(property.status, "Status not listed"),
+                        )}
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Source
+                      </p>
+                      <p className="mt-1 font-semibold text-navy-900">
+                        {displayText(
+                          property.source,
+                          "Source attribution not yet available",
+                        )}
+                      </p>
+                    </div>
                   </div>
-                  <div className="rounded-xl bg-slate-50 p-4">
-                    <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                      Auction Date
-                    </p>
-                    <p className="mt-1 flex items-center gap-2 font-semibold text-navy-900">
-                      <Calendar className="h-4 w-4 text-gold-500" />
-                      {formatAuctionDate(property.auction_date ?? "")}
-                    </p>
-                  </div>
-                  <div className="rounded-xl bg-slate-50 p-4">
-                    <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                      Province
-                    </p>
-                    <p className="mt-1 font-semibold text-navy-900">
-                      {property.province}
-                    </p>
-                  </div>
-                  <div className="rounded-xl bg-slate-50 p-4">
-                    <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                      Town
-                    </p>
-                    <p className="mt-1 font-semibold text-navy-900">
-                      {property.town}
-                    </p>
+
+                  <div className="mt-6 flex flex-wrap gap-4">
+                    <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
+                      <BedDouble className="h-4 w-4 text-navy-800" />
+                      {displayCount(
+                        property.bedrooms,
+                        "Bed",
+                        "Beds",
+                        isNonResidential && (property.bedrooms ?? 0) === 0,
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
+                      <Bath className="h-4 w-4 text-navy-800" />
+                      {displayCount(
+                        property.bathrooms,
+                        "Bath",
+                        "Baths",
+                        isNonResidential && (property.bathrooms ?? 0) === 0,
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
+                      <Car className="h-4 w-4 text-navy-800" />
+                      {displayCount(
+                        property.garages,
+                        "Garage",
+                        "Garages",
+                        isNonResidential && (property.garages ?? 0) === 0,
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div className="mt-6 flex flex-wrap gap-4">
-                  <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
-                    <BedDouble className="h-4 w-4 text-navy-800" />
-                    {property.bedrooms ?? 0} Beds
-                  </div>
-                  <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
-                    <Bath className="h-4 w-4 text-navy-800" />
-                    {property.bathrooms ?? 0} Baths
-                  </div>
-                  <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
-                    <Car className="h-4 w-4 text-navy-800" />
-                    {property.garages ?? 0} Garages
-                  </div>
+                <div>
+                  <h3 className="text-lg font-bold text-navy-900">
+                    Description
+                  </h3>
+                  <p className="mt-3 leading-relaxed text-slate-600">
+                    {displayText(
+                      property.description,
+                      "A detailed description has not been provided for this listing yet. Verify all particulars with the auction agency before bidding.",
+                    )}
+                  </p>
                 </div>
 
-                {property.description ? (
-                  <div className="mt-8">
-                    <h3 className="text-lg font-bold text-navy-900">
-                      Description
-                    </h3>
-                    <p className="mt-3 leading-relaxed text-slate-600">
-                      {property.description}
-                    </p>
-                  </div>
-                ) : null}
+                <AuctionAgencyCard source={property.source} />
 
-                {property.latitude != null &&
-                property.longitude != null ? (
-                  <div className="mt-8">
+                <PriceSpreadCard
+                  estimatedValue={property.estimated_value}
+                  auctionPrice={property.auction_price}
+                />
+
+                <ComparableSalesSection
+                  rows={comparableRows}
+                  subjectAuctionPrice={property.auction_price}
+                />
+
+                {property.latitude != null && property.longitude != null ? (
+                  <div>
                     <h3 className="mb-4 text-lg font-bold text-navy-900">
                       Location
                     </h3>
                     <PropertyMapLazy
                       latitude={property.latitude}
                       longitude={property.longitude}
-                      comparables={comparables}
+                      comparables={comparables.filter((sale) =>
+                        Number.isFinite(sale.distanceKm),
+                      )}
                     />
                   </div>
-                ) : null}
-
+                ) : (
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-sm text-slate-600">
+                    A map pin is not available yet because coordinates have not
+                    been recorded for this property. Use the town and province
+                    details above when researching the area.
+                  </div>
+                )}
               </div>
 
               <aside className="space-y-6 lg:sticky lg:top-24">
                 <div className="h-fit rounded-2xl border border-slate-200 bg-navy-900 p-6 text-white shadow-lg">
-                  <p className="text-sm text-slate-400">Estimated Market Value</p>
+                  <p className="text-sm text-slate-400">Estimated market value</p>
                   <p className="mt-1 text-lg text-slate-400 line-through">
-                    {formatCurrency(property.estimated_value ?? 0)}
+                    {(property.estimated_value ?? 0) > 0
+                      ? formatCurrency(property.estimated_value ?? 0)
+                      : "Not available"}
                   </p>
 
-                  <p className="mt-5 text-sm text-gold-400">Auction Price</p>
+                  <p className="mt-5 text-sm text-gold-400">Auction price</p>
                   <p className="mt-1 text-3xl font-bold">
-                    {formatCurrency(property.auction_price ?? 0)}
+                    {(property.auction_price ?? 0) > 0
+                      ? formatCurrency(property.auction_price ?? 0)
+                      : "Not available"}
                   </p>
 
-                  {savingPercent > 0 ? (
+                  {hasEstimate && savingPercent > 0 ? (
                     <p className="mt-4 rounded-xl bg-emerald-500/15 px-4 py-3 text-sm font-semibold text-emerald-300">
                       Potential saving of {savingPercent}%
                     </p>
-                  ) : null}
+                  ) : hasEstimate ? (
+                    <p className="mt-4 rounded-xl bg-white/5 px-4 py-3 text-sm text-slate-300">
+                      Auction price is at or above the recorded estimate.
+                    </p>
+                  ) : (
+                    <p className="mt-4 rounded-xl bg-white/5 px-4 py-3 text-sm text-slate-300">
+                      Savings cannot be calculated until both estimated value
+                      and auction price are available.
+                    </p>
+                  )}
 
                   <Link
-                    href="/#featured"
+                    href="/auctions"
                     className="mt-6 flex w-full items-center justify-center rounded-xl bg-gold-500 py-3.5 text-sm font-bold text-navy-950 transition-colors hover:bg-gold-400"
                   >
-                    Browse More Auctions
+                    Browse more auctions
                   </Link>
                 </div>
 

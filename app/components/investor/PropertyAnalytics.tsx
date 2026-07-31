@@ -12,30 +12,28 @@ export default function PropertyAnalytics({
   auctionPrice,
   comparablePrices = [],
 }: Props) {
+  const hasEstimate = estimatedValue > 0 && auctionPrice > 0;
   const avgComparable =
     comparablePrices.length > 0
       ? comparablePrices.reduce((total, price) => total + price, 0) /
         comparablePrices.length
-      : estimatedValue;
+      : null;
 
-  const discount =
-    estimatedValue > 0
-      ? Math.round(
-          ((estimatedValue - auctionPrice) / estimatedValue) * 100,
-        )
-      : 0;
+  const discount = hasEstimate
+    ? Math.round(((estimatedValue - auctionPrice) / estimatedValue) * 100)
+    : null;
+
+  const priceSpread = hasEstimate ? Math.abs(estimatedValue - auctionPrice) : null;
 
   const comparableSpread =
     comparablePrices.length > 1
       ? Math.max(...comparablePrices) - Math.min(...comparablePrices)
-      : 0;
+      : null;
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h3 className="text-lg font-bold text-navy-900">
-          Property Analytics
-        </h3>
+        <h3 className="text-lg font-bold text-navy-900">Property Analytics</h3>
         <PremiumBadge />
       </div>
 
@@ -45,7 +43,9 @@ export default function PropertyAnalytics({
             Avg comparable
           </p>
           <p className="mt-1 text-lg font-semibold text-navy-900">
-            {formatCurrency(avgComparable)}
+            {avgComparable != null
+              ? formatCurrency(avgComparable)
+              : "No comparables yet"}
           </p>
         </div>
 
@@ -54,7 +54,13 @@ export default function PropertyAnalytics({
             Market discount
           </p>
           <p className="mt-1 text-lg font-semibold text-emerald-600">
-            {discount > 0 ? `${discount}%` : "—"}
+            {discount != null && discount > 0
+              ? `${discount}%`
+              : discount === 0
+                ? "0%"
+                : discount != null
+                  ? `${Math.abs(discount)}% above`
+                  : "Insufficient data"}
           </p>
         </div>
 
@@ -63,7 +69,9 @@ export default function PropertyAnalytics({
             Comparables
           </p>
           <p className="mt-1 text-lg font-semibold text-navy-900">
-            {comparablePrices.length}
+            {comparablePrices.length > 0
+              ? comparablePrices.length
+              : "None available"}
           </p>
         </div>
 
@@ -72,10 +80,17 @@ export default function PropertyAnalytics({
             Price spread
           </p>
           <p className="mt-1 text-lg font-semibold text-navy-900">
-            {comparableSpread > 0
-              ? formatCurrency(comparableSpread)
-              : "—"}
+            {priceSpread != null
+              ? formatCurrency(priceSpread)
+              : comparableSpread != null && comparableSpread > 0
+                ? formatCurrency(comparableSpread)
+                : "Insufficient data"}
           </p>
+          {priceSpread != null ? (
+            <p className="mt-1 text-[11px] text-slate-500">
+              Estimate vs auction price
+            </p>
+          ) : null}
         </div>
       </div>
     </div>
