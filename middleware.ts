@@ -46,7 +46,12 @@ export async function middleware(request: NextRequest) {
 
   const user = await getRequestUser(supabase);
 
-  return enforceRouteProtection(request, user, supabaseResponse);
+  return enforceRouteProtection(
+    request,
+    user,
+    supabaseResponse,
+    supabase,
+  );
 }
 
 export const config = {

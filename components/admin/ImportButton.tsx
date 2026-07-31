@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Loader2, Play } from "lucide-react";
+import { toast } from "sonner";
 import { importers } from "@/lib/importers";
 import { useImportContext } from "./ImportContext";
 import { saveImportJob } from "@/lib/importJobs";
@@ -63,17 +64,13 @@ export default function ImportButton({ source }: Props) {
         properties: result.imported + result.updated,
       });
 
-      alert(
-        `${result.source}
-
-Imported: ${result.imported}
-
-Updated: ${result.updated}`,
+      toast.success(
+        `${result.source}: imported ${result.imported}, updated ${result.updated}`,
       );
     } catch (error) {
       updateImport(source, { status: "Failed" });
 
-      alert(
+      toast.error(
         error instanceof Error ? error.message : "Import failed.",
       );
     } finally {

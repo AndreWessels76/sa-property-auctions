@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import {
@@ -116,7 +117,7 @@ export default function SavedSearchesPage() {
                           await deleteSearch(item.id);
                           await loadSearches();
                         } catch (deleteError) {
-                          alert(
+                          toast.error(
                             deleteError instanceof Error
                               ? deleteError.message
                               : "Failed to delete saved search.",

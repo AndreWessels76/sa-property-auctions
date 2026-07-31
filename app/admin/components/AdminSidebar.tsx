@@ -6,19 +6,21 @@ import {
   LayoutDashboard,
   Activity,
   Database,
-  Image,
-  Home,
+  ListOrdered,
   BarChart3,
-  FileText,
-  Settings,
-  Globe,
 } from "lucide-react";
 
+/** Only ship links to pages that exist for closed beta. */
 const menu = [
   {
-    name: "Dashboard",
+    name: "Overview",
     href: "/admin",
     icon: LayoutDashboard,
+  },
+  {
+    name: "Dashboard",
+    href: "/admin/dashboard",
+    icon: BarChart3,
   },
   {
     name: "Operations",
@@ -31,34 +33,9 @@ const menu = [
     icon: Database,
   },
   {
-    name: "Sources",
-    href: "/admin/sources",
-    icon: Globe,
-  },
-  {
-    name: "Properties",
-    href: "/admin/properties",
-    icon: Home,
-  },
-  {
-    name: "Images",
-    href: "/admin/images",
-    icon: Image,
-  },
-  {
-    name: "Analytics",
-    href: "/admin/analytics",
-    icon: BarChart3,
-  },
-  {
-    name: "Logs",
-    href: "/admin/logs",
-    icon: FileText,
-  },
-  {
-    name: "Settings",
-    href: "/admin/settings",
-    icon: Settings,
+    name: "Queue",
+    href: "/admin/queue",
+    icon: ListOrdered,
   },
 ];
 
@@ -72,10 +49,12 @@ export default function AdminSidebar() {
         <p className="text-sm text-slate-400">Operations Centre</p>
       </div>
 
-      <nav className="space-y-1 p-4">
+      <nav className="space-y-1 p-4" aria-label="Admin">
         {menu.map((item) => {
           const Icon = item.icon;
-          const active = pathname === item.href;
+          const active =
+            pathname === item.href ||
+            (item.href !== "/admin" && pathname.startsWith(`${item.href}/`));
 
           return (
             <Link
@@ -87,7 +66,7 @@ export default function AdminSidebar() {
                   : "hover:bg-slate-800"
               }`}
             >
-              <Icon size={20} />
+              <Icon size={20} aria-hidden />
               {item.name}
             </Link>
           );

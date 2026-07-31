@@ -7,9 +7,8 @@ export function getUserRole(user: User | null | undefined): Role {
     return ROLES.guest;
   }
 
-  const role =
-    (user.app_metadata?.role as Role | undefined) ??
-    (user.user_metadata?.role as Role | undefined);
+  // Only trust server-controlled app_metadata — never user_metadata (client-writable).
+  const role = user.app_metadata?.role as Role | undefined;
 
   return role ?? ROLES.user;
 }

@@ -22,6 +22,7 @@ Apply migrations in **timestamp order** on the target Supabase project (Dashboar
 | 4 | `20260728084500_saved_searches.sql` | Saved searches + user-scoped RLS |
 | 5 | `20260728210000_profiles_billing.sql` | Billing columns, Stripe indexes, entitlement lock, safe signup trigger |
 | 6 | `20260729090000_storage_property_images.sql` | Storage bucket + admin-only write policies |
+| 7 | `20260731120000_profiles_insert_harden.sql` | Profiles INSERT cannot self-assign role/billing |
 
 **Path:** `supabase/migrations/<filename>`
 
@@ -208,6 +209,7 @@ GET /api/health/ready → 200
 - [ ] Migration 4 applied
 - [ ] Migration 5 applied
 - [ ] Migration 6 applied
+- [ ] Migration 7 applied (`20260731120000_profiles_insert_harden.sql`)
 - [ ] Confirm email ON
 - [ ] Redirect URLs configured
 - [ ] Backups enabled

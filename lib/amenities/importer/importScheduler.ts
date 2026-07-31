@@ -1,9 +1,4 @@
-export async function runAmenityImport(){
-
-    console.log(
-
-        "Starting amenity import..."
-
-    );
-
+/** Stub scheduler — no-op until amenity import pipeline is enabled. */
+export async function runAmenityImport() {
+  return;
 }

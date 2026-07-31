@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
 import { renameSavedSearch } from "../actions";
 
 type Props = {
@@ -45,7 +46,7 @@ export default function RenameSearchDialog({
         onRenamed?.();
         onClose();
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Failed to rename saved search.",

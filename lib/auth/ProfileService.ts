@@ -1,6 +1,4 @@
 import { ProfileRepository } from "@/lib/repositories";
-import { getUserRole } from "./authGuard";
-import { toDatabaseRole } from "./profileRole";
 import type { CurrentProfile } from "./profileTypes";
 import { SessionService } from "./SessionService";
 import { SUBSCRIPTIONS } from "@/lib/subscription";
@@ -27,11 +25,10 @@ export class ProfileService {
       return ProfileRepository.update(user.id, safeUpdates);
     }
 
-    const role = toDatabaseRole(getUserRole(user));
-
+    // Never inherit elevated roles from JWT on first insert — trigger defaults apply.
     return ProfileRepository.upsert(user.id, {
       ...safeUpdates,
-      role,
+      role: "free",
       subscription_status: SUBSCRIPTIONS.INACTIVE,
     });
   }

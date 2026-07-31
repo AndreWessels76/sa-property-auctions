@@ -23,18 +23,34 @@ export class ImageRepository extends BaseRepository {
   static async byProperty(propertyId: string): Promise<PropertyImage[]> {
     const db = this.publicDb();
 
+    // Order only by columns that exist across all schema versions.
+    // Sort primary/hero preference in memory (avoids PostgREST errors on missing columns).
     const { data, error } = await db
       .from("property_images")
       .select("*")
       .eq("property_id", propertyId)
-      .order("is_primary", { ascending: false })
       .order("display_order", { ascending: true });
 
     if (error) {
       this.handleError("ImageRepository.byProperty", error);
     }
 
-    return (data as PropertyImage[]) ?? [];
+    const images = (data as PropertyImage[]) ?? [];
+
+    return [...images].sort((a, b) => {
+      const heroDiff = Number(Boolean(b.is_hero)) - Number(Boolean(a.is_hero));
+      if (heroDiff !== 0) {
+        return heroDiff;
+      }
+
+      const primaryDiff =
+        Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary));
+      if (primaryDiff !== 0) {
+        return primaryDiff;
+      }
+
+      return (a.display_order ?? 0) - (b.display_order ?? 0);
+    });
   }
 
   static async heroImages(

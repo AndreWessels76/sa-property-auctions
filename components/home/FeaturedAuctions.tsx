@@ -5,8 +5,59 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import PropertySearch from "@/components/search/PropertySearch";
 import { PropertyService } from "@/lib/services";
 
-export default async function FeaturedAuctions() {
-  const properties = await PropertyService.getProperties();
+type Props = {
+  page?: number;
+  q?: string;
+  province?: string;
+  propertyType?: string;
+  priceRange?: string;
+  sort?: string;
+};
+
+function priceBounds(priceRange?: string): {
+  minPrice?: number;
+  maxPrice?: number;
+} {
+  switch (priceRange) {
+    case "<500000":
+      return { maxPrice: 499999 };
+    case "500000-1000000":
+      return { minPrice: 500000, maxPrice: 1000000 };
+    case "1000000-2000000":
+      return { minPrice: 1000000, maxPrice: 2000000 };
+    case ">2000000":
+      return { minPrice: 2000001 };
+    default:
+      return {};
+  }
+}
+
+export default async function FeaturedAuctions({
+  page = 1,
+  q,
+  province,
+  propertyType,
+  priceRange,
+  sort,
+}: Props) {
+  const bounds = priceBounds(priceRange);
+
+  const initialResult = await PropertyService.search({
+    page: Math.max(1, page),
+    pageSize: PropertyService.DEFAULT_PAGE_SIZE,
+    search: q || undefined,
+    province: province && province !== "All" ? province : undefined,
+    propertyType:
+      propertyType && propertyType !== "All" ? propertyType : undefined,
+    minPrice: bounds.minPrice,
+    maxPrice: bounds.maxPrice,
+    sort:
+      sort === "price-low" || sort === "price-high"
+        ? sort
+        : sort === "saving"
+          ? "value-high"
+          : "auction",
+  });
 
   return (
     <section id="featured" className="bg-slate-50 py-28 sm:py-32">
@@ -26,7 +77,7 @@ export default async function FeaturedAuctions() {
               </p>
             </div>
             <Link
-              href="#featured"
+              href="/#featured"
               className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-navy-900 shadow-sm transition-all hover:border-navy-900 hover:shadow-md"
             >
               View all auctions
@@ -35,7 +86,7 @@ export default async function FeaturedAuctions() {
           </div>
         </AnimatedSection>
 
-        {properties.length === 0 ? (
+        {initialResult.total === 0 && !q && !province && !propertyType ? (
           <AnimatedSection delay={0.1}>
             <div className="mt-14 flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-20 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
@@ -58,7 +109,7 @@ export default async function FeaturedAuctions() {
               </div>
             }
           >
-            <PropertySearch properties={properties} />
+            <PropertySearch initialResult={initialResult} />
           </Suspense>
         )}
       </div>

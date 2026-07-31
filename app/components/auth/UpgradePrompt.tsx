@@ -10,7 +10,7 @@ export default function UpgradePrompt() {
         This feature is available on a premium plan.
       </p>
       <Link
-        href="/profile"
+        href="/pricing"
         className="mt-4 inline-block rounded bg-amber-600 px-4 py-2 text-sm font-medium text-white"
       >
         View plans

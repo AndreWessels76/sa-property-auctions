@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api/
+Disallow: /billing/
+Disallow: /profile
+Disallow: /saved-searches
+Disallow: /favourites
+Disallow: /verify-email
+Disallow: /reset-password
+Disallow: /forgot-password
+
+Sitemap: /sitemap.xml

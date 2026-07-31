@@ -34,13 +34,7 @@ export default function LayerSelector(){
 
             </label>
 
-            <label>
-
-                <input type="checkbox"/>
-
-                Heat Map
-
-            </label>
+            {/* Heat Map control hidden until feature ships (BFS-001). */}
 
         </div>
 

@@ -10,10 +10,10 @@ import { favouriteCount } from "@/lib/favourites";
 import { ROLES } from "@/lib/permissions/roles";
 
 const navLinks = [
-  { label: "Browse Auctions", href: "#featured" },
-  { label: "Why Us", href: "#why-choose" },
-  { label: "Map View", href: "#map" },
-  { label: "Testimonials", href: "#testimonials" },
+  { label: "Browse Auctions", href: "/#featured" },
+  { label: "Why Us", href: "/#why-choose" },
+  { label: "Map View", href: "/#map" },
+  { label: "Testimonials", href: "/#testimonials" },
 ];
 
 export default function Header() {
@@ -191,13 +191,6 @@ export default function Header() {
             Saved Searches
           </Link>
 
-          <Link
-            href="/heatmaps"
-            className={`hidden text-sm font-medium transition-colors sm:inline ${linkClass}`}
-          >
-            Heat Maps
-          </Link>
-
           {isAdmin ? (
             <Link
               href="/admin/imports"
@@ -296,13 +289,6 @@ export default function Header() {
               onClick={() => setMenuOpen(false)}
             >
               Saved Searches
-            </Link>
-            <Link
-              href="/heatmaps"
-              className="rounded-lg px-3 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
-              onClick={() => setMenuOpen(false)}
-            >
-              Heat Maps
             </Link>
             {isAdmin ? (
               <Link

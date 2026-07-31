@@ -79,16 +79,6 @@ export default function Dashboard({
         </Link>
 
         <Link
-          href="/heatmaps"
-          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-navy-900/20"
-        >
-          <h2 className="font-semibold text-navy-900">Heat Maps</h2>
-          <p className="mt-2 text-sm text-slate-500">
-            Premium market opportunity view
-          </p>
-        </Link>
-
-        <Link
           href="/favourites"
           className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-navy-900/20"
         >

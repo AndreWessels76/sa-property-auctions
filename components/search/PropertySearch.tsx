@@ -6,6 +6,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useTransition,
 } from "react";
 import {
   Search,
@@ -20,7 +21,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/components/auth/AuthProvider";
 import AuctionCard from "@/components/home/AuctionCard";
 import AnimatedSection from "@/components/ui/AnimatedSection";
-import { calculateSavings } from "@/lib/ai/savings";
+import Pagination from "@/components/ui/Pagination";
 import { normalizeSearchQuery } from "@/lib/ai/normalizeSearchQuery";
 import type { AISearchDTO } from "@/lib/dto/AISearchDTO";
 import type { PropertyDTO } from "@/lib/dto/PropertyDTO";
@@ -30,26 +31,90 @@ import { buildSearchFilters } from "@/lib/savedSearches";
 import { isPremiumStatus } from "@/lib/subscription";
 import SaveSearchButton from "@/components/saved-searches/SaveSearchButton";
 
+const DEFAULT_PAGE_SIZE = 24;
+
+const SA_PROVINCES = [
+  "All",
+  "Eastern Cape",
+  "Free State",
+  "Gauteng",
+  "KwaZulu-Natal",
+  "Limpopo",
+  "Mpumalanga",
+  "North West",
+  "Northern Cape",
+  "Western Cape",
+];
+
+const PROPERTY_TYPES = [
+  "All",
+  "House",
+  "Apartment",
+  "Townhouse",
+  "Flat",
+  "Farm",
+  "Commercial",
+  "Land",
+  "Industrial",
+];
+
 type Props = {
-  properties: PropertyDTO[];
+  initialResult: SearchResult<PropertyDTO>;
 };
 
 type AiSearchResponse = SearchResult<PropertyDTO> & {
   ai: AISearchDTO;
 };
 
-export default function PropertySearch({ properties }: Props) {
+function priceBounds(priceRange: string): {
+  minPrice?: number;
+  maxPrice?: number;
+} {
+  switch (priceRange) {
+    case "<500000":
+      return { maxPrice: 499999 };
+    case "500000-1000000":
+      return { minPrice: 500000, maxPrice: 1000000 };
+    case "1000000-2000000":
+      return { minPrice: 1000000, maxPrice: 2000000 };
+    case ">2000000":
+      return { minPrice: 2000001 };
+    default:
+      return {};
+  }
+}
+
+function mapSort(sortBy: string): "auction" | "price-low" | "price-high" | "value-high" {
+  if (sortBy === "price-low" || sortBy === "price-high") {
+    return sortBy;
+  }
+  if (sortBy === "saving") {
+    return "value-high";
+  }
+  return "auction";
+}
+
+export default function PropertySearch({ initialResult }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, role, subscription, loading: authLoading } = useAuth();
+  const [pending, startTransition] = useTransition();
+
   const queryFromUrl = normalizeSearchQuery(searchParams.get("q") ?? "");
+  const pageFromUrl = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
 
   const [search, setSearch] = useState(queryFromUrl);
-  const [province, setProvince] = useState("All");
-  const [propertyType, setPropertyType] = useState("All");
-  const [priceRange, setPriceRange] = useState("All");
-  const [sortBy, setSortBy] = useState("auction");
-  const [aiResults, setAiResults] = useState<PropertyDTO[] | null>(null);
+  const [province, setProvince] = useState(
+    searchParams.get("province") ?? "All",
+  );
+  const [propertyType, setPropertyType] = useState(
+    searchParams.get("propertyType") ?? "All",
+  );
+  const [priceRange, setPriceRange] = useState(
+    searchParams.get("priceRange") ?? "All",
+  );
+  const [sortBy, setSortBy] = useState(searchParams.get("sort") ?? "auction");
+  const [result, setResult] = useState(initialResult);
   const [aiMeta, setAiMeta] = useState<AISearchDTO | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,87 +124,132 @@ export default function PropertySearch({ properties }: Props) {
     Boolean(user) &&
     (role === ROLES.admin || isPremiumStatus(subscription));
 
-  const provinces = useMemo(
-    () => [
-      "All",
-      ...Array.from(
-        new Set(
-          properties
-            .map((p) => p.province)
-            .filter((value): value is string => Boolean(value)),
-        ),
-      ).sort(),
-    ],
-    [properties],
+  const syncUrl = useCallback(
+    (next: {
+      q?: string;
+      page?: number;
+      province?: string;
+      propertyType?: string;
+      priceRange?: string;
+      sort?: string;
+    }) => {
+      const params = new URLSearchParams();
+      const q = next.q ?? search;
+      const page = next.page ?? pageFromUrl;
+      const prov = next.province ?? province;
+      const type = next.propertyType ?? propertyType;
+      const price = next.priceRange ?? priceRange;
+      const sort = next.sort ?? sortBy;
+
+      if (q) params.set("q", q);
+      if (page > 1) params.set("page", String(page));
+      if (prov !== "All") params.set("province", prov);
+      if (type !== "All") params.set("propertyType", type);
+      if (price !== "All") params.set("priceRange", price);
+      if (sort !== "auction") params.set("sort", sort);
+
+      const qs = params.toString();
+      router.replace(qs ? `/?${qs}#featured` : "/#featured", { scroll: false });
+    },
+    [pageFromUrl, priceRange, propertyType, province, router, search, sortBy],
   );
 
-  const propertyTypes = useMemo(
-    () => [
-      "All",
-      ...Array.from(
-        new Set(
-          properties
-            .map((p) => p.property_type)
-            .filter((value): value is string => Boolean(value)),
-        ),
-      ).sort(),
-    ],
-    [properties],
-  );
+  const fetchPage = useCallback(
+    async (opts: {
+      q?: string;
+      page?: number;
+      province?: string;
+      propertyType?: string;
+      priceRange?: string;
+      sort?: string;
+      ai?: AISearchDTO | null;
+    }) => {
+      const q = opts.q ?? "";
+      const page = opts.page ?? 1;
+      const prov = opts.province ?? "All";
+      const type = opts.propertyType ?? "All";
+      const price = opts.priceRange ?? "All";
+      const sort = opts.sort ?? "auction";
+      const bounds = priceBounds(price);
+      const ai = opts.ai;
 
-  const applyAiFilters = useCallback((ai: AISearchDTO) => {
-    const { filters } = ai;
+      const params = new URLSearchParams();
+      params.set("page", String(page));
+      params.set("pageSize", String(DEFAULT_PAGE_SIZE));
+      params.set("sort", mapSort(sort));
 
-    if (filters.province) {
-      setProvince(filters.province);
-    }
+      if (q) params.set("search", q);
+      if (prov !== "All") params.set("province", prov);
+      if (type !== "All") params.set("propertyType", type);
+      if (bounds.minPrice != null) params.set("minPrice", String(bounds.minPrice));
+      if (bounds.maxPrice != null) params.set("maxPrice", String(bounds.maxPrice));
 
-    if (filters.propertyType) {
-      setPropertyType(filters.propertyType);
-    }
-
-    if (filters.maxPrice != null) {
-      if (filters.maxPrice < 500000) {
-        setPriceRange("<500000");
-      } else if (filters.maxPrice <= 1000000) {
-        setPriceRange("500000-1000000");
-      } else if (filters.maxPrice <= 2000000) {
-        setPriceRange("1000000-2000000");
-      } else {
-        setPriceRange(">2000000");
+      if (ai?.filters.town) params.set("town", ai.filters.town);
+      if (ai?.filters.minBedrooms != null) {
+        params.set("minBedrooms", String(ai.filters.minBedrooms));
       }
-    }
-
-    if (filters.sort) {
-      setSortBy(filters.sort);
-    }
-  }, []);
-
-  const runSearch = useCallback(
-    async (rawQuery: string) => {
-      const query = normalizeSearchQuery(rawQuery);
-
-      if (!query) {
-        setAiResults(null);
-        setAiMeta(null);
-        setError(null);
-        setShowUpgradeCta(false);
-        return;
+      if (ai?.filters.maxPrice != null && !bounds.maxPrice) {
+        params.set("maxPrice", String(ai.filters.maxPrice));
       }
-
-      setSearch(query);
-
-      // Guests and free users: local keyword filter only (no premium AI endpoint).
-      if (authLoading || !canUseAiSearch) {
-        setAiResults(null);
-        setAiMeta(null);
-        setError(null);
-        setShowUpgradeCta(Boolean(query) && !authLoading && !canUseAiSearch);
-        return;
+      if (ai?.filters.province && prov === "All") {
+        params.set("province", ai.filters.province);
+      }
+      if (ai?.filters.propertyType && type === "All") {
+        params.set("propertyType", ai.filters.propertyType);
       }
 
       setLoading(true);
       setError(null);
+
+      try {
+        const response = await fetch(`/api/properties?${params.toString()}`);
+        if (!response.ok) {
+          throw new Error("Search failed");
+        }
+        const pageResult = (await response.json()) as SearchResult<PropertyDTO>;
+        setResult(pageResult);
+      } catch {
+        setError("Search failed. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
+  const runAiThenPage = useCallback(
+    async (rawQuery: string) => {
+      const query = normalizeSearchQuery(rawQuery);
+
+      if (!query) {
+        setAiMeta(null);
+        setShowUpgradeCta(false);
+        await fetchPage({
+          q: "",
+          page: 1,
+          province,
+          propertyType,
+          priceRange,
+          sort: sortBy,
+        });
+        return;
+      }
+
+      if (authLoading || !canUseAiSearch) {
+        setAiMeta(null);
+        setShowUpgradeCta(Boolean(query) && !authLoading && !canUseAiSearch);
+        await fetchPage({
+          q: query,
+          page: 1,
+          province,
+          propertyType,
+          priceRange,
+          sort: sortBy,
+        });
+        return;
+      }
+
+      setLoading(true);
       setShowUpgradeCta(false);
 
       try {
@@ -150,10 +260,16 @@ export default function PropertySearch({ properties }: Props) {
         });
 
         if (response.status === 401 || response.status === 403) {
-          setAiResults(null);
           setAiMeta(null);
           setShowUpgradeCta(true);
-          setError(null);
+          await fetchPage({
+            q: query,
+            page: 1,
+            province,
+            propertyType,
+            priceRange,
+            sort: sortBy,
+          });
           return;
         }
 
@@ -162,158 +278,151 @@ export default function PropertySearch({ properties }: Props) {
         }
 
         const data = (await response.json()) as AiSearchResponse;
-
-        setAiResults(data.data);
         setAiMeta(data.ai);
-        applyAiFilters(data.ai);
+
+        const nextProvince = data.ai.filters.province ?? province;
+        const nextType = data.ai.filters.propertyType ?? propertyType;
+        let nextPrice = priceRange;
+        if (data.ai.filters.maxPrice != null) {
+          const max = data.ai.filters.maxPrice;
+          if (max < 500000) nextPrice = "<500000";
+          else if (max <= 1000000) nextPrice = "500000-1000000";
+          else if (max <= 2000000) nextPrice = "1000000-2000000";
+          else nextPrice = ">2000000";
+        }
+        const nextSort = data.ai.filters.sort ?? sortBy;
+
+        setProvince(nextProvince);
+        setPropertyType(nextType);
+        setPriceRange(nextPrice);
+        setSortBy(nextSort);
+
+        await fetchPage({
+          q: query,
+          page: 1,
+          province: nextProvince,
+          propertyType: nextType,
+          priceRange: nextPrice,
+          sort: nextSort,
+          ai: data.ai,
+        });
       } catch {
-        setAiResults(null);
         setAiMeta(null);
         setError("Search failed. Please try again.");
       } finally {
         setLoading(false);
       }
     },
-    [applyAiFilters, authLoading, canUseAiSearch],
+    [
+      authLoading,
+      canUseAiSearch,
+      fetchPage,
+      priceRange,
+      propertyType,
+      province,
+      sortBy,
+    ],
   );
 
+  // Sync when URL page/filters change (browser back, pagination).
   useEffect(() => {
-    if (!queryFromUrl) {
-      return;
-    }
-
-    let cancelled = false;
-    const timer = window.setTimeout(() => {
-      if (cancelled) {
-        return;
-      }
-      void runSearch(queryFromUrl);
-    }, 0);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timer);
-    };
-  }, [queryFromUrl, runSearch]);
+    setSearch(queryFromUrl);
+    void fetchPage({
+      q: queryFromUrl,
+      page: pageFromUrl,
+      province: searchParams.get("province") ?? province,
+      propertyType: searchParams.get("propertyType") ?? propertyType,
+      priceRange: searchParams.get("priceRange") ?? priceRange,
+      sort: searchParams.get("sort") ?? sortBy,
+      ai: aiMeta,
+    });
+    // Intentionally keyed on URL only to avoid filter-change loops.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryFromUrl, pageFromUrl, searchParams]);
 
   function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     const query = normalizeSearchQuery(search);
-
-    if (!query) {
-      setAiResults(null);
-      setAiMeta(null);
-      router.replace("/#featured");
-      return;
-    }
-
-    router.replace(`/?q=${encodeURIComponent(query)}#featured`);
+    syncUrl({ q: query, page: 1 });
+    startTransition(() => {
+      void runAiThenPage(query);
+    });
   }
 
-  const filteredProperties = useMemo(() => {
-    const source = aiResults ?? properties;
-    const term = normalizeSearchQuery(search).toLowerCase();
+  function handleFilterChange(
+    key: "province" | "propertyType" | "priceRange" | "sort",
+    value: string,
+  ) {
+    const next = {
+      province,
+      propertyType,
+      priceRange,
+      sort: sortBy,
+      [key]: value,
+    };
 
-    const filtered = source.filter((property) => {
-      const matchesSearch =
-        !term ||
-        aiResults != null ||
-        property.title.toLowerCase().includes(term) ||
-        (property.town ?? "").toLowerCase().includes(term) ||
-        (property.province ?? "").toLowerCase().includes(term) ||
-        (property.property_type ?? "").toLowerCase().includes(term);
+    if (key === "province") setProvince(value);
+    if (key === "propertyType") setPropertyType(value);
+    if (key === "priceRange") setPriceRange(value);
+    if (key === "sort") setSortBy(value);
 
-      const matchesProvince =
-        province === "All" || property.province === province;
-
-      const matchesType =
-        propertyType === "All" || property.property_type === propertyType;
-
-      const auctionPrice = property.auction_price ?? 0;
-      let matchesPrice = true;
-
-      if (priceRange === "<500000") {
-        matchesPrice = auctionPrice < 500000;
-      }
-
-      if (priceRange === "500000-1000000") {
-        matchesPrice = auctionPrice >= 500000 && auctionPrice <= 1000000;
-      }
-
-      if (priceRange === "1000000-2000000") {
-        matchesPrice = auctionPrice >= 1000000 && auctionPrice <= 2000000;
-      }
-
-      if (priceRange === ">2000000") {
-        matchesPrice = auctionPrice > 2000000;
-      }
-
-      const matchesBedrooms =
-        aiMeta?.filters.minBedrooms == null ||
-        (property.bedrooms ?? 0) >= aiMeta.filters.minBedrooms;
-
-      return (
-        matchesSearch &&
-        matchesProvince &&
-        matchesType &&
-        matchesPrice &&
-        matchesBedrooms
-      );
+    syncUrl({
+      page: 1,
+      province: next.province,
+      propertyType: next.propertyType,
+      priceRange: next.priceRange,
+      sort: next.sort,
     });
 
-    switch (sortBy) {
-      case "price-low":
-        filtered.sort(
-          (a, b) => (a.auction_price ?? 0) - (b.auction_price ?? 0),
-        );
-        break;
+    startTransition(() => {
+      void fetchPage({
+        q: normalizeSearchQuery(search),
+        page: 1,
+        province: next.province,
+        propertyType: next.propertyType,
+        priceRange: next.priceRange,
+        sort: next.sort,
+        ai: aiMeta,
+      });
+    });
+  }
 
-      case "price-high":
-        filtered.sort(
-          (a, b) => (b.auction_price ?? 0) - (a.auction_price ?? 0),
-        );
-        break;
+  function handlePageChange(page: number) {
+    syncUrl({ page });
+    startTransition(() => {
+      void fetchPage({
+        q: normalizeSearchQuery(search),
+        page,
+        province,
+        propertyType,
+        priceRange,
+        sort: sortBy,
+        ai: aiMeta,
+      });
+    });
+  }
 
-      case "saving":
-        filtered.sort((a, b) => {
-          return (
-            calculateSavings(
-              b.estimated_value ?? 0,
-              b.auction_price ?? 0,
-            ).percent -
-            calculateSavings(
-              a.estimated_value ?? 0,
-              a.auction_price ?? 0,
-            ).percent
-          );
-        });
-        break;
-
-      default:
-        filtered.sort((a, b) => {
-          if (a.featured !== b.featured) {
-            return a.featured ? -1 : 1;
-          }
-
-          return (
-            new Date(a.auction_date ?? 0).getTime() -
-            new Date(b.auction_date ?? 0).getTime()
-          );
-        });
-    }
-
-    return filtered;
-  }, [
-    aiMeta,
-    aiResults,
-    priceRange,
-    properties,
-    propertyType,
-    province,
-    search,
-    sortBy,
-  ]);
+  function handleReset() {
+    setSearch("");
+    setProvince("All");
+    setPropertyType("All");
+    setPriceRange("All");
+    setSortBy("auction");
+    setAiMeta(null);
+    setError(null);
+    setShowUpgradeCta(false);
+    router.replace("/#featured", { scroll: false });
+    startTransition(() => {
+      void fetchPage({
+        q: "",
+        page: 1,
+        province: "All",
+        propertyType: "All",
+        priceRange: "All",
+        sort: "auction",
+      });
+    });
+  }
 
   const currentFilters = useMemo(
     () =>
@@ -328,18 +437,7 @@ export default function PropertySearch({ properties }: Props) {
     [search, province, propertyType, priceRange, sortBy, aiMeta],
   );
 
-  function handleReset() {
-    setSearch("");
-    setProvince("All");
-    setPropertyType("All");
-    setPriceRange("All");
-    setSortBy("auction");
-    setAiResults(null);
-    setAiMeta(null);
-    setError(null);
-    setShowUpgradeCta(false);
-    router.replace("/#featured");
-  }
+  const busy = loading || pending;
 
   return (
     <>
@@ -350,7 +448,6 @@ export default function PropertySearch({ properties }: Props) {
         >
           <div className="relative lg:col-span-2">
             <Search className="absolute left-4 top-4 h-5 w-5 text-slate-400" />
-
             <input
               type="text"
               placeholder="Try: 3 bedroom houses in Pretoria under R1.5m"
@@ -358,28 +455,24 @@ export default function PropertySearch({ properties }: Props) {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full rounded-xl border border-slate-300 py-3 pl-12 pr-28 focus:border-navy-900 focus:outline-none"
             />
-
             <button
               type="submit"
-              disabled={loading}
+              disabled={busy}
               className="absolute right-2 top-1.5 inline-flex items-center gap-2 rounded-lg bg-navy-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-navy-800 disabled:opacity-60"
             >
-              {loading ? (
-                <LoaderCircle className="h-4 w-4 animate-spin" />
-              ) : null}
+              {busy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}
               Search
             </button>
           </div>
 
           <div className="relative">
             <MapPin className="absolute left-4 top-4 h-5 w-5 text-slate-400" />
-
             <select
               value={province}
-              onChange={(e) => setProvince(e.target.value)}
+              onChange={(e) => handleFilterChange("province", e.target.value)}
               className="w-full appearance-none rounded-xl border border-slate-300 py-3 pl-12 pr-4"
             >
-              {provinces.map((item) => (
+              {SA_PROVINCES.map((item) => (
                 <option key={item} value={item}>
                   {item === "All" ? "All Provinces" : item}
                 </option>
@@ -389,13 +482,14 @@ export default function PropertySearch({ properties }: Props) {
 
           <div className="relative">
             <Home className="absolute left-4 top-4 h-5 w-5 text-slate-400" />
-
             <select
               value={propertyType}
-              onChange={(e) => setPropertyType(e.target.value)}
+              onChange={(e) =>
+                handleFilterChange("propertyType", e.target.value)
+              }
               className="w-full appearance-none rounded-xl border border-slate-300 py-3 pl-12 pr-4"
             >
-              {propertyTypes.map((item) => (
+              {PROPERTY_TYPES.map((item) => (
                 <option key={item} value={item}>
                   {item === "All" ? "All Property Types" : item}
                 </option>
@@ -410,10 +504,9 @@ export default function PropertySearch({ properties }: Props) {
             >
               R
             </span>
-
             <select
               value={priceRange}
-              onChange={(e) => setPriceRange(e.target.value)}
+              onChange={(e) => handleFilterChange("priceRange", e.target.value)}
               className="w-full appearance-none rounded-xl border border-slate-300 py-3 pl-12 pr-4"
             >
               <option value="All">Any Price</option>
@@ -428,10 +521,9 @@ export default function PropertySearch({ properties }: Props) {
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           <div className="relative">
             <ArrowUpDown className="absolute left-4 top-4 h-5 w-5 text-slate-400" />
-
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={(e) => handleFilterChange("sort", e.target.value)}
               className="w-full appearance-none rounded-xl border border-slate-300 py-3 pl-12 pr-4"
             >
               <option value="auction">Auction Date</option>
@@ -456,10 +548,12 @@ export default function PropertySearch({ properties }: Props) {
             <p className="text-sm font-semibold text-slate-600">
               Showing
               <span className="mx-1 text-lg font-bold text-navy-900">
-                {filteredProperties.length}
+                {result.data.length}
               </span>
+              of
+              <span className="mx-1 font-bold text-navy-900">{result.total}</span>
               properties
-              {loading ? (
+              {busy ? (
                 <span className="ml-2 text-sm font-medium text-slate-400">
                   Searching…
                 </span>
@@ -467,7 +561,8 @@ export default function PropertySearch({ properties }: Props) {
             </p>
             {aiMeta ? (
               <p className="mt-1 text-xs text-slate-500">
-                AI parsed: {[
+                AI parsed:{" "}
+                {[
                   aiMeta.filters.town,
                   aiMeta.filters.propertyType,
                   aiMeta.filters.minBedrooms
@@ -502,7 +597,7 @@ export default function PropertySearch({ properties }: Props) {
         </div>
       </div>
 
-      {filteredProperties.length === 0 ? (
+      {result.data.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-16 text-center">
           <h3 className="text-2xl font-bold text-navy-900">
             No properties found
@@ -512,13 +607,25 @@ export default function PropertySearch({ properties }: Props) {
           </p>
         </div>
       ) : (
-        <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
-          {filteredProperties.map((property, index) => (
-            <AnimatedSection key={property.id} delay={index * 0.05}>
-              <AuctionCard property={property} />
-            </AnimatedSection>
-          ))}
-        </div>
+        <>
+          <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+            {result.data.map((property, index) => (
+              <AnimatedSection key={property.id} delay={index * 0.05}>
+                <AuctionCard property={property} />
+              </AnimatedSection>
+            ))}
+          </div>
+
+          {result.totalPages > 1 ? (
+            <div className="mt-10">
+              <Pagination
+                page={result.page}
+                totalPages={result.totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          ) : null}
+        </>
       )}
     </>
   );

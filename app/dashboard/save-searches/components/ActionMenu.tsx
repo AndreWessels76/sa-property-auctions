@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { toast } from "sonner";
 import {
   activateSavedSearch,
   pauseSavedSearch,
@@ -26,7 +27,7 @@ export default function ActionMenu({ id, active, onToggled }: Props) {
 
         onToggled?.();
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Failed to update saved search.",

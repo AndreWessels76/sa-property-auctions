@@ -1,9 +1,14 @@
 import { BaseRepository } from "./BaseRepository";
 import type { PropertySearchDTO } from "@/lib/dto/PropertySearchDTO";
-import type { SearchResult } from "@/lib/dto/SearchResult";
+import {
+  buildSearchResult,
+  type SearchResult,
+} from "@/lib/dto/SearchResult";
 import type { Property } from "@/lib/types/property";
 
 export class PropertyRepository extends BaseRepository {
+  static readonly DEFAULT_PAGE_SIZE = 24;
+
   static async getAll(): Promise<Property[]> {
     const db = this.publicDb();
 
@@ -37,13 +42,58 @@ export class PropertyRepository extends BaseRepository {
     return data as Property | null;
   }
 
+  /** Fetch a page of properties by explicit IDs (favourites). */
+  static async getByIds(
+    ids: string[],
+    page = 1,
+    pageSize = PropertyRepository.DEFAULT_PAGE_SIZE,
+  ): Promise<SearchResult<Property>> {
+    const safePage = Math.max(1, page);
+    const safeSize = Math.min(Math.max(1, pageSize), 100);
+    const uniqueIds = [...new Set(ids.filter(Boolean))];
+    const total = uniqueIds.length;
+
+    if (total === 0) {
+      return buildSearchResult([], 0, safePage, safeSize);
+    }
+
+    const from = (safePage - 1) * safeSize;
+    const pageIds = uniqueIds.slice(from, from + safeSize);
+
+    if (pageIds.length === 0) {
+      return buildSearchResult([], total, safePage, safeSize);
+    }
+
+    const db = this.publicDb();
+    const { data, error } = await db
+      .from("properties")
+      .select("*")
+      .in("id", pageIds);
+
+    if (error) {
+      this.handleError("PropertyRepository.getByIds", error);
+    }
+
+    const byId = new Map(
+      ((data as Property[]) ?? []).map((property) => [property.id, property]),
+    );
+    const ordered = pageIds
+      .map((id) => byId.get(id))
+      .filter((property): property is Property => Boolean(property));
+
+    return buildSearchResult(ordered, total, safePage, safeSize);
+  }
+
   static async search(
     filters: PropertySearchDTO,
   ): Promise<SearchResult<Property>> {
     const db = this.publicDb();
 
-    const page = filters.page ?? 1;
-    const pageSize = filters.pageSize ?? 20;
+    const page = Math.max(1, filters.page ?? 1);
+    const pageSize = Math.min(
+      Math.max(1, filters.pageSize ?? PropertyRepository.DEFAULT_PAGE_SIZE),
+      100,
+    );
 
     let query = db.from("properties").select("*", { count: "exact" });
 
@@ -189,12 +239,11 @@ address.ilike.%${filters.search}%
       this.handleError("PropertyRepository.search", error);
     }
 
-    return {
-      data: (data as Property[]) ?? [],
-      total: count ?? 0,
+    return buildSearchResult(
+      (data as Property[]) ?? [],
+      count ?? 0,
       page,
       pageSize,
-      totalPages: Math.ceil((count ?? 0) / pageSize),
-    };
+    );
   }
 }

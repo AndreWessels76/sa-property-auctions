@@ -9,7 +9,7 @@ import {
   Car,
   MapPin,
 } from "lucide-react";
-import PropertyMap from "@/app/components/map/PropertyMap";
+import PropertyMapLazy from "@/app/components/map/PropertyMapLazy";
 import GatedAIValuation from "@/app/components/investor/GatedAIValuation";
 import GatedPropertyAnalytics from "@/app/components/investor/GatedPropertyAnalytics";
 import PropertyIntelligenceCard from "@/app/components/investor/PropertyIntelligenceCard";
@@ -46,8 +46,19 @@ export default async function PropertyPage({ params }: PageProps) {
     notFound();
   }
 
-  const images = await getImages(property.id);
-  const comparables = await getComparableSales(property.id);
+  let images: Awaited<ReturnType<typeof getImages>> = [];
+  try {
+    images = await getImages(property.id);
+  } catch {
+    images = [];
+  }
+
+  let comparables: Awaited<ReturnType<typeof getComparableSales>> = [];
+  try {
+    comparables = await getComparableSales(property.id);
+  } catch {
+    comparables = [];
+  }
   const hero = selectHeroImage(images);
   const savingPercent = calcSavingPercent(
     property.estimated_value ?? 0,
@@ -202,7 +213,7 @@ export default async function PropertyPage({ params }: PageProps) {
                     <h3 className="mb-4 text-lg font-bold text-navy-900">
                       Location
                     </h3>
-                    <PropertyMap
+                    <PropertyMapLazy
                       latitude={property.latitude}
                       longitude={property.longitude}
                       comparables={comparables}

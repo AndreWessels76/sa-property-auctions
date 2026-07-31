@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Loader2, Play, RotateCcw, Settings } from "lucide-react";
+import { Loader2, Play } from "lucide-react";
+import { toast } from "sonner";
 
 type Source = {
   id: string;
@@ -51,13 +52,13 @@ export default function ImportTableClient({ sources }: Props) {
         throw new Error(result.error ?? "Import failed");
       }
 
-      alert(
-        `${result.source}\n\nImported: ${result.imported}\n\nUpdated: ${result.updated}`,
+      toast.success(
+        `${result.source}: imported ${result.imported}, updated ${result.updated}`,
       );
 
       router.refresh();
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Import failed.");
+      toast.error(error instanceof Error ? error.message : "Import failed.");
       router.refresh();
     } finally {
       setRunningId(null);
@@ -65,8 +66,8 @@ export default function ImportTableClient({ sources }: Props) {
   }
 
   return (
-    <div className="rounded-2xl bg-white shadow">
-      <table className="w-full">
+    <div className="overflow-x-auto rounded-2xl bg-white shadow">
+      <table className="w-full min-w-[640px]">
         <thead>
           <tr className="border-b bg-slate-50">
             <th className="p-4 text-left">Source</th>
@@ -85,26 +86,19 @@ export default function ImportTableClient({ sources }: Props) {
               <td>{formatTime(item.last_run)}</td>
               <td>{formatTime(item.next_run)}</td>
               <td>
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => runSource(item)}
-                    disabled={runningId === item.id}
-                    aria-label={`Run ${item.name}`}
-                  >
-                    {runningId === item.id ? (
-                      <Loader2 size={18} className="animate-spin" />
-                    ) : (
-                      <Play size={18} />
-                    )}
-                  </button>
-                  <button type="button" aria-label={`Retry ${item.name}`}>
-                    <RotateCcw size={18} />
-                  </button>
-                  <button type="button" aria-label={`Settings ${item.name}`}>
-                    <Settings size={18} />
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => runSource(item)}
+                  disabled={runningId === item.id}
+                  aria-label={`Run ${item.name}`}
+                  className="rounded-lg p-2 text-slate-700 hover:bg-slate-100 disabled:opacity-60"
+                >
+                  {runningId === item.id ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : (
+                    <Play size={18} />
+                  )}
+                </button>
               </td>
             </tr>
           ))}

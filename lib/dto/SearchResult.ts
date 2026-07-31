@@ -4,6 +4,8 @@ export interface SearchResult<T> {
   page: number;
   pageSize: number;
   totalPages: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
 }
 
 export function buildSearchResult<T>(
@@ -12,11 +14,15 @@ export function buildSearchResult<T>(
   page: number,
   pageSize: number,
 ): SearchResult<T> {
+  const totalPages = pageSize > 0 ? Math.ceil(total / pageSize) : 0;
+
   return {
     data,
     total,
     page,
     pageSize,
-    totalPages: pageSize > 0 ? Math.ceil(total / pageSize) : 0,
+    totalPages,
+    hasNext: page < totalPages,
+    hasPrevious: page > 1,
   };
 }

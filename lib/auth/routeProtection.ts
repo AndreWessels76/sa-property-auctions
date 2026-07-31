@@ -4,7 +4,6 @@ export const PROTECTED_PREFIXES = [
   "/watchlist",
   "/alerts",
   "/profile",
-  "/heatmaps",
 ] as const;
 
 export const ADMIN_PREFIXES = ["/admin"] as const;
