@@ -1,25 +1,21 @@
+import { POLICY_LINKS } from "@/lib/legal/policyLinks";
 import { Gavel, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 
 const footerLinks = {
   Platform: [
-    { label: "Browse Auctions", href: "#featured" },
-    { label: "Sheriff Sales", href: "#" },
-    { label: "Bank Repossessions", href: "#" },
-    { label: "Public Auctions", href: "#" },
+    { label: "Browse Auctions", href: "/#featured" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "FAQ", href: "/faq" },
+    { label: "Known Issues", href: "/known-issues" },
   ],
   Resources: [
-    { label: "How It Works", href: "#" },
-    { label: "Auction Guide", href: "#" },
-    { label: "Legal Information", href: "#" },
-    { label: "FAQ", href: "#" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
+    { label: "Release Notes", href: "/release-notes" },
+    { label: "Privacy Requests", href: "/privacy-requests" },
   ],
-  Company: [
-    { label: "About Us", href: "#" },
-    { label: "Contact", href: "#" },
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-  ],
+  Legal: POLICY_LINKS.map((p) => ({ label: p.label, href: p.href })),
 };
 
 export default function Footer() {
@@ -48,11 +44,16 @@ export default function Footer() {
             <div className="mt-6 space-y-2.5 text-sm">
               <p className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 shrink-0 text-gold-400" />
-                info@sapropertyauctions.co.za
+                <a
+                  href="mailto:info@sapropertyauctions.co.za"
+                  className="hover:text-gold-400"
+                >
+                  info@sapropertyauctions.co.za
+                </a>
               </p>
               <p className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 shrink-0 text-gold-400" />
-                0800 000 000
+                <span>Email support during public beta</span>
               </p>
               <p className="flex items-center gap-2.5">
                 <MapPin className="h-4 w-4 shrink-0 text-gold-400" />
@@ -88,7 +89,7 @@ export default function Footer() {
             reserved.
           </p>
           <p className="text-xs text-slate-600">
-            POPIA compliant &middot; Trusted by property investors nationwide
+            POPIA aligned &middot; Public beta
           </p>
         </div>
       </div>

@@ -19,19 +19,25 @@ import {
 import type { PropertyDTO } from "@/lib/dto/PropertyDTO";
 
 function useCountdown(targetISO: string) {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0 });
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    mins: 0,
+    expired: true,
+  });
 
   useEffect(() => {
     const update = () => {
       const diff = new Date(targetISO).getTime() - Date.now();
-      if (diff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, mins: 0 });
+      if (!targetISO || Number.isNaN(diff) || diff <= 0) {
+        setTimeLeft({ days: 0, hours: 0, mins: 0, expired: true });
         return;
       }
       setTimeLeft({
         days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
         mins: Math.floor((diff / (1000 * 60)) % 60),
+        expired: false,
       });
     };
 
@@ -147,32 +153,36 @@ export default function AuctionCard({ property }: { property: PropertyDTO }) {
           <div className="flex flex-1 flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <span className="text-sm font-medium text-slate-300">
-                Auction in
+                {countdown.expired ? "Auction date" : "Auction in"}
               </span>
               <p className="text-xs text-gold-400">
                 {formatAuctionDate(property.auction_date ?? "")}
               </p>
             </div>
-            <div className="flex gap-3 text-sm font-bold tabular-nums">
-              <span>
-                {countdown.days}
-                <span className="ml-0.5 text-xs font-normal text-slate-400">
-                  d
+            {countdown.expired ? (
+              <p className="text-sm font-semibold text-slate-300">Date passed</p>
+            ) : (
+              <div className="flex gap-3 text-sm font-bold tabular-nums">
+                <span>
+                  {countdown.days}
+                  <span className="ml-0.5 text-xs font-normal text-slate-400">
+                    d
+                  </span>
                 </span>
-              </span>
-              <span>
-                {countdown.hours}
-                <span className="ml-0.5 text-xs font-normal text-slate-400">
-                  h
+                <span>
+                  {countdown.hours}
+                  <span className="ml-0.5 text-xs font-normal text-slate-400">
+                    h
+                  </span>
                 </span>
-              </span>
-              <span>
-                {countdown.mins}
-                <span className="ml-0.5 text-xs font-normal text-slate-400">
-                  m
+                <span>
+                  {countdown.mins}
+                  <span className="ml-0.5 text-xs font-normal text-slate-400">
+                    m
+                  </span>
                 </span>
-              </span>
-            </div>
+              </div>
+            )}
           </div>
         </div>
 

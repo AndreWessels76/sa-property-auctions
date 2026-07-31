@@ -1,98 +1,70 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Building2, Clock, Gavel, MapPinned } from "lucide-react";
-import CountUp from "@/components/ui/CountUp";
+import { Building2, Clock, MapPinned, RefreshCw } from "lucide-react";
 
 const stats = [
   {
-    value: 10000,
-    suffix: "+",
-    label: "Properties",
+    label: "Catalogue",
+    display: "Growing",
+    description: "South African auction properties",
     icon: Building2,
-    description: "Listed nationwide",
-    isNumeric: true,
   },
   {
-    value: 9,
-    suffix: "",
-    label: "Provinces",
+    label: "Coverage",
+    display: "9 provinces",
+    description: "Expanding town-level coverage",
     icon: MapPinned,
-    description: "Full SA coverage",
-    isNumeric: true,
   },
   {
-    value: 500,
-    suffix: "+",
-    label: "Auctions Monthly",
-    icon: Gavel,
-    description: "New every month",
-    isNumeric: true,
+    label: "Updates",
+    display: "Regular",
+    description: "New listings added over time",
+    icon: RefreshCw,
   },
   {
-    value: 0,
+    label: "Access",
     display: "24/7",
-    label: "Monitoring",
+    description: "Browse whenever you need",
     icon: Clock,
-    description: "Always up to date",
-    isNumeric: false,
   },
 ];
 
-const container = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.12 },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: "easeOut" as const },
-  },
-};
-
 export default function Statistics() {
   return (
-    <section className="relative z-10 -mt-20 px-4 sm:px-6 lg:px-8">
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-        className="mx-auto grid max-w-7xl gap-5 sm:grid-cols-2 lg:grid-cols-4"
-      >
-        {stats.map((stat) => (
-          <motion.div
-            key={stat.label}
-            variants={item}
-            className="group relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-7 shadow-xl shadow-slate-200/40 transition-all duration-500 hover:-translate-y-1 hover:border-gold-400/50 hover:shadow-2xl"
-          >
-            <div className="animate-shimmer absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100" />
-
-            <div className="relative">
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-navy-900 transition-all duration-300 group-hover:bg-gold-500">
-                <stat.icon className="h-5 w-5 text-gold-400 transition-colors group-hover:text-navy-950" />
-              </div>
-              <p className="text-4xl font-bold tracking-tight text-navy-900">
-                {stat.isNumeric ? (
-                  <CountUp end={stat.value} suffix={stat.suffix} />
-                ) : (
-                  stat.display
-                )}
-              </p>
-              <p className="mt-2 text-base font-semibold text-slate-800">
-                {stat.label}
-              </p>
-              <p className="mt-1 text-sm text-slate-500">{stat.description}</p>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+    <section className="relative z-10 -mt-16 px-4 sm:-mt-20 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl sm:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:p-2">
+          {stats.map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08, duration: 0.4 }}
+                className="flex items-start gap-4 rounded-xl px-4 py-5 lg:px-6"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-900 text-gold-400">
+                  <Icon className="h-5 w-5" strokeWidth={2} />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold tracking-tight text-navy-900">
+                    {stat.display}
+                  </p>
+                  <p className="text-sm font-semibold text-slate-800">
+                    {stat.label}
+                  </p>
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    {stat.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }

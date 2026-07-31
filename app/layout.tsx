@@ -18,7 +18,9 @@ const siteUrl =
 const siteName = "SA Property Auctions";
 const title = "SA Property Auctions | South Africa's Smartest Auction Platform";
 const description =
-  "Find sheriff, bank and public property auctions across South Africa. Browse 10,000+ listings with free alerts.";
+  "Find sheriff, bank and public property auctions across South Africa. Growing catalogue with alerts, filters and Premium AI search.";
+const ogImage =
+  "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=85";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -28,6 +30,9 @@ export const metadata: Metadata = {
   },
   description,
   applicationName: siteName,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_ZA",
@@ -35,11 +40,13 @@ export const metadata: Metadata = {
     siteName,
     title,
     description,
+    images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: [ogImage],
   },
   robots: {
     index: true,
@@ -85,6 +92,20 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full scroll-smooth`}>
       <body className="min-h-full flex flex-col antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: siteName,
+              url: siteUrl,
+              description,
+              areaServed: "ZA",
+              email: "info@sapropertyauctions.co.za",
+            }),
+          }}
+        />
         <AuthProvider initialSession={session} initialProfile={profile}>
           <SessionProvider>{children}</SessionProvider>
         </AuthProvider>

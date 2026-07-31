@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import ProfileCard from "@/components/profile/ProfileCard";
 import ProfileForm from "@/components/profile/ProfileForm";
+import ExportDataCard from "@/components/profile/ExportDataCard";
+import DeleteAccountCard from "@/components/profile/DeleteAccountCard";
 import { SubscriptionCard } from "@/app/components/subscription";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
@@ -35,7 +37,8 @@ export default async function ProfilePage() {
           <div>
             <h1 className="text-3xl font-bold text-navy-900">Your profile</h1>
             <p className="mt-2 text-slate-500">
-              Update your account details and personal information.
+              Update your account details, export your data, or delete your
+              account.
             </p>
           </div>
 
@@ -59,6 +62,25 @@ export default async function ProfilePage() {
               </Link>
             </p>
           ) : null}
+
+          <ExportDataCard />
+
+          <p className="text-sm text-slate-500">
+            Need help or a privacy request?{" "}
+            <Link href="/contact" className="font-medium text-navy-900 underline">
+              Contact support
+            </Link>{" "}
+            or{" "}
+            <Link
+              href="/privacy-requests"
+              className="font-medium text-navy-900 underline"
+            >
+              Privacy requests
+            </Link>
+            .
+          </p>
+
+          <DeleteAccountCard />
         </div>
       </main>
       <Footer />

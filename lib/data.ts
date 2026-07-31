@@ -136,39 +136,39 @@ export const featuredAuctions: FeaturedAuction[] = [
 
 export const whyChooseFeatures = [
   {
-    title: "Verified Listings",
+    title: "Auction-focused catalogue",
     description:
-      "Every auction is sourced from official sheriff notices, banks, and registered auctioneers.",
+      "Browse sheriff, bank and public auction-style listings compiled for South African buyers and investors.",
     icon: "ShieldCheck",
   },
   {
-    title: "Real-Time Alerts",
+    title: "Alerts & saved searches",
     description:
-      "Get instant notifications when new properties match your criteria — never miss a deal.",
+      "Save searches and receive alerts when matching properties appear — subject to your plan limits.",
     icon: "BellRing",
   },
   {
-    title: "Nationwide Coverage",
+    title: "Growing coverage",
     description:
-      "Comprehensive data across all 9 provinces, from major metros to emerging towns.",
+      "Coverage is expanding across provinces and towns as trusted data sources are onboarded.",
     icon: "MapPinned",
   },
   {
-    title: "Market Intelligence",
+    title: "Market intelligence",
     description:
-      "Estimated values, savings calculations, and comparable sales to guide your decisions.",
+      "Estimated values and savings indicators help you compare auction price versus estimated value.",
     icon: "TrendingUp",
   },
   {
-    title: "Mobile Optimised",
+    title: "Mobile friendly",
     description:
-      "Browse, save favourites, and receive alerts on any device — anywhere in South Africa.",
+      "Browse, save favourites, and manage your account on phone, tablet, or desktop.",
     icon: "Smartphone",
   },
   {
-    title: "Secure & Compliant",
+    title: "Privacy minded",
     description:
-      "POPIA-compliant platform with enterprise-grade security protecting your data.",
+      "Built with POPIA-aligned practices. Review our Privacy Policy and POPIA notice for details.",
     icon: "Lock",
   },
 ];
@@ -177,10 +177,10 @@ export const testimonials = [
   {
     id: "1",
     quote:
-      "I found a Sandton apartment at 35% below market value. The countdown alerts meant I never missed the auction date.",
-    name: "Thabo Mokoena",
-    role: "Property Investor",
-    location: "Johannesburg",
+      "Investors typically look for clear auction dates, estimated values, and timely alerts before a sale.",
+    name: "Investor workflow",
+    role: "Illustrative scenario",
+    location: "Public beta",
     avatar:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
     rating: 5,
@@ -188,10 +188,10 @@ export const testimonials = [
   {
     id: "2",
     quote:
-      "As a first-time buyer, the platform made sheriff sales approachable. Clear pricing and savings estimates gave me confidence.",
-    name: "Sarah van der Merwe",
-    role: "First-Time Buyer",
-    location: "Cape Town",
+      "First-time buyers often need plain-language listings and savings context before speaking to a sheriff or auctioneer.",
+    name: "First-time buyer journey",
+    role: "Illustrative scenario",
+    location: "Public beta",
     avatar:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80",
     rating: 5,
@@ -199,37 +199,36 @@ export const testimonials = [
   {
     id: "3",
     quote:
-      "Our agency uses SA Property Auctions daily. The data quality and province filters save us hours of manual research.",
-    name: "David Naidoo",
-    role: "Estate Agent",
-    location: "Durban",
+      "Agents and researchers benefit from province filters and a single place to track upcoming auction opportunities.",
+    name: "Research workflow",
+    role: "Illustrative scenario",
+    location: "Public beta",
     avatar:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80",
     rating: 5,
   },
 ];
 
+/** Source categories — not claimed contractual partners. */
 export const partners = [
-  "Standard Bank",
-  "FNB",
-  "ABSA",
-  "Nedbank",
-  "SA Home Loans",
-  "Sheriff's Office",
-  "Property24",
-  "Lightstone",
+  "Sheriff sales",
+  "Bank repossessions",
+  "Public auctions",
+  "Auctioneer notices",
+  "Partner CSV feeds",
+  "Admin-verified imports",
 ];
 
 export const mapProvinces = [
-  { name: "Western Cape", auctions: 1240, x: 18, y: 78 },
-  { name: "Eastern Cape", auctions: 890, x: 42, y: 72 },
-  { name: "Northern Cape", auctions: 320, x: 22, y: 48 },
-  { name: "Free State", auctions: 560, x: 42, y: 52 },
-  { name: "KwaZulu-Natal", auctions: 1100, x: 58, y: 68 },
-  { name: "Gauteng", auctions: 2100, x: 48, y: 38 },
-  { name: "Mpumalanga", auctions: 780, x: 58, y: 48 },
-  { name: "Limpopo", auctions: 640, x: 52, y: 22 },
-  { name: "North West", auctions: 490, x: 36, y: 36 },
+  { name: "Western Cape", auctions: null as number | null, x: 18, y: 78 },
+  { name: "Eastern Cape", auctions: null, x: 42, y: 72 },
+  { name: "Northern Cape", auctions: null, x: 22, y: 48 },
+  { name: "Free State", auctions: null, x: 42, y: 52 },
+  { name: "KwaZulu-Natal", auctions: null, x: 58, y: 68 },
+  { name: "Gauteng", auctions: null, x: 48, y: 38 },
+  { name: "Mpumalanga", auctions: null, x: 58, y: 48 },
+  { name: "Limpopo", auctions: null, x: 52, y: 22 },
+  { name: "North West", auctions: null, x: 36, y: 36 },
 ];
 
 export const HERO_IMAGE =

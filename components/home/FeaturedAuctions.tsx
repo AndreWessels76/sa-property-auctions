@@ -73,7 +73,7 @@ export default async function FeaturedAuctions({
               </h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
                 Properties going under the hammer soon, loaded directly from our
-                database. Search and filter to find your next opportunity.
+                live catalogue. Search and filter to explore current listings.
               </p>
             </div>
             <Link

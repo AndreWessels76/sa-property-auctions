@@ -1,4 +1,5 @@
 export * from "./ProfileRepository";
+export * from "./AccountRepository";
 export * from "./PropertyRepository";
 export * from "./ImageRepository";
 export * from "./AlertRepository";

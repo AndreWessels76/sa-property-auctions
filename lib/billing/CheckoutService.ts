@@ -5,6 +5,7 @@ import type {
   CheckoutResponse,
 } from "./BillingTypes";
 import { SubscriptionRepository } from "@/lib/repositories/SubscriptionRepository";
+import { ApiError } from "@/lib/api/http";
 
 const MONTHLY_PRICE_ID = process.env.STRIPE_PRICE_MONTHLY!;
 const YEARLY_PRICE_ID = process.env.STRIPE_PRICE_YEARLY!;
@@ -117,7 +118,10 @@ export class BillingService {
     const subscription = await SubscriptionRepository.get(userId);
 
     if (!subscription?.stripe_customer_id) {
-      throw new Error("No Stripe customer found for this account");
+      throw new ApiError(
+        400,
+        "No active billing customer found. Subscribe first.",
+      );
     }
 
     return CheckoutService.createPortalSession(

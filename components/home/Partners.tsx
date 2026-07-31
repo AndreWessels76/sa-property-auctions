@@ -9,11 +9,16 @@ export default function Partners() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="text-center">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-slate-400">
-            Trusted Partners
+            Listing sources
           </p>
           <h2 className="mt-2 text-xl font-semibold text-navy-900 sm:text-2xl">
-            Data sourced from South Africa&apos;s leading institutions
+            Built for South African auction discovery
           </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-500">
+            We organise auction-style inventory from sheriff, bank, public and
+            partner feeds as they are onboarded. Always verify details with the
+            official seller before bidding.
+          </p>
         </AnimatedSection>
       </div>
 

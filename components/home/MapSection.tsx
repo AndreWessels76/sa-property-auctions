@@ -1,6 +1,7 @@
 "use client";
 
 import { Map, MousePointerClick } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import { mapProvinces } from "@/lib/data";
@@ -13,14 +14,14 @@ export default function MapSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="text-center">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-gold-500">
-            Geographic Intelligence
+            Geographic coverage
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl lg:text-5xl">
             Explore Auctions by Province
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            Interactive map coming soon. Hover over a province to preview
-            available listings.
+            Use province filters on live search. An interactive map is planned
+            for a later release.
           </p>
         </AnimatedSection>
 
@@ -30,7 +31,7 @@ export default function MapSection() {
               <div className="map-grid relative bg-slate-50 p-8 lg:col-span-3 lg:p-12">
                 <div className="absolute right-6 top-6 flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-1.5 text-xs font-medium text-slate-500 shadow-sm">
                   <MousePointerClick className="h-3.5 w-3.5" />
-                  Interactive placeholder
+                  Preview placeholder
                 </div>
 
                 <div className="relative mx-auto aspect-[4/5] max-w-md">
@@ -64,19 +65,8 @@ export default function MapSection() {
                           onFocus={() => setActiveProvince(province)}
                           tabIndex={0}
                           role="button"
-                          aria-label={`${province.name}, ${province.auctions} auctions`}
+                          aria-label={`${province.name}`}
                         />
-                        {activeProvince.name === province.name && (
-                          <circle
-                            cx={province.x}
-                            cy={province.y}
-                            r="6"
-                            fill="none"
-                            stroke="#c9a227"
-                            strokeWidth="0.5"
-                            opacity="0.6"
-                          />
-                        )}
                       </g>
                     ))}
                   </svg>
@@ -93,10 +83,16 @@ export default function MapSection() {
                 <h3 className="mt-1 text-2xl font-bold text-white">
                   {activeProvince.name}
                 </h3>
-                <p className="mt-4 text-5xl font-bold text-gold-400">
-                {activeProvince.auctions.toLocaleString("en-ZA")}
+                <p className="mt-4 text-base leading-relaxed text-slate-300">
+                  Filter the live catalogue by this province to see current
+                  listings. Counts grow as sources are onboarded.
                 </p>
-                <p className="text-sm text-slate-400">Active auction listings</p>
+                <Link
+                  href={`/?province=${encodeURIComponent(activeProvince.name)}#featured`}
+                  className="mt-6 inline-flex rounded-xl bg-gold-500 px-4 py-3 text-center text-sm font-semibold text-navy-950 hover:bg-gold-400"
+                >
+                  Browse {activeProvince.name}
+                </Link>
 
                 <div className="mt-8 space-y-2">
                   {mapProvinces.slice(0, 4).map((province) => (
@@ -112,8 +108,8 @@ export default function MapSection() {
                       }`}
                     >
                       <span>{province.name}</span>
-                      <span className="font-semibold text-gold-400">
-                        {province.auctions}
+                      <span className="text-xs font-medium text-gold-400">
+                        View
                       </span>
                     </button>
                   ))}

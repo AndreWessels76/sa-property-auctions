@@ -48,7 +48,7 @@ export default function Hero() {
           >
             <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2 text-sm font-medium text-gold-300 backdrop-blur-md">
               <span className="h-2 w-2 animate-pulse rounded-full bg-gold-400" />
-              Trusted by 12,000+ property seekers nationwide
+              Public beta — new auction properties added regularly
             </p>
 
             <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
@@ -56,8 +56,9 @@ export default function Hero() {
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-300 sm:text-xl">
-              Find sheriff, bank and public property auctions across South
-              Africa. Discover below-market deals before anyone else.
+              Discover sheriff, bank and public property auctions in a growing
+              South African catalogue. Set alerts and research opportunities
+              before you bid elsewhere.
             </p>
           </motion.div>
 
