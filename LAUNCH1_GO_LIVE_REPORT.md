@@ -19,9 +19,17 @@ Evidence: RC6 legal pack shipped, messaging made honest, ZAR prices published, c
 
 | Item | Status |
 |---|---|
-| RC6 + Launch 1 commit/push to `main` | Required for Vercel (executed in Launch 1) |
-| Auto-deploy | Vercel from `main` |
-| Post-deploy verification | Legal routes must return 200; pricing shows R99/R990 |
+| Commit | `f2218a4` on `main` |
+| Vercel production | Deployed — legal routes **200** |
+| Catalogue API | `total=15`, all sampled cards imaged |
+| Pricing live | R99 / R990 visible |
+| Health | `/api/health/ready` → ready |
+
+### Live HTTP spot-check (post-deploy)
+
+All **200**: `/terms` `/privacy` `/popia` `/cookies` `/subscription-policy` `/refunds` `/disclaimer` `/about` `/faq` `/contact` `/pricing` `/known-issues` `/release-notes` `/robots.txt` `/sitemap.xml` health endpoints.
+
+Homepage: no `12,000` / `10,000+` claims; shows Public beta + Growing; partner strip uses source categories (not Property24).
 
 ---
 
