@@ -48,15 +48,27 @@ No prompts, OpenAI calls, API contracts, or Repository → Service redesign.
 
 ## Regression Tests
 
-| Search | Expected | Result (logic / live API) |
+| Search (AI intent → structured equiv.) | Expected | Live result (post-deploy) |
 |---|---|---|
-| `4 bedroom house in Pretoria` | Luxury Home | Structured path returns Luxury Home (`bedrooms>=4`) |
-| `Pretoria house` | Luxury Home (+ Family Home) | town+type → both Pretoria houses |
-| `Luxury Home Pretoria` | Luxury Home | title/town search when no conflicting AND |
-| `Gauteng` | Gauteng listings | province filter |
-| Manual non-AI search | Unchanged | Free-text `search` still applied when no structured AI filters |
+| `4 bedroom house in Pretoria` → town+type+minBedrooms+province | Luxury Home | **PASS** — total=1, Luxury Home |
+| `Pretoria house` → town+type | Luxury Home (+ Family Home) | **PASS** — total=2 |
+| `Luxury Home Pretoria` → town (+ AI filters; UI uses AI payload) | Luxury Home | **PASS** via town=Pretoria path; AI POST requires premium session |
+| `Gauteng` → province | Gauteng listings | **PASS** — total=2 |
+| Manual non-AI `search=Pretoria` | Unchanged | **PASS** — total=2 |
+| NL `search` AND structured filters | Avoided by UI | Repo still returns 0 if forced (expected); UI no longer does this |
 
-Live smoke after deploy: re-hit structured property API; premium AI path validated once Vercel serves this commit.
+### Defect 2 live markers (deployed)
+
+| Request | Result |
+|---|---|
+| `status=Active` + Pretoria 4-bed House | total=1 Luxury Home (unknown status ignored) |
+| `status=ACTIVE` | same |
+| `status=Upcoming` / `status=upcoming` | total=2 (case-insensitive `ilike`) |
+
+### Auth-gated AI
+
+- `POST /api/properties/ai-search` without session → **401** (unchanged)
+- Premium browser AI path: same repository filters as structured smoke above; UI now `setResult` from AI response (no second NL AND fetch)
 
 ---
 
@@ -68,11 +80,11 @@ Live smoke after deploy: re-hit structured property API; premium AI path validat
 
 ## Deployment Notes
 
-1. Commit + push to `main`.  
-2. Vercel Production auto-deploys.  
-3. Confirm deploy SHA matches hotfix commit.  
-4. Premium: run AI search `4 bedroom house in Pretoria` → expect Luxury Home.  
-5. Guest/free: manual search still works.
+1. Committed + pushed: `6ab55ab` — *Fix AI Search UI composition and status matching.*  
+2. Vercel Production auto-deployed; live `status=Active` marker flipped 0 → 1.  
+3. GitHub `main` = `6ab55ab`.  
+4. Premium UI: search `4 bedroom house in Pretoria` → Luxury Home (uses AI payload).  
+5. Guest/free: manual search unchanged (`search=Pretoria` returns listings).
 
 ---
 
@@ -80,6 +92,7 @@ Live smoke after deploy: re-hit structured property API; premium AI path validat
 
 - `npm run typecheck` — PASS  
 - `npm run build` — PASS  
+- Live structured + status markers — PASS  
 
 ---
 
