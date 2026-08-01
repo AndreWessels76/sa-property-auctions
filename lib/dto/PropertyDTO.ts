@@ -31,6 +31,8 @@ export interface PropertyDTO {
   last_verified_at: string | null;
   data_classification: string | null;
   data_quality_score: number | null;
+  verification_state: string | null;
+  verification_label: string;
   address_display_mode: string | null;
   provenance_notes: string | null;
   latitude: number | null;
@@ -42,4 +44,5 @@ export interface PropertyDTO {
   qualityScore: number | null;
   featured: boolean;
   isSeedOrDemo: boolean;
+  isPendingVerification: boolean;
 }

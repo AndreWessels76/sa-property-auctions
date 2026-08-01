@@ -8,6 +8,7 @@ import {
   Database,
   ListOrdered,
   BarChart3,
+  ShieldCheck,
 } from "lucide-react";
 
 /** Only ship links to pages that exist for closed beta. */
@@ -31,6 +32,11 @@ const menu = [
     name: "Imports",
     href: "/admin/imports",
     icon: Database,
+  },
+  {
+    name: "Verification",
+    href: "/admin/verification",
+    icon: ShieldCheck,
   },
   {
     name: "Queue",

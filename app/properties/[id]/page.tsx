@@ -168,7 +168,15 @@ export default async function PropertyPage({ params }: PageProps) {
                 </span>
                 {property.isSeedOrDemo ? (
                   <span className="ml-2 inline-flex rounded-lg bg-amber-400 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-amber-950">
-                    Seed data
+                    Seed
+                  </span>
+                ) : property.isPendingVerification ? (
+                  <span className="ml-2 inline-flex rounded-lg bg-amber-200 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-amber-950">
+                    Pending Verification
+                  </span>
+                ) : property.verification_state === "verified" ? (
+                  <span className="ml-2 inline-flex rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
+                    Verified
                   </span>
                 ) : null}
                 <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
@@ -356,6 +364,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
                 <ListingProvenanceCard
                   dataClassification={property.data_classification}
+                  verificationState={property.verification_state}
                   sourceName={property.source_name}
                   sourceUrl={property.source_url}
                   sourceLegacy={property.source}
@@ -365,7 +374,6 @@ export default async function PropertyPage({ params }: PageProps) {
                   listingStatus={
                     property.listing_status ?? property.status
                   }
-                  dataQualityScore={property.data_quality_score}
                   provenanceNotes={property.provenance_notes}
                 />
 

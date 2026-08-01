@@ -1,11 +1,14 @@
 import { formatAuctionDate } from "@/lib/format";
+import { formatListingStatusLabel } from "@/lib/data/propertyFoundation";
 import {
-  formatListingStatusLabel,
-  isSeedOrDemo,
-} from "@/lib/data/propertyFoundation";
+  formatVerificationLabel,
+  normalizeVerificationState,
+} from "@/lib/data/verificationStates";
+import { isSeedOrDemo } from "@/lib/data/propertyFoundation";
 
 type Props = {
   dataClassification: string | null | undefined;
+  verificationState?: string | null | undefined;
   sourceName: string | null | undefined;
   sourceUrl: string | null | undefined;
   sourceLegacy: string | null | undefined;
@@ -13,12 +16,12 @@ type Props = {
   importedAt: string | null | undefined;
   lastVerifiedAt: string | null | undefined;
   listingStatus: string | null | undefined;
-  dataQualityScore: number | null | undefined;
   provenanceNotes: string | null | undefined;
 };
 
 export default function ListingProvenanceCard({
   dataClassification,
+  verificationState,
   sourceName,
   sourceUrl,
   sourceLegacy,
@@ -26,18 +29,23 @@ export default function ListingProvenanceCard({
   importedAt,
   lastVerifiedAt,
   listingStatus,
-  dataQualityScore,
   provenanceNotes,
 }: Props) {
   const seed = isSeedOrDemo(dataClassification, sourceLegacy);
-  const classificationLabel = seed
-    ? "Seed data"
-    : (dataClassification || "needs_verification").replace(/_/g, " ");
+  const state =
+    normalizeVerificationState(verificationState) ??
+    (seed ? "seed" : "pending_verification");
+  const label = formatVerificationLabel(state);
+  const highlight =
+    state === "seed" ||
+    state === "pending_verification" ||
+    state === "expired" ||
+    state === "withdrawn";
 
   return (
     <section
       className={`rounded-2xl border p-6 shadow-sm ${
-        seed
+        highlight
           ? "border-amber-200 bg-amber-50"
           : "border-slate-200 bg-white"
       }`}
@@ -46,22 +54,30 @@ export default function ListingProvenanceCard({
         <h2 className="text-lg font-bold text-navy-900">Listing provenance</h2>
         <span
           className={`rounded-lg px-2.5 py-1 text-xs font-bold uppercase tracking-wide ${
-            seed
+            highlight
               ? "bg-amber-200 text-amber-950"
-              : "bg-slate-100 text-slate-700"
+              : state === "verified"
+                ? "bg-emerald-100 text-emerald-900"
+                : "bg-slate-100 text-slate-700"
           }`}
         >
-          {classificationLabel}
+          {label}
         </span>
       </div>
 
-      {seed ? (
+      {state === "seed" ? (
         <p className="mt-3 text-sm leading-relaxed text-amber-950/80">
-          This record is <strong>seed / illustrative catalogue data</strong> for
-          public beta. It is <strong>not</strong> a verified live auction notice.
-          Do not rely on it for bidding decisions.{" "}
+          This record is <strong>seed / illustrative catalogue data</strong>. It
+          is <strong>not</strong> a verified live auction notice. Do not rely on
+          it for bidding decisions.{" "}
           {provenanceNotes ||
             "Replace with licensed imports before treating as production."}
+        </p>
+      ) : state === "pending_verification" ? (
+        <p className="mt-3 text-sm leading-relaxed text-amber-950/80">
+          This listing is <strong>pending verification</strong> against its
+          original auction source. Treat details as provisional until verified.{" "}
+          {provenanceNotes || ""}
         </p>
       ) : (
         <p className="mt-3 text-sm leading-relaxed text-slate-600">
@@ -133,16 +149,6 @@ export default function ListingProvenanceCard({
           </dt>
           <dd className="mt-1 font-medium text-navy-900">
             {formatListingStatusLabel(listingStatus)}
-          </dd>
-        </div>
-        <div className="rounded-xl bg-white/70 p-3 sm:col-span-2">
-          <dt className="text-xs uppercase tracking-wide text-slate-400">
-            Data quality score
-          </dt>
-          <dd className="mt-1 font-medium text-navy-900">
-            {dataQualityScore != null
-              ? `${dataQualityScore}/100 (computed from completeness — not a valuation)`
-              : "Quality score not yet computed."}
           </dd>
         </div>
       </dl>

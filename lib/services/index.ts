@@ -7,3 +7,4 @@ export {
   refreshPropertyCache,
   refreshPropertyAnalysisCache,
 } from "./actions";
+export { VerificationService } from "./VerificationService";

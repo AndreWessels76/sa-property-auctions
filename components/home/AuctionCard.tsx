@@ -94,7 +94,11 @@ export default function AuctionCard({ property }: { property: PropertyDTO }) {
         <div className="absolute left-4 top-4 flex flex-col gap-2">
           {property.isSeedOrDemo ? (
             <span className="rounded-lg bg-amber-400 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-amber-950 shadow-sm">
-              Seed data
+              Seed
+            </span>
+          ) : property.isPendingVerification ? (
+            <span className="rounded-lg bg-amber-200 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-amber-950 shadow-sm">
+              Pending Verification
             </span>
           ) : null}
           {property.featured ? (

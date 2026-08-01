@@ -71,7 +71,8 @@ export const PROPERTY_FIELD_CATALOGUE: Array<{
   { key: "created_at", label: "Created", classification: "required", notes: "" },
   { key: "updated_at", label: "Updated", classification: "required", notes: "" },
   { key: "data_classification", label: "Data Classification", classification: "required", notes: "seed|demo|…" },
-  { key: "data_quality_score", label: "Quality Score", classification: "computed", notes: "0–100" },
+  { key: "verification_state", label: "Verification State", classification: "required", notes: "seed|pending_verification|verified|…" },
+  { key: "data_quality_score", label: "Quality Score", classification: "computed", notes: "0–100 admin-only overall" },
   { key: "source", label: "Legacy Source", classification: "derived", notes: "Compat string" },
 ];
 

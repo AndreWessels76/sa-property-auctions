@@ -4,6 +4,10 @@ import type { Property } from "@/lib/types/property";
 import { resolveAuctionAgency } from "@/lib/auction/agencyDisplay";
 import { isSeedOrDemo } from "@/lib/data/propertyFoundation";
 import { scorePropertyQuality } from "@/lib/data/qualityScore";
+import {
+  formatVerificationLabel,
+} from "@/lib/data/verificationStates";
+import { resolveVerificationStateFromRow } from "@/lib/data/multiQualityScore";
 
 export class PropertyMapper {
   static toDTO(
@@ -19,6 +23,14 @@ export class PropertyMapper {
 
     const classification =
       property.data_classification ?? quality.classification;
+    const verificationState = resolveVerificationStateFromRow({
+      ...property,
+      data_classification: classification,
+    });
+    const seed = isSeedOrDemo(classification, property.source);
+    const pending =
+      verificationState === "pending_verification" ||
+      classification === "needs_verification";
 
     return {
       id: property.id,
@@ -52,8 +64,10 @@ export class PropertyMapper {
       imported_at: property.imported_at ?? property.created_at ?? null,
       last_verified_at: property.last_verified_at ?? null,
       data_classification: classification,
-      data_quality_score:
-        property.data_quality_score ?? quality.score,
+      // Overall quality is admin-only; keep null on public DTO surface.
+      data_quality_score: null,
+      verification_state: verificationState,
+      verification_label: formatVerificationLabel(verificationState),
       address_display_mode: property.address_display_mode ?? "full",
       provenance_notes: property.provenance_notes ?? null,
       latitude: property.latitude ?? null,
@@ -64,7 +78,8 @@ export class PropertyMapper {
       blur_placeholder: hero?.blur_placeholder ?? null,
       qualityScore: hero?.quality_score ?? null,
       featured: Boolean(hero?.is_hero),
-      isSeedOrDemo: isSeedOrDemo(classification, property.source),
+      isSeedOrDemo: seed,
+      isPendingVerification: pending && !seed,
     };
   }
 }
