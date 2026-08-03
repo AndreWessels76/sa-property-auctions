@@ -5,6 +5,10 @@ import {
   normalizeVerificationState,
 } from "@/lib/data/verificationStates";
 import { isSeedOrDemo } from "@/lib/data/propertyFoundation";
+import {
+  getSourceReliabilityLabel,
+  maskListingReference,
+} from "@/lib/property/detailExperience";
 
 type Props = {
   dataClassification: string | null | undefined;
@@ -17,6 +21,7 @@ type Props = {
   lastVerifiedAt: string | null | undefined;
   listingStatus: string | null | undefined;
   provenanceNotes: string | null | undefined;
+  sourceReliabilityLabel?: string;
 };
 
 export default function ListingProvenanceCard({
@@ -30,6 +35,7 @@ export default function ListingProvenanceCard({
   lastVerifiedAt,
   listingStatus,
   provenanceNotes,
+  sourceReliabilityLabel,
 }: Props) {
   const seed = isSeedOrDemo(dataClassification, sourceLegacy);
   const state =
@@ -89,16 +95,16 @@ export default function ListingProvenanceCard({
       <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
         <div className="rounded-xl bg-white/70 p-3">
           <dt className="text-xs uppercase tracking-wide text-slate-400">
-            Source name
+            Imported from
           </dt>
           <dd className="mt-1 font-medium text-navy-900">
             {sourceName ||
-              "Source name not recorded — listing should not be treated as production-ready."}
+              "Source name not recorded — confirm with agency before bidding."}
           </dd>
         </div>
         <div className="rounded-xl bg-white/70 p-3">
           <dt className="text-xs uppercase tracking-wide text-slate-400">
-            Source URL
+            Original source
           </dt>
           <dd className="mt-1 font-medium text-navy-900">
             {sourceUrl ? (
@@ -117,7 +123,7 @@ export default function ListingProvenanceCard({
         </div>
         <div className="rounded-xl bg-white/70 p-3">
           <dt className="text-xs uppercase tracking-wide text-slate-400">
-            Imported
+            Imported date
           </dt>
           <dd className="mt-1 font-medium text-navy-900">
             {importedAt
@@ -137,10 +143,30 @@ export default function ListingProvenanceCard({
         </div>
         <div className="rounded-xl bg-white/70 p-3">
           <dt className="text-xs uppercase tracking-wide text-slate-400">
-            External listing ID
+            Verification state
+          </dt>
+          <dd className="mt-1 font-medium text-navy-900">{label}</dd>
+        </div>
+        <div className="rounded-xl bg-white/70 p-3">
+          <dt className="text-xs uppercase tracking-wide text-slate-400">
+            Source reliability
           </dt>
           <dd className="mt-1 font-medium text-navy-900">
-            {externalListingId || "No external ID recorded."}
+            {sourceReliabilityLabel ||
+              getSourceReliabilityLabel({
+                isSeedOrDemo: seed,
+                verification_state: state,
+                last_verified_at: lastVerifiedAt,
+                isPendingVerification: state === "pending_verification",
+              } as import("@/lib/dto/PropertyDTO").PropertyDTO)}
+          </dd>
+        </div>
+        <div className="rounded-xl bg-white/70 p-3">
+          <dt className="text-xs uppercase tracking-wide text-slate-400">
+            Listing reference
+          </dt>
+          <dd className="mt-1 font-medium text-navy-900">
+            {maskListingReference(externalListingId)}
           </dd>
         </div>
         <div className="rounded-xl bg-white/70 p-3">

@@ -37,30 +37,49 @@ const ORDER: Array<keyof AgriculturalDetails> = [
 export default function AgriculturalDetailsSection({ details }: Props) {
   if (!hasAgriculturalContent(details)) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-        <h3 className="text-lg font-bold text-navy-900">
+      <section
+        aria-labelledby="agricultural-information-heading"
+        className="rounded-2xl border border-slate-200 bg-slate-50 p-6"
+      >
+        <h2
+          id="agricultural-information-heading"
+          className="text-xl font-bold text-navy-900"
+        >
           Agricultural information
-        </h3>
+        </h2>
         <p className="mt-2 text-sm text-slate-600">
           Detailed farm attributes have not been recorded for this listing yet.
           Confirm hectares, water, and improvements with the auction agency
           before bidding.
         </p>
-      </div>
+      </section>
     );
   }
 
   const rows = ORDER.flatMap((key) => {
     const formatted = formatAgriculturalValue(key, details?.[key] ?? null);
     if (!formatted) return [];
-    return [{ key, label: AGRICULTURAL_FIELD_LABELS[key], value: formatted }];
+    let label = AGRICULTURAL_FIELD_LABELS[key];
+    if (key === "cropInformation" && details?.gameFarm) {
+      label = "Game species";
+    }
+    if (key === "arableHectares") label = "Arable land";
+    if (key === "grazingHectares") label = "Grazing land";
+    if (key === "irrigatedHectares") label = "Irrigated land";
+    return [{ key, label, value: formatted }];
   });
 
   return (
-    <div>
-      <h3 className="text-lg font-bold text-navy-900">
+    <section
+      aria-labelledby="agricultural-information-heading"
+      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+    >
+      <h2
+        id="agricultural-information-heading"
+        className="text-xl font-bold text-navy-900"
+      >
         Agricultural information
-      </h3>
+      </h2>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {rows.map((row) => (
           <div key={row.key} className="rounded-xl bg-slate-50 p-4">
@@ -71,6 +90,6 @@ export default function AgriculturalDetailsSection({ details }: Props) {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
