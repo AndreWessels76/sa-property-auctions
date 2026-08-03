@@ -45,4 +45,14 @@ export interface PropertyDTO {
   featured: boolean;
   isSeedOrDemo: boolean;
   isPendingVerification: boolean;
+  erf_size: number | null;
+  floor_size: number | null;
+  features: string | null;
+  viewing_information: string | null;
+  deposit_requirements: string | null;
+  terms_link: string | null;
+  brochure_link: string | null;
+  catalogue_link: string | null;
+  registration_link: string | null;
+  agricultural_details: import("@/lib/property/agricultural").AgriculturalDetails | null;
 }

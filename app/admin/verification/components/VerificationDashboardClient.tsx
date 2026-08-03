@@ -21,6 +21,7 @@ type Dashboard = {
     province: string | null;
     auctionDate: string | null;
     agency: string | null;
+    sourceUrl: string | null;
     hasImages: boolean;
     overallQualityScore: number;
     issues: string[];
@@ -69,15 +70,21 @@ type Dashboard = {
   >;
 };
 
+function isPubliclyVisible(state: string) {
+  return state === "verified" || state === "sold";
+}
+
 export default function VerificationDashboardClient() {
   const [data, setData] = useState<Dashboard | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [actionSuccess, setActionSuccess] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
   const load = () => {
     startTransition(async () => {
       try {
-        setError(null);
+        setLoadError(null);
         const res = await fetch("/api/admin/verification");
         const json = await res.json();
         if (!res.ok) {
@@ -85,7 +92,7 @@ export default function VerificationDashboardClient() {
         }
         setData(json as Dashboard);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load");
+        setLoadError(err instanceof Error ? err.message : "Failed to load");
       }
     });
   };
@@ -94,9 +101,17 @@ export default function VerificationDashboardClient() {
     load();
   }, []);
 
+  const afterAction = (successMessage: string) => {
+    setActionError(null);
+    setActionSuccess(successMessage);
+    load();
+  };
+
   const setState = (propertyId: string, verificationState: string) => {
     startTransition(async () => {
       try {
+        setActionError(null);
+        setActionSuccess(null);
         const res = await fetch("/api/admin/verification", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -108,9 +123,9 @@ export default function VerificationDashboardClient() {
         });
         const json = await res.json();
         if (!res.ok) throw new Error(json.error || "Update failed");
-        load();
+        afterAction(`State updated to ${verificationState}.`);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Update failed");
+        setActionError(err instanceof Error ? err.message : "Update failed");
       }
     });
   };
@@ -118,9 +133,12 @@ export default function VerificationDashboardClient() {
   const runAction = (
     action: "approve" | "reject" | "merge",
     payload: Record<string, string>,
+    successMessage: string,
   ) => {
     startTransition(async () => {
       try {
+        setActionError(null);
+        setActionSuccess(null);
         const res = await fetch("/api/admin/verification", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -128,22 +146,18 @@ export default function VerificationDashboardClient() {
         });
         const json = await res.json();
         if (!res.ok) throw new Error(json.error || "Action failed");
-        load();
+        afterAction(successMessage);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Action failed");
+        setActionError(err instanceof Error ? err.message : "Action failed");
       }
     });
   };
 
-  if (error) {
+  if (loadError && !data) {
     return (
       <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-red-800">
-        {error}
-        <button
-          type="button"
-          className="ml-3 underline"
-          onClick={load}
-        >
+        {loadError}
+        <button type="button" className="ml-3 underline" onClick={load}>
           Retry
         </button>
       </div>
@@ -151,11 +165,35 @@ export default function VerificationDashboardClient() {
   }
 
   if (!data) {
-    return <p className="text-slate-600">{pending ? "Loading…" : "Loading…"}</p>;
+    return <p className="text-slate-600">Loading…</p>;
   }
 
   return (
     <div className="space-y-8">
+      {actionError ? (
+        <div
+          role="alert"
+          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+        >
+          {actionError}
+          <button
+            type="button"
+            className="ml-3 underline"
+            onClick={() => setActionError(null)}
+          >
+            Dismiss
+          </button>
+        </div>
+      ) : null}
+      {actionSuccess ? (
+        <div
+          role="status"
+          className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900"
+        >
+          {actionSuccess}
+        </div>
+      ) : null}
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
           ["Needs verification", data.stats.needsVerification],
@@ -233,79 +271,123 @@ export default function VerificationDashboardClient() {
               </tr>
             </thead>
             <tbody>
-              {data.queue.map((row) => (
-                <tr key={row.id} className="border-b border-slate-100">
-                  <td className="px-3 py-2">
-                    <div className="font-medium text-slate-900">{row.title}</div>
-                    <div className="text-xs text-slate-500">
-                      {[row.town, row.province].filter(Boolean).join(", ")}
-                      {row.agency ? ` · ${row.agency}` : ""}
-                      {!row.hasImages ? " · no images" : ""}
-                    </div>
-                  </td>
-                  <td className="px-3 py-2">{row.verificationLabel}</td>
-                  <td className="px-3 py-2">{row.overallQualityScore}/100</td>
-                  <td className="px-3 py-2 text-xs text-slate-600">
-                    {row.issues.join("; ") || "—"}
-                    {data.checklists?.[row.id] ? (
-                      <div className="mt-1 text-[11px] text-slate-500">
-                        Checklist:{" "}
-                        {data.checklists[row.id].readyToApprove
-                          ? "ready"
-                          : `missing ${data.checklists[row.id].missing.join(", ") || "—"}`}
+              {data.queue.map((row) => {
+                const checklist = data.checklists?.[row.id];
+                const canApprove = checklist?.readyToApprove !== false;
+                return (
+                  <tr key={row.id} className="border-b border-slate-100">
+                    <td className="px-3 py-2">
+                      <div className="font-medium text-slate-900">{row.title}</div>
+                      <div className="text-xs text-slate-500">
+                        {[row.town, row.province].filter(Boolean).join(", ")}
+                        {row.agency ? ` · ${row.agency}` : ""}
+                        {!row.hasImages ? " · no images" : ""}
                       </div>
-                    ) : null}
-                  </td>
-                  <td className="px-3 py-2">
-                    <div className="flex flex-wrap gap-1">
-                      <button
-                        type="button"
-                        disabled={pending}
-                        className="rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-900"
-                        onClick={() =>
-                          runAction("approve", {
-                            propertyId: row.id,
-                            reason: "Admin approved verified listing",
-                          })
-                        }
-                      >
-                        Approve
-                      </button>
-                      <button
-                        type="button"
-                        disabled={pending}
-                        className="rounded bg-red-100 px-2 py-1 text-xs font-medium text-red-900"
-                        onClick={() =>
-                          runAction("reject", {
-                            propertyId: row.id,
-                            reason: "Admin rejected listing",
-                          })
-                        }
-                      >
-                        Reject
-                      </button>
-                      <button
-                        type="button"
-                        disabled={pending}
-                        className="rounded bg-amber-100 px-2 py-1 text-xs font-medium text-amber-950"
-                        onClick={() =>
-                          setState(row.id, "pending_verification")
-                        }
-                      >
-                        Pending
-                      </button>
-                      <button
-                        type="button"
-                        disabled={pending}
-                        className="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700"
-                        onClick={() => setState(row.id, "archived")}
-                      >
-                        Archive
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td className="px-3 py-2">{row.verificationLabel}</td>
+                    <td className="px-3 py-2">{row.overallQualityScore}/100</td>
+                    <td className="px-3 py-2 text-xs text-slate-600">
+                      {row.issues.join("; ") || "—"}
+                      {checklist ? (
+                        <div className="mt-1 text-[11px] text-slate-500">
+                          Checklist:{" "}
+                          {checklist.readyToApprove
+                            ? "ready"
+                            : `missing ${checklist.missing.join(", ") || "—"}`}
+                        </div>
+                      ) : null}
+                    </td>
+                    <td className="px-3 py-2">
+                      <div className="flex flex-wrap gap-1">
+                        <button
+                          type="button"
+                          disabled={pending}
+                          title={
+                            canApprove
+                              ? "Approve as verified"
+                              : `Checklist incomplete: ${checklist?.missing.join(", ") || "review before approving"}`
+                          }
+                          className="rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-900 disabled:opacity-50"
+                          onClick={() =>
+                            runAction(
+                              "approve",
+                              {
+                                propertyId: row.id,
+                                reason: "Admin approved verified listing",
+                              },
+                              "Listing approved and marked verified.",
+                            )
+                          }
+                        >
+                          Approve
+                        </button>
+                        <button
+                          type="button"
+                          disabled={pending}
+                          className="rounded bg-red-100 px-2 py-1 text-xs font-medium text-red-900 disabled:opacity-50"
+                          onClick={() =>
+                            runAction(
+                              "reject",
+                              {
+                                propertyId: row.id,
+                                reason: "Admin rejected listing",
+                              },
+                              "Listing rejected.",
+                            )
+                          }
+                        >
+                          Reject
+                        </button>
+                        <button
+                          type="button"
+                          disabled={pending}
+                          className="rounded bg-amber-100 px-2 py-1 text-xs font-medium text-amber-950 disabled:opacity-50"
+                          onClick={() =>
+                            setState(row.id, "pending_verification")
+                          }
+                        >
+                          Pending
+                        </button>
+                        <button
+                          type="button"
+                          disabled={pending}
+                          className="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700 disabled:opacity-50"
+                          onClick={() => setState(row.id, "archived")}
+                        >
+                          Archive
+                        </button>
+                        {isPubliclyVisible(row.verificationState) ? (
+                          <a
+                            href={`/properties/${row.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded bg-sky-100 px-2 py-1 text-xs font-medium text-sky-900"
+                          >
+                            Open Public Listing
+                          </a>
+                        ) : row.sourceUrl ? (
+                          <a
+                            href={row.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded bg-sky-100 px-2 py-1 text-xs font-medium text-sky-900"
+                            title="Public page available after Approve"
+                          >
+                            Open Source Listing
+                          </a>
+                        ) : (
+                          <span
+                            className="rounded bg-slate-50 px-2 py-1 text-xs text-slate-400"
+                            title="Approve to publish, or add a source URL"
+                          >
+                            No public link yet
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
               {data.queue.length === 0 ? (
                 <tr>
                   <td className="px-3 py-4 text-slate-500" colSpan={5}>
@@ -333,13 +415,17 @@ export default function VerificationDashboardClient() {
                 <button
                   type="button"
                   disabled={pending}
-                  className="mt-1 text-xs font-medium text-slate-700 underline"
+                  className="mt-1 text-xs font-medium text-slate-700 underline disabled:opacity-50"
                   onClick={() =>
-                    runAction("merge", {
-                      keepId: d.aId,
-                      archiveId: d.bId,
-                      reason: `Duplicate merge confidence ${d.confidenceScore}`,
-                    })
+                    runAction(
+                      "merge",
+                      {
+                        keepId: d.aId,
+                        archiveId: d.bId,
+                        reason: `Duplicate merge confidence ${d.confidenceScore}`,
+                      },
+                      "Duplicate merged (second listing archived).",
+                    )
                   }
                 >
                   Merge (keep first, archive second)
@@ -387,7 +473,10 @@ export default function VerificationDashboardClient() {
           </h2>
           <ul className="mt-3 space-y-2 text-sm">
             {data.connectors.map((c) => (
-              <li key={c.id} className="flex justify-between rounded-lg bg-slate-50 px-3 py-2">
+              <li
+                key={c.id}
+                className="flex justify-between rounded-lg bg-slate-50 px-3 py-2"
+              >
                 <span>{c.name}</span>
                 <span className="text-slate-500">v{c.version}</span>
               </li>

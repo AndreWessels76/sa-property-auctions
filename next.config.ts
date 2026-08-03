@@ -12,6 +12,15 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "erflfvhxqitpprczmbiq.supabase.co",
       },
+      // Legacy hotlinked source CDN images (pre-storage pipeline)
+      {
+        protocol: "https",
+        hostname: "bidderschoice.co.za",
+      },
+      {
+        protocol: "https",
+        hostname: "www.bidderschoice.co.za",
+      },
     ],
   },
   async headers() {

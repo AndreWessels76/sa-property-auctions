@@ -468,10 +468,14 @@ export class PropertyAcquisitionEngine {
   }
 
   private async importImages(propertyId: string, urls: string[]) {
+    let imported = 0;
+    let failed = 0;
     for (const url of urls.slice(0, 15)) {
       try {
         await processImage(propertyId, url, "Bidders Choice");
+        imported += 1;
       } catch (error) {
+        failed += 1;
         LoggerService.warn("acquisition.image_failed", {
           propertyId,
           url,
@@ -480,10 +484,26 @@ export class PropertyAcquisitionEngine {
       }
     }
     if (urls.length > 0) {
-      try {
-        await markHeroAsPrimary(propertyId);
-      } catch {
-        /* non-fatal */
+      LoggerService.info("acquisition.images_summary", {
+        propertyId,
+        sourceCount: urls.length,
+        imported,
+        failed,
+      });
+      if (imported === 0) {
+        LoggerService.error("acquisition.images_all_failed", {
+          propertyId,
+          sourceCount: urls.length,
+        });
+      } else {
+        try {
+          await markHeroAsPrimary(propertyId);
+        } catch (error) {
+          LoggerService.warn("acquisition.hero_mark_failed", {
+            propertyId,
+            error: error instanceof Error ? error.message : "unknown",
+          });
+        }
       }
     }
   }

@@ -41,6 +41,7 @@ export type VerificationDashboard = {
     province: string | null;
     auctionDate: string | null;
     agency: string | null;
+    sourceUrl: string | null;
     hasImages: boolean;
     overallQualityScore: number;
     issues: string[];
@@ -135,6 +136,7 @@ export class VerificationService {
         province: property.province,
         auctionDate: property.auction_date,
         agency: property.auction_agency ?? agencyResolved.name,
+        sourceUrl: property.source_url ?? null,
         hasImages,
         overallQualityScore: scores.overallQualityScore,
         issues: scores.issues.slice(0, 5),
@@ -288,13 +290,14 @@ export class VerificationService {
 
     // Never mark verified without a verification timestamp — operator must confirm source.
     const now = new Date().toISOString();
+    // Archived listings stay out of public catalogue; do not reclassify as demo seed.
     const dataClassification =
       next === "verified"
         ? "production"
         : next === "seed"
           ? "seed"
           : next === "archived"
-            ? "demo"
+            ? "needs_verification"
             : "needs_verification";
 
     const updated = await VerificationRepository.updateVerification(propertyId, {
@@ -341,6 +344,7 @@ export class VerificationService {
       /* column may be absent until migration */
     }
     await refreshPropertyCache();
+    LoggerService.audit("verification.reject", { propertyId, reason });
     return updated;
   }
 
@@ -361,8 +365,14 @@ export class VerificationService {
       status_changed_at: new Date().toISOString(),
       status_change_reason: `Absorbed duplicate ${archiveId}`,
       status_source_event: "admin_merge",
+      provenance_notes: `Kept after merge of duplicate ${archiveId}: ${reason}`,
     });
     await refreshPropertyCache();
+    LoggerService.audit("verification.merge", {
+      keepId,
+      archiveId,
+      reason,
+    });
     return { kept, archived };
   }
 

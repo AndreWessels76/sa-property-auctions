@@ -18,6 +18,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import ProgressiveImage from "@/components/property/images/ProgressiveImage";
 import AuctionAgencyCard from "@/components/property/AuctionAgencyCard";
+import AgriculturalDetailsSection from "@/components/property/AgriculturalDetailsSection";
 import ComparableSalesSection from "@/components/property/ComparableSalesSection";
 import ListingProvenanceCard from "@/components/property/ListingProvenanceCard";
 import PriceSpreadCard from "@/components/property/PriceSpreadCard";
@@ -32,6 +33,7 @@ import {
 import { getImages } from "@/lib/images/getImages";
 import { selectHeroImage } from "@/lib/images/selectHero";
 import { getComparableSales } from "@/lib/maps/getComparableSales";
+import { isFarmPropertyType } from "@/lib/property/agricultural";
 import { PropertyService } from "@/lib/services";
 
 export const revalidate = 300;
@@ -101,6 +103,9 @@ export default async function PropertyPage({ params }: PageProps) {
   const intelligence = PropertyIntelligence.analyse(property);
   const isNonResidential =
     /land|commercial|farm|vacant/i.test(property.property_type ?? "");
+  const isFarm = isFarmPropertyType(property.property_type);
+  const galleryImages = images.filter((image) => Boolean(image.image_url?.trim()));
+  const hasRealGallery = galleryImages.length > 0;
 
   const locationLine = [
     property.suburb,
@@ -190,9 +195,9 @@ export default async function PropertyPage({ params }: PageProps) {
               </div>
             </div>
 
-            {images.length > 0 ? (
+            {hasRealGallery ? (
               <div className="grid gap-3 border-b border-slate-200 p-4 sm:grid-cols-2 lg:grid-cols-3">
-                {images.map((image) => (
+                {galleryImages.map((image) => (
                   <div
                     key={image.id ?? image.image_url}
                     className="relative aspect-[4/3] overflow-hidden rounded-xl"
@@ -247,6 +252,28 @@ export default async function PropertyPage({ params }: PageProps) {
                         {property.auction_date
                           ? formatAuctionDate(property.auction_date)
                           : "Auction date not listed"}
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Auction time
+                      </p>
+                      <p className="mt-1 font-semibold text-navy-900">
+                        {displayText(
+                          property.auction_time,
+                          "Auction time not listed",
+                        )}
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                        Auction venue
+                      </p>
+                      <p className="mt-1 font-semibold text-navy-900">
+                        {displayText(
+                          property.auction_venue,
+                          "Venue not listed",
+                        )}
                       </p>
                     </div>
                     <div className="rounded-xl bg-slate-50 p-4">
@@ -310,36 +337,67 @@ export default async function PropertyPage({ params }: PageProps) {
                     </div>
                   </div>
 
-                  <div className="mt-6 flex flex-wrap gap-4">
-                    <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
-                      <BedDouble className="h-4 w-4 text-navy-800" />
-                      {displayCount(
-                        property.bedrooms,
-                        "Bed",
-                        "Beds",
-                        isNonResidential && (property.bedrooms ?? 0) === 0,
-                      )}
+                  {!isFarm ? (
+                    <div className="mt-6 flex flex-wrap gap-4">
+                      <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
+                        <BedDouble className="h-4 w-4 text-navy-800" />
+                        {displayCount(
+                          property.bedrooms,
+                          "Bed",
+                          "Beds",
+                          isNonResidential && (property.bedrooms ?? 0) === 0,
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
+                        <Bath className="h-4 w-4 text-navy-800" />
+                        {displayCount(
+                          property.bathrooms,
+                          "Bath",
+                          "Baths",
+                          isNonResidential && (property.bathrooms ?? 0) === 0,
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
+                        <Car className="h-4 w-4 text-navy-800" />
+                        {displayCount(
+                          property.garages,
+                          "Garage",
+                          "Garages",
+                          isNonResidential && (property.garages ?? 0) === 0,
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
-                      <Bath className="h-4 w-4 text-navy-800" />
-                      {displayCount(
-                        property.bathrooms,
-                        "Bath",
-                        "Baths",
-                        isNonResidential && (property.bathrooms ?? 0) === 0,
-                      )}
+                  ) : (
+                    <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-xl bg-slate-50 p-4">
+                        <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                          Land size
+                        </p>
+                        <p className="mt-1 font-semibold text-navy-900">
+                          {property.erf_size != null && property.erf_size > 0
+                            ? `${property.erf_size} m²`
+                            : "Land size not listed"}
+                        </p>
+                      </div>
+                      <div className="rounded-xl bg-slate-50 p-4">
+                        <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                          Building size
+                        </p>
+                        <p className="mt-1 font-semibold text-navy-900">
+                          {property.floor_size != null && property.floor_size > 0
+                            ? `${property.floor_size} m²`
+                            : "Building size not listed"}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700">
-                      <Car className="h-4 w-4 text-navy-800" />
-                      {displayCount(
-                        property.garages,
-                        "Garage",
-                        "Garages",
-                        isNonResidential && (property.garages ?? 0) === 0,
-                      )}
-                    </div>
-                  </div>
+                  )}
                 </div>
+
+                {isFarm ? (
+                  <AgriculturalDetailsSection
+                    details={property.agricultural_details}
+                  />
+                ) : null}
 
                 <div>
                   <h3 className="text-lg font-bold text-navy-900">
@@ -352,6 +410,79 @@ export default async function PropertyPage({ params }: PageProps) {
                     )}
                   </p>
                 </div>
+
+                {(property.viewing_information ||
+                  property.deposit_requirements ||
+                  property.terms_link ||
+                  property.brochure_link ||
+                  property.catalogue_link ||
+                  property.registration_link) && (
+                  <div>
+                    <h3 className="text-lg font-bold text-navy-900">
+                      Auction information
+                    </h3>
+                    <div className="mt-4 space-y-3 text-sm text-slate-700">
+                      {property.viewing_information ? (
+                        <p>
+                          <span className="font-semibold text-navy-900">
+                            Viewing:{" "}
+                          </span>
+                          {property.viewing_information}
+                        </p>
+                      ) : null}
+                      {property.deposit_requirements ? (
+                        <p>
+                          <span className="font-semibold text-navy-900">
+                            Deposit:{" "}
+                          </span>
+                          {property.deposit_requirements}
+                        </p>
+                      ) : null}
+                      <div className="flex flex-wrap gap-3">
+                        {property.terms_link ? (
+                          <a
+                            href={property.terms_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-navy-800 underline"
+                          >
+                            Terms
+                          </a>
+                        ) : null}
+                        {property.brochure_link ? (
+                          <a
+                            href={property.brochure_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-navy-800 underline"
+                          >
+                            Brochure
+                          </a>
+                        ) : null}
+                        {property.catalogue_link ? (
+                          <a
+                            href={property.catalogue_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-navy-800 underline"
+                          >
+                            Catalogue
+                          </a>
+                        ) : null}
+                        {property.registration_link ? (
+                          <a
+                            href={property.registration_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-navy-800 underline"
+                          >
+                            Registration
+                          </a>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <AuctionAgencyCard
                   source={property.source}

@@ -9,6 +9,7 @@ import {
   ListOrdered,
   BarChart3,
   ShieldCheck,
+  Home,
 } from "lucide-react";
 
 /** Only ship links to pages that exist for closed beta. */
@@ -49,13 +50,13 @@ export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72 bg-slate-900 text-white">
+    <aside className="flex min-h-screen w-72 shrink-0 flex-col self-stretch bg-slate-900 text-white">
       <div className="border-b border-slate-700 p-6">
         <h1 className="text-2xl font-bold">SA Property</h1>
         <p className="text-sm text-slate-400">Operations Centre</p>
       </div>
 
-      <nav className="space-y-1 p-4" aria-label="Admin">
+      <nav className="flex flex-1 flex-col space-y-1 p-4" aria-label="Admin">
         {menu.map((item) => {
           const Icon = item.icon;
           const active =
@@ -77,6 +78,18 @@ export default function AdminSidebar() {
             </Link>
           );
         })}
+
+        {/* Permanent primary exit to public catalogue — always after admin links */}
+        <div className="mt-4 border-t border-slate-700 pt-4">
+          <Link
+            href="/auctions"
+            className="flex items-center gap-3 rounded-xl px-4 py-3 font-semibold text-gold-400 transition hover:bg-slate-800 hover:text-gold-300"
+            data-testid="admin-view-public-auctions"
+          >
+            <Home size={20} aria-hidden />
+            View Public Auctions
+          </Link>
+        </div>
       </nav>
     </aside>
   );

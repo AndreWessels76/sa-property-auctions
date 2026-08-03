@@ -8,6 +8,7 @@ import {
   formatVerificationLabel,
 } from "@/lib/data/verificationStates";
 import { resolveVerificationStateFromRow } from "@/lib/data/multiQualityScore";
+import { parseAgriculturalDetails } from "@/lib/property/agricultural";
 
 export class PropertyMapper {
   static toDTO(
@@ -80,6 +81,18 @@ export class PropertyMapper {
       featured: Boolean(hero?.is_hero),
       isSeedOrDemo: seed,
       isPendingVerification: pending && !seed,
+      erf_size: property.erf_size ?? null,
+      floor_size: property.floor_size ?? null,
+      features: property.features ?? null,
+      viewing_information: property.viewing_information ?? null,
+      deposit_requirements: property.deposit_requirements ?? null,
+      terms_link: property.terms_link ?? null,
+      brochure_link: property.brochure_link ?? null,
+      catalogue_link: property.catalogue_link ?? null,
+      registration_link: property.registration_link ?? null,
+      agricultural_details: parseAgriculturalDetails(
+        property.agricultural_details,
+      ),
     };
   }
 }

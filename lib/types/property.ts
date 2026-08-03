@@ -64,6 +64,7 @@ export type Property = {
   registration_link?: string | null;
   source_content_hash?: string | null;
   rejection_reason?: string | null;
+  agricultural_details?: import("@/lib/property/agricultural").AgriculturalDetails | null;
   created_at: string;
   updated_at: string;
   image?: string | null;

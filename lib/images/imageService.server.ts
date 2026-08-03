@@ -1,12 +1,10 @@
-import { supabase } from "@/lib/supabase";
-import { calculateImageQuality } from "./imageQuality";
-import { uploadPropertyImage } from "./storage";
+import "server-only";
 
-/**
- * Browser / authenticated-session image row inserts.
- * Acquisition must use `imageService.server.ts`.
- */
-export async function saveImage(
+import { createServiceClient } from "@/lib/supabase/admin";
+import { calculateImageQuality } from "./imageQuality";
+import { uploadPropertyImageServer } from "./storage.server";
+
+export async function saveImageServer(
   propertyId: string,
   imageUrl: string,
   primary = false,
@@ -15,9 +13,10 @@ export async function saveImage(
   height = 0,
   bytes = 0,
 ) {
+  const db = createServiceClient();
   const quality = calculateImageQuality(width, height, bytes);
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("property_images")
     .insert({
       property_id: propertyId,
@@ -41,18 +40,17 @@ export async function saveImage(
   return data;
 }
 
-export async function uploadAndSaveImage(
+export async function uploadAndSaveImageServer(
   file: File,
-  property: { id: string },
-  primary = true,
-  source = "Sheriff",
+  propertyId: string,
+  primary = false,
+  source = "Unknown",
   width = 0,
   height = 0,
 ) {
-  const publicUrl = await uploadPropertyImage(file, property.id);
-
-  await saveImage(
-    property.id,
+  const publicUrl = await uploadPropertyImageServer(file, propertyId);
+  await saveImageServer(
+    propertyId,
     publicUrl,
     primary,
     source,
@@ -60,6 +58,5 @@ export async function uploadAndSaveImage(
     height,
     file.size,
   );
-
   return publicUrl;
 }
