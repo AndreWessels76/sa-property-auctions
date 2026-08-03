@@ -31,9 +31,10 @@ export const SOURCE_CONNECTORS: SourceConnectorDefinition[] = [
     category: "auctioneer",
     website: "https://www.bidderschoice.co.za",
     importMethods: ["licensed_feed", "csv", "manual"],
-    connectorVersion: "2.0.0",
+    connectorVersion: "2.1.0",
     enabled: true,
-    notes: "Requires licensed feed or approved CSV. No scraping.",
+    notes:
+      "Preferred: licensed feed/CSV/manual. Public fetch only after robots allow + BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH. No prohibited scraping.",
   },
   {
     id: "claremart",

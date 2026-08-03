@@ -6,6 +6,10 @@ import type {
 
 export type { SubscriptionPlan, SubscriptionStatus };
 
+/**
+ * Subscription persistence only.
+ * NEVER updates profiles.role — admin/free/user roles are independent of Stripe.
+ */
 export class SubscriptionRepository extends BaseRepository {
   static async activate({
     userId,
@@ -25,7 +29,6 @@ export class SubscriptionRepository extends BaseRepository {
     const { error } = await db
       .from("profiles")
       .update({
-        role: "premium",
         subscription_status: "active" satisfies SubscriptionStatus,
         subscription_plan: plan,
         stripe_customer_id: customerId,
@@ -49,7 +52,6 @@ export class SubscriptionRepository extends BaseRepository {
     const { error } = await db
       .from("profiles")
       .update({
-        role: "free",
         subscription_status: "inactive" satisfies SubscriptionStatus,
         subscription_plan: "free" satisfies SubscriptionPlan,
         stripe_subscription_id: null,
@@ -72,8 +74,7 @@ export class SubscriptionRepository extends BaseRepository {
     const { error } = await db
       .from("profiles")
       .update({
-        // Revoke premium role immediately; keep Stripe IDs for portal / recovery
-        role: "free",
+        // Revoke premium subscription status only; never touch profiles.role
         subscription_status: "past_due" satisfies SubscriptionStatus,
         updated_at: new Date().toISOString(),
       })

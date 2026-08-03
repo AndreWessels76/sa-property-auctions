@@ -5,10 +5,15 @@ import {
   type SearchResult,
 } from "@/lib/dto/SearchResult";
 import type { Property } from "@/lib/types/property";
+import {
+  isPubliclyVisibleVerification,
+  PUBLIC_VERIFICATION_STATES,
+} from "@/lib/data/publicListingPolicy";
 
 export class PropertyRepository extends BaseRepository {
   static readonly DEFAULT_PAGE_SIZE = 24;
 
+  /** Full catalogue including pending — cron/admin/internal only. */
   static async getAll(): Promise<Property[]> {
     const db = this.publicDb();
 
@@ -26,6 +31,14 @@ export class PropertyRepository extends BaseRepository {
     return (data as Property[]) ?? [];
   }
 
+  /** Public website catalogue — verified/sold only. */
+  static async getPublicAll(): Promise<Property[]> {
+    const all = await this.getAll();
+    return all.filter((p) =>
+      isPubliclyVisibleVerification(p.verification_state, p.data_classification),
+    );
+  }
+
   static async getById(id: string): Promise<Property | null> {
     const db = this.publicDb();
 
@@ -40,6 +53,20 @@ export class PropertyRepository extends BaseRepository {
     }
 
     return data as Property | null;
+  }
+
+  static async getPublicById(id: string): Promise<Property | null> {
+    const property = await this.getById(id);
+    if (!property) return null;
+    if (
+      !isPubliclyVisibleVerification(
+        property.verification_state,
+        property.data_classification,
+      )
+    ) {
+      return null;
+    }
+    return property;
   }
 
   /** Fetch a page of properties by explicit IDs (favourites). */
@@ -96,6 +123,9 @@ export class PropertyRepository extends BaseRepository {
     );
 
     let query = db.from("properties").select("*", { count: "exact" });
+
+    // Never expose pending/seed/archived on public search.
+    query = query.in("verification_state", [...PUBLIC_VERIFICATION_STATES]);
 
     if (filters.search) {
       query = query.or(

@@ -27,6 +27,7 @@ export class WebhookService {
     priceId: string,
     expiresAt: string,
   ) {
+    // Updates subscription fields only — never profiles.role (admin is independent).
     await SubscriptionRepository.activate({
       userId,
       customerId,

@@ -46,6 +46,7 @@ export function ImportProvider({
     Bank: { ...defaultState },
     Auctioneers: { ...defaultState },
     CSV: { ...defaultState },
+    BiddersChoice: { ...defaultState },
   });
 
   function updateImport(

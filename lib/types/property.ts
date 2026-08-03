@@ -58,6 +58,12 @@ export type Property = {
   terms_link?: string | null;
   brochure_link?: string | null;
   catalogue_link?: string | null;
+  features?: string | null;
+  viewing_information?: string | null;
+  deposit_requirements?: string | null;
+  registration_link?: string | null;
+  source_content_hash?: string | null;
+  rejection_reason?: string | null;
   created_at: string;
   updated_at: string;
   image?: string | null;

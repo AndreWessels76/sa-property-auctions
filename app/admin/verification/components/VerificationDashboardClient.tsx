@@ -42,6 +42,31 @@ type Dashboard = {
     createdAt: string;
   }>;
   connectors: Array<{ id: string; name: string; version: string; enabled: boolean }>;
+  acquisitionMetrics?: {
+    importedToday: number;
+    updatedToday: number;
+    archivedToday: number;
+    rejectedToday: number;
+    verificationQueue: number;
+    averageImportTimeMs: number | null;
+    duplicateRate: number | null;
+    successRate: number | null;
+    sourceReliability: number | null;
+  };
+  checklists?: Record<
+    string,
+    {
+      address: boolean;
+      images: boolean;
+      agency: boolean;
+      auctionDate: boolean;
+      propertyMetadata: boolean;
+      source: boolean;
+      qualityScore: number;
+      readyToApprove: boolean;
+      missing: string[];
+    }
+  >;
 };
 
 export default function VerificationDashboardClient() {
@@ -86,6 +111,26 @@ export default function VerificationDashboardClient() {
         load();
       } catch (err) {
         setError(err instanceof Error ? err.message : "Update failed");
+      }
+    });
+  };
+
+  const runAction = (
+    action: "approve" | "reject" | "merge",
+    payload: Record<string, string>,
+  ) => {
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/admin/verification", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action, ...payload }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || "Action failed");
+        load();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Action failed");
       }
     });
   };
@@ -150,6 +195,26 @@ export default function VerificationDashboardClient() {
             </span>
           ))}
         </div>
+        {data.acquisitionMetrics ? (
+          <div className="mt-4 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
+            <p>Imported today: {data.acquisitionMetrics.importedToday}</p>
+            <p>Updated today: {data.acquisitionMetrics.updatedToday}</p>
+            <p>Rejected today: {data.acquisitionMetrics.rejectedToday}</p>
+            <p>Queue: {data.acquisitionMetrics.verificationQueue}</p>
+            <p>
+              Success rate:{" "}
+              {data.acquisitionMetrics.successRate != null
+                ? `${data.acquisitionMetrics.successRate}%`
+                : "n/a"}
+            </p>
+            <p>
+              Duplicate rate:{" "}
+              {data.acquisitionMetrics.duplicateRate != null
+                ? `${data.acquisitionMetrics.duplicateRate}%`
+                : "n/a"}
+            </p>
+          </div>
+        ) : null}
       </div>
 
       <section>
@@ -182,9 +247,43 @@ export default function VerificationDashboardClient() {
                   <td className="px-3 py-2">{row.overallQualityScore}/100</td>
                   <td className="px-3 py-2 text-xs text-slate-600">
                     {row.issues.join("; ") || "—"}
+                    {data.checklists?.[row.id] ? (
+                      <div className="mt-1 text-[11px] text-slate-500">
+                        Checklist:{" "}
+                        {data.checklists[row.id].readyToApprove
+                          ? "ready"
+                          : `missing ${data.checklists[row.id].missing.join(", ") || "—"}`}
+                      </div>
+                    ) : null}
                   </td>
                   <td className="px-3 py-2">
                     <div className="flex flex-wrap gap-1">
+                      <button
+                        type="button"
+                        disabled={pending}
+                        className="rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-900"
+                        onClick={() =>
+                          runAction("approve", {
+                            propertyId: row.id,
+                            reason: "Admin approved verified listing",
+                          })
+                        }
+                      >
+                        Approve
+                      </button>
+                      <button
+                        type="button"
+                        disabled={pending}
+                        className="rounded bg-red-100 px-2 py-1 text-xs font-medium text-red-900"
+                        onClick={() =>
+                          runAction("reject", {
+                            propertyId: row.id,
+                            reason: "Admin rejected listing",
+                          })
+                        }
+                      >
+                        Reject
+                      </button>
                       <button
                         type="button"
                         disabled={pending}
@@ -194,14 +293,6 @@ export default function VerificationDashboardClient() {
                         }
                       >
                         Pending
-                      </button>
-                      <button
-                        type="button"
-                        disabled={pending}
-                        className="rounded bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-900"
-                        onClick={() => setState(row.id, "verified")}
-                      >
-                        Verified
                       </button>
                       <button
                         type="button"
@@ -235,8 +326,24 @@ export default function VerificationDashboardClient() {
           <ul className="mt-3 space-y-2 text-sm">
             {data.duplicateCandidates.map((d) => (
               <li key={`${d.aId}-${d.bId}`} className="rounded-lg bg-slate-50 p-2">
-                {d.aId.slice(0, 8)}… ↔ {d.bId.slice(0, 8)}… —{" "}
-                {d.confidenceScore}% ({d.signals.join(", ") || "signals"})
+                <div>
+                  {d.aId.slice(0, 8)}… ↔ {d.bId.slice(0, 8)}… —{" "}
+                  {d.confidenceScore}% ({d.signals.join(", ") || "signals"})
+                </div>
+                <button
+                  type="button"
+                  disabled={pending}
+                  className="mt-1 text-xs font-medium text-slate-700 underline"
+                  onClick={() =>
+                    runAction("merge", {
+                      keepId: d.aId,
+                      archiveId: d.bId,
+                      reason: `Duplicate merge confidence ${d.confidenceScore}`,
+                    })
+                  }
+                >
+                  Merge (keep first, archive second)
+                </button>
               </li>
             ))}
             {data.duplicateCandidates.length === 0 ? (

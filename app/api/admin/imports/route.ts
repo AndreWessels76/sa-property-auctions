@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { PermissionService } from "@/lib/auth/PermissionService";
 import { refreshPropertyCache } from "@/lib/services";
 import { importers } from "@/lib/importers";
+import { BiddersChoiceImporter } from "@/lib/importers/biddersChoice";
 import { jsonError, jsonOk } from "@/lib/api/http";
 import { clientIp, rateLimit } from "@/lib/api/rateLimit";
 import { LoggerService } from "@/lib/logger";
@@ -20,7 +21,13 @@ export async function POST(request: Request) {
       return limited;
     }
 
-    const body = (await request.json()) as { source?: string };
+    const body = (await request.json()) as {
+      source?: string;
+      listingUrls?: string[];
+      licensedRows?: Record<string, unknown>[];
+      allowPublicFetch?: boolean;
+      maxListings?: number;
+    };
     const source = body.source?.trim();
 
     if (!source) {
@@ -41,7 +48,18 @@ export async function POST(request: Request) {
 
     LoggerService.import("Admin import started", { source });
 
-    const result = await importer.sync();
+    let result;
+    if (source === "BiddersChoice" && importer instanceof BiddersChoiceImporter) {
+      result = await importer.sync({
+        listingUrls: body.listingUrls,
+        licensedRows: body.licensedRows,
+        allowPublicFetch: body.allowPublicFetch === true,
+        maxListings: body.maxListings,
+      });
+    } else {
+      result = await importer.sync();
+    }
+
     await refreshPropertyCache();
 
     LoggerService.import("Admin import completed", { source });

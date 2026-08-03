@@ -96,6 +96,10 @@ export default function AuctionCard({ property }: { property: PropertyDTO }) {
             <span className="rounded-lg bg-amber-400 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-amber-950 shadow-sm">
               Seed
             </span>
+          ) : property.verification_state === "verified" ? (
+            <span className="rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow-sm">
+              Verified
+            </span>
           ) : property.isPendingVerification ? (
             <span className="rounded-lg bg-amber-200 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-amber-950 shadow-sm">
               Pending Verification

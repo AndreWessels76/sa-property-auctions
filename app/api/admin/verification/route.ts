@@ -35,10 +35,59 @@ export async function POST(request: Request) {
     if (limited) return limited;
 
     const body = (await request.json()) as {
+      action?: "set_state" | "reject" | "merge" | "approve";
       propertyId?: string;
+      archiveId?: string;
+      keepId?: string;
       verificationState?: VerificationState;
       reason?: string;
     };
+
+    const reason = body.reason?.trim() || "Admin verification action";
+
+    if (body.action === "reject") {
+      if (!body.propertyId) {
+        return NextResponse.json(
+          { error: "propertyId required for reject" },
+          { status: 400 },
+        );
+      }
+      const property = await VerificationService.rejectListing(
+        body.propertyId,
+        reason,
+      );
+      return jsonOk({ property });
+    }
+
+    if (body.action === "merge") {
+      if (!body.keepId || !body.archiveId) {
+        return NextResponse.json(
+          { error: "keepId and archiveId required for merge" },
+          { status: 400 },
+        );
+      }
+      const result = await VerificationService.mergeDuplicate(
+        body.keepId,
+        body.archiveId,
+        reason,
+      );
+      return jsonOk(result);
+    }
+
+    if (body.action === "approve") {
+      if (!body.propertyId) {
+        return NextResponse.json(
+          { error: "propertyId required for approve" },
+          { status: 400 },
+        );
+      }
+      const property = await VerificationService.setVerificationState(
+        body.propertyId,
+        "verified",
+        reason,
+      );
+      return jsonOk({ property });
+    }
 
     if (!body.propertyId || !body.verificationState) {
       return NextResponse.json(
@@ -50,7 +99,7 @@ export async function POST(request: Request) {
     const updated = await VerificationService.setVerificationState(
       body.propertyId,
       body.verificationState,
-      body.reason?.trim() || "Admin verification action",
+      reason,
     );
 
     return jsonOk({ property: updated });

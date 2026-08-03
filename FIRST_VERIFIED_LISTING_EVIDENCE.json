@@ -1,0 +1,169 @@
+{
+  "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+  "importTimestamp": "2026-08-03T07:41:03.084Z",
+  "robots": {
+    "allowed": true,
+    "robotsUrl": "https://www.bidderschoice.co.za/robots.txt",
+    "reason": "robots.txt allows this path for User-agent *",
+    "fetchedAt": "2026-08-03T07:41:03.086Z"
+  },
+  "download": {
+    "broken": false,
+    "htmlBytes": 190499
+  },
+  "externalListingId": "bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo",
+  "extracted": {
+    "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+    "streetAddress": "The Viewpoint, Magoebaskloof",
+    "suburb": null,
+    "town": "Haenertsburg",
+    "province": "Limpopo",
+    "propertyType": "Farm",
+    "bedrooms": 14,
+    "bathrooms": 14,
+    "garages": null,
+    "description": "Don’t miss the Guest Farm Online Auction in Haenertsburg, Magoebaskloof, Limpopo. Property highlights, terms, and viewing date—register to bid.",
+    "imageCount": 30,
+    "auctionAgency": "Bidders Choice",
+    "auctionDate": "2026-08-03",
+    "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+    "externalListingId": "bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo"
+  },
+  "validation": {
+    "ok": true
+  },
+  "pipeline": {
+    "jobId": "first_verified_mscx75qy",
+    "connectorId": "bidders_choice",
+    "imported": 1,
+    "updated": 0,
+    "rejected": 0,
+    "archived": 0,
+    "duplicates": 0,
+    "errors": [],
+    "durationMs": 24990,
+    "stageLog": [
+      {
+        "stage": "discover",
+        "status": "started",
+        "message": "Starting Bidders Choice acquisition"
+      },
+      {
+        "stage": "discover",
+        "status": "success",
+        "message": "Using 1 explicit URLs + 0 licensed rows"
+      },
+      {
+        "stage": "download",
+        "status": "started",
+        "message": "Download https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/"
+      },
+      {
+        "stage": "download",
+        "status": "success",
+        "message": "Downloaded https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/"
+      },
+      {
+        "stage": "extract",
+        "status": "started",
+        "message": "Extract https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/"
+      },
+      {
+        "stage": "extract",
+        "status": "success",
+        "message": "Extracted bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo"
+      },
+      {
+        "stage": "normalize",
+        "status": "started",
+        "message": "bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo"
+      },
+      {
+        "stage": "normalize",
+        "status": "success",
+        "message": "bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo"
+      },
+      {
+        "stage": "validate",
+        "status": "started",
+        "message": "bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo"
+      },
+      {
+        "stage": "validate",
+        "status": "success",
+        "message": "bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo"
+      },
+      {
+        "stage": "deduplicate",
+        "status": "started",
+        "message": "bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo"
+      },
+      {
+        "stage": "deduplicate",
+        "status": "success",
+        "message": "No duplicate — insert pending"
+      },
+      {
+        "stage": "quality_score",
+        "status": "success",
+        "message": "Overall 61"
+      },
+      {
+        "stage": "verification_queue",
+        "status": "success",
+        "message": "Pending verification 3e7ea1ff-f237-4a6c-8b36-23bb34c4136c"
+      },
+      {
+        "stage": "admin_approval",
+        "status": "skipped",
+        "message": "Awaiting admin approval — not published"
+      },
+      {
+        "stage": "public_website",
+        "status": "skipped",
+        "message": "Hidden from public until verified"
+      }
+    ]
+  },
+  "property": {
+    "id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+    "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+    "town": "Haenertsburg",
+    "province": "Limpopo",
+    "property_type": "Farm",
+    "bedrooms": 14,
+    "bathrooms": 14,
+    "garages": 0,
+    "auction_date": "2026-08-03T00:00:00+00:00",
+    "auction_agency": "Bidders Choice",
+    "source_url": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+    "external_listing_id": "bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo",
+    "verification_state": "pending_verification",
+    "data_classification": "needs_verification",
+    "data_quality_score": 61,
+    "address_score": 55,
+    "image_score": 50,
+    "auction_score": 65,
+    "imported_at": "2026-08-03T07:41:21.216+00:00",
+    "last_verified_at": null,
+    "street_address": "The Viewpoint, Magoebaskloof",
+    "suburb": null,
+    "description": "Don’t miss the Guest Farm Online Auction in Haenertsburg, Magoebaskloof, Limpopo. Property highlights, terms, and viewing date—register to bid."
+  },
+  "approval": {
+    "approvedAt": "2026-08-03T07:41:36.497Z",
+    "property": {
+      "id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+      "verification_state": "verified",
+      "data_classification": "production",
+      "last_verified_at": "2026-08-03T07:41:36.497+00:00",
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+      "external_listing_id": "bc_online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo",
+      "auction_agency": "Bidders Choice",
+      "town": "Haenertsburg",
+      "province": "Limpopo"
+    }
+  },
+  "totalDurationMs": 33662
+}

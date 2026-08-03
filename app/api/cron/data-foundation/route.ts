@@ -90,12 +90,44 @@ export async function GET(request: Request) {
       }
     }
 
-    // Touch connector pipeline framework once daily for audit trail.
+    // Daily Bidders Choice sync when explicitly enabled (robots + licence posture).
     if (cadence === "daily") {
-      const connector = listEnabledConnectors()[0];
+      const connector = listEnabledConnectors().find((c) => c.id === "bidders_choice")
+        ?? listEnabledConnectors()[0];
       if (connector) {
         await ImportPipeline.runFramework(connector.id, {
           jobId: `cron_${cadence}_${Date.now()}`,
+        });
+      }
+
+      if (process.env.BIDDERS_CHOICE_DAILY_SYNC === "true") {
+        try {
+          const { PropertyAcquisitionEngine } = await import(
+            "@/lib/acquisition/PropertyAcquisitionEngine"
+          );
+          const acq = await new PropertyAcquisitionEngine().run({
+            allowPublicFetch: process.env.BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH === "true",
+            maxListings: Number(process.env.BIDDERS_CHOICE_MAX_LISTINGS ?? "25"),
+            jobId: `cron_bc_${Date.now()}`,
+          });
+          results.push({
+            id: "daily_bidders_choice_sync",
+            ok: true,
+            detail: `BC import ${acq.imported} / update ${acq.updated} / reject ${acq.rejected}`,
+          });
+        } catch (error) {
+          results.push({
+            id: "daily_bidders_choice_sync",
+            ok: false,
+            detail: error instanceof Error ? error.message : "bc sync failed",
+          });
+        }
+      } else {
+        results.push({
+          id: "daily_bidders_choice_sync",
+          ok: true,
+          detail:
+            "Skipped — set BIDDERS_CHOICE_DAILY_SYNC=true to enable automated acquisition.",
         });
       }
     }

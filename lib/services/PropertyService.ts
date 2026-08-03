@@ -7,6 +7,7 @@ import {
 } from "@/lib/dto/SearchResult";
 import { PropertyMapper } from "@/lib/mappers/PropertyMapper";
 import { ImageRepository, PropertyRepository } from "@/lib/repositories";
+import { isPubliclyVisibleVerification } from "@/lib/data/publicListingPolicy";
 
 export class PropertyService {
   static readonly DEFAULT_PAGE_SIZE = PropertyRepository.DEFAULT_PAGE_SIZE;
@@ -14,7 +15,7 @@ export class PropertyService {
   /** @deprecated Prefer `search()` — loads entire catalog. Kept for heatmaps/internal. */
   static getProperties = unstable_cache(
     async (): Promise<PropertyDTO[]> => {
-      const properties = await PropertyRepository.getAll();
+      const properties = await PropertyRepository.getPublicAll();
 
       const heroMap = await ImageRepository.heroMap(
         properties.map((p) => p.id),
@@ -32,7 +33,7 @@ export class PropertyService {
   );
 
   static async getProperty(id: string): Promise<PropertyDTO | null> {
-    const property = await PropertyRepository.getById(id);
+    const property = await PropertyRepository.getPublicById(id);
 
     if (!property) {
       return null;
@@ -50,21 +51,29 @@ export class PropertyService {
   ): Promise<SearchResult<PropertyDTO>> {
     const result = await PropertyRepository.getByIds(ids, page, pageSize);
 
-    if (!result.data.length) {
-      return buildSearchResult([], result.total, result.page, result.pageSize);
+    const visible = result.data.filter((property) =>
+      isPubliclyVisibleVerification(
+        property.verification_state,
+        property.data_classification,
+      ),
+    );
+
+    if (!visible.length) {
+      return buildSearchResult([], 0, result.page, result.pageSize);
     }
 
     const heroMap = await ImageRepository.heroMap(
-      result.data.map((property) => property.id),
+      visible.map((property) => property.id),
     );
 
-    const data = result.data.map((property) =>
+    const data = visible.map((property) =>
       PropertyMapper.toDTO(property, heroMap.get(property.id)),
     );
 
     return {
       ...result,
       data,
+      total: visible.length,
     };
   }
 

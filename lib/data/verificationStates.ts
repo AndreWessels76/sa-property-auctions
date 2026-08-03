@@ -49,14 +49,21 @@ export function formatVerificationLabel(
 export type ImportPipelineStage =
   | "discover"
   | "download"
+  | "extract"
   | "normalize"
   | "validate"
   | "deduplicate"
   | "merge"
+  | "quality_score"
+  | "verification_queue"
   | "verify"
+  | "admin_approval"
+  | "verified_listing"
   | "publish"
+  | "public_website"
   | "archive";
 
+/** Core framework stages for ImportPipeline.runFramework */
 export const IMPORT_PIPELINE_STAGES: ImportPipelineStage[] = [
   "discover",
   "download",

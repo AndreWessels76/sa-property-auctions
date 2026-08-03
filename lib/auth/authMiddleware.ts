@@ -11,8 +11,8 @@ import {
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 
 /**
- * Admin gate: JWT app_metadata.role OR profiles.role = admin.
- * Profiles is the ops source of truth; JWT remains supported for legacy claims.
+ * Admin gate: profiles.role = admin (preferred) or JWT app_metadata.role = admin.
+ * Subscription / Stripe / billing MUST NOT grant or revoke admin.
  */
 export async function enforceRouteProtection(
   request: NextRequest,
@@ -41,7 +41,7 @@ export async function enforceRouteProtection(
         .eq("id", user.id)
         .maybeSingle();
 
-      allowed = data?.role === "admin";
+      allowed = (data?.role ?? "").toString().trim().toLowerCase() === "admin";
     }
 
     if (!allowed) {

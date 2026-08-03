@@ -18,6 +18,9 @@ import { listEnabledConnectors } from "@/lib/connectors/sourceRegistry";
 import type { Property } from "@/lib/types/property";
 import { LoggerService } from "@/lib/logger";
 import { refreshPropertyCache } from "@/lib/services/actions";
+import { getAcquisitionMetrics } from "@/lib/acquisition/metrics";
+import { buildVerificationChecklist } from "@/lib/acquisition/verificationChecklist";
+import { createServiceClient } from "@/lib/supabase/admin";
 
 export type VerificationDashboard = {
   stats: {
@@ -60,6 +63,8 @@ export type VerificationDashboard = {
   }>;
   connectors: Array<{ id: string; name: string; version: string; enabled: boolean }>;
   qualityVisibleToAdminOnly: true;
+  acquisitionMetrics: Awaited<ReturnType<typeof getAcquisitionMetrics>>;
+  checklists: Record<string, ReturnType<typeof buildVerificationChecklist>>;
 };
 
 export class VerificationService {
@@ -162,6 +167,20 @@ export class VerificationService {
       }
     }
 
+    const checklists: Record<string, ReturnType<typeof buildVerificationChecklist>> =
+      {};
+    for (const row of queue) {
+      const property = rows.find((r) => r.id === row.id);
+      if (!property) continue;
+      checklists[row.id] = buildVerificationChecklist(
+        property,
+        row.hasImages,
+        row.overallQualityScore,
+      );
+    }
+
+    const acquisitionMetrics = await getAcquisitionMetrics("bidders_choice");
+
     return {
       stats: {
         total: rows.length,
@@ -198,6 +217,8 @@ export class VerificationService {
         enabled: c.enabled,
       })),
       qualityVisibleToAdminOnly: true,
+      acquisitionMetrics,
+      checklists,
     };
   }
 
@@ -296,6 +317,53 @@ export class VerificationService {
       reason,
     });
     return updated;
+  }
+
+  static async rejectListing(
+    propertyId: string,
+    reason: string,
+  ): Promise<Property> {
+    const updated = await VerificationRepository.updateVerification(propertyId, {
+      verification_state: "archived",
+      data_classification: "needs_verification",
+      status_changed_at: new Date().toISOString(),
+      status_change_reason: reason,
+      status_source_event: "admin_reject",
+      provenance_notes: `Rejected: ${reason}`,
+    });
+    try {
+      const db = createServiceClient();
+      await db
+        .from("properties")
+        .update({ rejection_reason: reason })
+        .eq("id", propertyId);
+    } catch {
+      /* column may be absent until migration */
+    }
+    await refreshPropertyCache();
+    return updated;
+  }
+
+  static async mergeDuplicate(
+    keepId: string,
+    archiveId: string,
+    reason: string,
+  ): Promise<{ kept: Property; archived: Property }> {
+    if (keepId === archiveId) {
+      throw new Error("Cannot merge a listing into itself");
+    }
+    const archived = await this.setVerificationState(
+      archiveId,
+      "archived",
+      `Merged into ${keepId}: ${reason}`,
+    );
+    const kept = await VerificationRepository.updateVerification(keepId, {
+      status_changed_at: new Date().toISOString(),
+      status_change_reason: `Absorbed duplicate ${archiveId}`,
+      status_source_event: "admin_merge",
+    });
+    await refreshPropertyCache();
+    return { kept, archived };
   }
 
   static async applySuggestedLifecycle(property: Property): Promise<Property | null> {
