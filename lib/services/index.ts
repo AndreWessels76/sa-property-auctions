@@ -8,3 +8,4 @@ export {
   refreshPropertyAnalysisCache,
 } from "./actions";
 export { VerificationService } from "./VerificationService";
+export { AuctionIntelligenceService } from "./AuctionIntelligenceService";

@@ -22,6 +22,7 @@ import PropertyPricingIntelligence from "@/components/property/detail/PropertyPr
 import PropertyRelatedSection from "@/components/property/detail/PropertyRelatedSection";
 import PropertyStructuredData from "@/components/property/detail/PropertyStructuredData";
 import PropertySummarySection from "@/components/property/detail/PropertySummarySection";
+import AuctionIntelligencePanel from "@/components/property/detail/AuctionIntelligencePanel";
 import { getPropertyImage } from "@/lib/format";
 import { getImages } from "@/lib/images/getImages";
 import { selectHeroImage } from "@/lib/images/selectHero";
@@ -30,7 +31,10 @@ import { getComparableSales } from "@/lib/maps/getComparableSales";
 import { isFarmPropertyType } from "@/lib/property/agricultural";
 import { getSourceReliabilityLabel } from "@/lib/property/detailExperience";
 import { getRelatedListingGroups } from "@/lib/property/relatedListings";
-import { PropertyService } from "@/lib/services";
+import {
+  AuctionIntelligenceService,
+  PropertyService,
+} from "@/lib/services";
 
 export const revalidate = 300;
 
@@ -115,6 +119,16 @@ export default async function PropertyPage({ params }: PageProps) {
     relatedGroups = [];
   }
 
+  const galleryHasImages = images.some((image) =>
+    Boolean(image.image_url?.trim()),
+  );
+
+  const intelligencePanel = await AuctionIntelligenceService.buildPanel({
+    property,
+    hasImages: galleryHasImages,
+    comparableCount: comparables.length,
+  });
+
   const hero = selectHeroImage(images);
   const heroImage =
     property.heroImage ||
@@ -177,6 +191,9 @@ export default async function PropertyPage({ params }: PageProps) {
           <div className="space-y-8">
             {/* 1 Hero summary */}
             <PropertyHeroSection property={property} />
+
+            {/* Auction Intelligence — verified data only */}
+            <AuctionIntelligencePanel panel={intelligencePanel} />
 
             {/* 2 Gallery */}
             <PropertyGalleryExperience

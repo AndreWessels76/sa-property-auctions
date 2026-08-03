@@ -1,43 +1,61 @@
 import "server-only";
 
 import { createServiceClient } from "@/lib/supabase/admin";
-import { calculateImageQuality } from "./imageQuality";
 import { uploadPropertyImageServer } from "./storage.server";
 
+/**
+ * Persist a property image row using only columns known to exist
+ * on production `property_images`.
+ */
 export async function saveImageServer(
   propertyId: string,
   imageUrl: string,
   primary = false,
-  source = "Unknown",
-  width = 0,
-  height = 0,
-  bytes = 0,
+  _source = "Unknown",
+  _width = 0,
+  _height = 0,
+  _bytes = 0,
 ) {
   const db = createServiceClient();
-  const quality = calculateImageQuality(width, height, bytes);
 
-  const { data, error } = await db
-    .from("property_images")
-    .insert({
+  const attempts: Array<Record<string, unknown>> = [
+    {
       property_id: propertyId,
       image_url: imageUrl,
       is_primary: primary,
       is_hero: primary,
-      source,
-      width,
-      height,
-      bytes,
-      quality_score: quality.score,
-      quality_rating: quality.rating,
-    })
-    .select("id")
-    .maybeSingle();
+    },
+    {
+      property_id: propertyId,
+      image_url: imageUrl,
+      is_hero: primary,
+    },
+    {
+      property_id: propertyId,
+      image_url: imageUrl,
+      is_primary: primary,
+    },
+    {
+      property_id: propertyId,
+      image_url: imageUrl,
+    },
+  ];
 
-  if (error) {
-    throw new Error(`property_images insert failed: ${error.message}`);
+  let lastError: string | null = null;
+  for (const row of attempts) {
+    const { data, error } = await db
+      .from("property_images")
+      .insert(row)
+      .select("id")
+      .maybeSingle();
+    if (!error) return data;
+    lastError = error.message;
+    if (!/column|schema cache/i.test(error.message)) {
+      throw new Error(`property_images insert failed: ${error.message}`);
+    }
   }
 
-  return data;
+  throw new Error(`property_images insert failed: ${lastError}`);
 }
 
 export async function uploadAndSaveImageServer(

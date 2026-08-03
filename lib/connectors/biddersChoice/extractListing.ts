@@ -254,6 +254,10 @@ export function extractBiddersChoiceListing(
       /Auction\s*Date[:\s]+([0-9A-Za-z\s,\/\-.]+)/i,
       /Date\s*of\s*Auction[:\s]+([0-9A-Za-z\s,\/\-.]+)/i,
       /Bids?\s*Open[:\s]+([0-9A-Za-z\s,\/\-.]+)/i,
+      /Auction\s*Closes?[:\s]+([0-9A-Za-z\s,\/\-.]+?)(?:@|Viewing|Deposit|$)/i,
+      /Closes?[:\s]+([0-9A-Za-z\s,\/\-.]+?)(?:@|Viewing|Deposit|$)/i,
+      /Closing\s*Date[:\s]+([0-9A-Za-z\s,\/\-.]+)/i,
+      /Sale\s*Date[:\s]+([0-9A-Za-z\s,\/\-.]+)/i,
     ]) || metaContent(html, "auction:date"),
   );
 

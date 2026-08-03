@@ -42,7 +42,13 @@ export function buildVerificationChecklist(
   });
 
   const missing: string[] = [];
-  const addressOk = address.complete;
+  // Auction sources often publish town/province without street/suburb.
+  // Require town + province as the minimum verifiable location.
+  const addressOk = Boolean(
+    address.town &&
+      address.province &&
+      (address.street || address.suburb || address.town),
+  );
   if (!addressOk) missing.push("address");
   if (!hasImages) missing.push("images");
   if (!auction.auctionAgency) missing.push("agency");

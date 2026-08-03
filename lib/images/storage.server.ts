@@ -2,6 +2,15 @@ import "server-only";
 
 import { createServiceClient } from "@/lib/supabase/admin";
 
+function contentTypeForName(name: string): string {
+  const ext = name.split(".").pop()?.toLowerCase();
+  if (ext === "png") return "image/png";
+  if (ext === "webp") return "image/webp";
+  if (ext === "gif") return "image/gif";
+  if (ext === "jpg" || ext === "jpeg") return "image/jpeg";
+  return "image/jpeg";
+}
+
 /**
  * Privileged storage writes for acquisition / importers (bypasses storage RLS).
  */
@@ -10,13 +19,22 @@ export async function uploadPropertyImageServer(
   propertyId: string,
 ) {
   const db = createServiceClient();
-  const extension = file.name.split(".").pop() || "jpg";
-  const filename = `${propertyId}/${crypto.randomUUID()}.${extension}`;
+  const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const safeExt = ["jpg", "jpeg", "png", "webp", "gif"].includes(extension)
+    ? extension === "jpeg"
+      ? "jpg"
+      : extension
+    : "jpg";
+  const filename = `${propertyId}/${crypto.randomUUID()}.${safeExt}`;
+  const contentType =
+    file.type && file.type !== "application/octet-stream"
+      ? file.type
+      : contentTypeForName(filename);
 
   const { error } = await db.storage
     .from("property-images")
     .upload(filename, file, {
-      contentType: file.type || "image/jpeg",
+      contentType,
       upsert: false,
     });
 
