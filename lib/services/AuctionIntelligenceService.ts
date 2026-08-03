@@ -7,10 +7,11 @@ import {
 } from "@/lib/property/auctionIntelligence";
 import type { PropertyDTO } from "@/lib/dto/PropertyDTO";
 import { LoggerService } from "@/lib/logger";
+import { isPubliclyActiveListing } from "@/lib/data/publicListingPolicy";
 
 /**
  * Auction Intelligence — verified-only aggregates + per-listing panel.
- * Single catalogue query reused across panel sections (no N+1).
+ * Active catalogue stats exclude historical (sold/expired) auctions.
  */
 export class AuctionIntelligenceService {
   static async getVerifiedCatalogueStats(): Promise<VerifiedCatalogueStats> {
@@ -19,7 +20,7 @@ export class AuctionIntelligenceService {
       const { data, error } = await db
         .from("properties")
         .select(
-          "id,province,town,property_type,auction_agency,source_name,auction_date",
+          "id,province,town,property_type,auction_agency,source_name,auction_date,verification_state,data_classification,listing_status,status",
         )
         .eq("verification_state", "verified")
         .limit(500);
@@ -31,8 +32,18 @@ export class AuctionIntelligenceService {
         return buildVerifiedCatalogueStats([]);
       }
 
+      const active = (data ?? []).filter((row) =>
+        isPubliclyActiveListing({
+          verification_state: row.verification_state as string | null,
+          data_classification: row.data_classification as string | null,
+          listing_status: row.listing_status as string | null,
+          status: row.status as string | null,
+          auction_date: row.auction_date as string | null,
+        }),
+      );
+
       return buildVerifiedCatalogueStats(
-        (data ?? []).map((row) => ({
+        active.map((row) => ({
           id: row.id as string,
           province: (row.province as string | null) ?? null,
           town: (row.town as string | null) ?? null,

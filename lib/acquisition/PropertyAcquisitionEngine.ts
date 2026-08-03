@@ -392,7 +392,11 @@ export class PropertyAcquisitionEngine {
       postal_code: listing.postalCode,
       latitude: listing.latitude,
       longitude: listing.longitude,
-      property_type: normalizePropertyType(listing.propertyType) || "Other",
+      property_type:
+        normalizePropertyType(listing.propertyType, {
+          title: listing.title,
+          description: listing.description,
+        }) || "Other",
       bedrooms: listing.bedrooms ?? 0,
       bathrooms: listing.bathrooms ?? 0,
       garages: listing.garages ?? 0,

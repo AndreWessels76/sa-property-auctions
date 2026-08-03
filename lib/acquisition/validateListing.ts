@@ -1,4 +1,9 @@
 import type { ExtractedListing, ValidationResult } from "@/lib/acquisition/types";
+import {
+  classifyPropertyType,
+  PLATFORM_PROPERTY_TYPES,
+  propertyTypeSearchBucket,
+} from "@/lib/platform/propertyClassification";
 
 export const SA_PROVINCES = [
   "Eastern Cape",
@@ -12,6 +17,7 @@ export const SA_PROVINCES = [
   "Western Cape",
 ] as const;
 
+/** Catalogue search buckets + fine-grained platform types. */
 export const ALLOWED_PROPERTY_TYPES = [
   "House",
   "Apartment",
@@ -21,6 +27,19 @@ export const ALLOWED_PROPERTY_TYPES = [
   "Industrial",
   "Farm",
   "Other",
+  ...PLATFORM_PROPERTY_TYPES.filter(
+    (t) =>
+      ![
+        "House",
+        "Apartment",
+        "Townhouse",
+        "Vacant Land",
+        "Commercial",
+        "Industrial",
+        "Farm",
+        "Other",
+      ].includes(t),
+  ),
 ] as const;
 
 export function normalizeProvince(value: string | null | undefined): string | null {
@@ -39,20 +58,28 @@ export function normalizeProvince(value: string | null | undefined): string | nu
   return null;
 }
 
+/**
+ * Prefer specific platform types. "Other" only when no signal matches.
+ */
 export function normalizePropertyType(
   value: string | null | undefined,
+  context?: { title?: string | null; description?: string | null },
 ): string | null {
-  if (!value?.trim()) return null;
-  const v = value.trim().toLowerCase();
-  if (/house|dwelling|home|residence|guesthouse|guest\s*house/.test(v)) return "House";
-  if (/apartment|flat|unit/.test(v)) return "Apartment";
-  if (/townhouse|simplex|duplex|cluster/.test(v)) return "Townhouse";
-  if (/vacant|stand|plot|erf|land/.test(v) && !/farm/.test(v)) return "Vacant Land";
-  if (/commercial|office|retail/.test(v)) return "Commercial";
-  if (/industrial|warehouse/.test(v)) return "Industrial";
-  if (/farm|smallholding|agricultural|guest\s*farm/.test(v)) return "Farm";
-  for (const t of ALLOWED_PROPERTY_TYPES) {
-    if (t.toLowerCase() === v) return t;
+  if (!value?.trim() && !context?.title?.trim() && !context?.description?.trim()) {
+    return null;
+  }
+  const classified = classifyPropertyType({
+    propertyType: value,
+    title: context?.title,
+    description: context?.description,
+  });
+  if (!classified) return null;
+  // Persist fine-grained type; search can bucket via propertyTypeSearchBucket.
+  if (classified !== "Other") return classified;
+  // Last resort: keep raw non-empty unknown labels rather than forcing Other when
+  // the source already said something specific we couldn't map.
+  if (value?.trim() && !/^other$/i.test(value.trim())) {
+    return propertyTypeSearchBucket(value);
   }
   return "Other";
 }

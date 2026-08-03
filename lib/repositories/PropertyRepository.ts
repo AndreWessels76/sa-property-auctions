@@ -6,8 +6,10 @@ import {
 } from "@/lib/dto/SearchResult";
 import type { Property } from "@/lib/types/property";
 import {
-  isPubliclyVisibleVerification,
+  isPubliclyActiveListing,
   PUBLIC_VERIFICATION_STATES,
+  publicCatalogueTodayIso,
+  HISTORICAL_INTELLIGENCE_STATES,
 } from "@/lib/data/publicListingPolicy";
 
 export class PropertyRepository extends BaseRepository {
@@ -31,11 +33,38 @@ export class PropertyRepository extends BaseRepository {
     return (data as Property[]) ?? [];
   }
 
-  /** Public website catalogue — verified/sold only. */
+  /** Public website catalogue — verified upcoming/live only. */
   static async getPublicAll(): Promise<Property[]> {
     const all = await this.getAll();
     return all.filter((p) =>
-      isPubliclyVisibleVerification(p.verification_state, p.data_classification),
+      isPubliclyActiveListing({
+        verification_state: p.verification_state,
+        data_classification: p.data_classification,
+        listing_status: p.listing_status,
+        status: p.status,
+        auction_date: p.auction_date,
+      }),
+    );
+  }
+
+  /**
+   * Intelligence corpus — verified + historical states (sold/expired/withdrawn).
+   * Never used for public catalogue listing.
+   */
+  static async getIntelligenceCorpus(limit = 1000): Promise<Property[]> {
+    const db = this.publicDb();
+    const { data, error } = await db
+      .from("properties")
+      .select("*")
+      .in("verification_state", [...HISTORICAL_INTELLIGENCE_STATES])
+      .limit(limit);
+
+    if (error) {
+      this.handleError("PropertyRepository.getIntelligenceCorpus", error);
+    }
+
+    return ((data as Property[]) ?? []).filter(
+      (p) => p.data_classification !== "seed" && p.data_classification !== "demo",
     );
   }
 
@@ -59,10 +88,13 @@ export class PropertyRepository extends BaseRepository {
     const property = await this.getById(id);
     if (!property) return null;
     if (
-      !isPubliclyVisibleVerification(
-        property.verification_state,
-        property.data_classification,
-      )
+      !isPubliclyActiveListing({
+        verification_state: property.verification_state,
+        data_classification: property.data_classification,
+        listing_status: property.listing_status,
+        status: property.status,
+        auction_date: property.auction_date,
+      })
     ) {
       return null;
     }
@@ -122,10 +154,21 @@ export class PropertyRepository extends BaseRepository {
       100,
     );
 
+    const today = publicCatalogueTodayIso();
+
     let query = db.from("properties").select("*", { count: "exact" });
 
-    // Never expose pending/seed/archived on public search.
+    // Public catalogue: verified only (sold/expired/withdrawn excluded).
     query = query.in("verification_state", [...PUBLIC_VERIFICATION_STATES]);
+
+    // Active auctions: live OR auction_date today/future.
+    // listing_status sold/cancelled/withdrawn/completed excluded via second filter.
+    query = query.or(
+      `listing_status.ilike.live,auction_date.gte.${today}`,
+    );
+    query = query.or(
+      "listing_status.is.null,listing_status.ilike.upcoming,listing_status.ilike.live",
+    );
 
     if (filters.search) {
       query = query.or(
@@ -139,17 +182,11 @@ address.ilike.%${filters.search}%
     }
 
     if (filters.province) {
-      query = query.eq(
-        "province",
-        filters.province,
-      );
+      query = query.eq("province", filters.province);
     }
 
     if (filters.town) {
-      query = query.eq(
-        "town",
-        filters.town,
-      );
+      query = query.eq("town", filters.town);
     }
 
     if (filters.suburb) {
@@ -157,24 +194,43 @@ address.ilike.%${filters.search}%
     }
 
     if (filters.propertyType) {
-      query = query.eq(
-        "property_type",
-        filters.propertyType,
-      );
+      const t = filters.propertyType;
+      // Fine-grained types (e.g. Macadamia Farm) should match catalogue bucket "Farm".
+      if (t === "Farm") {
+        query = query.or(
+          "property_type.eq.Farm,property_type.ilike.%Farm%,property_type.eq.Smallholding,property_type.eq.Agricultural Land",
+        );
+      } else if (t === "Commercial") {
+        query = query.or(
+          "property_type.eq.Commercial,property_type.eq.Retail,property_type.eq.Office,property_type.eq.Mixed Use",
+        );
+      } else if (t === "Industrial") {
+        query = query.or(
+          "property_type.eq.Industrial,property_type.eq.Warehouse",
+        );
+      } else if (t === "House") {
+        query = query.or(
+          "property_type.eq.House,property_type.eq.Guest House",
+        );
+      } else if (t === "Townhouse") {
+        query = query.or(
+          "property_type.eq.Townhouse,property_type.eq.Duet,property_type.eq.Cluster",
+        );
+      } else if (t === "Vacant Land") {
+        query = query.or(
+          "property_type.eq.Vacant Land,property_type.eq.Development Land",
+        );
+      } else {
+        query = query.eq("property_type", t);
+      }
     }
 
     if (filters.minPrice) {
-      query = query.gte(
-        "auction_price",
-        filters.minPrice,
-      );
+      query = query.gte("auction_price", filters.minPrice);
     }
 
     if (filters.maxPrice) {
-      query = query.lte(
-        "auction_price",
-        filters.maxPrice,
-      );
+      query = query.lte("auction_price", filters.maxPrice);
     }
 
     if (filters.minEstimatedValue) {
@@ -186,10 +242,7 @@ address.ilike.%${filters.search}%
     }
 
     if (filters.minBedrooms) {
-      query = query.gte(
-        "bedrooms",
-        filters.minBedrooms,
-      );
+      query = query.gte("bedrooms", filters.minBedrooms);
     }
 
     if (filters.maxBedrooms) {
@@ -205,33 +258,20 @@ address.ilike.%${filters.search}%
     }
 
     if (filters.auctionFrom) {
-      query = query.gte(
-        "auction_date",
-        filters.auctionFrom,
-      );
+      query = query.gte("auction_date", filters.auctionFrom);
     }
 
     if (filters.auctionTo) {
-      query = query.lte(
-        "auction_date",
-        filters.auctionTo,
-      );
+      query = query.lte("auction_date", filters.auctionTo);
     }
 
     if (filters.status) {
       const normalized = filters.status.trim().toLowerCase();
-      // Only apply known auction statuses. AI often invents "Active"/"Available",
-      // which would zero results against real rows (Upcoming/upcoming).
-      const knownStatuses = new Set([
-        "upcoming",
-        "sold",
-        "withdrawn",
-        "cancelled",
-        "closed",
-      ]);
+      const knownStatuses = new Set(["upcoming", "live"]);
 
+      // Public search never expands into sold/cancelled/closed.
       if (knownStatuses.has(normalized)) {
-        query = query.ilike("status", normalized);
+        query = query.ilike("listing_status", normalized);
       }
     }
 
@@ -245,31 +285,19 @@ address.ilike.%${filters.search}%
         break;
 
       case "price-low":
-        query = query.order(
-          "auction_price",
-          { ascending: true },
-        );
+        query = query.order("auction_price", { ascending: true });
         break;
 
       case "price-high":
-        query = query.order(
-          "auction_price",
-          { ascending: false },
-        );
+        query = query.order("auction_price", { ascending: false });
         break;
 
       case "value-high":
-        query = query.order(
-          "estimated_value",
-          { ascending: false },
-        );
+        query = query.order("estimated_value", { ascending: false });
         break;
 
       default:
-        query = query.order(
-          "created_at",
-          { ascending: false },
-        );
+        query = query.order("created_at", { ascending: false });
     }
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
@@ -282,11 +310,16 @@ address.ilike.%${filters.search}%
       this.handleError("PropertyRepository.search", error);
     }
 
-    return buildSearchResult(
-      (data as Property[]) ?? [],
-      count ?? 0,
-      page,
-      pageSize,
+    const rows = ((data as Property[]) ?? []).filter((p) =>
+      isPubliclyActiveListing({
+        verification_state: p.verification_state,
+        data_classification: p.data_classification,
+        listing_status: p.listing_status,
+        status: p.status,
+        auction_date: p.auction_date,
+      }),
     );
+
+    return buildSearchResult(rows, count ?? rows.length, page, pageSize);
   }
 }

@@ -7,7 +7,11 @@ import {
 } from "@/lib/dto/SearchResult";
 import { PropertyMapper } from "@/lib/mappers/PropertyMapper";
 import { ImageRepository, PropertyRepository } from "@/lib/repositories";
-import { isPubliclyVisibleVerification } from "@/lib/data/publicListingPolicy";
+import { isPubliclyActiveListing } from "@/lib/data/publicListingPolicy";
+import {
+  normalizeSearchFilters,
+  searchRankingScore,
+} from "@/lib/platform/searchIntelligence";
 
 export class PropertyService {
   static readonly DEFAULT_PAGE_SIZE = PropertyRepository.DEFAULT_PAGE_SIZE;
@@ -52,10 +56,13 @@ export class PropertyService {
     const result = await PropertyRepository.getByIds(ids, page, pageSize);
 
     const visible = result.data.filter((property) =>
-      isPubliclyVisibleVerification(
-        property.verification_state,
-        property.data_classification,
-      ),
+      isPubliclyActiveListing({
+        verification_state: property.verification_state,
+        data_classification: property.data_classification,
+        listing_status: property.listing_status,
+        status: property.status,
+        auction_date: property.auction_date,
+      }),
     );
 
     if (!visible.length) {
@@ -80,12 +87,12 @@ export class PropertyService {
   static async search(
     filters: PropertySearchDTO,
   ): Promise<SearchResult<PropertyDTO>> {
-    const normalized: PropertySearchDTO = {
+    const normalized = normalizeSearchFilters({
       ...filters,
       page: Math.max(1, filters.page ?? 1),
       pageSize: filters.pageSize ?? PropertyService.DEFAULT_PAGE_SIZE,
       sort: filters.sort ?? "auction",
-    };
+    });
 
     const result = await PropertyRepository.search(normalized);
 
@@ -103,9 +110,24 @@ export class PropertyService {
 
     if (normalized.sort === "auction") {
       data.sort((a, b) => {
-        if (a.featured !== b.featured) {
-          return a.featured ? -1 : 1;
-        }
+        const scoreDiff =
+          searchRankingScore({
+            featured: b.featured,
+            auctionDate: b.auction_date,
+            hasImages: Boolean(b.heroImage || b.image),
+            town: b.town,
+            province: b.province,
+            verificationState: b.verification_state,
+          }) -
+          searchRankingScore({
+            featured: a.featured,
+            auctionDate: a.auction_date,
+            hasImages: Boolean(a.heroImage || a.image),
+            town: a.town,
+            province: a.province,
+            verificationState: a.verification_state,
+          });
+        if (scoreDiff !== 0) return scoreDiff;
 
         return (
           new Date(a.auction_date ?? 0).getTime() -
