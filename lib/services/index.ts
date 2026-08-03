@@ -10,3 +10,4 @@ export {
 export { VerificationService } from "./VerificationService";
 export { AuctionIntelligenceService } from "./AuctionIntelligenceService";
 export { VerifiedDataPlatformService } from "./VerifiedDataPlatformService";
+export { PropertyIdentityService } from "./PropertyIdentityService";

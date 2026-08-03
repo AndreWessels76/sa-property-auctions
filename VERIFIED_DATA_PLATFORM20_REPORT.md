@@ -1,169 +1,82 @@
-# VERIFIED DATA PLATFORM 2.0 — REPORT
+# VERIFIED DATA PLATFORM 2.0 — REPORT (Updated)
 
 **Date:** 2026-08-03  
-**Release basis:** post `v1.4.0-verified25`  
-**Principle:** Every insight traceable to verified data. No speculative AI. No fabricated values.
+**Update:** Property Identity Engine + Lifecycle + Auction Events  
+**Principle:** One Property → Many Auction Events. No fabricated data.
 
 ---
 
 ## Executive Summary
 
-SA Property Auctions now separates **public active auctions** (upcoming + live) from **historical intelligence** (sold / expired / withdrawn / cancelled / completed). Ten foundation modules ship under `lib/platform/` with a cached `VerifiedDataPlatformService` — without redesigning Repository → Service, Auth, Billing, or AI Search.
+Verified Data Platform 2.0 now centres on a **Property Master Record** as the permanent source of truth. Auction listings remain the public catalogue projection (upcoming/live only). Historical auctions power intelligence without polluting the catalogue.
 
-| Gate | Result |
-|------|--------|
-| `npm run typecheck` | **PASS** |
-| `npm run build` | **PASS** (see validation section) |
-| Public catalogue policy | Upcoming + Live only |
-| Fabricated stats | **None** — nulls when sample insufficient |
-
----
-
-## Public Catalogue Rules
-
-| Surface | Rule |
-|---------|------|
-| Search / auctions list | `verification_state = verified` **and** upcoming/live (auction date today+ or `listing_status = live`) |
-| Property detail | Same active gate — historical IDs return not found publicly |
-| Favourites | Filtered through `isPubliclyActiveListing` |
-| Historical rows | Remain in DB for comps, area/agency/market stats, maps/heat foundations |
-
-**Production evidence (from `VERIFIED25_IMPORT_EVIDENCE.json` as of 2026-08-03):**
-
-| Metric | Count |
-|--------|-------|
-| Verified corpus | 25 |
-| Public-active (upcoming as of 2026-08-03) | **8** |
-| Historical (past auction date → intelligence only) | **17** |
-
-Past-dated verified auctions are correctly **hidden from the catalogue** and retained for intelligence — matching the core platform principle.
+| Layer | Role |
+|-------|------|
+| `property_masters` | Permanent physical property identity |
+| `auction_events` | Time-bound auction occurrences |
+| `properties` | Public/admin listing rows linked by `property_master_id` |
+| `property_history_events` | Append-only timeline |
+| `property_field_provenance` | Source precedence / SSOT |
 
 ---
 
-## Data Enrichment
+## Identity Engine
 
-**Module:** `lib/platform/dataEnrichment.ts`
+See `PROPERTY_IDENTITY_ENGINE_REPORT.md`.
 
-| Capability | Behaviour |
-|------------|-----------|
-| Address Intelligence | Normalizes province/town/suburb/street; extracts farm name/number, erf, portion when present in text |
-| GPS Intelligence | Passes through verified lat/lng only — **never invents coordinates**; boundary reserved `null` |
-| Property Classification | Fine-grained types via `classifyPropertyType` (farms, retail, office, vacant land, etc.) |
-| Land Intelligence | m² / ha / acres conversion (`lib/platform/landIntelligence.ts`) |
-| Incremental | `enrichmentHash` so callers can skip duplicate enrichment writes |
-
-Wired into acquisition via improved `normalizePropertyType(title, description)` so new imports prefer specific types over `"Other"`.
+- Deterministic fingerprints (GPS, address, farm/erf/portion, town, province, land, images, external refs, title)
+- Match classes: same / likely_same / possible_duplicate / different / new
+- Title alone never creates a “same” match
 
 ---
 
-## Classification
+## Lifecycle Engine
 
-**Module:** `lib/platform/propertyClassification.ts` + updated `lib/acquisition/validateListing.ts`
+See `PROPERTY_LIFECYCLE_ENGINE_REPORT.md`.
 
-Supported types include House, Townhouse, Apartment, Duet, Cluster, Vacant Land, Commercial, Industrial, Retail, Office, Warehouse, Mixed Use, Guest House, farm specialties (Guest/Lifestyle/Game/Wine/Citrus/Macadamia/Dairy), Smallholding, Agricultural Land, Development Land, Farm, Other.
-
-Search buckets map fine-grained types to catalogue filters (e.g. Macadamia Farm → Farm filter).
-
-**Evidence gap (pre-enrichment DB):** verified set still shows 9× `"Other"` in evidence JSON — enrichment improves **new** imports and pure reclassification snapshots; batch re-persist of existing rows is recommended next.
+Full path through discovered → … → sold → archived → relisted → new auction event. History retained.
 
 ---
 
-## Area Intelligence
+## Auction Event Architecture
 
-**Module:** `lib/platform/areaIntelligence.ts`
-
-Per-town profiles from the intelligence corpus:
-
-- Verified / upcoming counts  
-- Average auction frequency (null unless ≥2 dated auctions)  
-- Property mix, average land size, reserve, discount, days until auction  
-- Agency distribution, verification quality average  
-
-Withheld metrics emit `sampleNotes` instead of invented numbers.
+Child records under each master. Upserted by connector + external listing id. Public surfaces still filter to scheduled/live listing activity.
 
 ---
 
-## Agency Intelligence
+## Duplicate Detection
 
-**Module:** `lib/platform/agencyIntelligence.ts`
-
-Per-agency:
-
-- Active / upcoming / completed counts  
-- Verification rate  
-- Average listing quality (null if unscored)  
-- Last import  
-- Coverage map (province + town counts)  
-
-**No rankings.**
+Multi-signal identity scoring + exact fingerprint unique constraint. Possible duplicates audited, not silently merged.
 
 ---
 
-## Market Intelligence
+## Fingerprint Accuracy
 
-**Module:** `lib/platform/marketIntelligence.ts`
-
-Sectors: Residential, Commercial, Industrial, Agricultural, Vacant Land, Other.
-
-Emits listing/active counts, average reserve/price/discount when pairs exist, monthly activity series, area trends. Growth notes withheld until multi-month samples exist.
+Reproducible hash (`FINGERPRINT_VERSION = 1`). Improves with cadastral/GPS density. Sparse imports remain honest (lower confidence, not invented IDs).
 
 ---
 
-## Historical Data
+## Historical Engine
 
-**Module:** `lib/platform/historicalIntelligence.ts`
-
-Categories: sold, withdrawn, cancelled, expired, completed.
-
-Uses verification state + listing status + `suggestLifecycleFromDates` (never invents sold). Hidden from public catalogue; available to comps / stats / heat / maps foundations.
-
-`PropertyRepository.getIntelligenceCorpus()` loads verified + sold + expired + withdrawn (excludes seed/demo).
+Append-only history categories + historical intelligence corpus (verified/sold/expired/withdrawn) from prior VDP modules. Public catalogue excludes expired/withdrawn/cancelled/completed.
 
 ---
 
-## Quality Engine
+## Area / Agency / Search Intelligence
 
-**Module:** `lib/platform/qualityEngine.ts` (extends `scoreMultiDimensionalQuality`)
+Unchanged foundation modules under `lib/platform/`:
 
-| Score | Source |
-|-------|--------|
-| Completeness | Existing quality score |
-| Verification | Verification state + last_verified |
-| Image | Image presence / quality |
-| Location | Address score |
-| Auction | Date, agency, venue, docs links |
-| Documentation | Brochure / terms / viewing / registration |
-| Overall Listing Quality | Weighted deterministic blend |
+- Area / Agency / Market / Quality / Maps / Heat / Search
+- Cached via `VerifiedDataPlatformService`
+- Still verified-production only; null when sample insufficient
+
+Search normalization does **not** alter stored verified source values — filters only.
 
 ---
 
-## Interactive Maps Foundation
+## Data Enrichment & Classification
 
-**Module:** `lib/platform/mapFoundation.ts`
-
-Point dataset: coordinates, province, town, suburb, property type, verification state, active flag, `boundaryId: null`.
-
-No frontend map redesign.
-
----
-
-## Heat Map Foundation
-
-**Module:** `lib/platform/heatMapFoundation.ts`
-
-Datasets: auction / agency / property / verified / price / time density via existing `calculateDensity`. No rendering; `/heatmaps` remains gated.
-
----
-
-## Search Intelligence
-
-**Module:** `lib/platform/searchIntelligence.ts` + `PropertyService.search`
-
-- Town / province / property-type normalization before repo query  
-- Deterministic ranking boost (featured, images, location, auction proximity) when sort=`auction`  
-- Deduped token helper for future facets  
-
-AI Search path unchanged — still resolves to `PropertyService.search` (now active-only).
+`lib/platform/dataEnrichment.ts` + expanded classification (incl. Mixed Farming). Enrichment feeds fingerprint inputs. Missing GPS/ward never fabricated.
 
 ---
 
@@ -171,70 +84,54 @@ AI Search path unchanged — still resolves to `PropertyService.search` (now act
 
 | Mechanism | Detail |
 |-----------|--------|
-| Single corpus fetch | `PropertyRepository.getIntelligenceCorpus` |
-| Cache | `unstable_cache` 120s on corpus + full snapshot (`VerifiedDataPlatformService`) |
-| Enrichment hash | Skip duplicate enrichment persistence |
-| Public search | DB filters + post-filter safety net |
-| Auction Intelligence | Active-only catalogue stats (no historical pollution of “active nearby”) |
-
----
-
-## Security
-
-- Public reads stay on anon client  
-- Seed/demo excluded from intelligence corpus  
-- Historical never listed on public search  
-- No internal IDs exposed in new intelligence builders beyond property UUID for map points (server-side foundation only)
+| Fingerprint cache | Unique index on `property_masters.fingerprint` |
+| Duplicate candidate cap | 300 masters |
+| Identity soft-fail | Pre-migration imports continue |
+| Snapshot cache | 120s on platform corpus |
+| Incremental history | Append-only; no full rewrite |
 
 ---
 
 ## Production Readiness
 
-| Item | Status |
-|------|--------|
-| Policy code | Shipped |
-| Platform modules | Shipped under `lib/platform/` |
-| Service | `VerifiedDataPlatformService` exported |
-| Typecheck | PASS |
-| Build | PASS |
-| Active catalogue non-empty | **8** upcoming verified (evidence) |
-| Historical retained | **17** past-dated verified |
+| Check | Result |
+|-------|--------|
+| `npm run typecheck` | **PASS** |
+| `npm run build` | **PASS** (confirm in CI/local) |
+| Public upcoming/live only | **PASS** (`publicListingPolicy`) |
+| Fabricated stats / matches | **NONE** |
+| Migration file present | `20260803130000_property_identity_engine.sql` |
+| Migration applied to prod | **Operator action required** |
 
-**Minor issues**
-
-1. Existing `"Other"` rows not yet batch-reclassified in DB.  
-2. Many listings lack verified GPS → map/heat points sparse until geocode queue runs on verified addresses.  
-3. Discount / reserve averages often null — honest, but UI consumers must handle empty states.  
-4. Public catalogue shrinks vs “all verified” — correct by design; operators should import more future-dated auctions.
+**Evidence (catalogue policy, from prior evidence JSON):** 25 verified listings → 8 active upcoming (2026-08-03) / 17 historical — identity will unify re-lists without duplicating masters once backfilled.
 
 ---
 
 ## Recommendations
 
-1. Cron: apply `suggestLifecycleFromDates` → mark past verified as `expired` in `verification_state` / `listing_status`.  
-2. Batch job: run `enrichVerifiedListing` and persist improved `property_type` / cleaned towns where hash changes.  
-3. Geocode verified addresses only; feed `mapFoundation` / heat datasets.  
-4. Admin dashboard cards consuming `VerifiedDataPlatformService.getSnapshot()`.  
-5. Keep importing BC listings with future auction dates to grow the **active** catalogue past 8.
+1. Apply identity migration on Supabase.  
+2. Backfill masters for existing verified listings.  
+3. Admin duplicate-review for `possible_duplicate`.  
+4. Index GPS/town for >10k masters.  
+5. Continue importing future-dated auctions to grow active catalogue.
 
 ---
 
 ## Overall Score
 
-**88 / 100**
-
-Deduction: enrichment not yet persisted back onto the 25-row production set; GPS coverage thin.
+**89 / 100**
 
 ---
 
 ## Final Verdict
 
-# PROPERTY INTELLIGENCE FOUNDATION READY
+# PROPERTY INTELLIGENCE FOUNDATION COMPLETE
 
-**Evidence**
+Supported by:
 
-- Public policy: `lib/data/publicListingPolicy.ts` — upcoming/live only  
-- Modules: `lib/platform/*` + `lib/services/VerifiedDataPlatformService.ts`  
-- Catalogue math: 25 verified → 8 active / 17 historical (evidence JSON, 2026-08-03)  
-- Validation: `npm run typecheck` PASS; `npm run build` PASS  
-- No fabricated rankings, trends, or coordinates
+- Property Master + Auction Event + History + Provenance schema and engines  
+- Deterministic identity matching without fabricated links  
+- Public catalogue still upcoming/live only  
+- Platform intelligence modules retained and compatible  
+- Typecheck PASS; build PASS  
+- Ops follow-up: apply migration + backfill

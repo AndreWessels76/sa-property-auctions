@@ -1,6 +1,6 @@
 /**
  * Property classification — Verified Data Platform 2.0
- * Prefer specific types. Never overuse "Other".
+ * Never default to "Other" unless classification confidence is insufficient.
  */
 
 export const PLATFORM_PROPERTY_TYPES = [
@@ -24,6 +24,7 @@ export const PLATFORM_PROPERTY_TYPES = [
   "Citrus Farm",
   "Macadamia Farm",
   "Dairy Farm",
+  "Mixed Farming",
   "Smallholding",
   "Agricultural Land",
   "Development Land",
@@ -75,6 +76,7 @@ export function classifyPropertyType(input: {
   if (/macadamia/.test(hay)) return "Macadamia Farm";
   if (/citrus|orange\s*farm|lemon\s*farm/.test(hay)) return "Citrus Farm";
   if (/dairy\s*farm|dairy\s*farming/.test(hay)) return "Dairy Farm";
+  if (/mixed\s*farm/.test(hay)) return "Mixed Farming";
   if (/wine\s*farm|vineyard|winery/.test(hay)) return "Wine Farm";
   if (/game\s*farm|game\s*lodge|hunting/.test(hay)) return "Game Farm";
   if (/guest\s*farm/.test(hay)) return "Guest Farm";

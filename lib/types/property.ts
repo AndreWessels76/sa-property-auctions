@@ -65,6 +65,11 @@ export type Property = {
   source_content_hash?: string | null;
   rejection_reason?: string | null;
   agricultural_details?: import("@/lib/property/agricultural").AgriculturalDetails | null;
+  property_master_id?: string | null;
+  farm_name?: string | null;
+  farm_number?: string | null;
+  erf_number?: string | null;
+  portion_number?: string | null;
   created_at: string;
   updated_at: string;
   image?: string | null;

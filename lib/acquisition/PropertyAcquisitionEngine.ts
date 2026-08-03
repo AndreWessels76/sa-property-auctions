@@ -30,6 +30,7 @@ import { processImage } from "@/lib/images/processImage";
 import { markHeroAsPrimary } from "@/lib/images/markHeroAsPrimary";
 import { LoggerService } from "@/lib/logger";
 import { refreshPropertyCache } from "@/lib/services/actions";
+import { PropertyIdentityService } from "@/lib/services/PropertyIdentityService";
 import type { Property } from "@/lib/types/property";
 
 type StageLog = AcquisitionRunResult["stageLog"][number];
@@ -221,6 +222,15 @@ export class PropertyAcquisitionEngine {
 
           await this.importImages(existing.id, listing.imageUrls);
           updated += 1;
+          await this.attachPropertyIdentity({
+            listing: { ...existing, ...merged } as Property,
+            listingPropertyId: existing.id,
+            changes: changes.map((c) => ({
+              field: c.fieldName,
+              oldValue: c.oldValue,
+              newValue: c.newValue,
+            })),
+          });
           await log(
             "deduplicate",
             "success",
@@ -282,6 +292,10 @@ export class PropertyAcquisitionEngine {
 
         await this.importImages(id, listing.imageUrls);
         imported += 1;
+        await this.attachPropertyIdentity({
+          listing: insertRow as Property,
+          listingPropertyId: id,
+        });
         await log("verification_queue", "success", `Pending verification ${id}`);
         await log(
           "admin_approval",
@@ -469,6 +483,45 @@ export class PropertyAcquisitionEngine {
       if (assessment.recommendMerge) return existing as Property;
     }
     return null;
+  }
+
+  private async attachPropertyIdentity(input: {
+    listing: Property;
+    listingPropertyId: string;
+    changes?: Array<{
+      field: string;
+      oldValue?: string | null;
+      newValue?: string | null;
+    }>;
+  }) {
+    try {
+      const result = await PropertyIdentityService.resolveAndAttach({
+        listing: input.listing,
+        listingPropertyId: input.listingPropertyId,
+        sourceName: "Bidders Choice",
+        connectorId: BIDDERS_CHOICE_CONNECTOR_ID,
+        changes: input.changes,
+      });
+      if (!result.schemaAvailable) {
+        LoggerService.warn("acquisition.identity_schema_pending", {
+          listingId: input.listingPropertyId,
+        });
+        return;
+      }
+      LoggerService.info("acquisition.identity_attached", {
+        listingId: input.listingPropertyId,
+        masterId: result.master?.id ?? null,
+        matchClass: result.match.matchClass,
+        confidence: result.match.confidence,
+        auctionEventId: result.auctionEventId,
+      });
+    } catch (error) {
+      // Identity is foundational but must not block listing import.
+      LoggerService.warn("acquisition.identity_attach_failed", {
+        listingId: input.listingPropertyId,
+        error: error instanceof Error ? error.message : "unknown",
+      });
+    }
   }
 
   private async importImages(propertyId: string, urls: string[]) {

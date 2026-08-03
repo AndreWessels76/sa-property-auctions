@@ -9,3 +9,4 @@ export * from "./PropertyAiAnalysisRepository";
 export * from "./SubscriptionRepository";
 export * from "./BillingRepository";
 export * from "./VerificationRepository";
+export * from "./PropertyIdentityRepository";
