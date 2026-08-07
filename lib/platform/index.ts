@@ -18,6 +18,14 @@ export { buildMapFoundationDataset } from "./mapFoundation";
 export type { MapFoundationDataset } from "./mapFoundation";
 export { buildHeatMapFoundationDatasets } from "./heatMapFoundation";
 export type { HeatMapFoundationDatasets } from "./heatMapFoundation";
+export { buildGovernanceReport } from "./dataGovernance";
+export type { GovernanceReport } from "./dataGovernance";
+export { buildMediaIntelligence } from "./mediaIntelligence";
+export {
+  buildProvinceReportCsv,
+  buildAgencyReportCsv,
+  buildTownReportCsv,
+} from "./reportingEngine";
 export {
   normalizeSearchFilters,
   searchRankingScore,

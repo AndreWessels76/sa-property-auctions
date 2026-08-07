@@ -69,6 +69,36 @@ export default function Dashboard({
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link
+          href="/workspace"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-navy-900/20"
+        >
+          <h2 className="font-semibold text-navy-900">Investor Workspace</h2>
+          <p className="mt-2 text-sm text-slate-500">
+            Private notes, trackers and saved properties
+          </p>
+        </Link>
+
+        <Link
+          href="/alerts"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-navy-900/20"
+        >
+          <h2 className="font-semibold text-navy-900">Smart Alerts</h2>
+          <p className="mt-2 text-sm text-slate-500">
+            Deterministic auction alert rules
+          </p>
+        </Link>
+
+        <Link
+          href="/calendar"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-navy-900/20"
+        >
+          <h2 className="font-semibold text-navy-900">Auction Calendar</h2>
+          <p className="mt-2 text-sm text-slate-500">
+            Agenda, filters and ICS export
+          </p>
+        </Link>
+
+        <Link
           href="/profile"
           className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-navy-900/20"
         >

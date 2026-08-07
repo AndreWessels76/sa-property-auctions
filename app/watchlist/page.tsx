@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-/** Incomplete feature — do not expose stub UI. */
+/** Watchlist lives in Investor Workspace (premium). */
 export default function WatchlistPage() {
-  redirect("/dashboard");
+  redirect("/workspace");
 }

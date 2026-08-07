@@ -52,6 +52,27 @@ export type AuctionIntelligencePanel = {
     conditions: boolean;
     viewing: boolean;
   };
+  /** Auction Intelligence 2.0 — verified aggregates only */
+  auctionMomentum: {
+    label: string;
+    level: ConfidenceLevel;
+  };
+  auctionDensity: {
+    label: string;
+    townCount: number;
+  };
+  historicalActivity: {
+    label: string;
+    note: string;
+  };
+  documentQuality: {
+    percent: number;
+    label: string;
+  };
+  marketContext: {
+    label: string;
+    provinceShare: number | null;
+  };
   futureReserved: Array<{
     title: string;
     note: string;
@@ -325,8 +346,52 @@ export function buildAuctionIntelligencePanel(input: {
     property.auction_agency?.trim() ||
     "Verified auction source";
 
+  // Auction Intelligence 2.0 metrics (deterministic from catalogue)
+  const days = computeDaysUntilAuction(property.auction_date);
+  let momentumLabel = "Insufficient verified activity";
+  let momentumLevel: ConfidenceLevel = "Low";
+  if (catalogue.auctionsThisWeek >= 5 && nearbyAdjusted >= 3) {
+    momentumLabel = "Elevated verified auction activity this week";
+    momentumLevel = "High";
+  } else if (catalogue.auctionsThisWeek >= 2 || nearbyAdjusted >= 2) {
+    momentumLabel = "Moderate verified auction activity";
+    momentumLevel = "Medium";
+  } else if (days.status === "today" || days.status === "tomorrow") {
+    momentumLabel = "Auction imminent — limited area sample";
+    momentumLevel = "Medium";
+  }
+
+  const townCount = catalogue.byTown[town] ?? 0;
+  const densityLabel =
+    townCount >= 5
+      ? `High verified density in ${town || "this area"} (${townCount})`
+      : townCount >= 2
+        ? `Moderate verified density in ${town || "this area"} (${townCount})`
+        : town
+          ? `Sparse verified density in ${town}`
+          : "Town density not available";
+
+  const docFlags = [
+    docs.some((d) => d.kind === "brochure"),
+    docs.some((d) => d.kind === "catalogue"),
+    docs.some((d) => d.kind === "terms"),
+    Boolean(property.viewing_information?.trim()),
+  ];
+  const docPresent = docFlags.filter(Boolean).length;
+  const documentQualityPercent = Math.round((docPresent / docFlags.length) * 100);
+
+  const provinceCount = province ? catalogue.byProvince[province] ?? 0 : 0;
+  const provinceShare =
+    catalogue.totalVerified > 0
+      ? Math.round((provinceCount / catalogue.totalVerified) * 1000) / 10
+      : null;
+  const marketContextLabel =
+    provinceShare != null && province
+      ? `${province} holds ${provinceShare}% of active verified catalogue`
+      : "Province share unavailable";
+
   return {
-    daysUntilAuction: computeDaysUntilAuction(property.auction_date),
+    daysUntilAuction: days,
     listingQuality: quality,
     verificationConfidence,
     comparableConfidence: computeComparableConfidence(comparableCount),
@@ -365,22 +430,39 @@ export function buildAuctionIntelligencePanel(input: {
       conditions: docs.some((d) => d.kind === "terms"),
       viewing: Boolean(property.viewing_information?.trim()),
     },
+    auctionMomentum: {
+      label: momentumLabel,
+      level: momentumLevel,
+    },
+    auctionDensity: {
+      label: densityLabel,
+      townCount,
+    },
+    historicalActivity: {
+      label: "Historical auctions retained internally",
+      note: "Completed/expired auctions power comps and area stats — not shown in public catalogue.",
+    },
+    documentQuality: {
+      percent: documentQualityPercent,
+      label:
+        documentQualityPercent >= 75
+          ? "Strong document coverage"
+          : documentQualityPercent >= 40
+            ? "Partial document coverage"
+            : "Limited documents linked",
+    },
+    marketContext: {
+      label: marketContextLabel,
+      provinceShare,
+    },
     futureReserved: [
       {
         title: "Neighbourhood Intelligence",
-        note: "Reserved for verified amenity and area insights.",
+        note: "Reserved for verified amenity layers when available.",
       },
       {
-        title: "Market Trends",
-        note: "Reserved for verified price movement over time.",
-      },
-      {
-        title: "Heat Maps",
-        note: "Reserved for auction density visualisation.",
-      },
-      {
-        title: "Auction Density",
-        note: "Reserved for regional concentration metrics.",
+        title: "Street View / Satellite context",
+        note: "Reserved for map basemap toggles on the national map.",
       },
     ],
   };

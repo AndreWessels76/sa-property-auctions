@@ -10,3 +10,4 @@ export * from "./SubscriptionRepository";
 export * from "./BillingRepository";
 export * from "./VerificationRepository";
 export * from "./PropertyIdentityRepository";
+export * from "./PartnershipRepository";

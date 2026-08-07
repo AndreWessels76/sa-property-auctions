@@ -10,6 +10,7 @@ import {
   BarChart3,
   ShieldCheck,
   Home,
+  Network,
 } from "lucide-react";
 
 /** Only ship links to pages that exist for closed beta. */
@@ -28,6 +29,11 @@ const menu = [
     name: "Operations",
     href: "/admin/operations",
     icon: Activity,
+  },
+  {
+    name: "Acquisition",
+    href: "/admin/acquisition",
+    icon: Network,
   },
   {
     name: "Imports",

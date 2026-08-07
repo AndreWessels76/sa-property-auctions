@@ -172,6 +172,43 @@ export default function AuctionIntelligencePanelCard({ panel }: Props) {
             </p>
           </div>
         </Metric>
+
+        <Metric label="Auction momentum">
+          <div className="flex flex-wrap items-center gap-2">
+            <ConfidenceBadge level={panel.auctionMomentum.level} />
+            <span className="text-xs font-medium text-slate-600">
+              {panel.auctionMomentum.label}
+            </span>
+          </div>
+        </Metric>
+
+        <Metric label="Auction density">
+          {panel.auctionDensity.label}
+        </Metric>
+
+        <Metric label="Document quality">
+          <div>
+            <span className="text-2xl font-bold text-navy-900">
+              {panel.documentQuality.percent}%
+            </span>
+            <p className="mt-1 text-xs font-medium text-slate-600">
+              {panel.documentQuality.label}
+            </p>
+          </div>
+        </Metric>
+
+        <Metric label="Historical activity">
+          <div>
+            <p>{panel.historicalActivity.label}</p>
+            <p className="mt-1 text-xs font-medium text-slate-600">
+              {panel.historicalActivity.note}
+            </p>
+          </div>
+        </Metric>
+
+        <Metric label="Market context">
+          {panel.marketContext.label}
+        </Metric>
       </div>
 
       <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50/80 p-3">

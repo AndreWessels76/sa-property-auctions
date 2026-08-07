@@ -8,6 +8,11 @@ import AuctionAgencyCard from "@/components/property/AuctionAgencyCard";
 import AgriculturalDetailsSection from "@/components/property/AgriculturalDetailsSection";
 import ComparableSalesSection from "@/components/property/ComparableSalesSection";
 import ListingProvenanceCard from "@/components/property/ListingProvenanceCard";
+import AgencyPerformanceCard from "@/components/property/detail/AgencyPerformanceCard";
+import AuctionIntelligencePanel from "@/components/property/detail/AuctionIntelligencePanel";
+import DueDiligenceCentreSection from "@/components/property/detail/DueDiligenceCentreSection";
+import InvestorWorkspacePanel from "@/components/property/detail/InvestorWorkspacePanel";
+import MarketActivitySection from "@/components/property/detail/MarketActivitySection";
 import PropertyAIInsightsSection from "@/components/property/detail/PropertyAIInsightsSection";
 import PropertyAuctionCard from "@/components/property/detail/PropertyAuctionCard";
 import PropertyBreadcrumbs from "@/components/property/detail/PropertyBreadcrumbs";
@@ -22,17 +27,25 @@ import PropertyPricingIntelligence from "@/components/property/detail/PropertyPr
 import PropertyRelatedSection from "@/components/property/detail/PropertyRelatedSection";
 import PropertyStructuredData from "@/components/property/detail/PropertyStructuredData";
 import PropertySummarySection from "@/components/property/detail/PropertySummarySection";
-import AuctionIntelligencePanel from "@/components/property/detail/AuctionIntelligencePanel";
+import PropertyTimelineSection from "@/components/property/detail/PropertyTimelineSection";
+import ResearchReportSummaryCard from "@/components/property/detail/ResearchReportSummaryCard";
 import { getPropertyImage } from "@/lib/format";
 import { getImages } from "@/lib/images/getImages";
 import { selectHeroImage } from "@/lib/images/selectHero";
 import { PropertyIntelligence } from "@/lib/intelligence";
 import { getComparableSales } from "@/lib/maps/getComparableSales";
 import { isFarmPropertyType } from "@/lib/property/agricultural";
-import { getSourceReliabilityLabel } from "@/lib/property/detailExperience";
+import { buildDueDiligenceCentre } from "@/lib/property/dueDiligence";
+import {
+  buildDocumentLinks,
+  getSourceReliabilityLabel,
+} from "@/lib/property/detailExperience";
+import { buildLifecycleTimeline } from "@/lib/property/lifecycleTimeline";
+import { buildAuctionResearchReport } from "@/lib/property/researchReport";
 import { getRelatedListingGroups } from "@/lib/property/relatedListings";
 import {
   AuctionIntelligenceService,
+  PropertyIntelligenceService,
   PropertyService,
 } from "@/lib/services";
 
@@ -122,12 +135,46 @@ export default async function PropertyPage({ params }: PageProps) {
   const galleryHasImages = images.some((image) =>
     Boolean(image.image_url?.trim()),
   );
+  const hasDocuments = buildDocumentLinks(property).length > 0;
 
   const intelligencePanel = await AuctionIntelligenceService.buildPanel({
     property,
     hasImages: galleryHasImages,
     comparableCount: comparables.length,
   });
+
+  const timelineEvents = buildLifecycleTimeline({
+    property,
+    hasImages: galleryHasImages,
+    hasDocuments,
+  });
+
+  const researchReport = buildAuctionResearchReport({
+    property,
+    timeline: timelineEvents,
+    intelligence: intelligencePanel,
+    comparableCount: comparables.length,
+    siteUrl,
+  });
+
+  const dueDiligence = buildDueDiligenceCentre(property);
+
+  let agencyProfile = null;
+  try {
+    const agencies = await PropertyIntelligenceService.getAgencyDashboardData();
+    const needle = (
+      property.auction_agency ||
+      property.source_name ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+    agencyProfile =
+      agencies.find((a) => a.agencyName.trim().toLowerCase() === needle) ??
+      null;
+  } catch {
+    agencyProfile = null;
+  }
 
   const hero = selectHeroImage(images);
   const heroImage =
@@ -189,13 +236,16 @@ export default async function PropertyPage({ params }: PageProps) {
           </Link>
 
           <div className="space-y-8">
-            {/* 1 Hero summary */}
+            {/* Hero */}
             <PropertyHeroSection property={property} />
 
-            {/* Auction Intelligence — verified data only */}
+            {/* Auction Intelligence */}
             <AuctionIntelligencePanel panel={intelligencePanel} />
 
-            {/* 2 Gallery */}
+            {/* Research Report Summary */}
+            <ResearchReportSummaryCard report={researchReport} />
+
+            {/* Gallery */}
             <PropertyGalleryExperience
               images={gallerySlides}
               title={property.title}
@@ -203,45 +253,56 @@ export default async function PropertyPage({ params }: PageProps) {
               placeholderUrl={heroImage}
             />
 
-            {/* 3 Property summary — always visible */}
+            {/* Property Summary */}
             <PropertySummarySection property={property} />
 
             <div className="grid gap-8 lg:grid-cols-3">
               <div className="space-y-8 lg:col-span-2">
-                {/* 4 Highlights */}
+                {/* Highlights */}
                 <PropertyHighlightsSection property={property} />
 
-                {/* 5 Auction */}
+                {/* Auction Information */}
                 <PropertyAuctionCard property={property} />
 
-                {/* 6 Property description */}
+                {/* Due Diligence Centre */}
+                <DueDiligenceCentreSection centre={dueDiligence} />
+
+                {/* Description */}
                 <PropertyDescriptionSection
                   description={property.description}
                 />
 
-                {/* 7 Agricultural (farm only) */}
+                {/* Agricultural (when applicable) */}
                 {isFarm ? (
                   <AgriculturalDetailsSection
                     details={property.agricultural_details}
                   />
                 ) : null}
 
-                {/* 8 Location */}
+                {/* Location */}
                 <PropertyLocationSection
                   property={property}
                   comparables={comparables}
                 />
 
-                {/* 9 Comparables */}
+                {/* Comparable Sales */}
                 <ComparableSalesSection
                   rows={comparableRows}
                   subjectAuctionPrice={property.auction_price}
                 />
 
-                {/* 10 Documents */}
-                <PropertyDocumentsSection property={property} />
+                {/* Market Activity */}
+                <MarketActivitySection
+                  areaLabel={intelligencePanel.areaActivity.label}
+                  auctionsThisWeek={
+                    intelligencePanel.areaActivity.auctionsThisWeek
+                  }
+                  activeNearby={intelligencePanel.areaActivity.activeNearby}
+                  comparableCount={comparables.length}
+                  comparableConfidence={intelligencePanel.comparableConfidence}
+                />
 
-                {/* 11 Agency */}
+                {/* Agency contact + performance */}
                 <AuctionAgencyCard
                   source={property.source}
                   auctionAgency={property.auction_agency}
@@ -250,8 +311,20 @@ export default async function PropertyPage({ params }: PageProps) {
                   sourceName={property.source_name}
                   sourceUrl={property.source_url}
                 />
+                <AgencyPerformanceCard
+                  profile={agencyProfile}
+                  agencyName={
+                    property.auction_agency || property.source_name
+                  }
+                />
 
-                {/* 12 Provenance */}
+                {/* Auction / Lifecycle Timeline */}
+                <PropertyTimelineSection events={timelineEvents} />
+
+                {/* Property Documents */}
+                <PropertyDocumentsSection property={property} />
+
+                {/* Verification + Provenance */}
                 <ListingProvenanceCard
                   dataClassification={property.data_classification}
                   verificationState={property.verification_state}
@@ -268,18 +341,18 @@ export default async function PropertyPage({ params }: PageProps) {
                   sourceReliabilityLabel={getSourceReliabilityLabel(property)}
                 />
 
-                {/* 13 Related */}
+                {/* Investor Workspace (premium) */}
+                <InvestorWorkspacePanel propertyId={property.id} />
+
+                {/* Related */}
                 <PropertyRelatedSection groups={relatedGroups} />
               </div>
 
               <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-                {/* Pricing intelligence sidebar */}
                 <PropertyPricingIntelligence
                   property={property}
                   confidence={intelligence.confidence}
                 />
-
-                {/* 14 AI insights (premium) */}
                 <PropertyAIInsightsSection
                   property={property}
                   intelligence={intelligence}

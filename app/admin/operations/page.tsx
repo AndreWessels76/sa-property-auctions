@@ -1,8 +1,9 @@
-import LiveStatCard from "./components/LiveStatCard";
+﻿import LiveStatCard from "./components/LiveStatCard";
 import HealthPanel from "./components/HealthPanel";
 import ActivityFeed from "./components/ActivityFeed";
 import QuickActions from "./components/QuickActions";
 import ImportStatus from "./components/ImportStatus";
+import InvestorOpsPanels from "./components/InvestorOpsPanels";
 
 export default function OperationsPage() {
   return (
@@ -60,6 +61,8 @@ export default function OperationsPage() {
         </div>
 
       </div>
+
+      <InvestorOpsPanels />
 
     </div>
   );

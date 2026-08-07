@@ -18,37 +18,6 @@ type HeatMapDashboardProps = {
   }>;
 };
 
-const SAMPLE_PROPERTIES = [
-  {
-    title: "Johannesburg opportunity cluster",
-    town: "Johannesburg",
-    latitude: -26.2041,
-    longitude: 28.0473,
-    opportunity_score: 88,
-  },
-  {
-    title: "Cape Town growth pocket",
-    town: "Cape Town",
-    latitude: -33.9249,
-    longitude: 18.4241,
-    opportunity_score: 76,
-  },
-  {
-    title: "Durban risk zone",
-    town: "Durban",
-    latitude: -29.8587,
-    longitude: 31.0218,
-    opportunity_score: 54,
-  },
-  {
-    title: "Pretoria auction density",
-    town: "Pretoria",
-    latitude: -25.7479,
-    longitude: 28.2293,
-    opportunity_score: 81,
-  },
-];
-
 function categoryLabel(category: HeatPoint["category"]) {
   switch (category) {
     case "roi":
@@ -63,7 +32,7 @@ function categoryLabel(category: HeatPoint["category"]) {
 }
 
 export default function HeatMapDashboard({
-  properties = SAMPLE_PROPERTIES,
+  properties = [],
 }: HeatMapDashboardProps) {
   const [enabled, setEnabled] = useState(true);
 
@@ -96,7 +65,7 @@ export default function HeatMapDashboard({
             <PremiumBadge />
           </div>
           <p className="text-sm text-slate-500">
-            Opportunity density across auction markets
+            Verified auction density only — no sample or fabricated points
           </p>
         </div>
 
@@ -113,6 +82,10 @@ export default function HeatMapDashboard({
           {!enabled ? (
             <div className="flex h-full min-h-[360px] items-center justify-center text-sm text-slate-300">
               Heat map hidden
+            </div>
+          ) : points.length === 0 ? (
+            <div className="flex h-full min-h-[360px] items-center justify-center text-sm text-slate-300">
+              No verified coordinates available for density rendering yet.
             </div>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2">

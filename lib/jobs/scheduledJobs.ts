@@ -14,6 +14,12 @@ export type ScheduledJobDefinition = {
 
 export const DATA_FOUNDATION_JOBS: ScheduledJobDefinition[] = [
   {
+    id: "daily_connector_health",
+    cadence: "daily",
+    description: "Probe verified connector health and log awaiting-license partners",
+    handler: "refresh_metadata",
+  },
+  {
     id: "daily_verify_listings",
     cadence: "daily",
     description: "Verify listings pending source confirmation",

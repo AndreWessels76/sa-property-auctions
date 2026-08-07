@@ -11,3 +11,9 @@ export { VerificationService } from "./VerificationService";
 export { AuctionIntelligenceService } from "./AuctionIntelligenceService";
 export { VerifiedDataPlatformService } from "./VerifiedDataPlatformService";
 export { PropertyIdentityService } from "./PropertyIdentityService";
+export { PropertyIntelligenceService } from "./PropertyIntelligenceService";
+export { PartnershipPlatformService } from "./PartnershipPlatformService";
+export {
+  InvestorWorkspaceService,
+  SmartAlertService,
+} from "./InvestorWorkspaceService";
