@@ -257,10 +257,54 @@ export class PartnershipPlatformService {
                 ) / verified.length,
               ),
       },
+      sourceRefresh: await this.partnerSourceRefreshSummary(partner.partner_code),
       recentErrors: partnerImports
         .flatMap((r) => (Array.isArray(r.errors) ? (r.errors as string[]) : []))
         .slice(0, 20),
     };
+  }
+
+  /** Soft summary for partner dashboards — never exposes secrets or raw HTML. */
+  static async partnerSourceRefreshSummary(partnerCode: string) {
+    try {
+      const { RefetchAudit } = await import(
+        "@/lib/acquisition/refetch/refetchAudit"
+      );
+      const runs = await RefetchAudit.listRecent(100);
+      const scoped = runs.filter(
+        (r) =>
+          (r.partner_code ?? "").toLowerCase().includes(partnerCode.toLowerCase()) ||
+          (r.connector_id ?? "").toLowerCase().includes(partnerCode.toLowerCase()),
+      );
+      const success = scoped.filter(
+        (r) => r.status === "completed" || r.status === "no_change",
+      ).length;
+      const failed = scoped.filter((r) => r.status === "failed").length;
+      const changed = scoped.filter((r) => r.changed).length;
+      const last = scoped[0];
+      return {
+        lastFetch: last?.completed_at ?? last?.started_at ?? null,
+        successRate:
+          scoped.length === 0
+            ? null
+            : Math.round((success / scoped.length) * 100),
+        changedListings: changed,
+        failedListings: failed,
+        licenseSkips: scoped.filter((r) => r.status === "SKIPPED_LICENSE").length,
+        robotsSkips: scoped.filter((r) => r.status === "SKIPPED_ROBOTS").length,
+        totalRuns: scoped.length,
+      };
+    } catch {
+      return {
+        lastFetch: null,
+        successRate: null,
+        changedListings: 0,
+        failedListings: 0,
+        licenseSkips: 0,
+        robotsSkips: 0,
+        totalRuns: 0,
+      };
+    }
   }
 
   /** Record an orchestrated import shell (metrics only — does not publish). */

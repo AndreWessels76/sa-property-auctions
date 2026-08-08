@@ -19,3 +19,4 @@ export {
 } from "./InvestorWorkspaceService";
 export { DueDiligenceExtractionService } from "./DueDiligenceExtractionService";
 export { OperationsQuickActionsService } from "./OperationsQuickActionsService";
+export { SourceRefetchService } from "./SourceRefetchService";

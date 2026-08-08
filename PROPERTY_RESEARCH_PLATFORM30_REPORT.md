@@ -22,6 +22,12 @@ Research reports now consume `buildDueDiligenceCentre` extraction output:
 - Completeness overall % in intelligence summary
 - Report version **3.1.0**
 
+### Update — 2026-08-08 (Live Source Re-fetch 1.0)
+
+When a licensed source page changes, re-fetch can refresh `source_page_text` for the same deterministic extractors feeding research reports. Unchanged hashes skip work. Verified conflicts stay in admin review — research reports continue to prefer verified / source-confirmed fields and never invent missing facts.
+
+See `LIVE_SOURCE_REFETCH10_REPORT.md`.
+
 ---
 
 ## Architecture

@@ -133,3 +133,18 @@ Supported by:
 ## Update — 2026-08-08
 
 Due Diligence Extraction 1.0 consumes acquired listing text/links (title, description, features, document URLs) without redesigning acquisition. Optional future step: pass licensed page HTML into `source_page_text` after import for richer extraction. Extraction audit table soft-fails until migration applied; does not auto-publish or bypass verification.
+
+## Update — 2026-08-08 (Live Source Re-fetch 1.0)
+
+Controlled re-fetch of **already licensed** official listing URLs is now available:
+
+- `lib/acquisition/refetch/*` + `SourceRefetchService`
+- License / robots / rate / concurrency gates before HTTP
+- Append-only `source_snapshots` + `source_refetch_runs`
+- On content change → existing DD extraction (not a second importer)
+- Cron: `/api/cron/source-refetch`
+- Ops: Source Refresh queue + Quick Action
+
+Does **not** expand to unlicensed partners. Does **not** bypass verification or public catalogue rules.
+
+See `LIVE_SOURCE_REFETCH10_REPORT.md`.

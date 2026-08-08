@@ -85,7 +85,21 @@ Tests: 7/7 passed (`npm run test:dd`).
 - Admin-only extraction API (`PermissionService.requireAdmin`).
 - Service-role writes to audit table only; RLS admin read.
 - No auto-verify of legal/municipal fields.
-- Does not scrape restricted partner content in this release (uses permitted stored fields).
+- Live partner HTML may now be supplied via Live Source Re-fetch (`source_page_text`) only after license + robots gates; default storeRawHtml remains false.
+
+---
+
+## Update — 2026-08-08 (Live Source Re-fetch 1.0)
+
+Extraction engine is now the **downstream consumer** of controlled re-fetch:
+
+`licensed URL → snapshot → hash → (on change) runDueDiligenceExtraction(source_page_text)`
+
+- Unchanged hash → extraction skipped  
+- VERIFIED field diffs → CONFLICT (not silent overwrite)  
+- Same extractor — no second pipeline  
+
+See `LIVE_SOURCE_REFETCH10_REPORT.md`.
 
 ---
 

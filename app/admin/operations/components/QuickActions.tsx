@@ -35,21 +35,46 @@ type SheriffResult = {
   error?: string;
 };
 
+type RefetchBatchResult = {
+  ok?: boolean;
+  runId?: string;
+  message?: string;
+  processed?: number;
+  completed?: number;
+  changed?: number;
+  noChange?: number;
+  conflicts?: number;
+  skippedLicense?: number;
+  skippedRobots?: number;
+  skippedOther?: number;
+  unavailable?: number;
+  failed?: number;
+  error?: string;
+};
+
 /** Stable destinations — verified against app routes. */
 export const QUICK_ACTION_ROUTES = {
   sources: "/admin/acquisition",
   analytics: "/intelligence",
 } as const;
 
+/** Visible label — used by regression selftests. */
+export const REFRESH_UPCOMING_SOURCES_LABEL = "Refresh Upcoming Sources";
+
+/** Backend endpoint for the refresh quick action. */
+export const SOURCE_REFETCH_API = "/api/admin/operations/source-refetch";
+
 export default function QuickActions() {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [runningAll, setRunningAll] = useState(false);
   const [runningSheriff, setRunningSheriff] = useState(false);
+  const [runningRefetch, setRunningRefetch] = useState(false);
   const [lastRun, setLastRun] = useState<RunAllResult | null>(null);
+  const [lastRefetch, setLastRefetch] = useState<RefetchBatchResult | null>(null);
 
   async function runAllImports() {
-    if (runningAll || runningSheriff) return;
+    if (runningAll || runningSheriff || runningRefetch) return;
     setRunningAll(true);
     setLastRun(null);
     toast.message("Running imports...");
@@ -92,7 +117,7 @@ export default function QuickActions() {
   }
 
   async function runSheriffImport() {
-    if (runningAll || runningSheriff) return;
+    if (runningAll || runningSheriff || runningRefetch) return;
     setRunningSheriff(true);
     toast.message("Running Sheriff Import...");
 
@@ -126,6 +151,54 @@ export default function QuickActions() {
     }
   }
 
+  async function refreshUpcomingSources() {
+    if (runningAll || runningSheriff || runningRefetch) return;
+    setRunningRefetch(true);
+    setLastRefetch(null);
+    toast.message("Refreshing upcoming sources...");
+
+    try {
+      const res = await fetch(SOURCE_REFETCH_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "refresh_upcoming",
+          limit: 10,
+          force: false,
+        }),
+      });
+      const data = (await res.json()) as RefetchBatchResult;
+      const result = (data as { data?: RefetchBatchResult }).data ?? data;
+
+      if (!res.ok) {
+        const msg =
+          result.error ??
+          (res.status === 401
+            ? "You must sign in to perform this action."
+            : res.status === 403
+              ? "You are not authorized to perform this action."
+              : "Source refresh failed.");
+        toast.error(msg);
+        setLastRefetch({ ok: false, message: msg });
+        return;
+      }
+
+      setLastRefetch(result);
+      if ((result.processed ?? 0) === 0) {
+        toast.message(result.message ?? "No eligible sources to refresh.");
+      } else if (result.ok === false) {
+        toast.error(result.message ?? "Source refresh completed with errors.");
+      } else {
+        toast.success(result.message ?? "Source refresh completed.");
+      }
+    } catch {
+      toast.error("Source refresh failed.");
+      setLastRefetch({ ok: false, message: "Source refresh failed." });
+    } finally {
+      setRunningRefetch(false);
+    }
+  }
+
   function openSources() {
     toast.message("Opening Sources...");
     startTransition(() => {
@@ -140,7 +213,7 @@ export default function QuickActions() {
     });
   }
 
-  const busy = runningAll || runningSheriff || pending;
+  const busy = runningAll || runningSheriff || runningRefetch || pending;
 
   return (
     <div className="rounded-2xl bg-white p-6 shadow">
@@ -181,6 +254,17 @@ export default function QuickActions() {
           className="rounded-xl border py-3 font-semibold disabled:cursor-not-allowed disabled:opacity-70"
         >
           View Analytics
+        </button>
+
+        <button
+          type="button"
+          data-testid="refresh-upcoming-sources"
+          disabled={busy}
+          onClick={() => void refreshUpcomingSources()}
+          aria-busy={runningRefetch}
+          className="rounded-xl border py-3 font-semibold disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {runningRefetch ? "Refreshing Sources..." : REFRESH_UPCOMING_SOURCES_LABEL}
         </button>
       </div>
 
@@ -225,6 +309,51 @@ export default function QuickActions() {
                 </li>
               ))}
             </ul>
+          ) : null}
+        </div>
+      ) : null}
+
+      {lastRefetch ? (
+        <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm">
+          <h3 className="font-bold text-navy-900">Source Refresh Complete</h3>
+          <p className="mt-1 text-xs text-slate-600">{lastRefetch.message}</p>
+          {(lastRefetch.processed ?? 0) === 0 && lastRefetch.ok !== false ? (
+            <p className="mt-2 text-xs font-medium text-amber-800">
+              No eligible upcoming/live licensed sources were available to refresh.
+            </p>
+          ) : null}
+          <table className="mt-3 w-full text-left text-xs">
+            <tbody>
+              {(
+                [
+                  ["Attempted", lastRefetch.processed],
+                  ["Fetched", lastRefetch.completed],
+                  ["No change", lastRefetch.noChange],
+                  ["Changed", lastRefetch.changed],
+                  ["Skipped license", lastRefetch.skippedLicense],
+                  ["Skipped robots", lastRefetch.skippedRobots],
+                  ["Skipped other", lastRefetch.skippedOther],
+                  ["Unavailable", lastRefetch.unavailable],
+                  ["Failed", lastRefetch.failed],
+                  ["Conflicts", lastRefetch.conflicts],
+                  ["Extraction runs", lastRefetch.completed],
+                ] as const
+              ).map(([label, value]) =>
+                value != null ? (
+                  <tr key={label} className="border-t border-slate-200">
+                    <td className="py-1 text-slate-500">{label}</td>
+                    <td className="py-1 text-right font-semibold text-navy-900">
+                      {value}
+                    </td>
+                  </tr>
+                ) : null,
+              )}
+            </tbody>
+          </table>
+          {lastRefetch.runId ? (
+            <p className="mt-2 text-[11px] text-slate-400">
+              Run ID: {lastRefetch.runId}
+            </p>
           ) : null}
         </div>
       ) : null}

@@ -5,6 +5,7 @@ import QuickActions from "./components/QuickActions";
 import ImportStatus from "./components/ImportStatus";
 import InvestorOpsPanels from "./components/InvestorOpsPanels";
 import DueDiligenceExtractionPanel from "./components/DueDiligenceExtractionPanel";
+import SourceRefreshQueue from "./components/SourceRefreshQueue";
 
 export default function OperationsPage() {
   return (
@@ -64,6 +65,8 @@ export default function OperationsPage() {
       </div>
 
       <InvestorOpsPanels />
+
+      <SourceRefreshQueue />
 
       <DueDiligenceExtractionPanel />
 

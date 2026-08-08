@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-08-08T11:47:17.842Z",
+  "tests": [
+    {
+      "name": "license_blocked",
+      "pass": true,
+      "detail": "No active partner licence — live fetch blocked"
+    },
+    {
+      "name": "license_active",
+      "pass": true,
+      "detail": "allowed"
+    },
+    {
+      "name": "license_env",
+      "pass": true,
+      "detail": "BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH"
+    },
+    {
+      "name": "host_allowlist",
+      "pass": true,
+      "detail": "bc allowed, evil blocked"
+    },
+    {
+      "name": "content_type",
+      "pass": true,
+      "detail": "html ok pdf blocked"
+    },
+    {
+      "name": "content_hash",
+      "pass": true,
+      "detail": "2cf24dba5fb0"
+    },
+    {
+      "name": "verified_conflict",
+      "pass": true,
+      "detail": "4.164 vs 4.21 → CONFLICT"
+    },
+    {
+      "name": "source_confirmed_update",
+      "pass": true,
+      "detail": "2 → 3 UPDATED"
+    },
+    {
+      "name": "auction_date_change",
+      "pass": true,
+      "detail": "11→18 Aug"
+    },
+    {
+      "name": "document_change",
+      "pass": true,
+      "detail": "add+remove"
+    },
+    {
+      "name": "source_value_removed_verified",
+      "pass": true,
+      "detail": "CONFLICT"
+    },
+    {
+      "name": "rate_limit",
+      "pass": true,
+      "detail": "3/10 allowed"
+    },
+    {
+      "name": "priority",
+      "pass": true,
+      "detail": "live=1000 soon=900 hist=5"
+    },
+    {
+      "name": "html_plain",
+      "pass": true,
+      "detail": "X 2 bed · 4.164 Ha"
+    },
+    {
+      "name": "scheduler",
+      "pass": true,
+      "detail": "2,3"
+    },
+    {
+      "name": "routes",
+      "pass": true,
+      "detail": "cron+admin+quick action"
+    },
+    {
+      "name": "change_classes",
+      "pass": true,
+      "detail": "PROPERTY_DATA_CHANGED,CONFLICT_REVIEW_REQUIRED"
+    },
+    {
+      "name": "live_fetch_skipped",
+      "pass": true,
+      "detail": "env not enabled"
+    }
+  ],
+  "live_fetch": null,
+  "verdict_notes": [
+    "Live BC fetch skipped — BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH not true"
+  ]
+}
