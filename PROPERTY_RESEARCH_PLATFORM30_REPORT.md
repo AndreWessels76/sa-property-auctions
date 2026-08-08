@@ -9,7 +9,18 @@
 
 ## Executive Summary
 
-Every verified property can now produce a deterministic **Auction Research Report**. The report answers “what should I know before I bid?” using only platform-verified fields. Missing facts are marked unavailable — never fabricated, estimated, or advised.
+Every verified property can now produce a deterministic **Auction Research Report**. The report answers “what should I know before I bid?” using only platform-verified / source-confirmed fields. Missing facts are labelled **not supplied** — never fabricated, estimated, or advised.
+
+### Update — 2026-08-08 (Due Diligence Extraction 1.0)
+
+Research reports now consume `buildDueDiligenceCentre` extraction output:
+
+- Bedrooms / scheme / suburb / town recovered from description when structured fields empty
+- Land section with source text + normalised hectares (approximate preserved)
+- Auction open/close periods when present in source text
+- Evidence notes + missing information lists
+- Completeness overall % in intelligence summary
+- Report version **3.1.0**
 
 ---
 

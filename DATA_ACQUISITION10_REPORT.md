@@ -127,3 +127,9 @@ Supported by:
 - No fabricated listings or partner performance numbers  
 
 **Ops note:** “Ready” means the acquisition **platform** is ready to onboard licensed partners at scale. Production verified catalogue volume remains limited until partner licences and feeds are activated.
+
+---
+
+## Update — 2026-08-08
+
+Due Diligence Extraction 1.0 consumes acquired listing text/links (title, description, features, document URLs) without redesigning acquisition. Optional future step: pass licensed page HTML into `source_page_text` after import for richer extraction. Extraction audit table soft-fails until migration applied; does not auto-publish or bypass verification.

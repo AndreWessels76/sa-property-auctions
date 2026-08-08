@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { buildDocumentLinks } from "@/lib/property/detailExperience";
 import { buildAuctionResearchReport } from "@/lib/property/researchReport";
 import { buildLifecycleTimeline } from "@/lib/property/lifecycleTimeline";
+import { buildDueDiligenceCentre } from "@/lib/property/dueDiligence";
 import {
   AuctionIntelligenceService,
   PropertyService,
@@ -96,12 +97,14 @@ export default async function ResearchReportPage({ params }: PageProps) {
     hasImages,
     comparableCount: comparables.length,
   });
+  const dueDiligence = buildDueDiligenceCentre(property);
   const report = buildAuctionResearchReport({
     property,
     timeline,
     intelligence,
     comparableCount: comparables.length,
     siteUrl,
+    dueDiligence,
   });
 
   return (
@@ -151,12 +154,34 @@ export default async function ResearchReportPage({ params }: PageProps) {
 
           <FieldTable title="Property Snapshot" fields={report.propertySnapshot} />
           <FieldTable title="Auction Information" fields={report.auctionInformation} />
+          <FieldTable title="Land" fields={report.landInformation} />
           <FieldTable title="Classification" fields={report.classification} />
           <FieldTable title="Ownership" fields={report.ownership} />
           <FieldTable title="Location Overview" fields={report.locationOverview} />
           <FieldTable title="Agency" fields={report.agencyInformation} />
           <FieldTable title="Verification" fields={report.verificationStatus} />
           <FieldTable title="Provenance" fields={report.provenance} />
+
+          {report.missingInformation.length > 0 ? (
+            <section>
+              <h2 className="text-lg font-bold text-navy-900">Missing information</h2>
+              <p className="mt-2 text-sm text-slate-600">
+                {report.missingInformation.join(", ")} — not supplied by auction source
+                (never fabricated).
+              </p>
+            </section>
+          ) : null}
+
+          {report.evidenceNotes.length > 0 ? (
+            <section>
+              <h2 className="text-lg font-bold text-navy-900">Extraction evidence</h2>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                {report.evidenceNotes.map((n) => (
+                  <li key={n}>{n}</li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
 
           <section>
             <h2 className="text-lg font-bold text-navy-900">Documents</h2>

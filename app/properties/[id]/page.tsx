@@ -149,15 +149,16 @@ export default async function PropertyPage({ params }: PageProps) {
     hasDocuments,
   });
 
+  const dueDiligence = buildDueDiligenceCentre(property);
+
   const researchReport = buildAuctionResearchReport({
     property,
     timeline: timelineEvents,
     intelligence: intelligencePanel,
     comparableCount: comparables.length,
     siteUrl,
+    dueDiligence,
   });
-
-  const dueDiligence = buildDueDiligenceCentre(property);
 
   let agencyProfile = null;
   try {

@@ -11,3 +11,4 @@ export * from "./BillingRepository";
 export * from "./VerificationRepository";
 export * from "./PropertyIdentityRepository";
 export * from "./PartnershipRepository";
+export * from "./DueDiligenceExtractionRepository";

@@ -1,8 +1,10 @@
 import { getCurrentRole } from "./getCurrentRole";
 import { isAdmin } from "./isAdmin";
+import { SessionService } from "./SessionService";
 import { SubscriptionService } from "./SubscriptionService";
 
-export class PermissionService {  static async role() {
+export class PermissionService {
+  static async role() {
     return getCurrentRole();
   }
 
@@ -21,6 +23,11 @@ export class PermissionService {  static async role() {
   }
 
   static async requireAdmin(): Promise<void> {
+    const user = await SessionService.currentUser();
+    if (!user) {
+      throw new Error("Authentication required");
+    }
+
     const admin = await this.admin();
 
     if (!admin) {

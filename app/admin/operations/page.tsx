@@ -4,6 +4,7 @@ import ActivityFeed from "./components/ActivityFeed";
 import QuickActions from "./components/QuickActions";
 import ImportStatus from "./components/ImportStatus";
 import InvestorOpsPanels from "./components/InvestorOpsPanels";
+import DueDiligenceExtractionPanel from "./components/DueDiligenceExtractionPanel";
 
 export default function OperationsPage() {
   return (
@@ -63,6 +64,8 @@ export default function OperationsPage() {
       </div>
 
       <InvestorOpsPanels />
+
+      <DueDiligenceExtractionPanel />
 
     </div>
   );

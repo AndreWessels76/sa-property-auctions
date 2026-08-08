@@ -12,6 +12,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "check": "npm run lint && npm run typecheck",
+    "test:dd": "node scripts/dd-extraction-selftest.cjs",
+    "dd:evidence": "node scripts/dd-extraction-selftest.cjs",
+    "test:ops-quick-actions": "node scripts/ops-quick-actions-selftest.cjs",
     "analyze": "next build",
     "verify:supabase": "node scripts/verify-supabase.mjs",
     "audit:env": "node scripts/rc3-env-audit.mjs"

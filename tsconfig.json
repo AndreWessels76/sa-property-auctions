@@ -31,5 +31,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "_quarantine"]
+  "exclude": ["node_modules", "_quarantine", "**/__tests__/**"]
 }

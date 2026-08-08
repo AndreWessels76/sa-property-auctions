@@ -17,3 +17,5 @@ export {
   InvestorWorkspaceService,
   SmartAlertService,
 } from "./InvestorWorkspaceService";
+export { DueDiligenceExtractionService } from "./DueDiligenceExtractionService";
+export { OperationsQuickActionsService } from "./OperationsQuickActionsService";

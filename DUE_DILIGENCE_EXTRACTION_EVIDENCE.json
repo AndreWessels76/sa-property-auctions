@@ -1,0 +1,267 @@
+{
+  "generated_at": "2026-08-07T22:43:15.805Z",
+  "extraction_version": "1.0.0",
+  "principle": "Never guess. Never fabricate. Evidence required.",
+  "tests_passed": 7,
+  "cases": [
+    {
+      "id": "fixture-benoni",
+      "title": "Insolvent Estate Online Auction Unit in Crystal Park Benoni",
+      "display_highlights": {
+        "bedrooms": 2,
+        "scheme": "The Orchards",
+        "town": "Benoni",
+        "suburb": "Crystal Park",
+        "land_size_hectares": null,
+        "land_size_approximate": null,
+        "auction_open_at": "2026-08-11",
+        "auction_close_at": "2026-08-12",
+        "auction_mode": "Online"
+      },
+      "fields_found": 11,
+      "documents_found": 0,
+      "conflicts": 0,
+      "missing_key_fields": [
+        "bathrooms",
+        "province",
+        "auction_date",
+        "land_size_hectares",
+        "conditions_of_sale",
+        "municipality",
+        "zoning",
+        "title_information"
+      ],
+      "completeness": {
+        "property": 36,
+        "auction": 29,
+        "location": 22,
+        "land": 0,
+        "documents": 0,
+        "legal": 0,
+        "building": 0,
+        "utilities": 0,
+        "overall": 11
+      },
+      "evidence_sample": [
+        {
+          "field": "bedrooms",
+          "value": 2,
+          "original_text": "2-Bedroom",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "scheme",
+          "value": "The Orchards",
+          "original_text": "SS The Orchards",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "property_type",
+          "value": "Unit",
+          "original_text": "Unit",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "auction_mode",
+          "value": "Online",
+          "original_text": "Online Auction",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "auction_type",
+          "value": "Insolvent Estate",
+          "original_text": "Insolvent Estate",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "auction_open_at",
+          "value": "2026-08-11",
+          "original_text": "Open Aug 11, close Aug 12",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "auction_close_at",
+          "value": "2026-08-12",
+          "original_text": "Open Aug 11, close Aug 12",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "town",
+          "value": "Benoni",
+          "original_text": "in Benoni SS The Orchards, Crystal Park",
+          "verification_state": "source_confirmed"
+        }
+      ]
+    },
+    {
+      "id": "fixture-haenertsburg",
+      "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+      "display_highlights": {
+        "bedrooms": null,
+        "scheme": null,
+        "town": "Haenertsburg",
+        "suburb": null,
+        "land_size_hectares": 4.164,
+        "land_size_approximate": true,
+        "auction_open_at": null,
+        "auction_close_at": null,
+        "auction_mode": "Online"
+      },
+      "fields_found": 13,
+      "documents_found": 0,
+      "conflicts": 0,
+      "missing_key_fields": [
+        "bedrooms",
+        "bathrooms",
+        "auction_date",
+        "conditions_of_sale",
+        "municipality",
+        "zoning",
+        "title_information"
+      ],
+      "completeness": {
+        "property": 18,
+        "auction": 14,
+        "location": 33,
+        "land": 60,
+        "documents": 0,
+        "legal": 0,
+        "building": 0,
+        "utilities": 25,
+        "overall": 19
+      },
+      "evidence_sample": [
+        {
+          "field": "property_type",
+          "value": "Guest Farm",
+          "original_text": "Guest Farm",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "auction_mode",
+          "value": "Online",
+          "original_text": "Online Auction",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "auction_type",
+          "value": "Online Auction",
+          "original_text": "Online Auction",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "land_size_hectares",
+          "value": 4.164,
+          "original_text": "Combined Extent: ±4.164Ha",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "land_size_source_text",
+          "value": "Combined Extent: ±4.164Ha",
+          "original_text": "Combined Extent: ±4.164Ha",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "land_size_approximate",
+          "value": true,
+          "original_text": "Combined Extent: ±4.164Ha",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "land_size_m2",
+          "value": 41640,
+          "original_text": "Combined Extent: ±4.164Ha",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "farm_name",
+          "value": "Haenertsburg Magoebaskloof Limpopo",
+          "original_text": "Guest Farm Haenertsburg Magoebaskloof Limpopo",
+          "verification_state": "source_confirmed"
+        }
+      ]
+    },
+    {
+      "id": "fixture-commercial",
+      "title": "Online Auction Commercial Warehouse Pretoria",
+      "display_highlights": {
+        "bedrooms": null,
+        "scheme": null,
+        "town": "Pretoria",
+        "suburb": null,
+        "land_size_hectares": null,
+        "land_size_approximate": null,
+        "auction_open_at": null,
+        "auction_close_at": null,
+        "auction_mode": "Online"
+      },
+      "fields_found": 8,
+      "documents_found": 1,
+      "conflicts": 0,
+      "missing_key_fields": [
+        "bedrooms",
+        "bathrooms",
+        "auction_date",
+        "land_size_hectares",
+        "municipality",
+        "zoning",
+        "title_information"
+      ],
+      "completeness": {
+        "property": 18,
+        "auction": 29,
+        "location": 22,
+        "land": 0,
+        "documents": 13,
+        "legal": 0,
+        "building": 0,
+        "utilities": 0,
+        "overall": 10
+      },
+      "evidence_sample": [
+        {
+          "field": "property_type",
+          "value": "Commercial",
+          "original_text": "Commercial",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "auction_mode",
+          "value": "Online",
+          "original_text": "Online Auction",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "auction_type",
+          "value": "Online Auction",
+          "original_text": "Online Auction",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "deposit_percentage",
+          "value": 5,
+          "original_text": "5% deposit",
+          "verification_state": "source_confirmed"
+        },
+        {
+          "field": "conditions_of_sale",
+          "value": "https://example.com/terms.pdf",
+          "original_text": "https://example.com/terms.pdf",
+          "verification_state": "source_confirmed"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "properties_processed": 3,
+    "fields_extracted": 32,
+    "documents_discovered": 1,
+    "conflicts": 0,
+    "acceptance": {
+      "benoni_bedrooms": true,
+      "benoni_scheme": true,
+      "haenertsburg_hectares": true,
+      "municipality_listed_as_missing": true
+    }
+  }
+}
