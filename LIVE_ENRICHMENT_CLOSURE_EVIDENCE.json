@@ -1,0 +1,609 @@
+{
+  "generated_at": "2026-08-13T15:45:41.599Z",
+  "steps": [
+    {
+      "step": "louis_backfill",
+      "ok": true,
+      "extractionRunId": "6d1e3231-4b59-46a9-9c07-3d7620669b4d",
+      "fieldsFound": 18,
+      "conflicts": 0,
+      "contentHash": "ae2890667eba5c0c3197ca85c14652bcc5c39b1655905f8d105c71fee5bb01a9"
+    },
+    {
+      "step": "haenertsburg_refresh",
+      "propertyId": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+      "ok": true,
+      "result": {
+        "runCode": "rf_fa94a312-2",
+        "status": "completed",
+        "propertyId": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+        "connectorId": "bidders_choice",
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+        "httpStatus": 200,
+        "contentHash": "ce53665fb1dcb77ac9bf5b2a9f87b833915f37570920c76ea9c9bc417a74cb8a",
+        "previousHash": null,
+        "changed": true,
+        "changeClasses": [
+          "PROPERTY_DATA_CHANGED",
+          "AUCTION_DATE_CHANGED",
+          "AUCTION_STATUS_CHANGED",
+          "LAND_DATA_CHANGED"
+        ],
+        "fieldChanges": [
+          {
+            "field": "bedrooms",
+            "previous": null,
+            "next": 14,
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "bathrooms",
+            "previous": null,
+            "next": 14,
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "garages",
+            "previous": null,
+            "next": 0,
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "property_type",
+            "previous": null,
+            "next": "Farm",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "property_description",
+            "previous": null,
+            "next": "Don’t miss the Guest Farm Online Auction in Haenertsburg, Magoebaskloof, Limpopo. Property highlights, terms, and viewing date—register to bid.",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "auction_date",
+            "previous": null,
+            "next": "2026-08-04T00:00:00+00:00",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "AUCTION_DATE_CHANGED"
+          },
+          {
+            "field": "auction_time",
+            "previous": null,
+            "next": "08:00",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "deposit",
+            "previous": null,
+            "next": "payable on the fall of the hammer. 4. 10% Buyers commission plus VAT payable on the fall of the hammer. Consultant Information: Pine Pienaar: 072 254 9815 / pine@bidderschoice.co.za View",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "auction_mode",
+            "previous": null,
+            "next": "Online",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "auction_type",
+            "previous": null,
+            "next": "Online Auction",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "AUCTION_STATUS_CHANGED"
+          },
+          {
+            "field": "deposit_percentage",
+            "previous": null,
+            "next": 10,
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "viewing",
+            "previous": null,
+            "next": "date—register to bid",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "province",
+            "previous": null,
+            "next": "Limpopo",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "town",
+            "previous": null,
+            "next": "Haenertsburg",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "street_address",
+            "previous": null,
+            "next": "The Viewpoint, Magoebaskloof",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "land_size_hectares",
+            "previous": null,
+            "next": 4.164,
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "LAND_DATA_CHANGED"
+          },
+          {
+            "field": "land_size_source_text",
+            "previous": null,
+            "next": "Combined Extent: ± 4.164Ha",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "LAND_DATA_CHANGED"
+          },
+          {
+            "field": "land_size_approximate",
+            "previous": null,
+            "next": true,
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "LAND_DATA_CHANGED"
+          },
+          {
+            "field": "land_size_m2",
+            "previous": null,
+            "next": 41640,
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "LAND_DATA_CHANGED"
+          },
+          {
+            "field": "farm_name",
+            "previous": null,
+            "next": "Haenertsburg Magoebaskloof Limpopo",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          }
+        ],
+        "conflicts": 0,
+        "fieldsChanged": 20,
+        "extractionFieldsFound": 20,
+        "extractionRunId": "b14d97b7-f65d-442f-a80f-e98c8c94b17e",
+        "snapshotId": "32390623-9c15-4393-833e-a0c16a17153c",
+        "error": null,
+        "durationMs": 4377,
+        "health": "HEALTHY",
+        "message": "Source changed — 20 field update(s); extraction persisted (not auto-verified)"
+      }
+    },
+    {
+      "step": "benoni_refresh",
+      "propertyId": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "title": "Insolvent Estate Online Auction Unit in Crystal Park Benoni",
+      "ok": true,
+      "result": {
+        "runCode": "rf_973219b4-4",
+        "status": "completed",
+        "propertyId": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+        "connectorId": "bidders_choice",
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+        "httpStatus": 200,
+        "contentHash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+        "previousHash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+        "changed": true,
+        "changeClasses": [
+          "PROPERTY_DATA_CHANGED",
+          "AUCTION_DATE_CHANGED"
+        ],
+        "fieldChanges": [
+          {
+            "field": "property_description",
+            "previous": "Insolvent Estate Online Auction Unit in Crystal Park Benoni Skip to content Home Recent Listings Properties Movables Tenders Online Services About FAQ Contact Home Recent Listings Properties Movables Tenders Online Services About FAQ Contact bidders online Insolvent Estate Online Auction: 2-Bedroom Unit in SS The Orchards, Crystal Park Ext. 28, Benoni Description Insolvent Estate Online Auction: 2-Bedroom Unit in SS The Orchards, Crystal Park Ext. 28, Benoni . Matter Name: Insolvent Estate Neo Mapaila (Master’s reference number: T002446/2024) Insolvent Estate Online Auction Details: Auction Open: 11 August 2026 from 08:00am Auction Close: 12 August 2026 at 11:30am Viewing: 03 August 2026 (15:00 – 17:00) Address: 14 Orchards Road, Crystal Park Ext. 28, Benoni, Gauteng Property description: Extent: 50m² 2 Bedrooms 1 Bathroom Open plan kitchen with living / dining room Situated on the 1 st floor Terms & Conditions: R50 000 registration fee. FICA documents to register. 10% Deposit payable on the fall of the hammer. 6% Buyers commission plus VAT payable. Consultant : Brandon Barnardo : 078 194 5024 / brandon@bidderschoice.co.za REGISTER ONLINE General info Residential 14 Orchards Road, Crystal Park Ext. 28 2 bedroom(s) 1 bathroom(s) Opens August 11, 2026 Closes August 12, 2026 additional info Address: 14 Orchards Road, Crystal Park Ext. 28 City: Benoni Province: Gauteng Country: Republic of South Africa bidding info Open date: August 11, 2026 Closing date: August 12, 2026 Terms & Conditions: R50 000 registration fee. FICA documents to register. 10% Deposito payable on the fall of the hammer. 6% Buyers commission plus VAT payable. consultant information Brandon Barnardo 0781945024 brandon@bidderschoice.co.za Send message Name Email Number send Bidders Pack_Insolvent Estate, The Orchards, Crystal Park No PDF Document Available No PDF Document Available No PDF Document Available Alternative Consultant information No name to show No number to show No email to show Send message Name Email Number send Gallery contact us get in touch (+27) 861 44 42 42 info@bidderschoice.co.za Consumer Protection Act PAIA Manual PAIA Form 02 PAIA Form 03 Email Disclaimer External Privacy Notice subscribe to auction alerts Email notify me! Copyright 2026. Bidders Choice. All rights reserved. Website maintained by Just Plain IT . X",
+            "next": "Insolvent Estate Online Auction: 2-Bedroom unit in Benoni SS The Orchards, Crystal Park. Open Aug 11, close Aug 12. Viewing Aug 3. Register today.",
+            "outcome": "UPDATED",
+            "previousVerification": "source_confirmed",
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "viewing",
+            "previous": "03 August 2026 (15:00 – 17:00) Address: 14 Orchards Road, Crystal Park Ext",
+            "next": "Aug 3",
+            "outcome": "UPDATED",
+            "previousVerification": "extracted_not_yet_verified",
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          },
+          {
+            "field": "auction_open_at",
+            "previous": null,
+            "next": "2024-08-11",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "AUCTION_DATE_CHANGED"
+          },
+          {
+            "field": "auction_close_at",
+            "previous": null,
+            "next": "2024-08-12",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "AUCTION_DATE_CHANGED"
+          },
+          {
+            "field": "suburb",
+            "previous": null,
+            "next": "Crystal Park",
+            "outcome": "NEW",
+            "previousVerification": null,
+            "changeClass": "PROPERTY_DATA_CHANGED"
+          }
+        ],
+        "conflicts": 0,
+        "fieldsChanged": 5,
+        "extractionFieldsFound": 18,
+        "extractionRunId": "5e7f8ad4-ec48-4be1-a3d9-e1316d011cb7",
+        "snapshotId": "dd1d2159-bc43-42d1-8ff7-ba66b48ca5de",
+        "error": null,
+        "durationMs": 3541,
+        "health": "HEALTHY",
+        "message": "Source changed — 5 field update(s); extraction persisted (not auto-verified)"
+      }
+    }
+  ],
+  "louis_trichardt": {
+    "prop": {
+      "id": "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+      "title": "Insolvent Estate Auction: 8.5HA Vacant Land, Louis Trichardt",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+      "verification_state": "verified",
+      "last_verified_at": "2026-08-03T10:12:58.465+00:00",
+      "bedrooms": 0,
+      "town": "Louis Trichardt",
+      "suburb": null,
+      "property_master_id": null
+    },
+    "runs": [
+      {
+        "id": "fa629e8a-8436-4ff2-b60a-225a53ace411",
+        "run_code": "rf_c751e80d-0",
+        "property_id": "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+        "auction_event_id": null,
+        "partner_code": "bidders_choice",
+        "connector_id": "bidders_choice",
+        "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+        "operator": "wesselsandre76@gmail.com",
+        "status": "completed",
+        "http_status": 200,
+        "content_hash": "ae2890667eba5c0c3197ca85c14652bcc5c39b1655905f8d105c71fee5bb01a9",
+        "previous_hash": null,
+        "changed": true,
+        "change_classes": [
+          "PROPERTY_DATA_CHANGED",
+          "AUCTION_DATE_CHANGED",
+          "AUCTION_STATUS_CHANGED",
+          "LAND_DATA_CHANGED",
+          "LEGAL_DATA_CHANGED"
+        ],
+        "fields_changed": 18,
+        "conflicts": 0,
+        "extraction_run_id": "6d1e3231-4b59-46a9-9c07-3d7620669b4d",
+        "error": null,
+        "started_at": "2026-08-13T14:05:35.697+00:00",
+        "completed_at": "2026-08-13T14:05:39.438+00:00",
+        "duration_ms": 3741,
+        "meta": {
+          "health": "HEALTHY",
+          "message": "Source changed — 18 field update(s); extraction completed (not auto-verified)",
+          "snapshotId": "bcd9d752-c762-4be8-895f-70a7292aeef6"
+        },
+        "created_at": "2026-08-13T14:05:39.512662+00:00"
+      }
+    ],
+    "snaps": [
+      {
+        "id": "bcd9d752-c762-4be8-895f-70a7292aeef6",
+        "property_id": "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+        "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+        "content_hash": "ae2890667eba5c0c3197ca85c14652bcc5c39b1655905f8d105c71fee5bb01a9",
+        "previous_hash": null,
+        "fetched_at": "2026-08-13T14:05:39.29+00:00",
+        "change_class": "PROPERTY_DATA_CHANGED",
+        "extraction_version": "1.0.0",
+        "http_status": 200
+      }
+    ],
+    "dd": [
+      {
+        "id": "6d1e3231-4b59-46a9-9c07-3d7620669b4d",
+        "property_id": "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+        "source_hash": "a670df50f597ac75eb05c116225d0eab",
+        "fields_found": 18,
+        "conflicts": 0,
+        "extraction_version": "1.0.0",
+        "updated_at": "2026-08-13T15:45:42.888+00:00"
+      }
+    ],
+    "events": [],
+    "duplicate_event_count": 0
+  },
+  "haenertsburg": {
+    "prop": {
+      "id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+      "verification_state": "expired",
+      "last_verified_at": "2026-08-03T08:55:02.377+00:00",
+      "bedrooms": 14,
+      "town": "Haenertsburg",
+      "suburb": null,
+      "property_master_id": null
+    },
+    "runs": [
+      {
+        "id": "be25b6e8-944d-4b17-a635-d6bb64eae8dc",
+        "run_code": "rf_fa94a312-2",
+        "property_id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+        "auction_event_id": null,
+        "partner_code": "bidders_choice",
+        "connector_id": "bidders_choice",
+        "source_url": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+        "operator": "enrichment_closure",
+        "status": "completed",
+        "http_status": 200,
+        "content_hash": "ce53665fb1dcb77ac9bf5b2a9f87b833915f37570920c76ea9c9bc417a74cb8a",
+        "previous_hash": null,
+        "changed": true,
+        "change_classes": [
+          "PROPERTY_DATA_CHANGED",
+          "AUCTION_DATE_CHANGED",
+          "AUCTION_STATUS_CHANGED",
+          "LAND_DATA_CHANGED"
+        ],
+        "fields_changed": 20,
+        "conflicts": 0,
+        "extraction_run_id": "b14d97b7-f65d-442f-a80f-e98c8c94b17e",
+        "error": null,
+        "started_at": "2026-08-13T15:45:43.935+00:00",
+        "completed_at": "2026-08-13T15:45:48.312+00:00",
+        "duration_ms": 4377,
+        "meta": {
+          "health": "HEALTHY",
+          "message": "Source changed — 20 field update(s); extraction persisted (not auto-verified)",
+          "snapshotId": "32390623-9c15-4393-833e-a0c16a17153c",
+          "extractionRunId": "b14d97b7-f65d-442f-a80f-e98c8c94b17e"
+        },
+        "created_at": "2026-08-13T15:45:49.573157+00:00"
+      },
+      {
+        "id": "95639db4-6312-42ce-8a77-eaaa6f948aa8",
+        "run_code": "rf_bd86f921-8",
+        "property_id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+        "auction_event_id": null,
+        "partner_code": "bidders_choice",
+        "connector_id": "bidders_choice",
+        "source_url": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+        "operator": "enrichment_closure",
+        "status": "SKIPPED_LICENSE",
+        "http_status": null,
+        "content_hash": null,
+        "previous_hash": null,
+        "changed": false,
+        "change_classes": [],
+        "fields_changed": 0,
+        "conflicts": 0,
+        "extraction_run_id": null,
+        "error": "SKIPPED_LICENSE",
+        "started_at": "2026-08-13T15:43:27.572+00:00",
+        "completed_at": "2026-08-13T15:43:27.573+00:00",
+        "duration_ms": 1,
+        "meta": {
+          "health": "LICENSE_EXPIRED",
+          "message": "No active partner licence — live fetch blocked",
+          "snapshotId": null,
+          "extractionRunId": null
+        },
+        "created_at": "2026-08-13T15:43:28.46035+00:00"
+      }
+    ],
+    "snaps": [
+      {
+        "id": "32390623-9c15-4393-833e-a0c16a17153c",
+        "property_id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+        "source_url": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+        "content_hash": "ce53665fb1dcb77ac9bf5b2a9f87b833915f37570920c76ea9c9bc417a74cb8a",
+        "previous_hash": null,
+        "fetched_at": "2026-08-13T15:45:47.79+00:00",
+        "change_class": "PROPERTY_DATA_CHANGED",
+        "extraction_version": "1.0.0",
+        "http_status": 200
+      }
+    ],
+    "dd": [
+      {
+        "id": "b14d97b7-f65d-442f-a80f-e98c8c94b17e",
+        "property_id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+        "source_hash": "cbbb32d31206ca763f17542525d335d5",
+        "fields_found": 20,
+        "conflicts": 0,
+        "extraction_version": "1.0.0",
+        "updated_at": "2026-08-13T15:45:48.045+00:00"
+      }
+    ],
+    "events": [],
+    "duplicate_event_count": 0
+  },
+  "benoni": {
+    "prop": {
+      "id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "title": "Insolvent Estate Online Auction Unit in Crystal Park Benoni",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+      "verification_state": "expired",
+      "last_verified_at": "2026-08-03T10:13:40.233+00:00",
+      "bedrooms": 2,
+      "town": "Benoni",
+      "suburb": null,
+      "property_master_id": null
+    },
+    "runs": [
+      {
+        "id": "d679e966-535b-49c9-9893-788b20d16c6b",
+        "run_code": "rf_973219b4-4",
+        "property_id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+        "auction_event_id": null,
+        "partner_code": "bidders_choice",
+        "connector_id": "bidders_choice",
+        "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+        "operator": "enrichment_closure",
+        "status": "completed",
+        "http_status": 200,
+        "content_hash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+        "previous_hash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+        "changed": true,
+        "change_classes": [
+          "PROPERTY_DATA_CHANGED",
+          "AUCTION_DATE_CHANGED"
+        ],
+        "fields_changed": 5,
+        "conflicts": 0,
+        "extraction_run_id": "5e7f8ad4-ec48-4be1-a3d9-e1316d011cb7",
+        "error": null,
+        "started_at": "2026-08-13T15:45:49.39+00:00",
+        "completed_at": "2026-08-13T15:45:52.931+00:00",
+        "duration_ms": 3541,
+        "meta": {
+          "health": "HEALTHY",
+          "message": "Source changed — 5 field update(s); extraction persisted (not auto-verified)",
+          "snapshotId": "dd1d2159-bc43-42d1-8ff7-ba66b48ca5de",
+          "extractionRunId": "5e7f8ad4-ec48-4be1-a3d9-e1316d011cb7"
+        },
+        "created_at": "2026-08-13T15:45:53.798605+00:00"
+      },
+      {
+        "id": "6da1ba48-bcec-4634-8f56-430dce7c6e82",
+        "run_code": "rf_3c51ae98-3",
+        "property_id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+        "auction_event_id": null,
+        "partner_code": "bidders_choice",
+        "connector_id": "bidders_choice",
+        "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+        "operator": "enrichment_closure",
+        "status": "SKIPPED_LICENSE",
+        "http_status": null,
+        "content_hash": null,
+        "previous_hash": null,
+        "changed": false,
+        "change_classes": [],
+        "fields_changed": 0,
+        "conflicts": 0,
+        "extraction_run_id": null,
+        "error": "SKIPPED_LICENSE",
+        "started_at": "2026-08-13T15:43:28.287+00:00",
+        "completed_at": "2026-08-13T15:43:28.287+00:00",
+        "duration_ms": 0,
+        "meta": {
+          "health": "LICENSE_EXPIRED",
+          "message": "No active partner licence — live fetch blocked",
+          "snapshotId": null,
+          "extractionRunId": null
+        },
+        "created_at": "2026-08-13T15:43:29.159041+00:00"
+      },
+      {
+        "id": "e08d357e-1f1d-4380-bd63-9b001e3be6f3",
+        "run_code": "rf_f8c544f7-1",
+        "property_id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+        "auction_event_id": null,
+        "partner_code": "bidders_choice",
+        "connector_id": "bidders_choice",
+        "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+        "operator": "wesselsandre76@gmail.com",
+        "status": "completed",
+        "http_status": 200,
+        "content_hash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+        "previous_hash": null,
+        "changed": true,
+        "change_classes": [
+          "PROPERTY_DATA_CHANGED",
+          "AUCTION_DATE_CHANGED",
+          "AUCTION_STATUS_CHANGED"
+        ],
+        "fields_changed": 18,
+        "conflicts": 0,
+        "extraction_run_id": null,
+        "error": null,
+        "started_at": "2026-08-08T13:39:37.278+00:00",
+        "completed_at": "2026-08-08T13:39:41.997+00:00",
+        "duration_ms": 4719,
+        "meta": {
+          "health": "HEALTHY",
+          "message": "Source changed — 18 field update(s); extraction completed (not auto-verified)",
+          "snapshotId": "bf6fa956-dc7c-4a9e-ab09-6a5636a47749"
+        },
+        "created_at": "2026-08-08T13:39:42.06556+00:00"
+      }
+    ],
+    "snaps": [
+      {
+        "id": "dd1d2159-bc43-42d1-8ff7-ba66b48ca5de",
+        "property_id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+        "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+        "content_hash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+        "previous_hash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+        "fetched_at": "2026-08-13T15:45:52.443+00:00",
+        "change_class": "PROPERTY_DATA_CHANGED",
+        "extraction_version": "1.0.0",
+        "http_status": 200
+      },
+      {
+        "id": "bf6fa956-dc7c-4a9e-ab09-6a5636a47749",
+        "property_id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+        "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+        "content_hash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+        "previous_hash": null,
+        "fetched_at": "2026-08-08T13:39:41.844+00:00",
+        "change_class": "PROPERTY_DATA_CHANGED",
+        "extraction_version": "1.0.0",
+        "http_status": 200
+      }
+    ],
+    "dd": [
+      {
+        "id": "5e7f8ad4-ec48-4be1-a3d9-e1316d011cb7",
+        "property_id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+        "source_hash": "232b16b9d0b2ab82936f028b92c79938",
+        "fields_found": 18,
+        "conflicts": 0,
+        "extraction_version": "1.0.0",
+        "updated_at": "2026-08-13T15:45:52.694+00:00"
+      }
+    ],
+    "events": [],
+    "duplicate_event_count": 0
+  }
+}

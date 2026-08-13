@@ -1,6 +1,8 @@
 import "server-only";
 
 import { PropertyService } from "@/lib/services/PropertyService";
+import { PropertyRepository } from "@/lib/repositories/PropertyRepository";
+import { PropertyMapper } from "@/lib/mappers/PropertyMapper";
 import {
   PartnershipRepository,
   PartnerLicenceRepository,
@@ -18,6 +20,7 @@ import { RefetchAudit } from "@/lib/acquisition/refetch/refetchAudit";
 import { SourceSnapshotService } from "@/lib/acquisition/refetch/sourceSnapshotService";
 import { allowRate } from "@/lib/acquisition/refetch/rateLimiter";
 import { resolveFetchPolicy } from "@/lib/acquisition/refetch/fetchPolicy";
+import { persistRefetchExtraction } from "@/lib/acquisition/refetch/refetchExtractionLinkage";
 import type {
   RefetchRunResult,
   SourceHealthState,
@@ -54,6 +57,15 @@ export type BatchRefetchResult = {
 function isBiddersChoiceProperty(p: PropertyDTO): boolean {
   const blob = `${p.source ?? ""} ${p.source_name ?? ""} ${p.source_url ?? ""}`.toLowerCase();
   return blob.includes("bidder") || (p.source_url ?? "").includes("bidderschoice");
+}
+
+/** Admin refetch — load by ID without public catalogue filter. */
+async function getPropertyForRefetch(
+  propertyId: string,
+): Promise<PropertyDTO | null> {
+  const row = await PropertyRepository.getById(propertyId);
+  if (!row) return null;
+  return PropertyMapper.toDTO(row);
 }
 
 async function resolveLicenceForProperty(
@@ -101,7 +113,7 @@ export class SourceRefetchService {
     force?: boolean;
     operator?: string | null;
   }): Promise<RefetchRunResult> {
-    const property = await PropertyService.getProperty(input.propertyId);
+    const property = await getPropertyForRefetch(input.propertyId);
     if (!property) {
       return {
         runCode: `rf_missing`,
@@ -118,7 +130,9 @@ export class SourceRefetchService {
         conflicts: 0,
         fieldsChanged: 0,
         extractionFieldsFound: 0,
+        extractionRunId: null,
         snapshotId: null,
+        forced: false,
         error: "Property not found",
         durationMs: 0,
         health: "UNKNOWN",
@@ -154,7 +168,9 @@ export class SourceRefetchService {
         conflicts: 0,
         fieldsChanged: 0,
         extractionFieldsFound: 0,
+        extractionRunId: null,
         snapshotId: null,
+        forced: false,
         error: "SKIPPED_RATE",
         durationMs: 0,
         health: "DEGRADED",
@@ -212,7 +228,7 @@ export class SourceRefetchService {
           durationMs: 0,
         };
       }
-      const one = await PropertyService.getProperty(input.propertyId);
+      const one = await getPropertyForRefetch(input.propertyId);
       candidates = one ? [one] : [];
     } else {
       const all = await PropertyService.getProperties();
@@ -372,7 +388,7 @@ export class SourceRefetchService {
   }
 
   static async propertyRefreshStatus(propertyId: string) {
-    const property = await PropertyService.getProperty(propertyId);
+    const property = await getPropertyForRefetch(propertyId);
     const snap = await SourceSnapshotService.latestForProperty(propertyId);
     const { licence } = property
       ? await resolveLicenceForProperty(property)
@@ -394,6 +410,76 @@ export class SourceRefetchService {
       previousHash: snap?.previous_hash ?? null,
       extractionVersion: snap?.extraction_version ?? null,
       storeRawHtml: snap?.store_raw_html ?? false,
+    };
+  }
+
+  /**
+   * Enrich from an existing source snapshot (no live re-fetch).
+   * Used to backfill DD extraction linkage for prior CONTENT_CHANGED runs.
+   */
+  static async enrichFromSnapshot(input: {
+    propertyId: string;
+    snapshotId?: string | null;
+    refetchRunCode?: string | null;
+    operator?: string | null;
+  }) {
+    const property = await getPropertyForRefetch(input.propertyId);
+    if (!property) {
+      return { ok: false as const, error: "Property not found" };
+    }
+
+    let snapshot = await SourceSnapshotService.latestForProperty(input.propertyId);
+    if (input.snapshotId) {
+      const all = await SourceSnapshotService.listForProperty(input.propertyId, 50);
+      snapshot = all.find((s) => s.id === input.snapshotId) ?? snapshot;
+    }
+
+    if (!snapshot?.source_text?.trim()) {
+      return { ok: false as const, error: "Snapshot has no source text for extraction" };
+    }
+
+    const persisted = await persistRefetchExtraction({
+      property,
+      sourcePageText: snapshot.source_text,
+      operator: input.operator ?? "enrichment_backfill",
+      snapshotId: snapshot.id ?? input.snapshotId ?? null,
+      contentHash: snapshot.content_hash,
+      refetchRunCode: input.refetchRunCode ?? null,
+    });
+
+    if (input.refetchRunCode && persisted.extractionRunId) {
+      await RefetchAudit.linkExtractionRun({
+        runCode: input.refetchRunCode,
+        extractionRunId: persisted.extractionRunId,
+        snapshotId: snapshot.id ?? null,
+      });
+    } else if (persisted.extractionRunId) {
+      const latest = await RefetchAudit.latestForProperty(input.propertyId);
+      if (latest?.run_code && !latest.extraction_run_id) {
+        await RefetchAudit.linkExtractionRun({
+          runCode: latest.run_code,
+          extractionRunId: persisted.extractionRunId,
+          snapshotId: snapshot.id ?? null,
+        });
+      }
+    }
+
+    LoggerService.audit("source.refetch.enrich_from_snapshot", {
+      propertyId: input.propertyId,
+      snapshotId: snapshot.id,
+      extractionRunId: persisted.extractionRunId,
+      fieldsFound: persisted.fieldsFound,
+    });
+
+    return {
+      ok: true as const,
+      propertyId: input.propertyId,
+      snapshotId: snapshot.id ?? null,
+      contentHash: snapshot.content_hash,
+      extractionRunId: persisted.extractionRunId,
+      fieldsFound: persisted.fieldsFound,
+      conflicts: persisted.conflicts,
+      verificationState: property.verification_state,
     };
   }
 }

@@ -13,6 +13,7 @@ function missingRelation(error: { message?: string; code?: string } | null): boo
 }
 
 export type RefetchRunRow = {
+  id?: string;
   run_code: string;
   property_id?: string | null;
   partner_code?: string | null;
@@ -117,6 +118,54 @@ export class RefetchAudit {
       await db.from("source_refetch_locks").delete().eq("lock_key", lockKey);
     } catch {
       /* ignore */
+    }
+  }
+
+  /** Link persisted DD extraction run back to refetch audit row. */
+  static async linkExtractionRun(input: {
+    runCode?: string | null;
+    runId?: string | null;
+    extractionRunId: string;
+    snapshotId?: string | null;
+  }): Promise<boolean> {
+    try {
+      const db = createServiceClient();
+      const patch: Record<string, unknown> = {
+        extraction_run_id: input.extractionRunId,
+      };
+      let query = db.from("source_refetch_runs").update(patch);
+      if (input.runCode) query = query.eq("run_code", input.runCode);
+      else if (input.runId) query = query.eq("id", input.runId);
+      else return false;
+      const { error } = await query;
+      if (error) {
+        if (missingRelation(error)) return false;
+        LoggerService.warn("refetch.link_extraction_failed", { error: error.message });
+        return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  static async latestForProperty(propertyId: string) {
+    try {
+      const db = createServiceClient();
+      const { data, error } = await db
+        .from("source_refetch_runs")
+        .select("*")
+        .eq("property_id", propertyId)
+        .order("started_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) {
+        if (missingRelation(error)) return null;
+        return null;
+      }
+      return data as RefetchRunRow | null;
+    } catch {
+      return null;
     }
   }
 }

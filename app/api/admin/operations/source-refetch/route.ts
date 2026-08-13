@@ -9,7 +9,8 @@ type RefetchAction =
   | "refresh_batch"
   | "refresh_upcoming"
   | "property_status"
-  | "queue";
+  | "queue"
+  | "enrich_from_snapshot";
 
 /**
  * Admin Source Re-fetch API.
@@ -34,6 +35,8 @@ export async function POST(request: Request) {
       scope?: "property" | "partner" | "connector" | "upcoming" | "all_eligible";
       limit?: number;
       force?: boolean;
+      snapshotId?: string;
+      refetchRunCode?: string;
     };
 
     const user = await SessionService.currentUser();
@@ -81,6 +84,19 @@ export async function POST(request: Request) {
     if (body.action === "queue") {
       const rows = await SourceRefetchService.queueRows(body.limit ?? 40);
       return jsonOk({ rows });
+    }
+
+    if (body.action === "enrich_from_snapshot") {
+      if (!body.propertyId) {
+        return jsonOk({ error: "propertyId required" }, { status: 400 });
+      }
+      const result = await SourceRefetchService.enrichFromSnapshot({
+        propertyId: body.propertyId,
+        snapshotId: body.snapshotId,
+        refetchRunCode: body.refetchRunCode,
+        operator,
+      });
+      return jsonOk(result);
     }
 
     return jsonOk({ error: "Unknown action" }, { status: 400 });

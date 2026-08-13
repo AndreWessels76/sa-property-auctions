@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-08T11:47:17.842Z",
+  "generated_at": "2026-08-13T16:01:03.937Z",
   "tests": [
     {
       "name": "license_blocked",
@@ -87,13 +87,58 @@
       "detail": "PROPERTY_DATA_CHANGED,CONFLICT_REVIEW_REQUIRED"
     },
     {
-      "name": "live_fetch_skipped",
+      "name": "extraction_linkage",
       "pass": true,
-      "detail": "env not enabled"
+      "detail": "persist+audit wired"
+    },
+    {
+      "name": "enrich_api",
+      "pass": true,
+      "detail": "admin action present"
+    },
+    {
+      "name": "test_a_normal_unchanged",
+      "pass": true,
+      "detail": "NO_CHANGE no snapshot no DD"
+    },
+    {
+      "name": "test_b_forced_unchanged",
+      "pass": true,
+      "detail": "force does not pretend change"
+    },
+    {
+      "name": "test_c_forced_changed",
+      "pass": true,
+      "detail": "changed hash → snapshot + DD"
+    },
+    {
+      "name": "test_d_expired_catalogue",
+      "pass": true,
+      "detail": "expired hidden, intelligence keeps expired"
+    },
+    {
+      "name": "test_e_verified_conflict",
+      "pass": true,
+      "detail": "verified 4.164 protected"
+    },
+    {
+      "name": "test_f_identity",
+      "pass": true,
+      "detail": "no master/event creation in refetch path"
+    },
+    {
+      "name": "live_fetch",
+      "pass": true,
+      "detail": "status=200 ok=true error=none"
     }
   ],
-  "live_fetch": null,
-  "verdict_notes": [
-    "Live BC fetch skipped — BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH not true"
-  ]
+  "live_fetch": {
+    "url": "https://www.bidderschoice.co.za/",
+    "ok": true,
+    "status": 200,
+    "bytes": 226399,
+    "hash": "3f99879430b9f18d",
+    "error": null
+  },
+  "verdict_notes": []
 }

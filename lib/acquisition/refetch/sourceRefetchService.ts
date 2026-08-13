@@ -24,6 +24,11 @@ import {
   summarizeChangeClasses,
 } from "./sourceChangeDetector";
 import { RefetchAudit } from "./refetchAudit";
+import { persistRefetchExtraction } from "./refetchExtractionLinkage";
+import {
+  decideChangeFromContentHash,
+  shouldCreateSnapshot,
+} from "./forceSemantics";
 import {
   FETCHER_VERSION,
   type ChangeClass,
@@ -82,7 +87,9 @@ export async function refetchPropertySource(
     conflicts: 0,
     fieldsChanged: 0,
     extractionFieldsFound: 0,
+    extractionRunId: null,
     snapshotId: null,
+    forced: input.force === true,
     error: null,
     durationMs: 0,
     health: "UNKNOWN",
@@ -112,6 +119,7 @@ export async function refetchPropertySource(
       change_classes: result.changeClasses,
       fields_changed: result.fieldsChanged,
       conflicts: result.conflicts,
+      extraction_run_id: result.extractionRunId ?? undefined,
       error: result.error,
       started_at: new Date(started).toISOString(),
       completed_at: new Date().toISOString(),
@@ -120,6 +128,8 @@ export async function refetchPropertySource(
         health: result.health,
         message: result.message,
         snapshotId: result.snapshotId,
+        extractionRunId: result.extractionRunId,
+        forced: result.forced,
       },
     });
     LoggerService.audit("source.refetch.run", {
@@ -128,6 +138,7 @@ export async function refetchPropertySource(
       propertyId: result.propertyId,
       changed: result.changed,
       conflicts: result.conflicts,
+      forced: result.forced,
     });
     return result;
   };
@@ -243,8 +254,20 @@ export async function refetchPropertySource(
     const hashBasis = `${fetchResult.finalUrl}\n${title ?? ""}\n${plain}`;
     const contentHash = sha256Content(hashBasis);
 
-    // Identical content — do not create duplicate snapshot; skip extraction
-    if (!input.force && previousHash && previousHash === contentHash) {
+    const hashDecision = decideChangeFromContentHash({
+      previousHash,
+      contentHash,
+      force: input.force === true,
+    });
+
+    // Identical content — audit the fetch, never duplicate snapshot or re-extract.
+    // force skips interval only; it never pretends the source changed.
+    if (!shouldCreateSnapshot(hashDecision)) {
+      const existing =
+        previous?.id ??
+        (await SourceSnapshotService.findByUrlAndHash(sourceUrl, contentHash))
+          ?.id ??
+        null;
       return finish({
         status: "no_change",
         httpStatus: fetchResult.status,
@@ -252,13 +275,38 @@ export async function refetchPropertySource(
         previousHash,
         changed: false,
         changeClasses: ["NO_CHANGE"],
-        snapshotId: previous?.id ?? null,
+        snapshotId: existing,
+        extractionRunId: null,
         health: "HEALTHY",
-        message: "NO_CHANGE — content hash unchanged; extraction skipped",
+        message: input.force
+          ? "NO_CHANGE — forced fetch completed; content hash unchanged; extraction skipped"
+          : "NO_CHANGE — content hash unchanged; extraction skipped",
       });
     }
 
-    // Changed (or forced) — run deterministic DD extraction with page text
+    // URL + hash already stored — never insert a duplicate content snapshot.
+    const existingSame = await SourceSnapshotService.findByUrlAndHash(
+      sourceUrl,
+      contentHash,
+    );
+    if (existingSame?.id) {
+      return finish({
+        status: "no_change",
+        httpStatus: fetchResult.status,
+        contentHash,
+        previousHash,
+        changed: false,
+        changeClasses: ["NO_CHANGE"],
+        snapshotId: existingSame.id,
+        extractionRunId: null,
+        health: "HEALTHY",
+        message: input.force
+          ? "NO_CHANGE — forced fetch completed; identical content snapshot already exists"
+          : "NO_CHANGE — identical content snapshot already exists",
+      });
+    }
+
+    // Changed — run deterministic DD extraction with page text
     const extraction = runDueDiligenceExtraction(
       corpusFromProperty({
         ...property,
@@ -337,10 +385,20 @@ export async function refetchPropertySource(
       },
     });
 
+    const persisted = await persistRefetchExtraction({
+      property,
+      sourcePageText: plain,
+      operator: input.operator ?? "system",
+      snapshotId,
+      contentHash,
+      refetchRunCode: runCode,
+      fieldChanges,
+    });
+
     const message =
       conflicts > 0
         ? `Source changed with ${conflicts} verified conflict(s) — admin review required (verified values not overwritten)`
-        : `Source changed — ${fieldsChanged} field update(s); extraction completed (not auto-verified)`;
+        : `Source changed — ${fieldsChanged} field update(s); extraction persisted (not auto-verified)`;
 
     return finish({
       status: "completed",
@@ -352,7 +410,8 @@ export async function refetchPropertySource(
       fieldChanges,
       conflicts,
       fieldsChanged,
-      extractionFieldsFound: extraction.stats.fields_found,
+      extractionFieldsFound: persisted.fieldsFound,
+      extractionRunId: persisted.extractionRunId,
       snapshotId,
       health: conflicts > 0 ? "DEGRADED" : "HEALTHY",
       message,

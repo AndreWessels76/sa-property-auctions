@@ -1,0 +1,98 @@
+{
+  "generated_at": "2026-08-13T15:55:51.640Z",
+  "property": {
+    "id": "8125134b-387c-42dd-923a-c6f01826277f",
+    "title": "Online Auction 20 Bed Guest Lodge Rosettenville Johannesburg",
+    "source_url": "https://bidderschoice.co.za/property-listings/online-auction-20-bedroom-guest-lodge-rosettenville-johannesburg/",
+    "auction_date": "2026-08-18T00:00:00+00:00",
+    "verification_state": "verified",
+    "listing_status": "upcoming"
+  },
+  "expired_historical": [
+    {
+      "id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+      "verification_state": "expired",
+      "listing_status": "expired",
+      "auction_date": "2026-08-04T00:00:00+00:00",
+      "public_catalogue": false,
+      "property_master_id": null,
+      "auction_event_count": 0
+    },
+    {
+      "id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "title": "Insolvent Estate Online Auction Unit in Crystal Park Benoni",
+      "verification_state": "expired",
+      "listing_status": "expired",
+      "auction_date": "2026-08-11T00:00:00+00:00",
+      "public_catalogue": false,
+      "property_master_id": null,
+      "auction_event_count": 0
+    }
+  ],
+  "force_first": {
+    "runCode": "rf_39d8b5e0-9",
+    "status": "no_change",
+    "httpStatus": 200,
+    "forced": true,
+    "changed": false,
+    "contentHash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+    "previousHash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+    "snapshotId": "61cb217e-66b1-4e0f-9a3a-cecc99637efb",
+    "extractionRunId": null,
+    "conflicts": 0,
+    "message": "NO_CHANGE — forced fetch completed; content hash unchanged; extraction skipped"
+  },
+  "force_second": {
+    "runCode": "rf_85beab64-7",
+    "status": "no_change",
+    "httpStatus": 200,
+    "forced": true,
+    "changed": false,
+    "contentHash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+    "previousHash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+    "snapshotId": "61cb217e-66b1-4e0f-9a3a-cecc99637efb",
+    "extractionRunId": null,
+    "conflicts": 0,
+    "message": "NO_CHANGE — forced fetch completed; content hash unchanged; extraction skipped"
+  },
+  "after": {
+    "prop": {
+      "id": "8125134b-387c-42dd-923a-c6f01826277f",
+      "title": "Online Auction 20 Bed Guest Lodge Rosettenville Johannesburg",
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-20-bedroom-guest-lodge-rosettenville-johannesburg/",
+      "verification_state": "verified",
+      "listing_status": "upcoming",
+      "status": "upcoming",
+      "auction_date": "2026-08-18T00:00:00+00:00",
+      "property_master_id": null,
+      "last_verified_at": "2026-08-03T10:13:13.752+00:00"
+    },
+    "public_catalogue": true,
+    "latest_run": {
+      "id": "9fcaa394-841a-4bf4-9b81-37d1fa447f30",
+      "run_code": "rf_85beab64-7",
+      "status": "no_change",
+      "http_status": 200,
+      "content_hash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+      "previous_hash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+      "changed": false,
+      "conflicts": 0,
+      "extraction_run_id": null,
+      "started_at": "2026-08-13T15:55:43.336+00:00",
+      "meta": {
+        "forced": true,
+        "health": "HEALTHY",
+        "message": "NO_CHANGE — forced fetch completed; content hash unchanged; extraction skipped",
+        "snapshotId": "61cb217e-66b1-4e0f-9a3a-cecc99637efb",
+        "extractionRunId": null
+      }
+    },
+    "snapshot_count": 1,
+    "duplicate_hash_snapshots": [],
+    "dd": [],
+    "auction_event_count": 0,
+    "property_master_id": null,
+    "master_row_present": false
+  }
+}

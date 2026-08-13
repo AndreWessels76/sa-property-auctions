@@ -203,6 +203,46 @@ const {
 const { allowRate, resetRateBuckets } = loadTs("rateLimiter.ts");
 const { scheduleRefetchOrder, selectUpcomingForRefetch } = loadTs("refetchScheduler.ts");
 const { htmlToPlainText, extractHtmlTitle } = loadTs("sourceFetcher.ts");
+const {
+  decideChangeFromContentHash,
+  shouldCreateSnapshot,
+  shouldRunExtraction,
+} = loadTs("forceSemantics.ts");
+
+const libCache = new Map();
+
+function loadFromAbs(abs) {
+  if (libCache.has(abs)) return libCache.get(abs);
+  const code = transpileFile(abs);
+  const mod = new Module(abs, module);
+  mod.filename = abs;
+  mod.paths = Module._nodeModulePaths(path.dirname(abs));
+  const originalRequire = mod.require.bind(mod);
+  mod.require = (id) => {
+    if (id.startsWith("@/")) {
+      const aliasAbs = path.join(root, id.slice(2));
+      const tsPath = aliasAbs.endsWith(".ts") ? aliasAbs : `${aliasAbs}.ts`;
+      if (fs.existsSync(tsPath)) return loadFromAbs(tsPath);
+    }
+    if (id.startsWith("./") || id.startsWith("../")) {
+      const resolved = path.resolve(path.dirname(abs), id);
+      const tsPath = resolved.endsWith(".ts") ? resolved : `${resolved}.ts`;
+      if (fs.existsSync(tsPath)) return loadFromAbs(tsPath);
+    }
+    return originalRequire(id);
+  };
+  libCache.set(abs, mod.exports);
+  mod._compile(code, abs);
+  libCache.set(abs, mod.exports);
+  return mod.exports;
+}
+
+const { isPubliclyActiveListing, HISTORICAL_INTELLIGENCE_STATES } = loadFromAbs(
+  path.join(root, "lib", "data", "publicListingPolicy.ts"),
+);
+const { suggestLifecycleFromDates } = loadFromAbs(
+  path.join(root, "lib", "data", "listingLifecycle.ts"),
+);
 
 const evidence = {
   generated_at: new Date().toISOString(),
@@ -474,6 +514,178 @@ async function run() {
     assert.ok(classes.includes("PROPERTY_DATA_CHANGED"));
     assert.ok(classes.includes("CONFLICT_REVIEW_REQUIRED"));
     record("change_classes", true, classes.join(","));
+  });
+
+  await test("extraction linkage wired for CONTENT_CHANGED", () => {
+    const svc = fs.readFileSync(
+      path.join(srcDir, "sourceRefetchService.ts"),
+      "utf8",
+    );
+    const link = fs.readFileSync(
+      path.join(srcDir, "refetchExtractionLinkage.ts"),
+      "utf8",
+    );
+    const audit = fs.readFileSync(
+      path.join(srcDir, "refetchAudit.ts"),
+      "utf8",
+    );
+    assert.match(svc, /persistRefetchExtraction/);
+    assert.match(svc, /extractionRunId/);
+    assert.match(svc, /extraction_run_id/);
+    assert.match(link, /DueDiligenceExtractionRepository\.recordRun/);
+    assert.match(link, /refetch_provenance/);
+    assert.match(audit, /linkExtractionRun/);
+    // NO_CHANGE path must not call persist
+    const noChangeBlock = svc.slice(
+      svc.indexOf("NO_CHANGE — content hash unchanged"),
+      svc.indexOf("Changed — run deterministic"),
+    );
+    assert.doesNotMatch(noChangeBlock, /persistRefetchExtraction/);
+    record("extraction_linkage", true, "persist+audit wired");
+  });
+
+  await test("enrich_from_snapshot API action exists", () => {
+    const api = fs.readFileSync(
+      path.join(root, "app/api/admin/operations/source-refetch/route.ts"),
+      "utf8",
+    );
+    assert.match(api, /enrich_from_snapshot/);
+    record("enrich_api", true, "admin action present");
+  });
+
+  await test("Test A — same hash is NO_CHANGE without snapshot/extraction", () => {
+    const hash = sha256Content("page-v1");
+    const decision = decideChangeFromContentHash({
+      previousHash: hash,
+      contentHash: hash,
+      force: false,
+    });
+    assert.equal(decision, "NO_CHANGE");
+    assert.equal(shouldCreateSnapshot(decision), false);
+    assert.equal(shouldRunExtraction(decision), false);
+    record("test_a_normal_unchanged", true, "NO_CHANGE no snapshot no DD");
+  });
+
+  await test("Test B — forced identical hash is still NO_CHANGE", () => {
+    const hash = sha256Content("page-v1");
+    const decision = decideChangeFromContentHash({
+      previousHash: hash,
+      contentHash: hash,
+      force: true,
+    });
+    assert.equal(decision, "NO_CHANGE");
+    assert.equal(shouldCreateSnapshot(decision), false);
+    assert.equal(shouldRunExtraction(decision), false);
+    const svc = fs.readFileSync(
+      path.join(srcDir, "sourceRefetchService.ts"),
+      "utf8",
+    );
+    assert.match(svc, /decideChangeFromContentHash/);
+    assert.match(svc, /forced: input\.force === true/);
+    assert.match(svc, /findByUrlAndHash/);
+    // force must not skip the hash equality branch
+    assert.doesNotMatch(
+      svc,
+      /if \(!input\.force && previousHash && previousHash === contentHash\)/,
+    );
+    record("test_b_forced_unchanged", true, "force does not pretend change");
+  });
+
+  await test("Test C — forced different hash is CONTENT_CHANGED", () => {
+    const decision = decideChangeFromContentHash({
+      previousHash: sha256Content("page-v1"),
+      contentHash: sha256Content("page-v2"),
+      force: true,
+    });
+    assert.equal(decision, "CONTENT_CHANGED");
+    assert.equal(shouldCreateSnapshot(decision), true);
+    assert.equal(shouldRunExtraction(decision), true);
+    const svc = fs.readFileSync(
+      path.join(srcDir, "sourceRefetchService.ts"),
+      "utf8",
+    );
+    assert.match(svc, /persistRefetchExtraction/);
+    assert.match(svc, /extraction_run_id/);
+    record("test_c_forced_changed", true, "changed hash → snapshot + DD");
+  });
+
+  await test("Test D — expired listing hidden from public, retained historically", () => {
+    const past = "2026-08-04T00:00:00.000Z";
+    const now = new Date("2026-08-13T12:00:00.000Z");
+    const lifecycle = suggestLifecycleFromDates({
+      auctionDate: past,
+      currentStatus: "upcoming",
+      now,
+    });
+    assert.equal(lifecycle, "expired");
+    const publicVisible = isPubliclyActiveListing({
+      verification_state: "expired",
+      listing_status: "expired",
+      auction_date: past,
+      now,
+    });
+    assert.equal(publicVisible, false);
+    const stillVerifiedButPast = isPubliclyActiveListing({
+      verification_state: "verified",
+      listing_status: "expired",
+      auction_date: past,
+      now,
+    });
+    assert.equal(stillVerifiedButPast, false);
+    assert.ok(HISTORICAL_INTELLIGENCE_STATES.includes("expired"));
+    const upcoming = isPubliclyActiveListing({
+      verification_state: "verified",
+      listing_status: "upcoming",
+      auction_date: "2026-09-01T00:00:00.000Z",
+      now,
+    });
+    assert.equal(upcoming, true);
+    const policySrc = fs.readFileSync(
+      path.join(root, "lib", "data", "publicListingPolicy.ts"),
+      "utf8",
+    );
+    assert.match(policySrc, /PUBLIC_LISTING_STATUSES = \["upcoming", "live"\]/);
+    assert.match(policySrc, /"expired"/);
+    const refetchSrc = fs.readFileSync(
+      path.join(srcDir, "sourceRefetchService.ts"),
+      "utf8",
+    );
+    assert.doesNotMatch(refetchSrc, /\.update\(\s*\{[^}]*verification_state/);
+    record("test_d_expired_catalogue", true, "expired hidden, intelligence keeps expired");
+  });
+
+  await test("Test E — verified field change is CONFLICT not overwrite", () => {
+    const change = classifyFieldChange({
+      field: "land_size_ha",
+      previous: {
+        field: "land_size_ha",
+        value: 4.164,
+        verification_state: "verified",
+      },
+      next: {
+        field: "land_size_ha",
+        value: 4.21,
+        verification_state: "extracted_not_yet_verified",
+      },
+    });
+    assert.equal(change.outcome, "CONFLICT");
+    assert.equal(change.previous, 4.164);
+    assert.equal(change.next, 4.21);
+    record("test_e_verified_conflict", true, "verified 4.164 protected");
+  });
+
+  await test("Test F — refetch never creates Property Master or Auction Event", () => {
+    const svc = fs.readFileSync(
+      path.join(srcDir, "sourceRefetchService.ts"),
+      "utf8",
+    );
+    const orch = fs.readFileSync(
+      path.join(root, "lib/services/SourceRefetchService.ts"),
+      "utf8",
+    );
+    assert.doesNotMatch(svc, /property_masters|auction_events|PropertyIdentity/);
+    assert.doesNotMatch(orch, /property_masters|auction_events|PropertyIdentity/);
+    record("test_f_identity", true, "no master/event creation in refetch path");
   });
 
   // Optional live BC fetch — only when explicitly enabled

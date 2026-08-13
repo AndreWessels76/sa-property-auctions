@@ -16,6 +16,7 @@
     "dd:evidence": "node scripts/dd-extraction-selftest.cjs",
     "test:ops-quick-actions": "node scripts/ops-quick-actions-selftest.cjs",
     "test:refetch": "node scripts/source-refetch-selftest.cjs",
+    "enrichment:closure": "npx --yes tsx --env-file=.env.local scripts/live-enrichment-closure.ts",
     "analyze": "next build",
     "verify:supabase": "node scripts/verify-supabase.mjs",
     "audit:env": "node scripts/rc3-env-audit.mjs"

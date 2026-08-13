@@ -118,7 +118,10 @@ export type RefetchRunResult = {
   conflicts: number;
   fieldsChanged: number;
   extractionFieldsFound: number;
+  extractionRunId: string | null;
   snapshotId: string | null;
+  /** True when the caller skipped interval/eligibility — never means "treat as changed". */
+  forced: boolean;
   error: string | null;
   durationMs: number;
   health: SourceHealthState;

@@ -45,6 +45,30 @@ export class SourceSnapshotService {
     }
   }
 
+  static async findByUrlAndHash(
+    sourceUrl: string,
+    contentHash: string,
+  ): Promise<SourceSnapshotRecord | null> {
+    try {
+      const db = createServiceClient();
+      const { data, error } = await db
+        .from("source_snapshots")
+        .select("*")
+        .eq("source_url", sourceUrl)
+        .eq("content_hash", contentHash)
+        .order("fetched_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) {
+        if (missingRelation(error)) return null;
+        return null;
+      }
+      return (data as SourceSnapshotRecord) ?? null;
+    } catch {
+      return null;
+    }
+  }
+
   static async latestByUrl(sourceUrl: string): Promise<SourceSnapshotRecord | null> {
     try {
       const db = createServiceClient();
@@ -83,6 +107,28 @@ export class SourceSnapshotService {
       return (data as { id: string } | null)?.id ?? null;
     } catch {
       return null;
+    }
+  }
+
+  static async listForProperty(
+    propertyId: string,
+    limit = 20,
+  ): Promise<SourceSnapshotRecord[]> {
+    try {
+      const db = createServiceClient();
+      const { data, error } = await db
+        .from("source_snapshots")
+        .select("*")
+        .eq("property_id", propertyId)
+        .order("fetched_at", { ascending: false })
+        .limit(limit);
+      if (error) {
+        if (missingRelation(error)) return [];
+        return [];
+      }
+      return (data as SourceSnapshotRecord[]) ?? [];
+    } catch {
+      return [];
     }
   }
 }
