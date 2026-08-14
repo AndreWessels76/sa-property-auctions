@@ -254,8 +254,9 @@ test("M: service uses repository snapshot without demo constants", () => {
   assert.match(svc, /OperationsMetricsRepository\.loadSnapshot/);
   assert.match(svc, /calculateImportQueueMetrics/);
   assert.doesNotMatch(svc, /18432|57892|842/);
-  assert.equal(OPERATIONS_METRICS_VERSION, "operations-metrics-1.0.0");
+  assert.equal(OPERATIONS_METRICS_VERSION, "operations-metrics-1.1.0");
   assert.equal(OPERATIONS_METRICS_TIMEZONE, "Africa/Johannesburg");
+  assert.match(svc, /DATA UNAVAILABLE/);
 });
 
 test("UI loading and error states present", () => {
@@ -265,6 +266,7 @@ test("UI loading and error states present", () => {
   );
   assert.match(metrics, /Loading production metrics/);
   assert.match(metrics, /Live metrics unavailable/);
+  assert.match(metrics, /DATA UNAVAILABLE/);
   assert.match(metrics, /Refresh/);
   assert.match(metrics, /cache: "no-store"/);
 });

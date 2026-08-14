@@ -8,23 +8,24 @@ import ImportStatus from "./ImportStatus";
 type Metrics = {
   ok: boolean;
   error?: string;
-  properties?: { total: number; todayLabel: string };
-  images?: { total: number; todayLabel: string };
-  mergedRecords?: number;
-  failedImports?: number;
+  properties?: { total: number | null; todayLabel: string };
+  images?: { total: number | null; todayLabel: string };
+  mergedRecords?: number | null;
+  failedImports?: number | null;
   importQueue?: {
     percentage: number;
     label: string;
     total: number;
     completed: number;
     failed: number;
-  };
+  } | null;
+  unavailable?: string[];
   generatedAt?: string;
   saDate?: string;
 };
 
-function formatCount(n: number | undefined): string {
-  if (n == null || !Number.isFinite(n)) return "—";
+function formatCount(n: number | null | undefined, unavailable?: boolean): string {
+  if (unavailable || n == null || !Number.isFinite(n)) return "DATA UNAVAILABLE";
   return n.toLocaleString("en-ZA");
 }
 
@@ -97,6 +98,8 @@ export default function LiveOperationsMetrics() {
     );
   }
 
+  const unavailable = new Set(data.unavailable ?? []);
+
   return (
     <>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -117,34 +120,41 @@ export default function LiveOperationsMetrics() {
       <div className="mb-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         <LiveStatCard
           title="Properties"
-          value={formatCount(data.properties?.total)}
+          value={formatCount(data.properties?.total, unavailable.has("propertiesTotal"))}
           change={data.properties?.todayLabel}
           color="green"
         />
         <LiveStatCard
           title="Images"
-          value={formatCount(data.images?.total)}
+          value={formatCount(data.images?.total, unavailable.has("imagesTotal"))}
           change={data.images?.todayLabel}
         />
         <LiveStatCard
           title="Merged Records"
-          value={formatCount(data.mergedRecords)}
+          value={formatCount(data.mergedRecords, unavailable.has("mergedRecords"))}
           color="yellow"
         />
         <LiveStatCard
           title="Failed Imports"
-          value={formatCount(data.failedImports)}
+          value={formatCount(data.failedImports, unavailable.has("failedImports"))}
           color="red"
         />
       </div>
 
-      <ImportStatus
-        percentage={data.importQueue?.percentage ?? 0}
-        label={data.importQueue?.label ?? "No active queue items"}
-        total={data.importQueue?.total ?? 0}
-        completed={data.importQueue?.completed ?? 0}
-        failed={data.importQueue?.failed ?? 0}
-      />
+      {data.importQueue == null || unavailable.has("importQueue") ? (
+        <div className="rounded-2xl bg-white p-6 shadow">
+          <h2 className="mb-2 text-xl font-bold">Import Queue</h2>
+          <p className="text-slate-600">DATA UNAVAILABLE</p>
+        </div>
+      ) : (
+        <ImportStatus
+          percentage={data.importQueue.percentage}
+          label={data.importQueue.label}
+          total={data.importQueue.total}
+          completed={data.importQueue.completed}
+          failed={data.importQueue.failed}
+        />
+      )}
     </>
   );
 }

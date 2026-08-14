@@ -11,20 +11,22 @@ function isMissingRelation(error: { message?: string; code?: string } | null): b
   );
 }
 
+export type ImportQueueCounts = {
+  total: number;
+  completed: number;
+  failed: number;
+  waiting: number;
+  running: number;
+};
+
 export type OperationsMetricsSnapshot = {
-  propertiesTotal: number;
-  propertiesToday: number;
-  imagesTotal: number;
-  imagesToday: number;
-  mergedRecords: number;
-  failedImports: number;
-  importQueue: {
-    total: number;
-    completed: number;
-    failed: number;
-    waiting: number;
-    running: number;
-  };
+  propertiesTotal: number | null;
+  propertiesToday: number | null;
+  imagesTotal: number | null;
+  imagesToday: number | null;
+  mergedRecords: number | null;
+  failedImports: number | null;
+  importQueue: ImportQueueCounts | null;
   sources: {
     properties: string;
     propertiesToday: string;
@@ -46,17 +48,17 @@ export class OperationsMetricsRepository extends BaseRepository {
       .not("data_classification", "eq", "demo");
   }
 
-  static async countPropertiesTotal(): Promise<number> {
+  static async countPropertiesTotal(): Promise<number | null> {
     const { count, error } = await this.productionPropertyCountQuery();
 
     if (error) {
-      if (isMissingRelation(error)) return 0;
+      if (isMissingRelation(error)) return null;
       this.handleError("OperationsMetricsRepository.countPropertiesTotal", error);
     }
     return count ?? 0;
   }
 
-  static async countPropertiesToday(startIso: string, endIso: string): Promise<number> {
+  static async countPropertiesToday(startIso: string, endIso: string): Promise<number | null> {
     const { count: importedCount, error: e1 } = await this.productionPropertyCountQuery()
       .gte("imported_at", startIso)
       .lt("imported_at", endIso);
@@ -64,6 +66,7 @@ export class OperationsMetricsRepository extends BaseRepository {
     if (e1 && !isMissingRelation(e1)) {
       this.handleError("OperationsMetricsRepository.countPropertiesToday.imported", e1);
     }
+    if (e1 && isMissingRelation(e1)) return null;
 
     const { count: createdCount, error: e2 } = await this.productionPropertyCountQuery()
       .is("imported_at", null)
@@ -73,24 +76,25 @@ export class OperationsMetricsRepository extends BaseRepository {
     if (e2 && !isMissingRelation(e2)) {
       this.handleError("OperationsMetricsRepository.countPropertiesToday.created", e2);
     }
+    if (e2 && isMissingRelation(e2)) return null;
 
     return (importedCount ?? 0) + (createdCount ?? 0);
   }
 
-  static async countImagesTotal(): Promise<number> {
+  static async countImagesTotal(): Promise<number | null> {
     const db = this.adminDb();
     const { count, error } = await db
       .from("property_images")
       .select("id", { count: "exact", head: true });
 
     if (error) {
-      if (isMissingRelation(error)) return 0;
+      if (isMissingRelation(error)) return null;
       this.handleError("OperationsMetricsRepository.countImagesTotal", error);
     }
     return count ?? 0;
   }
 
-  static async countImagesToday(startIso: string, endIso: string): Promise<number> {
+  static async countImagesToday(startIso: string, endIso: string): Promise<number | null> {
     const db = this.adminDb();
     const { count, error } = await db
       .from("property_images")
@@ -99,7 +103,7 @@ export class OperationsMetricsRepository extends BaseRepository {
       .lt("created_at", endIso);
 
     if (error) {
-      if (isMissingRelation(error)) return 0;
+      if (isMissingRelation(error)) return null;
       this.handleError("OperationsMetricsRepository.countImagesToday", error);
     }
     return count ?? 0;
@@ -136,7 +140,7 @@ export class OperationsMetricsRepository extends BaseRepository {
     return count ?? 0;
   }
 
-  static async importQueueCounts(): Promise<OperationsMetricsSnapshot["importQueue"] | null> {
+  static async importQueueCounts(): Promise<ImportQueueCounts | null> {
     const db = this.adminDb();
     const { data, error } = await db.from("import_queue").select("queue_status");
 
@@ -176,6 +180,10 @@ export class OperationsMetricsRepository extends BaseRepository {
       this.importQueueCounts(),
     ]);
 
+    if (propertiesTotal === null) unavailable.push("propertiesTotal");
+    if (propertiesToday === null) unavailable.push("propertiesToday");
+    if (imagesTotal === null) unavailable.push("imagesTotal");
+    if (imagesToday === null) unavailable.push("imagesToday");
     if (mergedRecords === null) unavailable.push("mergedRecords");
     if (failedImports === null) unavailable.push("failedImports");
     if (importQueue === null) unavailable.push("importQueue");
@@ -185,15 +193,9 @@ export class OperationsMetricsRepository extends BaseRepository {
       propertiesToday,
       imagesTotal,
       imagesToday,
-      mergedRecords: mergedRecords ?? 0,
-      failedImports: failedImports ?? 0,
-      importQueue: importQueue ?? {
-        total: 0,
-        completed: 0,
-        failed: 0,
-        waiting: 0,
-        running: 0,
-      },
+      mergedRecords,
+      failedImports,
+      importQueue,
       sources: {
         properties: "properties (excluding seed/demo data_classification)",
         propertiesToday: "properties.imported_at or created_at when imported_at null (SA day)",

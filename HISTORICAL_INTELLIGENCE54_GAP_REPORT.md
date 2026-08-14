@@ -1,0 +1,42 @@
+# Historical Intelligence 5.4 — Gap Report
+
+Generated: 2026-08-14T20:14:11.336Z
+
+## P1
+
+- **Benoni** (Benoni) — EXTRACTION_AVAILABLE → DO_NOT_RETRY
+- **Secunda** (Secunda) — OUTCOME_FOUND → DO_NOT_RETRY
+- **Haenertsburg** (Haenertsburg) — EXTRACTION_AVAILABLE → DO_NOT_RETRY
+- **Roodepoort** (Roodepoort) — EXTRACTION_AVAILABLE → DO_NOT_RETRY
+- **of** (of) — EXTRACTION_AVAILABLE → DO_NOT_RETRY
+- **Groblersdal** (Groblersdal) — EXTRACTION_AVAILABLE → RETRY_LATER
+- **Groblersdal** (Groblersdal) — EXTRACTION_AVAILABLE → RETRY_LATER
+- **Pre-fab wall** (Pre-fab wall) — OUTCOME_FOUND → RETRY_LATER
+- **Parys** (Parys) — EXTRACTION_AVAILABLE → RETRY_LATER
+- **Randburg** (Randburg) — FETCH_ELIGIBLE → ACQUIRE
+- **Randburg** (Randburg) — FETCH_ELIGIBLE → ACQUIRE
+- **Bedfordview** (Bedfordview) — FETCH_ELIGIBLE → ACQUIRE
+- **Port Alfred** (Port Alfred) — FETCH_ELIGIBLE → ACQUIRE
+- **Pretoria North** (Pretoria North) — FETCH_ELIGIBLE → ACQUIRE
+- **Pretoria** (Pretoria) — FETCH_ELIGIBLE → ACQUIRE
+- **Bettys Bay** (Bettys Bay) — FETCH_ELIGIBLE → ACQUIRE
+- **Clanwilliam** (Clanwilliam) — FETCH_ELIGIBLE → ACQUIRE
+- **and are strictly farmed and managed on t** (and are strictly farmed and managed on t) — FETCH_ELIGIBLE → ACQUIRE
+- **Northam** (Northam) — FETCH_ELIGIBLE → ACQUIRE
+- **Pretoria** (Pretoria) — FETCH_ELIGIBLE → ACQUIRE
+- **Germiston** (Germiston) — FETCH_ELIGIBLE → ACQUIRE
+- **of** (of) — FETCH_ELIGIBLE → ACQUIRE
+- **Municipal water and sewerage connections** (Municipal water and sewerage connections) — FETCH_ELIGIBLE → ACQUIRE
+- **Sandton** (Sandton) — FETCH_ELIGIBLE → ACQUIRE
+- **Phase** (Phase) — FETCH_ELIGIBLE → ACQUIRE
+- **Pretoria** (Pretoria) — FETCH_ELIGIBLE → ACQUIRE
+- **Pretoria** (Pretoria) — FETCH_ELIGIBLE → ACQUIRE
+- **Centurion** (Centurion) — FETCH_ELIGIBLE → ACQUIRE
+- **Port Alfred** (Port Alfred) — FETCH_ELIGIBLE → ACQUIRE
+
+## P4
+
+- **Port Elizabeth** (Port Elizabeth) — FETCH_HTTP_ERROR → REVIEW SOURCE
+- **Johannesburg** (Johannesburg) — FETCH_HTTP_ERROR → REVIEW SOURCE
+- **Hartbeespoort Dam** (Hartbeespoort Dam) — FETCH_HTTP_ERROR → REVIEW SOURCE
+- **Johannesburg** (Johannesburg) — FETCH_HTTP_ERROR → REVIEW SOURCE

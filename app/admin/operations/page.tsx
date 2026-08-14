@@ -21,6 +21,7 @@ import HistoricalIntelligence50Panel from "./components/HistoricalIntelligence50
 import HistoricalIntelligence51Panel from "./components/HistoricalIntelligence51Panel";
 import HistoricalIntelligence52Panel from "./components/HistoricalIntelligence52Panel";
 import HistoricalIntelligence53Panel from "./components/HistoricalIntelligence53Panel";
+import HistoricalIntelligence54Panel from "./components/HistoricalIntelligence54Panel";
 import PropertyHistoryBackfillPanel from "./components/PropertyHistoryBackfillPanel";
 
 export default function OperationsPage() {
@@ -86,6 +87,8 @@ export default function OperationsPage() {
       <HistoricalIntelligence52Panel />
 
       <HistoricalIntelligence53Panel />
+
+      <HistoricalIntelligence54Panel />
 
       <PropertyHistoryBackfillPanel />
 
