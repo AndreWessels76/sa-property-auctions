@@ -2,6 +2,9 @@
  * Deterministic comparable confidence scoring — explainable, not predictive.
  */
 
+import { evidenceQualityBonus } from "@/lib/intelligence/historicalEvidence/scoring";
+import { scoreHistoricalEvidence } from "@/lib/intelligence/historicalEvidence/scoring";
+import { classifyObservation } from "@/lib/intelligence/outcomes/evidence";
 import { isValidPositiveAmount, isValidPositiveArea } from "@/lib/intelligence/pricing/priceCalculations";
 import { COMPARABLE_WEIGHTS } from "@/lib/intelligence/outcomes/config";
 import type { HistoricalEventObservation } from "@/lib/intelligence/historical/types";
@@ -94,6 +97,12 @@ export function scoreComparable(
   }
   if (!candidate.conflict) data_completeness += 5;
 
+  const evidenceScore = scoreHistoricalEvidence(
+    candidate,
+    classifyObservation(candidate),
+  );
+  const evidence_bonus = evidenceQualityBonus(evidenceScore.overallConfidence);
+
   const total =
     location_match +
     property_type_match +
@@ -103,7 +112,8 @@ export function scoreComparable(
     bedroom_similarity +
     bathroom_similarity +
     sale_outcome_quality +
-    data_completeness;
+    data_completeness +
+    evidence_bonus;
 
   const score: ComparableScoreBreakdown = {
     location_match,
@@ -115,6 +125,7 @@ export function scoreComparable(
     bathroom_similarity,
     sale_outcome_quality,
     data_completeness,
+    evidence_bonus,
     total,
   };
 

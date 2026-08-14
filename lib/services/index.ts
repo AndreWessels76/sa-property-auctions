@@ -25,4 +25,5 @@ export { HistoricalIntelligenceService } from "./HistoricalIntelligenceService";
 export { ComparableIntelligenceService } from "./ComparableIntelligenceService";
 export { OutcomeIntelligenceService } from "./OutcomeIntelligenceService";
 export { HistoricalEnrichmentService } from "./HistoricalEnrichmentService";
+export { HistoricalIntelligence40Service } from "./HistoricalIntelligence40Service";
 export { PropertyHistoryBackfillService } from "./PropertyHistoryBackfillService";

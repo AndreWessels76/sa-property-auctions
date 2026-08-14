@@ -12,6 +12,7 @@ import {
   ComparableIntelligenceService,
   HistoricalIntelligenceService,
   OutcomeIntelligenceService,
+  HistoricalIntelligence40Service,
   PropertyService,
 } from "@/lib/services";
 import { getComparableSales } from "@/lib/maps/getComparableSales";
@@ -119,6 +120,9 @@ export default async function ResearchReportPage({ params }: PageProps) {
   let outcomeHistory: Awaited<
     ReturnType<typeof OutcomeIntelligenceService.propertyHistory>
   > | null = null;
+  let hiPerformance: Awaited<
+    ReturnType<typeof HistoricalIntelligence40Service.propertyPerformance>
+  > | null = null;
   try {
     hiComparables = await ComparableIntelligenceService.forProperty(property.id);
     hiHistorical = await HistoricalIntelligenceService.forProperty(property.id);
@@ -126,10 +130,12 @@ export default async function ResearchReportPage({ params }: PageProps) {
       property.id,
       hiHistorical?.propertyMasterId ?? null,
     );
+    hiPerformance = await HistoricalIntelligence40Service.propertyPerformance(property.id);
   } catch {
     hiComparables = null;
     hiHistorical = null;
     outcomeHistory = null;
+    hiPerformance = null;
   }
 
   return (
@@ -288,6 +294,60 @@ export default async function ResearchReportPage({ params }: PageProps) {
                       </li>
                     ))}
                   </ol>
+                </div>
+              ) : null}
+              {hiPerformance ? (
+                <div className="mt-4">
+                  <h3 className="text-sm font-semibold text-navy-900">
+                    Historical performance
+                  </h3>
+                  <dl className="mt-2 grid gap-2 text-sm sm:grid-cols-3">
+                    <div>
+                      <dt className="text-slate-500">Recorded events</dt>
+                      <dd className="font-semibold">
+                        {hiPerformance.recordedAuctionEvents}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-slate-500">Verified sale prices</dt>
+                      <dd className="font-semibold">
+                        {hiPerformance.verifiedSalePrices}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-slate-500">Evidence confidence</dt>
+                      <dd className="font-semibold">
+                        {hiPerformance.historicalEvidenceConfidence}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-slate-500">Comparables</dt>
+                      <dd className="font-semibold">
+                        {hiPerformance.comparableCount} · {hiPerformance.comparableConfidence}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-slate-500">Price/m²</dt>
+                      <dd className="font-semibold">
+                        {hiPerformance.pricePerM2.calculable && hiPerformance.pricePerM2.value != null
+                          ? `R${Math.round(hiPerformance.pricePerM2.value).toLocaleString("en-ZA")}`
+                          : hiPerformance.pricePerM2.reason ?? "Insufficient data"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-slate-500">Price/ha</dt>
+                      <dd className="font-semibold">
+                        {hiPerformance.pricePerHa.calculable && hiPerformance.pricePerHa.value != null
+                          ? `R${Math.round(hiPerformance.pricePerHa.value).toLocaleString("en-ZA")}${hiPerformance.pricePerHa.approximate ? " (approx)" : ""}`
+                          : hiPerformance.pricePerHa.reason ?? "Insufficient data"}
+                      </dd>
+                    </div>
+                  </dl>
+                  {hiPerformance.limitations.map((l) => (
+                    <p key={l} className="mt-1 text-xs text-slate-500">
+                      · {l}
+                    </p>
+                  ))}
                 </div>
               ) : null}
               {hiHistorical?.ok ? (

@@ -20,6 +20,7 @@ export type ComparableScoreBreakdown = {
   bathroom_similarity: number;
   sale_outcome_quality: number;
   data_completeness: number;
+  evidence_bonus: number;
   total: number;
 };
 

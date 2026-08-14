@@ -2,7 +2,7 @@
  * Historical Intelligence 2.5 — comparable & market evidence configuration.
  */
 
-export const COMPARABLE_INTELLIGENCE_VERSION = "historical-intelligence-2.5.0";
+export const COMPARABLE_INTELLIGENCE_VERSION = "historical-intelligence-4.0.0";
 
 export type ComparableIntelligenceConfig = {
   minimumComparableSales: number;

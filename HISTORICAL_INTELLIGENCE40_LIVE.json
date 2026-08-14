@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-08-14T08:43:37.545Z",
+  "version": "historical-intelligence-4.0.0",
+  "productionCounts": {
+    "property_masters": 38,
+    "auction_events": 38,
+    "historical_events": 33,
+    "outcome_observations": 0
+  },
+  "verifiedOutcomes": 0,
+  "verifiedSalePrices": 0,
+  "comparableReadyEvents": 0,
+  "marketStatisticsReadyEvents": 0,
+  "insufficientDataCases": 0,
+  "areaStatistics": {
+    "townsRepresented": 25,
+    "medianCalculable": false,
+    "note": "Insufficient data — median statistics withheld"
+  },
+  "agencyStatistics": {
+    "agenciesRepresented": 1
+  },
+  "conflicts": 0,
+  "publicCatalogueSafety": {
+    "leaks": 0
+  },
+  "soldBreakdown": {
+    "sold": 0,
+    "unknown": 33
+  },
+  "coverage": {
+    "totalHistoricalEvents": 33,
+    "confirmedOutcomes": 0,
+    "unknownOutcomes": 33,
+    "verifiedSalePrices": 0,
+    "eventsWithPricingEvidence": 0,
+    "eventsWithSourceEvidence": 33,
+    "eventsWithLocationEvidence": 33,
+    "eventsWithSizeEvidence": 0,
+    "comparableReadyEvents": 0,
+    "marketStatisticsReadyEvents": 0,
+    "insufficientDataCases": 0,
+    "averageOverallConfidence": "MEDIUM"
+  },
+  "verdict": "INSUFFICIENT DATA — ENGINE READY"
+}

@@ -24,6 +24,7 @@
     "test:historical-intelligence30": "node scripts/historical-intelligence30-selftest.cjs",
     "test:historical-intelligence31": "node scripts/historical-intelligence31-selftest.cjs",
     "test:historical-data-acquisition40": "node scripts/historical-data-acquisition40-selftest.cjs",
+    "test:historical-intelligence40": "node scripts/historical-intelligence40-selftest.cjs",
     "test:history-backfill": "node scripts/history-backfill-selftest.cjs",
     "enrichment:closure": "npx --yes tsx --env-file=.env.local scripts/live-enrichment-closure.ts",
     "analyze": "next build",

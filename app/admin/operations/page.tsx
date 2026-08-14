@@ -10,6 +10,7 @@ import PricingAcquisitionPanel from "./components/PricingAcquisitionPanel";
 import HistoricalIntelligencePanel from "./components/HistoricalIntelligencePanel";
 import HistoricalOutcomeAuditPanel from "./components/HistoricalOutcomeAuditPanel";
 import HistoricalDataAcquisition40Panel from "./components/HistoricalDataAcquisition40Panel";
+import HistoricalIntelligence40Panel from "./components/HistoricalIntelligence40Panel";
 import PropertyHistoryBackfillPanel from "./components/PropertyHistoryBackfillPanel";
 
 export default function OperationsPage() {
@@ -80,6 +81,8 @@ export default function OperationsPage() {
       <HistoricalOutcomeAuditPanel />
 
       <HistoricalDataAcquisition40Panel />
+
+      <HistoricalIntelligence40Panel />
 
       <PropertyHistoryBackfillPanel />
 
