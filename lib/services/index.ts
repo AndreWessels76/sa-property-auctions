@@ -25,6 +25,7 @@ export { HistoricalSourceCoverage48Service } from "./HistoricalSourceCoverage48S
 export { HistoricalIntelligence50Service } from "./HistoricalIntelligence50Service";
 export { HistoricalIntelligence51Service } from "./HistoricalIntelligence51Service";
 export { HistoricalIntelligence52Service } from "./HistoricalIntelligence52Service";
+export { HistoricalIntelligence53Service } from "./HistoricalIntelligence53Service";
 export { SourceRefetchService } from "./SourceRefetchService";
 export { AuctionPriceIntelligenceService } from "./AuctionPriceIntelligenceService";
 export { HistoricalIntelligenceService } from "./HistoricalIntelligenceService";
