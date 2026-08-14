@@ -194,6 +194,42 @@ export class AuctionEventRepository extends BaseRepository {
     }
     return data ?? [];
   }
+
+  static async listAll(limit = 2000): Promise<unknown[]> {
+    try {
+      const db = this.adminDb();
+      const { data, error } = await db
+        .from("auction_events")
+        .select("*")
+        .order("auction_date", { ascending: false })
+        .limit(limit);
+      if (error) {
+        if (isMissingRelation(error)) return [];
+        this.handleError("AuctionEventRepository.listAll", error);
+      }
+      return data ?? [];
+    } catch {
+      return [];
+    }
+  }
+
+  static async listByListing(listingPropertyId: string): Promise<unknown[]> {
+    try {
+      const db = this.adminDb();
+      const { data, error } = await db
+        .from("auction_events")
+        .select("*")
+        .eq("listing_property_id", listingPropertyId)
+        .order("auction_date", { ascending: false });
+      if (error) {
+        if (isMissingRelation(error)) return [];
+        this.handleError("AuctionEventRepository.listByListing", error);
+      }
+      return data ?? [];
+    } catch {
+      return [];
+    }
+  }
 }
 
 export class PropertyHistoryRepository extends BaseRepository {

@@ -24,6 +24,7 @@ import PropertyHighlightsSection from "@/components/property/detail/PropertyHigh
 import PropertyLocationSection from "@/components/property/detail/PropertyLocationSection";
 import PropertyMobileActions from "@/components/property/detail/PropertyMobileActions";
 import PropertyPricingIntelligence from "@/components/property/detail/PropertyPricingIntelligence";
+import HistoricalAuctionActivityPanel from "@/components/property/detail/HistoricalAuctionActivityPanel";
 import PropertyRelatedSection from "@/components/property/detail/PropertyRelatedSection";
 import PropertyStructuredData from "@/components/property/detail/PropertyStructuredData";
 import PropertySummarySection from "@/components/property/detail/PropertySummarySection";
@@ -46,6 +47,7 @@ import { getRelatedListingGroups } from "@/lib/property/relatedListings";
 import {
   AuctionIntelligenceService,
   AuctionPriceIntelligenceService,
+  HistoricalIntelligenceService,
   PropertyIntelligenceService,
   PropertyService,
 } from "@/lib/services";
@@ -191,6 +193,17 @@ export default async function PropertyPage({ params }: PageProps) {
   const priceIntelligence =
     await AuctionPriceIntelligenceService.fromProperty(property);
 
+  let historicalActivity: Awaited<
+    ReturnType<typeof HistoricalIntelligenceService.forProperty>
+  > | null = null;
+  try {
+    historicalActivity = await HistoricalIntelligenceService.forProperty(
+      property.id,
+    );
+  } catch {
+    historicalActivity = null;
+  }
+
   const gallerySlides = images
     .filter((image) => Boolean(image.image_url?.trim()))
     .map((image) => ({
@@ -325,6 +338,16 @@ export default async function PropertyPage({ params }: PageProps) {
 
                 {/* Auction / Lifecycle Timeline */}
                 <PropertyTimelineSection events={timelineEvents} />
+
+                {historicalActivity?.ok ? (
+                  <HistoricalAuctionActivityPanel
+                    premium={historicalActivity.premium}
+                    propertyMasterId={historicalActivity.propertyMasterId}
+                    summary={historicalActivity.summary}
+                    timeline={historicalActivity.timeline}
+                    insufficientMessage={historicalActivity.insufficientMessage}
+                  />
+                ) : null}
 
                 {/* Property Documents */}
                 <PropertyDocumentsSection property={property} />

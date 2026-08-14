@@ -21,3 +21,4 @@ export { DueDiligenceExtractionService } from "./DueDiligenceExtractionService";
 export { OperationsQuickActionsService } from "./OperationsQuickActionsService";
 export { SourceRefetchService } from "./SourceRefetchService";
 export { AuctionPriceIntelligenceService } from "./AuctionPriceIntelligenceService";
+export { HistoricalIntelligenceService } from "./HistoricalIntelligenceService";

@@ -7,6 +7,7 @@ import InvestorOpsPanels from "./components/InvestorOpsPanels";
 import DueDiligenceExtractionPanel from "./components/DueDiligenceExtractionPanel";
 import SourceRefreshQueue from "./components/SourceRefreshQueue";
 import PricingAcquisitionPanel from "./components/PricingAcquisitionPanel";
+import HistoricalIntelligencePanel from "./components/HistoricalIntelligencePanel";
 
 export default function OperationsPage() {
   return (
@@ -70,6 +71,8 @@ export default function OperationsPage() {
       <SourceRefreshQueue />
 
       <PricingAcquisitionPanel />
+
+      <HistoricalIntelligencePanel />
 
       <DueDiligenceExtractionPanel />
 

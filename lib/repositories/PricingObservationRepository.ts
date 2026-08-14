@@ -113,6 +113,24 @@ export class PricingObservationRepository extends BaseRepository {
     }
   }
 
+  static async listRecent(limit = 5000): Promise<PricingObservationRow[]> {
+    try {
+      const db = this.adminDb();
+      const { data, error } = await db
+        .from("pricing_observations")
+        .select("*")
+        .order("extracted_at", { ascending: false })
+        .limit(limit);
+      if (error) {
+        if (missingRelation(error)) return [];
+        this.handleError("PricingObservationRepository.listRecent", error);
+      }
+      return (data as PricingObservationRow[]) ?? [];
+    } catch {
+      return [];
+    }
+  }
+
   static async listOpenConflicts(limit = 50): Promise<PricingConflictRow[]> {
     try {
       const db = this.adminDb();

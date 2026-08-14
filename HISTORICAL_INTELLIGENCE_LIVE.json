@@ -1,0 +1,582 @@
+{
+  "sprint": "Historical Intelligence 2B",
+  "generated_at": "2026-08-14T06:05:49.989Z",
+  "version": "historical-intelligence-2.0.0",
+  "production_counts": {
+    "auction_events_loaded": 0,
+    "auction_events_error": null,
+    "properties_loaded": 53,
+    "property_masters_loaded": 0,
+    "pricing_observations_loaded": 0,
+    "dataset_observations": 38,
+    "public_historical": 33,
+    "source_units": {
+      "auction_event": 0,
+      "listing_fallback": 38
+    }
+  },
+  "samples": {
+    "upcoming": {
+      "id": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "title": "Online Auction: ± 32,8Ha Prime Agricultural Holding, Tzaneen",
+      "listing_status": "upcoming",
+      "public_catalogue": true,
+      "in_sale_stats": false
+    },
+    "expired": {
+      "id": "f23f9551-6202-4f50-a6aa-029dd0c96fe4",
+      "title": "Insolvent Estate Online Auction 3Bedroom Linden Johannesburg",
+      "listing_status": "expired",
+      "public_catalogue": false,
+      "in_historical": true
+    },
+    "sold": {
+      "error": "No sold listing in sample"
+    }
+  },
+  "metrics": {
+    "historicalEvents": 33,
+    "sold": 0,
+    "withdrawn": 0,
+    "cancelled": 0,
+    "expired": 33,
+    "unknownOutcome": 33,
+    "salePrice": {
+      "median": null,
+      "average": null,
+      "count": 0,
+      "coverage": "0 / 33",
+      "sampleSafety": "Insufficient data"
+    },
+    "auctionPrice": {
+      "median": null,
+      "count": 0,
+      "coverage": "0 / 33",
+      "sampleSafety": "Insufficient data"
+    },
+    "salePricePerM2": {
+      "median": null,
+      "count": 0,
+      "sampleSafety": "Insufficient data"
+    },
+    "salePricePerHa": {
+      "median": null,
+      "count": 0,
+      "approximate": false,
+      "sampleSafety": "Insufficient data"
+    },
+    "insufficient": false,
+    "insufficientMessage": null
+  },
+  "coverage": {
+    "eventCount": 33,
+    "verifiedCount": 33,
+    "sourceCount": 1,
+    "priceCoverageSale": {
+      "numerator": 0,
+      "denominator": 33
+    },
+    "priceCoverageAuction": {
+      "numerator": 0,
+      "denominator": 33
+    },
+    "sizeCoverageFloor": {
+      "numerator": 0,
+      "denominator": 33
+    },
+    "sizeCoverageHectares": {
+      "numerator": 0,
+      "denominator": 33
+    },
+    "dateCoverage": {
+      "numerator": 33,
+      "denominator": 33
+    },
+    "sources": [
+      "Bidders Choice"
+    ]
+  },
+  "byArea": [
+    {
+      "town": "Pretoria",
+      "province": "Gauteng",
+      "events": 4,
+      "sold": 0,
+      "salePrice": {
+        "definition": "Confirmed sale prices in Pretoria.",
+        "priceKind": "sale_price",
+        "count": 0,
+        "eligibleCount": 0,
+        "coverageNumerator": 0,
+        "coverageDenominator": 4,
+        "coverageLabel": "0 / 4",
+        "average": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "sampleSafety": "insufficient_data",
+        "sampleSafetyLabel": "Insufficient data",
+        "isApproximate": false,
+        "period": "all",
+        "notCalculableReason": "Insufficient data"
+      }
+    },
+    {
+      "town": "Johannesburg",
+      "province": "Gauteng",
+      "events": 2,
+      "sold": 0,
+      "salePrice": {
+        "definition": "Confirmed sale prices in Johannesburg.",
+        "priceKind": "sale_price",
+        "count": 0,
+        "eligibleCount": 0,
+        "coverageNumerator": 0,
+        "coverageDenominator": 2,
+        "coverageLabel": "0 / 2",
+        "average": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "sampleSafety": "insufficient_data",
+        "sampleSafetyLabel": "Insufficient data",
+        "isApproximate": false,
+        "period": "all",
+        "notCalculableReason": "Insufficient data"
+      }
+    },
+    {
+      "town": "of",
+      "province": "Limpopo",
+      "events": 2,
+      "sold": 0,
+      "salePrice": {
+        "definition": "Confirmed sale prices in of.",
+        "priceKind": "sale_price",
+        "count": 0,
+        "eligibleCount": 0,
+        "coverageNumerator": 0,
+        "coverageDenominator": 2,
+        "coverageLabel": "0 / 2",
+        "average": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "sampleSafety": "insufficient_data",
+        "sampleSafetyLabel": "Insufficient data",
+        "isApproximate": false,
+        "period": "all",
+        "notCalculableReason": "Insufficient data"
+      }
+    },
+    {
+      "town": "Groblersdal",
+      "province": "Limpopo",
+      "events": 2,
+      "sold": 0,
+      "salePrice": {
+        "definition": "Confirmed sale prices in Groblersdal.",
+        "priceKind": "sale_price",
+        "count": 0,
+        "eligibleCount": 0,
+        "coverageNumerator": 0,
+        "coverageDenominator": 2,
+        "coverageLabel": "0 / 2",
+        "average": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "sampleSafety": "insufficient_data",
+        "sampleSafetyLabel": "Insufficient data",
+        "isApproximate": false,
+        "period": "all",
+        "notCalculableReason": "Insufficient data"
+      }
+    },
+    {
+      "town": "Port Alfred",
+      "province": "Eastern Cape",
+      "events": 2,
+      "sold": 0,
+      "salePrice": {
+        "definition": "Confirmed sale prices in Port Alfred.",
+        "priceKind": "sale_price",
+        "count": 0,
+        "eligibleCount": 0,
+        "coverageNumerator": 0,
+        "coverageDenominator": 2,
+        "coverageLabel": "0 / 2",
+        "average": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "sampleSafety": "insufficient_data",
+        "sampleSafetyLabel": "Insufficient data",
+        "isApproximate": false,
+        "period": "all",
+        "notCalculableReason": "Insufficient data"
+      }
+    },
+    {
+      "town": "Randburg",
+      "province": "Gauteng",
+      "events": 2,
+      "sold": 0,
+      "salePrice": {
+        "definition": "Confirmed sale prices in Randburg.",
+        "priceKind": "sale_price",
+        "count": 0,
+        "eligibleCount": 0,
+        "coverageNumerator": 0,
+        "coverageDenominator": 2,
+        "coverageLabel": "0 / 2",
+        "average": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "sampleSafety": "insufficient_data",
+        "sampleSafetyLabel": "Insufficient data",
+        "isApproximate": false,
+        "period": "all",
+        "notCalculableReason": "Insufficient data"
+      }
+    },
+    {
+      "town": "Haenertsburg",
+      "province": "Limpopo",
+      "events": 1,
+      "sold": 0,
+      "salePrice": {
+        "definition": "Confirmed sale prices in Haenertsburg.",
+        "priceKind": "sale_price",
+        "count": 0,
+        "eligibleCount": 0,
+        "coverageNumerator": 0,
+        "coverageDenominator": 1,
+        "coverageLabel": "0 / 1",
+        "average": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "sampleSafety": "insufficient_data",
+        "sampleSafetyLabel": "Insufficient data",
+        "isApproximate": false,
+        "period": "all",
+        "notCalculableReason": "Insufficient data"
+      }
+    },
+    {
+      "town": "Benoni",
+      "province": "Gauteng",
+      "events": 1,
+      "sold": 0,
+      "salePrice": {
+        "definition": "Confirmed sale prices in Benoni.",
+        "priceKind": "sale_price",
+        "count": 0,
+        "eligibleCount": 0,
+        "coverageNumerator": 0,
+        "coverageDenominator": 1,
+        "coverageLabel": "0 / 1",
+        "average": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "sampleSafety": "insufficient_data",
+        "sampleSafetyLabel": "Insufficient data",
+        "isApproximate": false,
+        "period": "all",
+        "notCalculableReason": "Insufficient data"
+      }
+    }
+  ],
+  "byAgency": [
+    {
+      "agency": "Bidders Choice",
+      "events": 33,
+      "sold": 0,
+      "withdrawn": 0,
+      "cancelled": 0,
+      "salePrice": {
+        "definition": "Confirmed sale prices for agency Bidders Choice. Not a ranking.",
+        "priceKind": "sale_price",
+        "count": 0,
+        "eligibleCount": 0,
+        "coverageNumerator": 0,
+        "coverageDenominator": 33,
+        "coverageLabel": "0 / 33",
+        "average": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "sampleSafety": "insufficient_data",
+        "sampleSafetyLabel": "Insufficient data",
+        "isApproximate": false,
+        "period": "all",
+        "notCalculableReason": "Insufficient data"
+      }
+    }
+  ],
+  "exclusions": [
+    {
+      "observationId": "listing:e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "reasons": [
+        "NOT_HISTORICAL"
+      ],
+      "state": "upcoming",
+      "auctionEventId": null,
+      "listingPropertyId": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6"
+    },
+    {
+      "observationId": "listing:fece6454-b660-4a0a-afc6-7b54a3e119eb",
+      "reasons": [
+        "UNKNOWN_PROPERTY_TYPE"
+      ],
+      "state": "expired",
+      "auctionEventId": null,
+      "listingPropertyId": "fece6454-b660-4a0a-afc6-7b54a3e119eb"
+    },
+    {
+      "observationId": "listing:97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "reasons": [
+        "UNKNOWN_PROPERTY_TYPE"
+      ],
+      "state": "expired",
+      "auctionEventId": null,
+      "listingPropertyId": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd"
+    },
+    {
+      "observationId": "listing:03888032-d214-452f-887b-0b91a0dc6bd4",
+      "reasons": [
+        "UNKNOWN_PROPERTY_TYPE"
+      ],
+      "state": "expired",
+      "auctionEventId": null,
+      "listingPropertyId": "03888032-d214-452f-887b-0b91a0dc6bd4"
+    },
+    {
+      "observationId": "listing:8125134b-387c-42dd-923a-c6f01826277f",
+      "reasons": [
+        "NOT_HISTORICAL"
+      ],
+      "state": "upcoming",
+      "auctionEventId": null,
+      "listingPropertyId": "8125134b-387c-42dd-923a-c6f01826277f"
+    },
+    {
+      "observationId": "listing:f3f47cca-73c8-420c-9144-146b0f4c9aba",
+      "reasons": [
+        "NOT_HISTORICAL"
+      ],
+      "state": "upcoming",
+      "auctionEventId": null,
+      "listingPropertyId": "f3f47cca-73c8-420c-9144-146b0f4c9aba"
+    },
+    {
+      "observationId": "listing:5907bdb8-fc4b-4a8b-b054-174e8d3a8d87",
+      "reasons": [
+        "UNKNOWN_PROPERTY_TYPE"
+      ],
+      "state": "expired",
+      "auctionEventId": null,
+      "listingPropertyId": "5907bdb8-fc4b-4a8b-b054-174e8d3a8d87"
+    },
+    {
+      "observationId": "listing:6ea5fcfe-92cf-40e8-9992-fd966c596071",
+      "reasons": [
+        "UNKNOWN_PROPERTY_TYPE"
+      ],
+      "state": "expired",
+      "auctionEventId": null,
+      "listingPropertyId": "6ea5fcfe-92cf-40e8-9992-fd966c596071"
+    },
+    {
+      "observationId": "listing:78e0ab0e-0b33-4a2a-a9e3-eda3677c6209",
+      "reasons": [
+        "NOT_HISTORICAL"
+      ],
+      "state": "upcoming",
+      "auctionEventId": null,
+      "listingPropertyId": "78e0ab0e-0b33-4a2a-a9e3-eda3677c6209"
+    },
+    {
+      "observationId": "listing:b8eb4cb5-d9c1-46de-a338-266357d3d8f9",
+      "reasons": [
+        "NOT_HISTORICAL"
+      ],
+      "state": "upcoming",
+      "auctionEventId": null,
+      "listingPropertyId": "b8eb4cb5-d9c1-46de-a338-266357d3d8f9"
+    }
+  ],
+  "observation_preview": [
+    {
+      "observationId": "listing:f23f9551-6202-4f50-a6aa-029dd0c96fe4",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "f23f9551-6202-4f50-a6aa-029dd0c96fe4",
+      "state": "expired",
+      "auctionDate": "2026-07-01T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Johannesburg",
+      "propertyType": "House",
+      "verified": true
+    },
+    {
+      "observationId": "listing:603a7e65-c6e0-4f8d-850a-688cb27549df",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "603a7e65-c6e0-4f8d-850a-688cb27549df",
+      "state": "expired",
+      "auctionDate": "2026-07-29T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "of",
+      "propertyType": "Farm",
+      "verified": true
+    },
+    {
+      "observationId": "listing:3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "state": "expired",
+      "auctionDate": "2026-08-04T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Haenertsburg",
+      "propertyType": "Guest Farm",
+      "verified": true
+    },
+    {
+      "observationId": "listing:fece6454-b660-4a0a-afc6-7b54a3e119eb",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "fece6454-b660-4a0a-afc6-7b54a3e119eb",
+      "state": "expired",
+      "auctionDate": "2026-01-28T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Pretoria",
+      "propertyType": "Other",
+      "verified": true
+    },
+    {
+      "observationId": "listing:97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "state": "expired",
+      "auctionDate": "2026-08-11T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Benoni",
+      "propertyType": "Other",
+      "verified": true
+    },
+    {
+      "observationId": "listing:4db1894f-369b-4957-85c6-d3b12f88a3ed",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "4db1894f-369b-4957-85c6-d3b12f88a3ed",
+      "state": "expired",
+      "auctionDate": "2026-07-22T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Pre-fab wall",
+      "propertyType": "Industrial",
+      "verified": true
+    },
+    {
+      "observationId": "listing:5b71ae7c-c460-41ec-965f-c080d965888c",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "5b71ae7c-c460-41ec-965f-c080d965888c",
+      "state": "expired",
+      "auctionDate": "2026-08-11T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Secunda",
+      "propertyType": "Guest House",
+      "verified": true
+    },
+    {
+      "observationId": "listing:03888032-d214-452f-887b-0b91a0dc6bd4",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "03888032-d214-452f-887b-0b91a0dc6bd4",
+      "state": "expired",
+      "auctionDate": "2026-07-28T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Groblersdal",
+      "propertyType": "Other",
+      "verified": true
+    },
+    {
+      "observationId": "listing:68ba46ec-c347-441e-854b-02f6f49ce063",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "68ba46ec-c347-441e-854b-02f6f49ce063",
+      "state": "expired",
+      "auctionDate": "2026-07-28T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Groblersdal",
+      "propertyType": "Commercial",
+      "verified": true
+    },
+    {
+      "observationId": "listing:3b61b830-3336-4d6e-bf51-20feb1487ffb",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "3b61b830-3336-4d6e-bf51-20feb1487ffb",
+      "state": "expired",
+      "auctionDate": "2026-07-14T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Johannesburg",
+      "propertyType": "House",
+      "verified": true
+    },
+    {
+      "observationId": "listing:fb42aba6-f6e0-496c-b600-38eb1dc61e12",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "fb42aba6-f6e0-496c-b600-38eb1dc61e12",
+      "state": "expired",
+      "auctionDate": "2026-03-25T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Municipal water and sewerage connections",
+      "propertyType": "Industrial",
+      "verified": true
+    },
+    {
+      "observationId": "listing:ea4472b7-0bcc-4722-95cd-037bf6aa8dfb",
+      "sourceUnit": "listing_fallback",
+      "auctionEventId": null,
+      "propertyMasterId": null,
+      "listingPropertyId": "ea4472b7-0bcc-4722-95cd-037bf6aa8dfb",
+      "state": "expired",
+      "auctionDate": "2026-07-01T00:00:00+00:00",
+      "sale_price": null,
+      "auction_price": null,
+      "town": "Hartbeespoort Dam",
+      "propertyType": "House",
+      "verified": true
+    }
+  ]
+}
