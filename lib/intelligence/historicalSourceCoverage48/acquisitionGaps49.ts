@@ -10,6 +10,7 @@ export type Hsa49GapGroup =
   | "RETRYABLE_FETCH_FAILURE"
   | "PERMANENT_FETCH_FAILURE"
   | "MISSING_SNAPSHOT"
+  | "MISSING_EXTRACTION"
   | "INVALID_SNAPSHOT"
   | "MISSING_OUTCOME"
   | "MISSING_SALE_PRICE"
@@ -48,6 +49,12 @@ export function explainEventGaps(input: {
   }
   if (input.event.fetchSuccessful && !input.event.snapshot.exists) {
     groups.push("MISSING_SNAPSHOT");
+  }
+  if (
+    input.event.snapshot.exists &&
+    input.event.extraction.state === "NOT_RUN"
+  ) {
+    groups.push("MISSING_EXTRACTION");
   }
   if (input.event.snapshot.valid === false) groups.push("INVALID_SNAPSHOT");
   if (input.event.outcomeState === "UNKNOWN") groups.push("MISSING_OUTCOME");

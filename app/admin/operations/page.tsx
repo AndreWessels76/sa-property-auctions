@@ -17,6 +17,7 @@ import InvestorIntelligence46Panel from "./components/InvestorIntelligence46Pane
 import InvestorIntelligence47Panel from "./components/InvestorIntelligence47Panel";
 import HistoricalSourceCoverage48Panel from "./components/HistoricalSourceCoverage48Panel";
 import HistoricalSourceAcquisition49Panel from "./components/HistoricalSourceAcquisition49Panel";
+import HistoricalIntelligence50Panel from "./components/HistoricalIntelligence50Panel";
 import PropertyHistoryBackfillPanel from "./components/PropertyHistoryBackfillPanel";
 
 export default function OperationsPage() {
@@ -74,6 +75,8 @@ export default function OperationsPage() {
       <HistoricalSourceCoverage48Panel />
 
       <HistoricalSourceAcquisition49Panel />
+
+      <HistoricalIntelligence50Panel />
 
       <PropertyHistoryBackfillPanel />
 

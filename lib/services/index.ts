@@ -22,6 +22,7 @@ export { OperationsQuickActionsService } from "./OperationsQuickActionsService";
 export { OperationsMetricsService } from "./OperationsMetricsService";
 export { InvestorIntelligence47Service } from "./InvestorIntelligence47Service";
 export { HistoricalSourceCoverage48Service } from "./HistoricalSourceCoverage48Service";
+export { HistoricalIntelligence50Service } from "./HistoricalIntelligence50Service";
 export { SourceRefetchService } from "./SourceRefetchService";
 export { AuctionPriceIntelligenceService } from "./AuctionPriceIntelligenceService";
 export { HistoricalIntelligenceService } from "./HistoricalIntelligenceService";
