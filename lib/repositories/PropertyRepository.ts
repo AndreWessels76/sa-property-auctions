@@ -75,6 +75,29 @@ export class PropertyRepository extends BaseRepository {
     );
   }
 
+  /**
+   * Backfill candidates — verified + historical listings, unlinked first.
+   * Never includes seed/demo rows.
+   */
+  static async listBackfillCandidates(limit = 200): Promise<Property[]> {
+    const db = this.adminDb();
+    const { data, error } = await db
+      .from("properties")
+      .select("*")
+      .in("verification_state", [...HISTORICAL_INTELLIGENCE_STATES, "verified"])
+      .order("property_master_id", { ascending: true, nullsFirst: true })
+      .order("auction_date", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      this.handleError("PropertyRepository.listBackfillCandidates", error);
+    }
+
+    return ((data as Property[]) ?? []).filter(
+      (p) => p.data_classification !== "seed" && p.data_classification !== "demo",
+    );
+  }
+
   static async getById(id: string): Promise<Property | null> {
     const db = this.publicDb();
 

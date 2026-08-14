@@ -62,7 +62,8 @@ export default function HistoricalAuctionActivityPanel({
       </h2>
       <p className="mt-1 text-sm text-slate-500">
         Completed, sold, withdrawn, cancelled, and expired Auction Events for
-        this Property Master. These are not current catalogue opportunities.
+        this Property Master. Event-backed history is preferred over listing
+        fallback. These are not current catalogue opportunities.
       </p>
 
       <dl className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 text-sm">

@@ -352,6 +352,34 @@ export class PricingObservationRepository extends BaseRepository {
     }
   }
 
+  /** Link existing observations to master + event without changing price semantics. */
+  static async linkToMasterAndEvent(input: {
+    propertyId: string;
+    propertyMasterId: string;
+    auctionEventId: string;
+  }): Promise<number> {
+    try {
+      const db = this.adminDb();
+      const { data, error } = await db
+        .from("pricing_observations")
+        .update({
+          property_master_id: input.propertyMasterId,
+          auction_event_id: input.auctionEventId,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("property_id", input.propertyId)
+        .is("auction_event_id", null)
+        .select("id");
+      if (error) {
+        if (missingRelation(error)) return 0;
+        this.handleError("PricingObservationRepository.linkToMasterAndEvent", error);
+      }
+      return data?.length ?? 0;
+    } catch {
+      return 0;
+    }
+  }
+
   /** Coverage aggregates from real observations + property counts. */
   static async coverageMetrics(): Promise<{
     available: boolean;

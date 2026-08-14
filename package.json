@@ -20,6 +20,7 @@
     "test:pricing": "node scripts/auction-price-intelligence-selftest.cjs",
     "test:pricing-acquisition": "node scripts/pricing-data-acquisition-selftest.cjs",
     "test:historical-intelligence": "node scripts/historical-intelligence-selftest.cjs",
+    "test:history-backfill": "node scripts/history-backfill-selftest.cjs",
     "enrichment:closure": "npx --yes tsx --env-file=.env.local scripts/live-enrichment-closure.ts",
     "analyze": "next build",
     "verify:supabase": "node scripts/verify-supabase.mjs",

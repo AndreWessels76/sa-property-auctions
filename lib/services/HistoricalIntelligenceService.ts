@@ -247,14 +247,24 @@ export class HistoricalIntelligenceService {
     const observations = await this.loadObservations();
     const report = buildHistoricalIntelligenceReport({ observations, window: "all" });
     const exclusions = exclusionRecords(observations);
+    const eventBacked = observations.filter((o) => o.sourceUnit === "auction_event");
+    const listingFallback = observations.filter((o) => o.sourceUnit === "listing_fallback");
+    const requiresReview = observations.filter((o) =>
+      o.exclusionReasons.includes("INSUFFICIENT_IDENTITY"),
+    );
     return {
       report,
       exclusions: exclusions.slice(0, 200),
       exclusionCounts: countByReason(exclusions),
       sourceUnits: {
-        auction_event: observations.filter((o) => o.sourceUnit === "auction_event").length,
-        listing_fallback: observations.filter((o) => o.sourceUnit === "listing_fallback")
-          .length,
+        auction_event: eventBacked.length,
+        listing_fallback: listingFallback.length,
+      },
+      historicalCoverage: {
+        eventBacked: eventBacked.length,
+        listingFallback: listingFallback.length,
+        unresolved: requiresReview.length,
+        totalObservations: observations.length,
       },
     };
   }

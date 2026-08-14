@@ -8,6 +8,7 @@ import DueDiligenceExtractionPanel from "./components/DueDiligenceExtractionPane
 import SourceRefreshQueue from "./components/SourceRefreshQueue";
 import PricingAcquisitionPanel from "./components/PricingAcquisitionPanel";
 import HistoricalIntelligencePanel from "./components/HistoricalIntelligencePanel";
+import PropertyHistoryBackfillPanel from "./components/PropertyHistoryBackfillPanel";
 
 export default function OperationsPage() {
   return (
@@ -73,6 +74,8 @@ export default function OperationsPage() {
       <PricingAcquisitionPanel />
 
       <HistoricalIntelligencePanel />
+
+      <PropertyHistoryBackfillPanel />
 
       <DueDiligenceExtractionPanel />
 

@@ -1,0 +1,38 @@
+{
+  "runId": "readonly-1786688510266",
+  "timestamp": "2026-08-14T06:21:51.437Z",
+  "mode": "readonly_preview",
+  "backfillExecuted": false,
+  "migrationApplied": null,
+  "preview": {
+    "recordsScanned": 38,
+    "mastersCreated": 38,
+    "mastersMatched": 0,
+    "masterReview": 0,
+    "masterSkipped": 0,
+    "eventsCreated": 38,
+    "eventsMatched": 0,
+    "duplicatesSkipped": 0,
+    "insufficientEvidence": 0,
+    "locationReview": 3,
+    "sourceBreakdown": {
+      "Bidders Choice": 38
+    }
+  },
+  "database": {
+    "property_masters": 0,
+    "auction_events": 0,
+    "pricing_observations": 0,
+    "properties": 38
+  },
+  "historicalIntelligence": {
+    "eventBacked": 0,
+    "listingFallback": 38
+  },
+  "verification": {
+    "publicCatalogueCount": 5,
+    "historicalLeaks": 0,
+    "clean": true
+  },
+  "note": "Read-only in-memory preview. Execute backfill via admin API after migration is applied."
+}
