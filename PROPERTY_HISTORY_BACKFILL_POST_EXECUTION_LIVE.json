@@ -1,0 +1,148 @@
+{
+  "timestamp": "2026-08-14T06:55:34.274Z",
+  "tableCounts": {
+    "property_masters": 36,
+    "auction_events": 38,
+    "property_history_backfill_runs": 3,
+    "property_history_backfill_items": 152,
+    "property_history_backfill_reviews": 0
+  },
+  "latestExecuteRun": {
+    "id": "e66899c5-9d33-403d-932b-2b880e80ae53",
+    "run_kind": "backfill",
+    "dry_run": false,
+    "status": "completed",
+    "batch_limit": 200,
+    "records_scanned": 38,
+    "masters_created": 38,
+    "masters_matched": 0,
+    "master_review": 0,
+    "master_skipped": 0,
+    "events_created": 38,
+    "events_matched": 0,
+    "event_review": 0,
+    "event_skipped": 0,
+    "duplicates_skipped": 38,
+    "identity_conflicts": 0,
+    "insufficient_evidence": 0,
+    "pricing_linked": 0,
+    "location_review": 0,
+    "meta": null,
+    "error_message": null,
+    "started_at": "2026-08-14T06:50:53.852413+00:00",
+    "completed_at": "2026-08-14T06:51:54.825+00:00",
+    "created_at": "2026-08-14T06:50:53.852413+00:00",
+    "updated_at": "2026-08-14T06:51:54.825+00:00"
+  },
+  "allRuns": [
+    {
+      "id": "e66899c5-9d33-403d-932b-2b880e80ae53",
+      "run_kind": "backfill",
+      "dry_run": false,
+      "status": "completed",
+      "records_scanned": 38,
+      "masters_created": 38,
+      "events_created": 38,
+      "duplicates_skipped": 38,
+      "started_at": "2026-08-14T06:50:53.852413+00:00"
+    },
+    {
+      "id": "d9cb5ece-70c1-47c8-adde-6332d51d5da4",
+      "run_kind": "preview",
+      "dry_run": true,
+      "status": "completed",
+      "records_scanned": 38,
+      "masters_created": 0,
+      "events_created": 0,
+      "duplicates_skipped": 0,
+      "started_at": "2026-08-14T06:50:02.544084+00:00"
+    },
+    {
+      "id": "6a21a953-da47-4cdd-8bfa-3f7ff43d36c7",
+      "run_kind": "preview",
+      "dry_run": true,
+      "status": "completed",
+      "records_scanned": 38,
+      "masters_created": 38,
+      "events_created": 38,
+      "duplicates_skipped": 0,
+      "started_at": "2026-08-14T06:34:22.735851+00:00"
+    }
+  ],
+  "backfillItems": {
+    "total": 76,
+    "byAuditStatus": {
+      "MASTER_CREATED": 38,
+      "EVENT_MATCHED": 38
+    },
+    "byIdentityAndAudit": {
+      "NEW_MASTER|MASTER_CREATED": 38,
+      "NEW_MASTER|EVENT_MATCHED": 38
+    }
+  },
+  "masterReconciliation": {
+    "historicalProperties": 38,
+    "propertiesWithMasterId": 38,
+    "uniquePropertyMasterIdsOnListings": 36,
+    "propertyMastersTableCount": 36,
+    "propertiesWithoutMaster": 0,
+    "mastersLinkedToMultipleProperties": 2,
+    "sharedMasters": [
+      {
+        "masterId": "852a132f-ff3c-4ca0-a324-a5dfd4d54ee4",
+        "fingerprint": "pf_bef9d699_8f8a8c1d",
+        "propertyIds": [
+          "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+          "b8eb4cb5-d9c1-46de-a338-266357d3d8f9"
+        ],
+        "titles": [
+          "Insolvent Estate Auction: 8.5HA Vacant Land, Louis Trichardt",
+          "Insolvent Estate Auction: Vacant Stand – Louis Trichardt"
+        ],
+        "towns": [
+          "Louis Trichardt",
+          "Louis Trichardt"
+        ]
+      },
+      {
+        "masterId": "7eaf47fc-4468-4902-96f5-1ddcf6435f51",
+        "fingerprint": "pf_a4fe9fc8_92bff1cc",
+        "propertyIds": [
+          "78e0ab0e-0b33-4a2a-a9e3-eda3677c6209",
+          "ec3e90f0-5d86-4b32-9b20-4dee592654c3"
+        ],
+        "titles": [
+          "Insolvent Estate Auction: 2x Sectional Title Units, Pretoria",
+          "Online Auction: Agricultural Holding Fundus, Pretoria North"
+        ],
+        "towns": [
+          "Pretoria",
+          "Pretoria North"
+        ]
+      }
+    ],
+    "explanation": "38 listings map to 36 unique masters (2 master(s) shared across multiple listings)"
+  },
+  "eventReconciliation": {
+    "auctionEventsTableCount": 38,
+    "uniqueListingEventLinks": 38,
+    "propertiesWithoutEvent": 0,
+    "orphanEvents": 0,
+    "duplicateEventFingerprints": []
+  },
+  "historicalIntelligence": {
+    "corpus": 38,
+    "eventBacked": 38,
+    "listingFallback": 0,
+    "publicHistoricalRows": 33,
+    "upcomingExcluded": 5
+  },
+  "pricing": {
+    "totalObservations": 0,
+    "linkedToEvents": 0
+  },
+  "publicSafety": {
+    "publicLeaks": 0,
+    "clean": true
+  }
+}

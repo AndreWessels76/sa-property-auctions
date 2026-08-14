@@ -108,7 +108,7 @@ export function identityDecisionToAuditStatus(
   if (decision === "MATCH_CONFIRMED" || decision === "MATCH_HIGH_CONFIDENCE") {
     return created ? "MASTER_CREATED" : "MASTER_MATCHED";
   }
-  if (decision === "NEW_MASTER") return "MASTER_CREATED";
+  if (decision === "NEW_MASTER") return created ? "MASTER_CREATED" : "MASTER_MATCHED";
   if (decision === "MATCH_REVIEW" || decision === "IDENTITY_REVIEW_REQUIRED") {
     return "MASTER_REVIEW";
   }

@@ -74,23 +74,40 @@ export type BackfillRecordResult = {
   /** Would create on execute — dry-run projection only. */
   masterProposed: boolean;
   eventProposed: boolean;
+  masterInserted: boolean;
+  masterReused: boolean;
+  eventInserted: boolean;
+  eventReused: boolean;
+  eventDuplicateSkipped: boolean;
 };
 
 export type BackfillSummary = {
   runId: string;
   dryRun: boolean;
   recordsScanned: number;
+  /** Listings successfully linked to a master (insert or reuse). */
   mastersCreated: number;
   mastersProposed: number;
+  /** New master rows inserted. */
+  mastersInserted: number;
+  /** Existing master reused via fingerprint/match. */
+  mastersReused: number;
   mastersMatched: number;
   masterReview: number;
   masterSkipped: number;
+  /** Listings linked to an auction event (insert or reuse). */
   eventsCreated: number;
   eventsProposed: number;
+  /** New auction_event rows inserted. */
+  eventsInserted: number;
+  /** Existing event reused (identity attach or external key). */
+  eventsReused: number;
   eventsMatched: number;
   eventReview: number;
   eventSkipped: number;
+  /** @deprecated use eventsDuplicatesSkipped — kept for run row compat */
   duplicatesSkipped: number;
+  eventsDuplicatesSkipped: number;
   identityConflicts: number;
   insufficientEvidence: number;
   pricingLinked: number;

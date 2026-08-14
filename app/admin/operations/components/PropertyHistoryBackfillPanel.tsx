@@ -20,7 +20,17 @@ type BackfillAudit = {
       duplicates_skipped: number;
       insufficient_evidence: number;
       pricing_linked: number;
-      meta?: { masters_proposed?: number; events_proposed?: number } | null;
+      meta?: {
+        masters_proposed?: number;
+        events_proposed?: number;
+        masters_inserted?: number;
+        masters_reused?: number;
+        masters_attached?: number;
+        events_inserted?: number;
+        events_reused?: number;
+        events_attached?: number;
+        events_duplicates_skipped?: number;
+      } | null;
       started_at: string;
       completed_at: string | null;
     };
@@ -93,7 +103,7 @@ export default function PropertyHistoryBackfillPanel() {
         setMessage(
           action === "preview"
             ? `Dry run: ${json.summary.recordsScanned} scanned, ${json.summary.mastersProposed ?? json.summary.mastersCreated} masters proposed, ${json.summary.eventsProposed ?? json.summary.eventsCreated} events proposed (nothing written)`
-            : `Backfill complete: ${json.summary.mastersCreated} masters persisted, ${json.summary.eventsCreated} events persisted`,
+            : `Backfill complete: ${json.summary.mastersInserted ?? json.summary.mastersCreated} masters inserted, ${json.summary.mastersReused ?? 0} reused, ${json.summary.eventsInserted ?? json.summary.eventsCreated} events inserted`,
         );
         load();
       } catch (e) {
@@ -193,13 +203,16 @@ export default function PropertyHistoryBackfillPanel() {
               </>
             ) : (
               <>
-                <li>Masters persisted: {latest.masters_created}</li>
-                <li>Events persisted: {latest.events_created}</li>
+                <li>Masters inserted: {latest.masters_created}</li>
+                <li>Masters reused: {latest.meta?.masters_reused ?? "—"}</li>
+                <li>Listings attached: {latest.meta?.masters_attached ?? latest.masters_created}</li>
+                <li>Events inserted: {latest.events_created}</li>
+                <li>Events reused: {latest.meta?.events_reused ?? "—"}</li>
               </>
             )}
             <li>Masters matched: {latest.masters_matched}</li>
             <li>Review required: {latest.master_review}</li>
-            <li>Duplicates skipped: {latest.duplicates_skipped}</li>
+            <li>Event duplicates skipped: {latest.meta?.events_duplicates_skipped ?? latest.duplicates_skipped}</li>
             <li>Insufficient evidence: {latest.insufficient_evidence}</li>
             <li>Pricing linked: {latest.pricing_linked}</li>
           </ul>

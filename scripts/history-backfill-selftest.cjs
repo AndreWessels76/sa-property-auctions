@@ -241,4 +241,45 @@ console.log("history-backfill-selftest: location + public safety");
   assert.equal(expiredPublic, false);
 }
 
+console.log("history-backfill-selftest: counter semantics");
+
+{
+  const { identityDecisionToAuditStatus } = load("backfill/identityDecision.ts");
+  assert.equal(identityDecisionToAuditStatus("NEW_MASTER", true), "MASTER_CREATED");
+  assert.equal(identityDecisionToAuditStatus("NEW_MASTER", false), "MASTER_MATCHED");
+}
+
+{
+  const assessment = assessBackfillEvent({
+    propertyMasterId: "m1",
+    listingPropertyId: "p1",
+    existingEventId: "e-just-created",
+    connectorId: "bc",
+    externalListingId: "x1",
+  });
+  assert.equal(assessment.isDuplicate, true);
+}
+
+console.log("history-backfill-selftest: idempotency projection");
+
+{
+  const first = fpInput({
+    erfNumber: "100",
+    town: "Paarl",
+    province: "Western Cape",
+    externalReferences: ["bc_listing_a"],
+  });
+  const second = fpInput({
+    erfNumber: "100",
+    town: "Paarl",
+    province: "Western Cape",
+    externalReferences: ["bc_listing_a"],
+  });
+  const fp1 = computePropertyFingerprint(first);
+  const fp2 = computePropertyFingerprint(second);
+  assert.equal(fp1.fingerprint, fp2.fingerprint);
+  const match = assessIdentityMatch(second, [{ id: "m1", fingerprint: fp1.fingerprint, ...first }]);
+  assert.equal(match.matchClass, "same");
+}
+
 console.log("history-backfill-selftest: PASS");
