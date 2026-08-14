@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { jsonError, jsonOk } from "@/lib/api/http";
 import { clientIp, rateLimit } from "@/lib/api/rateLimit";
-import { HistoricalIntelligence42Service } from "@/lib/services/HistoricalIntelligence42Service";
+import { HistoricalEvidenceQuality44Service } from "@/lib/services/HistoricalEvidenceQuality44Service";
 
 export async function GET(
   request: NextRequest,
@@ -16,7 +16,7 @@ export async function GET(
     if (limited) return limited;
 
     const { id } = await context.params;
-    const data = await HistoricalIntelligence42Service.evidenceById(id);
+    const data = await HistoricalEvidenceQuality44Service.evidenceById(id);
     if (!data) {
       return jsonError(new Error("Evidence not found"), "Not found");
     }

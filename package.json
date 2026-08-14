@@ -31,6 +31,8 @@
     "hi42:live": "npx --yes tsx --env-file=.env.local scripts/historical-intelligence42-live.ts",
     "test:historical-evidence43": "node scripts/historical-evidence-acquisition43-selftest.cjs",
     "hea43:live": "node scripts/historical-evidence43-live.cjs",
+    "test:historical-evidence-quality44": "node scripts/historical-evidence-quality44-selftest.cjs",
+    "heq44:live": "node scripts/historical-evidence-quality44-live.cjs",
     "test:history-backfill": "node scripts/history-backfill-selftest.cjs",
     "enrichment:closure": "npx --yes tsx --env-file=.env.local scripts/live-enrichment-closure.ts",
     "analyze": "next build",

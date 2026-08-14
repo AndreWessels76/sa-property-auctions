@@ -13,6 +13,7 @@ import {
   HistoricalIntelligenceService,
   OutcomeIntelligenceService,
   HistoricalIntelligence40Service,
+  HistoricalEvidenceQuality44Service,
   PropertyService,
 } from "@/lib/services";
 import { getComparableSales } from "@/lib/maps/getComparableSales";
@@ -123,6 +124,9 @@ export default async function ResearchReportPage({ params }: PageProps) {
   let hiPerformance: Awaited<
     ReturnType<typeof HistoricalIntelligence40Service.propertyPerformance>
   > | null = null;
+  let evidenceQuality: Awaited<
+    ReturnType<typeof HistoricalEvidenceQuality44Service.forProperty>
+  > | null = null;
   try {
     hiComparables = await ComparableIntelligenceService.forProperty(property.id);
     hiHistorical = await HistoricalIntelligenceService.forProperty(property.id);
@@ -131,11 +135,13 @@ export default async function ResearchReportPage({ params }: PageProps) {
       hiHistorical?.propertyMasterId ?? null,
     );
     hiPerformance = await HistoricalIntelligence40Service.propertyPerformance(property.id);
+    evidenceQuality = await HistoricalEvidenceQuality44Service.forProperty(property.id);
   } catch {
     hiComparables = null;
     hiHistorical = null;
     outcomeHistory = null;
     hiPerformance = null;
+    evidenceQuality = null;
   }
 
   return (
@@ -348,6 +354,76 @@ export default async function ResearchReportPage({ params }: PageProps) {
                       · {l}
                     </p>
                   ))}
+                </div>
+              ) : null}
+              {evidenceQuality?.ok ? (
+                <div className="mt-4 rounded-lg border border-slate-100 bg-slate-50 p-4">
+                  <h3 className="text-sm font-semibold text-navy-900">
+                    Historical Evidence Quality
+                  </h3>
+                  <p className="mt-1 text-sm font-medium text-navy-900">
+                    Historical Evidence:{" "}
+                    {evidenceQuality.overallQuality === "INSUFFICIENT_DATA"
+                      ? "INSUFFICIENT DATA"
+                      : evidenceQuality.overallQuality.replace(/_/g, " ")}
+                  </p>
+                  {evidenceQuality.overallQuality === "INSUFFICIENT_DATA" ? (
+                    <p className="mt-2 text-sm text-slate-600">
+                      No verified sale outcome or sale price was found.
+                    </p>
+                  ) : (
+                    <dl className="mt-3 space-y-2 text-sm">
+                      <div>
+                        <dt className="text-slate-500">Outcome</dt>
+                        <dd className="font-medium">
+                          {evidenceQuality.outcome?.status ?? "NOT SUPPLIED"} —{" "}
+                          {String(evidenceQuality.outcome?.value ?? "Not supplied")}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-slate-500">Sale price</dt>
+                        <dd className="font-medium">
+                          {evidenceQuality.salePrice?.status === "VERIFIED" &&
+                          evidenceQuality.salePrice?.value != null
+                            ? `VERIFIED — R${Number(evidenceQuality.salePrice.value).toLocaleString("en-ZA")}`
+                            : evidenceQuality.salePrice?.status === "NOT_SUPPLIED"
+                              ? "Not supplied"
+                              : `${evidenceQuality.salePrice?.status ?? "NOT SUPPLIED"} — Not supplied`}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-slate-500">Identity</dt>
+                        <dd className="font-medium">
+                          {evidenceQuality.identity?.status ?? "NOT SUPPLIED"}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-slate-500">Source</dt>
+                        <dd className="font-medium">
+                          {evidenceQuality.source.sourceTier.replace(/_/g, " ")}
+                          {evidenceQuality.source.sourceAuthority
+                            ? ` · ${evidenceQuality.source.sourceAuthority}`
+                            : ""}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-slate-500">Conflict</dt>
+                        <dd className="font-medium">
+                          {evidenceQuality.conflicts.length > 0
+                            ? evidenceQuality.conflicts.join("; ")
+                            : "None"}
+                        </dd>
+                      </div>
+                      {evidenceQuality.missingEvidence.length > 0 ? (
+                        <div>
+                          <dt className="text-slate-500">Missing evidence</dt>
+                          <dd className="text-slate-600">
+                            {evidenceQuality.missingEvidence.slice(0, 8).join(", ")}
+                          </dd>
+                        </div>
+                      ) : null}
+                    </dl>
+                  )}
                 </div>
               ) : null}
               {hiHistorical?.ok ? (

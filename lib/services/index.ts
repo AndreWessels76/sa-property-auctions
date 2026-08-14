@@ -28,4 +28,5 @@ export { HistoricalEnrichmentService } from "./HistoricalEnrichmentService";
 export { HistoricalIntelligence40Service } from "./HistoricalIntelligence40Service";
 export { HistoricalIntelligence42Service } from "./HistoricalIntelligence42Service";
 export { HistoricalEvidenceAcquisition43Service } from "./HistoricalEvidenceAcquisition43Service";
+export { HistoricalEvidenceQuality44Service } from "./HistoricalEvidenceQuality44Service";
 export { PropertyHistoryBackfillService } from "./PropertyHistoryBackfillService";

@@ -13,6 +13,7 @@ import HistoricalDataAcquisition40Panel from "./components/HistoricalDataAcquisi
 import HistoricalIntelligence40Panel from "./components/HistoricalIntelligence40Panel";
 import HistoricalResolution42Panel from "./components/HistoricalResolution42Panel";
 import HistoricalEvidenceAcquisition43Panel from "./components/HistoricalEvidenceAcquisition43Panel";
+import HistoricalEvidenceQuality44Panel from "./components/HistoricalEvidenceQuality44Panel";
 import PropertyHistoryBackfillPanel from "./components/PropertyHistoryBackfillPanel";
 
 export default function OperationsPage() {
@@ -89,6 +90,8 @@ export default function OperationsPage() {
       <HistoricalResolution42Panel />
 
       <HistoricalEvidenceAcquisition43Panel />
+
+      <HistoricalEvidenceQuality44Panel />
 
       <PropertyHistoryBackfillPanel />
 
