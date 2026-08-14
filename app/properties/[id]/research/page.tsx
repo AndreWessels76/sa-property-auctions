@@ -15,6 +15,7 @@ import {
   HistoricalIntelligence40Service,
   HistoricalEvidenceQuality44Service,
   InvestorIntelligence46Service,
+  HistoricalSourceCoverage48Service,
   PropertyService,
 } from "@/lib/services";
 import { getComparableSales } from "@/lib/maps/getComparableSales";
@@ -131,6 +132,9 @@ export default async function ResearchReportPage({ params }: PageProps) {
   let investor46: Awaited<
     ReturnType<typeof InvestorIntelligence46Service.forProperty>
   > | null = null;
+  let acquisitionDiagnostic: Awaited<
+    ReturnType<typeof HistoricalSourceCoverage48Service.diagnosticForProperty>
+  > | null = null;
   try {
     hiComparables = await ComparableIntelligenceService.forProperty(property.id);
     hiHistorical = await HistoricalIntelligenceService.forProperty(property.id);
@@ -141,6 +145,8 @@ export default async function ResearchReportPage({ params }: PageProps) {
     hiPerformance = await HistoricalIntelligence40Service.propertyPerformance(property.id);
     evidenceQuality = await HistoricalEvidenceQuality44Service.forProperty(property.id);
     investor46 = await InvestorIntelligence46Service.forProperty(property.id);
+    acquisitionDiagnostic =
+      await HistoricalSourceCoverage48Service.diagnosticForProperty(property.id);
   } catch {
     hiComparables = null;
     hiHistorical = null;
@@ -148,6 +154,7 @@ export default async function ResearchReportPage({ params }: PageProps) {
     hiPerformance = null;
     evidenceQuality = null;
     investor46 = null;
+    acquisitionDiagnostic = null;
   }
 
   return (
@@ -431,6 +438,59 @@ export default async function ResearchReportPage({ params }: PageProps) {
                     </dl>
                   )}
                 </div>
+              ) : null}
+              {acquisitionDiagnostic ? (
+                <section className="mt-4 rounded-lg border border-cyan-100 bg-cyan-50/40 p-4">
+                  <h3 className="text-sm font-semibold text-navy-900">
+                    Historical Source Acquisition
+                  </h3>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Evidence chain diagnostic — fetch reliability only, no fabricated outcomes.
+                  </p>
+                  <p className="mt-2 text-sm font-medium text-navy-900">
+                    Stopping point: {acquisitionDiagnostic.stoppingPoint}
+                  </p>
+                  {acquisitionDiagnostic.evidence.proven.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="text-xs font-semibold uppercase text-emerald-700">Proven</h4>
+                      <ul className="mt-1 list-inside list-disc text-xs text-slate-700">
+                        {acquisitionDiagnostic.evidence.proven.map((w) => (
+                          <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                  {acquisitionDiagnostic.evidence.tested.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="text-xs font-semibold uppercase text-slate-500">Tested</h4>
+                      <ul className="mt-1 list-inside list-disc text-xs text-slate-700">
+                        {acquisitionDiagnostic.evidence.tested.map((w) => (
+                          <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                  {acquisitionDiagnostic.evidence.missing.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="text-xs font-semibold uppercase text-amber-700">Missing</h4>
+                      <ul className="mt-1 list-inside list-disc text-xs text-amber-900">
+                        {acquisitionDiagnostic.evidence.missing.map((w) => (
+                          <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                  {acquisitionDiagnostic.evidence.reviewRequired.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="text-xs font-semibold uppercase text-red-700">Review required</h4>
+                      <ul className="mt-1 list-inside list-disc text-xs text-red-900">
+                        {acquisitionDiagnostic.evidence.reviewRequired.map((w) => (
+                          <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </section>
               ) : null}
               {investor46?.ok ? (
                 <section className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50/50 p-4">

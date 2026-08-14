@@ -1,0 +1,141 @@
+{
+  "version": "historical-source-acquisition-4.9.0",
+  "generatedAt": "2026-08-14T14:16:06.508Z",
+  "mode": "READ_ONLY",
+  "connectivity": {
+    "status": "CONNECTED",
+    "message": "Production database reachable via authoritative tables",
+    "probe": {
+      "envPresent": true,
+      "propertiesCount": 53,
+      "eventsCount": 38,
+      "propertiesError": null,
+      "eventsError": null
+    },
+    "genuinelyEmpty": false,
+    "extendedStatus": "CONNECTED"
+  },
+  "before": {
+    "eligible": 33,
+    "attempted": 13,
+    "successful": 4,
+    "failed": 9,
+    "snapshots": 4,
+    "extractions": 6,
+    "outcomes": 1,
+    "verifiedSold": 0,
+    "verifiedSalePrices": 0,
+    "retryable": 0
+  },
+  "after": {
+    "eligible": 33,
+    "attempted": 13,
+    "successful": 4,
+    "failed": 9,
+    "snapshots": 4,
+    "extractions": 6,
+    "outcomes": 1,
+    "verifiedSold": 0,
+    "verifiedSalePrices": 0,
+    "retryable": 0
+  },
+  "delta": "NO EVIDENCE GAIN",
+  "metrics": {
+    "propertyMasters": 38,
+    "auctionEvents": 38,
+    "historicalEvents": 33,
+    "p1": 24,
+    "p2": 0,
+    "p3": 0,
+    "p4": 9,
+    "queueBlocked": 0,
+    "queueUnavailable": 0,
+    "queueCompleted": 0,
+    "enrichmentAttempts": 37,
+    "successfulFetches": 4,
+    "failedFetches": 9,
+    "sourceFound": 33,
+    "sourceLicensed": 33,
+    "sourceBlocked": 0,
+    "sourceUnavailable": 0,
+    "fetchAttempted": 13,
+    "tlsErrors": 0,
+    "networkErrors": 0,
+    "dnsErrors": 0,
+    "timeouts": 0,
+    "http403": 0,
+    "http404": 0,
+    "http429": 0,
+    "http5xx": 0,
+    "snapshots": 4,
+    "noChange": 0,
+    "extractionAttempted": 6,
+    "extractionSuccessful": 6,
+    "extractionFailed": 0,
+    "extractionNoEvidence": 0,
+    "outcomeObservations": 1,
+    "verifiedSold": 0,
+    "soldWithoutPrice": 1,
+    "unknownOutcomes": 32,
+    "verifiedSalePrices": 0,
+    "conflicts": 0,
+    "reviewRequired": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "acquisitionGaps": 0,
+    "catalogueLeaks": 0
+  },
+  "coverage": {
+    "total": 33,
+    "sourceFound": 33,
+    "sourceLicensed": 33,
+    "fetchAttempted": 13,
+    "fetchSuccessful": 4,
+    "snapshots": 4,
+    "extractions": 6,
+    "outcomeEvidence": 1,
+    "salePriceEvidence": 0
+  },
+  "stateBreakdown": {
+    "FETCH_HTTP_ERROR": 9,
+    "INSUFFICIENT_DATA": 4,
+    "FETCH_NOT_ATTEMPTED": 20
+  },
+  "failureBreakdown": {
+    "CONTENT_UNAVAILABLE": 9
+  },
+  "gapGroups": {
+    "PERMANENT_FETCH_FAILURE": 9,
+    "MISSING_OUTCOME": 32,
+    "MISSING_SALE_PRICE": 33,
+    "MISSING_FETCH": 20
+  },
+  "sourceHealth": [
+    {
+      "partner": "Bidders Choice",
+      "eligible": 33,
+      "fetchAttempted": 13,
+      "fetchSuccessful": 4,
+      "fetchFailed": 9,
+      "successRate": 30.8,
+      "retryCount": 24,
+      "averageFetchDurationMs": 2137,
+      "lastSuccessfulFetch": "2026-08-14T09:18:00.944+00:00",
+      "lastFailedFetch": "2026-08-14T13:34:59.288+00:00",
+      "httpErrorDistribution": {
+        "CONTENT_UNAVAILABLE": 9
+      },
+      "timeoutCount": 0,
+      "dnsTlsFailureCount": 0,
+      "rateLimitCount": 0,
+      "sourceChangedCount": 0,
+      "snapshotCoverage": 4,
+      "extractionCoverage": 6,
+      "outcomeCoverage": 1,
+      "salePriceCoverage": 0
+    }
+  ],
+  "catalogueLeaks": 0,
+  "verdict": "INSUFFICIENT DATA — ENGINE READY",
+  "reason": "Source fetches completed but licensed sources have not yielded verified sale outcomes or prices"
+}
