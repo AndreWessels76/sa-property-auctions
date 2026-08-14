@@ -9,6 +9,8 @@ import { buildLifecycleTimeline } from "@/lib/property/lifecycleTimeline";
 import { buildDueDiligenceCentre } from "@/lib/property/dueDiligence";
 import {
   AuctionIntelligenceService,
+  ComparableIntelligenceService,
+  HistoricalIntelligenceService,
   PropertyService,
 } from "@/lib/services";
 import { getComparableSales } from "@/lib/maps/getComparableSales";
@@ -106,6 +108,20 @@ export default async function ResearchReportPage({ params }: PageProps) {
     siteUrl,
     dueDiligence,
   });
+
+  let hiComparables: Awaited<
+    ReturnType<typeof ComparableIntelligenceService.forProperty>
+  > | null = null;
+  let hiHistorical: Awaited<
+    ReturnType<typeof HistoricalIntelligenceService.forProperty>
+  > | null = null;
+  try {
+    hiComparables = await ComparableIntelligenceService.forProperty(property.id);
+    hiHistorical = await HistoricalIntelligenceService.forProperty(property.id);
+  } catch {
+    hiComparables = null;
+    hiHistorical = null;
+  }
 
   return (
     <>
@@ -214,6 +230,62 @@ export default async function ResearchReportPage({ params }: PageProps) {
               ))}
             </ol>
           </section>
+
+          {hiComparables?.ok || hiHistorical?.ok ? (
+            <section className="rounded-xl border border-slate-200 bg-white p-4">
+              <h2 className="text-lg font-bold text-navy-900">
+                Historical Intelligence (event-backed)
+              </h2>
+              <p className="mt-1 text-xs text-slate-500">
+                Auction Events · verified sale evidence · comparable confidence —
+                not investment advice.
+              </p>
+              {hiHistorical?.ok ? (
+                <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
+                  <div>
+                    <dt className="text-slate-500">Historical events</dt>
+                    <dd className="font-semibold">
+                      {hiHistorical.summary.historicalEvents}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-slate-500">Confirmed sales</dt>
+                    <dd className="font-semibold">
+                      {hiHistorical.summary.confirmedSales}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-slate-500">Property Master</dt>
+                    <dd className="font-mono text-xs">
+                      {hiHistorical.propertyMasterId?.slice(0, 8) ?? "Not linked"}
+                    </dd>
+                  </div>
+                </dl>
+              ) : null}
+              {hiComparables?.ok ? (
+                <>
+                  <p className="mt-3 text-sm">
+                    Comparables: {hiComparables.comparables.comparables.length} ·
+                    Confidence: {hiComparables.comparables.confidence}
+                  </p>
+                  {hiComparables.comparables.bestComparable ? (
+                    <ul className="mt-2 list-inside list-disc text-xs text-slate-600">
+                      {hiComparables.comparables.bestComparable.matchingEvidence.map(
+                        (e) => (
+                          <li key={e}>{e}</li>
+                        ),
+                      )}
+                    </ul>
+                  ) : null}
+                  {hiComparables.limitations.map((l) => (
+                    <p key={l} className="mt-1 text-xs text-slate-500">
+                      · {l}
+                    </p>
+                  ))}
+                </>
+              ) : null}
+            </section>
+          ) : null}
 
           <section className="rounded-xl bg-slate-100 p-4 text-sm print:bg-transparent">
             <h2 className="font-bold text-navy-900">Intelligence Summary</h2>

@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { jsonError, jsonOk } from "@/lib/api/http";
 import { clientIp, rateLimit } from "@/lib/api/rateLimit";
 import { HistoricalIntelligenceService } from "@/lib/services/HistoricalIntelligenceService";
+import { ComparableIntelligenceService } from "@/lib/services/ComparableIntelligenceService";
 
 type RouteContext = {
   params: Promise<{ agency: string }>;
@@ -25,7 +26,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
       new URL(request.url).searchParams.get("window"),
     );
     const data = await HistoricalIntelligenceService.forAgency(decoded, window);
-    return jsonOk(data);
+    const marketEvidence = await ComparableIntelligenceService.forAgency(decoded, window);
+    return jsonOk({ ...data, marketEvidence: marketEvidence.marketEvidence, activity: marketEvidence.activity });
   } catch (error) {
     return jsonError(error, "Agency historical intelligence failed");
   }

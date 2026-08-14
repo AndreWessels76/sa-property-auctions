@@ -25,6 +25,7 @@ import PropertyLocationSection from "@/components/property/detail/PropertyLocati
 import PropertyMobileActions from "@/components/property/detail/PropertyMobileActions";
 import PropertyPricingIntelligence from "@/components/property/detail/PropertyPricingIntelligence";
 import HistoricalAuctionActivityPanel from "@/components/property/detail/HistoricalAuctionActivityPanel";
+import HistoricalMarketEvidencePanel from "@/components/property/detail/HistoricalMarketEvidencePanel";
 import PropertyRelatedSection from "@/components/property/detail/PropertyRelatedSection";
 import PropertyStructuredData from "@/components/property/detail/PropertyStructuredData";
 import PropertySummarySection from "@/components/property/detail/PropertySummarySection";
@@ -47,6 +48,7 @@ import { getRelatedListingGroups } from "@/lib/property/relatedListings";
 import {
   AuctionIntelligenceService,
   AuctionPriceIntelligenceService,
+  ComparableIntelligenceService,
   HistoricalIntelligenceService,
   PropertyIntelligenceService,
   PropertyService,
@@ -204,6 +206,15 @@ export default async function PropertyPage({ params }: PageProps) {
     historicalActivity = null;
   }
 
+  let marketEvidence: Awaited<
+    ReturnType<typeof ComparableIntelligenceService.forProperty>
+  > | null = null;
+  try {
+    marketEvidence = await ComparableIntelligenceService.forProperty(property.id);
+  } catch {
+    marketEvidence = null;
+  }
+
   const gallerySlides = images
     .filter((image) => Boolean(image.image_url?.trim()))
     .map((image) => ({
@@ -346,6 +357,33 @@ export default async function PropertyPage({ params }: PageProps) {
                     summary={historicalActivity.summary}
                     timeline={historicalActivity.timeline}
                     insufficientMessage={historicalActivity.insufficientMessage}
+                  />
+                ) : null}
+
+                {marketEvidence?.ok ? (
+                  <HistoricalMarketEvidencePanel
+                    premium={marketEvidence.premium}
+                    summary={marketEvidence.marketEvidence}
+                    bestComparable={
+                      marketEvidence.comparables.bestComparable
+                        ? {
+                            town: marketEvidence.comparables.bestComparable.town,
+                            suburb: marketEvidence.comparables.bestComparable.suburb,
+                            propertyType:
+                              marketEvidence.comparables.bestComparable.propertyType,
+                            comparableConfidence:
+                              marketEvidence.comparables.bestComparable
+                                .comparableConfidence,
+                            matchingEvidence:
+                              marketEvidence.comparables.bestComparable.matchingEvidence,
+                            salePrice:
+                              marketEvidence.comparables.bestComparable.saleEvidence
+                                .salePrice,
+                          }
+                        : null
+                    }
+                    comparablesCount={marketEvidence.comparables.comparables.length}
+                    researchHref={`/properties/${property.id}/research`}
                   />
                 ) : null}
 

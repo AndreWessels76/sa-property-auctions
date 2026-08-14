@@ -19,15 +19,8 @@ export function comparableEligibility(
   const price = row.prices[preferredKind];
   let priceKind: HistoricalPriceKind | null = preferredKind;
   if (!isValidPositiveAmount(price)) {
-    if (preferredKind === "sale_price" && isValidPositiveAmount(row.prices.auction_price)) {
-      priceKind = "auction_price";
-    } else {
-      reasons.push("MISSING_PRICE");
-      priceKind = null;
-    }
-  }
-  if (priceKind === "auction_price") {
-    // Eligible as auction-price comparable only — never labelled a sale comparable.
+    reasons.push("MISSING_PRICE");
+    priceKind = null;
   }
   const sizeOk =
     isValidPositiveArea(row.floorSizeM2) || isValidPositiveArea(row.hectares);

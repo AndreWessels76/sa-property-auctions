@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-08-14T07:33:53.308Z",
+  "version": "historical-intelligence-2.5.0",
+  "tableCounts": {
+    "property_masters": 38,
+    "auction_events": 38,
+    "pricing_observations": 0
+  },
+  "samples": {
+    "upcomingProperty": {
+      "id": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "title": "Online Auction: ± 32,8Ha Prime Agricultural Holding, Tzaneen",
+      "town": "Tzaneen"
+    },
+    "historicalProperty": {
+      "id": "603a7e65-c6e0-4f8d-850a-688cb27549df",
+      "title": "± 749Ha Cattle Farm, Springbokvlakte, Limpopo – Auction",
+      "state": "expired"
+    },
+    "propertyMaster": {
+      "id": "852a132f-ff3c-4ca0-a324-a5dfd4d54ee4",
+      "fingerprint": "pf_bef9d699_8f8a8c1d"
+    }
+  },
+  "historicalIntelligence": {
+    "corpusObservations": 33,
+    "eventBacked": 33,
+    "listingFallback": 0,
+    "verifiedSales": 0,
+    "verifiedSalePrices": 0,
+    "insufficientSaleData": true
+  },
+  "comparables": {
+    "subjectId": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+    "matches": 0,
+    "rejected": 20,
+    "confidence": "Insufficient data",
+    "limitations": [
+      "No verified sale outcomes in historical corpus — sale comparables unavailable",
+      "No eligible comparables matched verified similarity rules"
+    ]
+  },
+  "masterHistoryEvents": 0,
+  "marketEvidence": {
+    "sampleSize": 0,
+    "medianSalePrice": null,
+    "medianLabel": "Insufficient data",
+    "limitations": [
+      "No verified sale prices in scope",
+      "Market statistics require at least 5 verified sales",
+      "Auction activity is reported separately from verified sale statistics"
+    ]
+  },
+  "publicSafety": {
+    "historicalLeaks": 0
+  },
+  "verdict": "HISTORICAL INTELLIGENCE 2.5 READY WITH LIMITATIONS"
+}
