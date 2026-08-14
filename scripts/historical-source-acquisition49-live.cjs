@@ -94,6 +94,9 @@ const {
   computeBeforeAfterDelta,
   deriveHsc48Verdict,
 } = load("intelligence/historicalSourceCoverage48/index.ts");
+const { aggregateFetchReliability } = load(
+  "acquisition/historicalFetchReliability49/index.ts",
+);
 
 async function countTable(db, table) {
   const { count, error } = await db.from(table).select("id", { count: "exact", head: true });
@@ -116,13 +119,64 @@ function metricsSnapshot(m) {
   };
 }
 
-function writeReport(payload, md) {
+function writeReport(payload, md, events, verdictBlock) {
   const jsonPath = path.join(root, "HISTORICAL_SOURCE_ACQUISITION49_LIVE.json");
   const mdPath = path.join(root, "HISTORICAL_SOURCE_ACQUISITION49_REPORT.md");
+  const evidencePath = path.join(root, "HISTORICAL_SOURCE_ACQUISITION49_EVIDENCE.json");
+  const gapPath = path.join(root, "HISTORICAL_SOURCE_ACQUISITION49_GAP_REPORT.md");
   fs.writeFileSync(jsonPath, JSON.stringify(payload, null, 2));
   fs.writeFileSync(mdPath, md);
+
+  const evidence = {
+    version: payload.version,
+    generatedAt: payload.generatedAt,
+    mode: payload.mode,
+    connectivity: payload.connectivity,
+    metrics: payload.metrics,
+    coverage: payload.coverage,
+    fetchReliability: payload.fetchReliability,
+    stateBreakdown: payload.stateBreakdown,
+    failureBreakdown: payload.failureBreakdown,
+    provenInProduction: verdictBlock?.provenInProduction ?? [],
+    engineTested: verdictBlock?.engineTested ?? [],
+    dataStillMissing: verdictBlock?.dataStillMissing ?? [],
+    events: (events ?? []).map((e) => ({
+      observationId: e.observationId,
+      propertyLabel: e.propertyLabel,
+      town: e.town,
+      primaryState: e.primaryState,
+      fetchState: e.fetchState,
+      stoppingPoint: e.stoppingPoint,
+      retryRecommendation: e.retryRecommendation,
+      mappedGapCodes: e.mappedGapCodes,
+      fetch: e.fetch
+        ? {
+            httpStatus: e.fetch.httpStatus,
+            errorCode: e.fetch.errorCode,
+            attemptNumber: e.fetch.attemptNumber,
+          }
+        : null,
+      snapshot: e.snapshot,
+      extraction: e.extraction,
+      outcomeState: e.outcomeState,
+      salePriceState: e.salePriceState,
+      acquisitionPriority: e.acquisitionPriority,
+    })),
+  };
+  fs.writeFileSync(evidencePath, JSON.stringify(evidence, null, 2));
+
+  const gapLines = (events ?? []).flatMap((e) =>
+    (e.mappedGapCodes ?? []).map((g) => `- ${g}: ${e.propertyLabel} (${e.primaryState})`),
+  );
+  fs.writeFileSync(
+    gapPath,
+    `# HSA 4.9 Gap Report\n\nGenerated: ${payload.generatedAt}\n\n${gapLines.join("\n") || "No acquisition gaps mapped"}\n`,
+  );
+
   console.log(`Wrote ${jsonPath}`);
   console.log(`Wrote ${mdPath}`);
+  console.log(`Wrote ${evidencePath}`);
+  console.log(`Wrote ${gapPath}`);
 }
 
 async function buildMetrics(db) {
@@ -321,6 +375,8 @@ async function main() {
     writeReport(
       payload,
       `# HSA 4.9 Live Report\n\n**PRODUCTION BLOCKED**\n\n${connectivity.message}\n`,
+      [],
+      null,
     );
     console.log(`Verdict: PRODUCTION BLOCKED`);
     return;
@@ -353,6 +409,8 @@ async function main() {
     afterSnap.snapshots > beforeSnap.snapshots ||
     afterSnap.verifiedSalePrices > beforeSnap.verifiedSalePrices;
 
+  const fetchReliability = aggregateFetchReliability(after.eventDiagnostics);
+
   const payload = {
     version: HSA49_VERSION,
     generatedAt: new Date().toISOString(),
@@ -362,6 +420,7 @@ async function main() {
     after: afterSnap,
     delta: delta ?? (evidenceGain ? "EVIDENCE_GAIN" : "NO EVIDENCE GAIN"),
     metrics: after.metrics,
+    fetchReliability,
     coverage: after.coverage,
     stateBreakdown: after.stateBreakdown,
     failureBreakdown: after.failureBreakdown,
@@ -370,6 +429,10 @@ async function main() {
     catalogueLeaks: after.metrics.catalogueLeaks,
     verdict: verdictBlock.verdict,
     reason: verdictBlock.reason,
+    provenInProduction: verdictBlock.provenInProduction,
+    engineTested: verdictBlock.engineTested,
+    dataStillMissing: verdictBlock.dataStillMissing,
+    technicalBlockers: verdictBlock.technicalBlockers,
   };
 
   const md = `# Historical Source Acquisition 4.9 — Live Report
@@ -387,29 +450,62 @@ ${payload.reason}
 
 ${connectivity.extendedStatus}: ${connectivity.message}
 
-## LIVE METRICS
+## PROVEN
+
+${(verdictBlock.provenInProduction ?? []).map((x) => `- ${x}`).join("\n") || "- (none)"}
+
+## TESTED
+
+${(verdictBlock.engineTested ?? []).map((x) => `- ${x}`).join("\n") || "- Selftest suite (npm run test:historical-source-acquisition49)"}
+
+## MISSING
+
+${(verdictBlock.dataStillMissing ?? []).map((x) => `- ${x}`).join("\n") || "- (see gap report)"}
+
+## LIVE COUNTS
 
 | Metric | Value |
 |--------|-------|
 | Property Masters | ${after.metrics.propertyMasters} |
+| Auction Events | ${after.metrics.auctionEvents} |
 | Historical Events | ${after.metrics.historicalEvents} |
-| P1 | ${after.metrics.p1} |
-| P2 | ${after.metrics.p2} |
-| Fetch Attempted | ${after.metrics.fetchAttempted} |
-| Fetch Successful | ${after.metrics.successfulFetches} |
-| Fetch Failed | ${after.metrics.failedFetches} |
-| Retryable | ${after.metrics.retryableFailures ?? 0} |
-| Snapshots | ${after.metrics.snapshots} |
-| Extractions | ${after.metrics.extractionAttempted} |
-| Verified SOLD | ${after.metrics.verifiedSold} |
-| Verified Sale Prices | ${after.metrics.verifiedSalePrices} |
-| Catalogue Leaks | ${after.metrics.catalogueLeaks} |
+| P1 eligible | ${after.metrics.p1Eligible ?? after.metrics.p1} |
+| P4 blocked | ${after.metrics.p4Blocked ?? after.metrics.p4} |
 
-## FETCH FAILURE BREAKDOWN
+## FETCH COVERAGE
+
+| Stage | Count |
+|-------|-------|
+| Source licensed | ${after.coverage.sourceLicensed}/${after.coverage.total} |
+| Attempted | ${after.metrics.fetchAttempted}/${after.coverage.total} |
+| Successful | ${after.metrics.successfulFetches} |
+| Failed | ${after.metrics.failedFetches} |
+| Retryable | ${fetchReliability.retryableFailures} |
+| Retry exhausted | ${fetchReliability.retryExhausted} |
+| Permanent | ${fetchReliability.permanentFailures} |
+
+## EVIDENCE COVERAGE
+
+| Stage | Count |
+|-------|-------|
+| Snapshots | ${after.metrics.snapshots}/${after.coverage.total} |
+| Extractions | ${after.metrics.extractionAttempted}/${after.coverage.total} |
+| Outcome evidence | ${after.coverage.outcomeEvidence}/${after.coverage.total} |
+| Verified SOLD | ${after.metrics.verifiedSold} |
+| SOLD without price | ${after.metrics.soldWithoutPrice} |
+| Verified sale prices | ${after.metrics.verifiedSalePrices} |
+| Comparable ready | ${after.metrics.comparableReady} |
+| Market ready towns | ${after.metrics.marketReadyTowns} |
+
+## FAILURE BREAKDOWN
 
 ${Object.entries(after.failureBreakdown)
   .map(([k, v]) => `- ${k}: ${v}`)
   .join("\n") || "- (none)"}
+
+## PUBLIC SAFETY
+
+Catalogue leaks: **${after.metrics.catalogueLeaks}**
 
 ## BEFORE / AFTER
 
@@ -420,7 +516,16 @@ ${Object.entries(after.failureBreakdown)
 | Snapshots | ${beforeSnap.snapshots} | ${afterSnap.snapshots} |
 | Verified sale prices | ${beforeSnap.verifiedSalePrices} | ${afterSnap.verifiedSalePrices} |
 
-${evidenceGain ? "" : "**NO EVIDENCE GAIN** — engine ready, licensed sources have not yielded new verified evidence."}
+${evidenceGain ? "" : "**NO EVIDENCE GAIN** — pipeline ready; missing evidence is reported, not fabricated."}
+
+## LIMITATIONS
+
+- Read-only validation unless HSA49_WRITE=1 with Operations Centre actions
+- Verified SOLD = 0 is acceptable when sources lack explicit sale evidence
+
+## NEXT ACTION
+
+Controlled **Acquire P1 (5)** via Operations Centre when ready — do not run unbounded batches.
 
 ## Source Health
 
@@ -432,7 +537,7 @@ ${after.sourceHealth
   .join("\n\n")}
 `;
 
-  writeReport(payload, md);
+  writeReport(payload, md, after.eventDiagnostics, verdictBlock);
   console.log(JSON.stringify({ verdict: payload.verdict, metrics: after.metrics }, null, 2));
 }
 

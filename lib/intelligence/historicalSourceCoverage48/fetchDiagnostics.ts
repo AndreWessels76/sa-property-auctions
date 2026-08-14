@@ -95,8 +95,9 @@ export function buildFetchDiagnostic(input: {
     input.refetchRun?.error ??
     null;
   const httpStatus =
+    (typeof meta.httpStatus === "number" ? meta.httpStatus : null) ??
     input.refetchRun?.http_status ??
-    (typeof meta.httpStatus === "number" ? meta.httpStatus : null);
+    null;
 
   const errFields = classifyErrorFields(error);
   const durationMs =

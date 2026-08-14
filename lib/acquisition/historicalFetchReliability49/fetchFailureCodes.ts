@@ -1,0 +1,25 @@
+/**
+ * Fetch reliability states for HSA 4.9.
+ */
+
+export type FetchReliabilityState =
+  | "FETCH_NOT_ATTEMPTED"
+  | "FETCH_PENDING"
+  | "FETCH_IN_PROGRESS"
+  | "FETCH_SUCCESS"
+  | "FETCH_NO_CHANGE"
+  | "FETCH_EMPTY_RESPONSE"
+  | "FETCH_HTTP_ERROR"
+  | "FETCH_TIMEOUT"
+  | "FETCH_DNS_ERROR"
+  | "FETCH_TLS_ERROR"
+  | "FETCH_RATE_LIMITED"
+  | "FETCH_AUTH_REQUIRED"
+  | "FETCH_ROBOTS_BLOCKED"
+  | "FETCH_SOURCE_BLOCKED"
+  | "FETCH_CONTENT_UNUSABLE"
+  | "FETCH_PERMANENT_FAILURE"
+  | "FETCH_RETRYABLE_FAILURE"
+  | "FETCH_RETRY_EXHAUSTED";
+
+export type FetchFailureCode = FetchReliabilityState;

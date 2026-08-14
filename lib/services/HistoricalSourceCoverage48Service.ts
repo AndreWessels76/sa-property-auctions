@@ -43,6 +43,10 @@ import {
 } from "@/lib/repositories/PropertyIdentityRepository";
 import { PropertyRepository } from "@/lib/repositories/PropertyRepository";
 import { LoggerService } from "@/lib/logger";
+import {
+  aggregateFetchReliability,
+  filterNetworkRetryEvents,
+} from "@/lib/acquisition/historicalFetchReliability49";
 
 export class HistoricalSourceCoverage48Service {
   static async buildDiagnosticReport(): Promise<Hsc48DiagnosticReport> {
@@ -350,12 +354,14 @@ export class HistoricalSourceCoverage48Service {
 
   static async adminDashboard() {
     const report = await this.buildDiagnosticReport();
+    const fetchReliability = aggregateFetchReliability(report.events);
     return {
       ok: true,
       version: HISTORICAL_SOURCE_COVERAGE48_VERSION,
       hsa49Version: HSA49_VERSION,
       connectivity: report.connectivity,
       metrics: report.metrics,
+      fetchReliability,
       coverage: report.coverage,
       stateBreakdown: report.stateBreakdown,
       failureBreakdown: report.failureBreakdown,
@@ -476,6 +482,135 @@ export class HistoricalSourceCoverage48Service {
 
   static async refreshDiagnostics() {
     return this.buildDiagnosticReport();
+  }
+
+  static async retryFailedBatch(input: {
+    operator: string;
+    limit?: number;
+    dryRun?: boolean;
+  }) {
+    const limit = Math.min(
+      input.limit ?? HSA49_DEFAULT_BATCH_LIMIT,
+      HSA49_MAX_BATCH_LIMIT,
+    );
+    const beforeReport = await this.buildDiagnosticReport();
+    const before = beforeReport.metrics;
+
+    if (input.dryRun) {
+      const { queue } = await HistoricalEvidenceAcquisition43Service.buildQueue({
+        retryFailed: true,
+      });
+      return {
+        ok: true,
+        dryRun: true,
+        message: "DRY RUN — retry failed candidates only",
+        candidates: queue.slice(0, limit).length,
+        queue: queue.slice(0, limit),
+        before,
+      };
+    }
+
+    const acquisition = await HistoricalEvidenceAcquisition43Service.acquireBatch({
+      retryFailed: true,
+      limit,
+      dryRun: false,
+      operator: input.operator,
+      force: true,
+    });
+
+    const rebuild = await this.rebuildIntelligence(input.operator);
+    const afterReport = await this.buildDiagnosticReport();
+
+    LoggerService.audit("hsa49.retry_failed", {
+      operator: input.operator,
+      processed: acquisition.processed,
+      runId: acquisition.runId,
+    });
+
+    return {
+      ok: true,
+      dryRun: false,
+      message: `Retry failed batch (${limit}) complete`,
+      acquisition,
+      rebuild,
+      beforeAfter: {
+        before,
+        after: afterReport.metrics,
+        delta: computeBeforeAfterDelta(before, afterReport.metrics),
+      },
+      metrics: afterReport.metrics,
+      verdict: afterReport.verdict,
+    };
+  }
+
+  static async retryNetworkFailuresBatch(input: {
+    operator: string;
+    limit?: number;
+    dryRun?: boolean;
+  }) {
+    const limit = Math.min(
+      input.limit ?? HSA49_DEFAULT_BATCH_LIMIT,
+      HSA49_MAX_BATCH_LIMIT,
+    );
+    const beforeReport = await this.buildDiagnosticReport();
+    const before = beforeReport.metrics;
+    const networkEvents = filterNetworkRetryEvents(beforeReport.events).slice(0, limit);
+
+    if (input.dryRun) {
+      return {
+        ok: true,
+        dryRun: true,
+        message: "DRY RUN — TLS/DNS/timeout retry candidates only",
+        candidates: networkEvents.length,
+        events: networkEvents.map((e) => ({
+          propertyId: e.listingPropertyId,
+          town: e.town,
+          errorCode: e.fetchError?.errorCode,
+        })),
+        before,
+      };
+    }
+
+    const runId = `hsa49_net_${Date.now().toString(36)}`;
+    const results = [];
+    for (const event of networkEvents) {
+      if (!event.listingPropertyId) continue;
+      results.push(
+        await HistoricalEvidenceAcquisition43Service.acquireOne({
+          propertyId: event.listingPropertyId,
+          force: true,
+          dryRun: false,
+          operator: input.operator,
+          runId,
+        }),
+      );
+    }
+
+    const rebuild = await this.rebuildIntelligence(input.operator);
+    const afterReport = await this.buildDiagnosticReport();
+
+    LoggerService.audit("hsa49.retry_network", {
+      operator: input.operator,
+      processed: results.length,
+      runId,
+    });
+
+    return {
+      ok: true,
+      dryRun: false,
+      message: `Network failure retry (${results.length}) complete`,
+      runId,
+      processed: results.length,
+      results,
+      rebuild,
+      beforeAfter: {
+        before,
+        after: afterReport.metrics,
+        delta: computeBeforeAfterDelta(before, afterReport.metrics),
+      },
+      metrics: afterReport.metrics,
+      verdict: afterReport.verdict,
+    };
   }
 
   static async diagnosticForProperty(propertyId: string) {

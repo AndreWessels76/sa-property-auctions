@@ -355,11 +355,15 @@ export function buildEventDiagnostic(input: {
     fetchAttempted && !fetchSuccessful
       ? classifyFetchFailure({
           error:
+            (meta.error as string | undefined) ??
             fetchDiagnostic?.tlsError ??
             fetchDiagnostic?.dnsError ??
             fetchDiagnostic?.networkError ??
             null,
-          httpStatus: fetchDiagnostic?.httpStatus ?? null,
+          httpStatus:
+            (typeof meta.httpStatus === "number" ? meta.httpStatus : null) ??
+            fetchDiagnostic?.httpStatus ??
+            null,
           enrichmentStatus,
           refetchStatus: fetchDiagnostic?.refetchStatus ?? null,
           contentLength: fetchDiagnostic?.contentLength ?? null,

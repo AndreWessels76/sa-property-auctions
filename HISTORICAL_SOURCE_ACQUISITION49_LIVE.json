@@ -1,6 +1,6 @@
 {
   "version": "historical-source-acquisition-4.9.0",
-  "generatedAt": "2026-08-14T14:16:06.508Z",
+  "generatedAt": "2026-08-14T14:48:49.147Z",
   "mode": "READ_ONLY",
   "connectivity": {
     "status": "CONNECTED",
@@ -83,7 +83,29 @@
     "comparableReady": 0,
     "marketReadyTowns": 0,
     "acquisitionGaps": 0,
-    "catalogueLeaks": 0
+    "catalogueLeaks": 0,
+    "retryableFailures": 0,
+    "retryExhausted": 9,
+    "permanentFailures": 9,
+    "contentUnusable": 9,
+    "rateLimited": 0,
+    "authRequired": 0
+  },
+  "fetchReliability": {
+    "fetchAttempts": 13,
+    "fetchSuccesses": 4,
+    "fetchFailures": 9,
+    "retryableFailures": 0,
+    "retryExhausted": 9,
+    "permanentFailures": 9,
+    "timeouts": 0,
+    "tlsFailures": 0,
+    "dnsFailures": 0,
+    "rateLimited": 0,
+    "contentUnusable": 9,
+    "authRequired": 0,
+    "sourceBlocked": 0,
+    "noChange": 0
   },
   "coverage": {
     "total": 33,
@@ -137,5 +159,22 @@
   ],
   "catalogueLeaks": 0,
   "verdict": "INSUFFICIENT DATA — ENGINE READY",
-  "reason": "Source fetches completed but licensed sources have not yielded verified sale outcomes or prices"
+  "reason": "Source fetches completed but licensed sources have not yielded verified sale outcomes or prices",
+  "provenInProduction": [
+    "33 historical auction events audited",
+    "38 property masters",
+    "Public catalogue safety — 0 leaks"
+  ],
+  "engineTested": [
+    "HSC 4.8 per-event evidence chain diagnostic",
+    "HEA 4.3 P1–P4 queue integration",
+    "Refetch audit + enrichment run join",
+    "HI 4.2 / HEQ 4.4 / II 4.6 gap mapping"
+  ],
+  "dataStillMissing": [
+    "No verified sale prices in production",
+    "No verified SOLD outcomes in production",
+    "20 events never fetch-attempted"
+  ],
+  "technicalBlockers": []
 }

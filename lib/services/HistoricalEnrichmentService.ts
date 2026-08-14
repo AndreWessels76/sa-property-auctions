@@ -23,6 +23,12 @@ import { HistoricalIntelligenceService } from "@/lib/services/HistoricalIntellig
 import { publicHistoricalRows } from "@/lib/intelligence/historical";
 import { LoggerService } from "@/lib/logger";
 import type { PropertyDTO } from "@/lib/dto/PropertyDTO";
+import {
+  classifyFetchFailure,
+  countAttemptsForProperty,
+  mapErrorCodeToFetchState,
+} from "@/lib/acquisition/historicalFetchReliability49";
+import { HSA49_MAX_RETRY_ATTEMPTS } from "@/lib/acquisition/historicalFetchReliability49/config";
 
 export type EnrichmentScope =
   | "single"
@@ -298,6 +304,27 @@ export class HistoricalEnrichmentService {
     const obs = await latestOutcomeForProperty(property.id);
     const durationMs = Date.now() - started;
     const propertyRow = await PropertyRepository.getById(property.id);
+    const recentRuns = await HistoricalEnrichmentRepository.listRecentRuns(200);
+    const fetchFailure = classifyFetchFailure({
+      error: refetch.error,
+      httpStatus: refetch.httpStatus,
+      enrichmentStatus: status,
+      refetchStatus: refetch.status,
+      sourceUrl: refetch.sourceUrl,
+    });
+    const attemptNumber = countAttemptsForProperty(property.id, recentRuns) + 1;
+    const fetchSuccessful =
+      status === "COMPLETED" || status === "NO_CHANGE";
+    const fetchState = mapErrorCodeToFetchState({
+      errorCode: fetchFailure.errorCode,
+      fetchAttempted: true,
+      fetchSuccessful,
+      noChange: status === "NO_CHANGE",
+      enrichmentStatus: status,
+      refetchStatus: refetch.status,
+      attemptNumber,
+      maxAttempts: HSA49_MAX_RETRY_ATTEMPTS,
+    });
 
     await HistoricalEnrichmentRepository.recordRun({
       runId,
@@ -319,6 +346,12 @@ export class HistoricalEnrichmentService {
         forced: input.force === true,
         durationMs,
         outcomeObservationId: obs?.id ?? null,
+        httpStatus: refetch.httpStatus,
+        error: refetch.error,
+        errorCode: fetchFailure.errorCode,
+        fetchState,
+        attemptNumber,
+        retryable: fetchFailure.retryable,
       },
     });
 

@@ -4,6 +4,27 @@ import { SessionService } from "@/lib/auth/SessionService";
 import { HistoricalSourceCoverage48Service } from "@/lib/services/HistoricalSourceCoverage48Service";
 import { LoggerService } from "@/lib/logger";
 
+type CoverageAction =
+  | "refresh"
+  | "refresh_diagnostics"
+  | "dry_run"
+  | "dry_run_p1"
+  | "acquire_p1"
+  | "retry_failed"
+  | "retry_network_failures"
+  | "rebuild"
+  | "rebuild_intelligence";
+
+function normalizeAction(action?: string): CoverageAction | null {
+  if (!action) return "refresh_diagnostics";
+  const aliases: Record<string, CoverageAction> = {
+    refresh: "refresh_diagnostics",
+    dry_run: "dry_run_p1",
+    rebuild: "rebuild_intelligence",
+  };
+  return (aliases[action] ?? action) as CoverageAction;
+}
+
 export async function GET() {
   try {
     await PermissionService.requireAdmin();
@@ -23,24 +44,21 @@ export async function POST(request: NextRequest) {
     const user = await SessionService.currentUser();
     const operator = user?.email ?? user?.id ?? "admin";
     const body = (await request.json()) as {
-      action?:
-        | "refresh_diagnostics"
-        | "dry_run_p1"
-        | "acquire_p1"
-        | "rebuild_intelligence";
+      action?: string;
       limit?: number;
     };
 
+    const action = normalizeAction(body.action);
     const limit = body.limit
       ? Math.min(Math.max(body.limit, 1), 10)
       : undefined;
 
-    if (body.action === "refresh_diagnostics" || !body.action) {
+    if (action === "refresh_diagnostics") {
       const report = await HistoricalSourceCoverage48Service.refreshDiagnostics();
       return NextResponse.json({ ok: true, report });
     }
 
-    if (body.action === "dry_run_p1") {
+    if (action === "dry_run_p1") {
       const result = await HistoricalSourceCoverage48Service.dryRunP1({
         operator,
         limit,
@@ -48,7 +66,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: result.ok, result });
     }
 
-    if (body.action === "acquire_p1") {
+    if (action === "acquire_p1") {
       const result = await HistoricalSourceCoverage48Service.acquireP1Batch({
         dryRun: false,
         operator,
@@ -61,7 +79,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: result.ok, result });
     }
 
-    if (body.action === "rebuild_intelligence") {
+    if (action === "retry_failed") {
+      const result = await HistoricalSourceCoverage48Service.retryFailedBatch({
+        operator,
+        limit,
+        dryRun: false,
+      });
+      return NextResponse.json({ ok: result.ok, result });
+    }
+
+    if (action === "retry_network_failures") {
+      const result = await HistoricalSourceCoverage48Service.retryNetworkFailuresBatch({
+        operator,
+        limit,
+        dryRun: false,
+      });
+      return NextResponse.json({ ok: result.ok, result });
+    }
+
+    if (action === "rebuild_intelligence") {
       const result = await HistoricalSourceCoverage48Service.rebuildIntelligence(operator);
       return NextResponse.json({ ok: result.ok, result });
     }

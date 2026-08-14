@@ -210,6 +210,11 @@ export type Hsc48Metrics = {
   acquisitionGaps: number;
   catalogueLeaks: number;
   retryableFailures?: number;
+  retryExhausted?: number;
+  permanentFailures?: number;
+  contentUnusable?: number;
+  rateLimited?: number;
+  authRequired?: number;
   p1Eligible?: number;
   p2Retryable?: number;
   p3Review?: number;

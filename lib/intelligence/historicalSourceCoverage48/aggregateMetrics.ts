@@ -68,6 +68,38 @@ export function aggregateEventMetrics(
     marketReadyTowns: base.marketReadyTowns ?? 0,
     acquisitionGaps: base.acquisitionGaps ?? 0,
     catalogueLeaks: base.catalogueLeaks ?? 0,
+    retryableFailures:
+      base.retryableFailures ??
+      events.filter((e) => e.fetchError?.retryable).length,
+    retryExhausted:
+      base.retryExhausted ??
+      events.filter(
+        (e) =>
+          e.fetchAttempted &&
+          !e.fetchSuccessful &&
+          e.acquisitionPriority &&
+          !e.acquisitionPriority.retryable,
+      ).length,
+    permanentFailures:
+      base.permanentFailures ??
+      events.filter((e) => e.acquisitionPriority?.priority === 4).length,
+    contentUnusable:
+      base.contentUnusable ??
+      events.filter(
+        (e) =>
+          e.snapshot.valid === false ||
+          e.fetchError?.errorCode === "CONTENT_UNAVAILABLE",
+      ).length,
+    rateLimited:
+      base.rateLimited ??
+      events.filter((e) => e.fetchError?.errorCode === "HTTP_429").length,
+    authRequired:
+      base.authRequired ??
+      events.filter(
+        (e) =>
+          e.fetchError?.errorCode === "AUTH_REQUIRED" ||
+          e.fetchError?.errorCode === "HTTP_401",
+      ).length,
   };
 
   if (base.enrichmentAttempts != null && base.enrichmentAttempts > 0) {

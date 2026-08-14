@@ -446,4 +446,52 @@ test("conflicting — review required state", () => {
   assert.ok(labels.reviewRequired.length > 0);
 });
 
+const { mapErrorCodeToFetchState, isNetworkFailureCode, recommendRetryAction } = load(
+  "acquisition/historicalFetchReliability49/index.ts",
+);
+
+test("HSA49 mapErrorCode — DNS", () => {
+  assert.equal(
+    mapErrorCodeToFetchState({
+      errorCode: "DNS_ERROR",
+      fetchAttempted: true,
+      fetchSuccessful: false,
+      noChange: false,
+      attemptNumber: 1,
+      maxAttempts: 3,
+    }),
+    "FETCH_DNS_ERROR",
+  );
+});
+
+test("HSA49 mapErrorCode — retry exhausted", () => {
+  assert.equal(
+    mapErrorCodeToFetchState({
+      errorCode: "HTTP_503",
+      fetchAttempted: true,
+      fetchSuccessful: false,
+      noChange: false,
+      attemptNumber: 3,
+      maxAttempts: 3,
+    }),
+    "FETCH_RETRY_EXHAUSTED",
+  );
+});
+
+test("HSA49 network failure codes", () => {
+  assert.ok(isNetworkFailureCode("TLS_ERROR"));
+  assert.ok(!isNetworkFailureCode("HTTP_404"));
+});
+
+test("HSA49 retry recommendation — not attempted", () => {
+  const r = recommendRetryAction({
+    fetchState: "FETCH_NOT_ATTEMPTED",
+    errorCode: "NONE",
+    retryable: true,
+    attempts: 0,
+    maxAttempts: 3,
+  });
+  assert.equal(r.recommendation, "RETRY_NOW");
+});
+
 console.log(`\n${passed} tests passed.`);
