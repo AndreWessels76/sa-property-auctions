@@ -3,6 +3,8 @@ import { PropertyService } from "@/lib/services";
 import { parsePropertySearchParams } from "@/lib/properties/parsePropertySearchParams";
 import { jsonError, jsonOk } from "@/lib/api/http";
 import { clientIp, rateLimit } from "@/lib/api/rateLimit";
+import { SubscriptionService } from "@/lib/subscription/SubscriptionService";
+import { applySearchFilterAccess } from "@/lib/intelligence/searchAccess";
 
 export async function GET(request: NextRequest) {
   try {
@@ -41,14 +43,19 @@ export async function GET(request: NextRequest) {
     }
 
     const filters = parsePropertySearchParams(params);
+    const premium = await SubscriptionService.premium();
+    const gated = applySearchFilterAccess(filters, premium);
     const result = await PropertyService.search({
-      ...filters,
-      page: filters.page ?? 1,
-      pageSize: filters.pageSize ?? PropertyService.DEFAULT_PAGE_SIZE,
-      sort: filters.sort ?? "auction",
+      ...gated,
+      page: gated.page ?? 1,
+      pageSize: gated.pageSize ?? PropertyService.DEFAULT_PAGE_SIZE,
+      sort: gated.sort ?? "auction",
     });
 
-    return jsonOk(result);
+    return jsonOk({
+      ...result,
+      advancedFiltersApplied: premium,
+    });
   } catch (error) {
     return jsonError(error, "Failed to load properties");
   }

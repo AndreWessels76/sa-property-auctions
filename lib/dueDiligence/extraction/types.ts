@@ -113,6 +113,10 @@ export type ExtractionCorpus = {
   agricultural_details?: Record<string, unknown> | null;
   /** Optional extra plain text from scraped/official page (never invent). */
   source_page_text?: string | null;
+  /** Structured pricing — never cross-mapped. */
+  auction_price?: number | null;
+  reserve_price?: number | null;
+  estimated_value?: number | null;
 };
 
 export type ExtractionResult = {

@@ -78,6 +78,16 @@ function mapFieldToClass(field: string): ChangeClass {
   if (field.includes("auction_date") || field.includes("auction_open") || field.includes("auction_close")) {
     return "AUCTION_DATE_CHANGED";
   }
+  if (
+    field.includes("price") ||
+    field === "starting_bid" ||
+    field === "from_price" ||
+    field === "estimated_value" ||
+    field === "floor_size_m2" ||
+    field === "total_hectares"
+  ) {
+    return "PROPERTY_DATA_CHANGED";
+  }
   if (field.includes("auction") && field.includes("type")) {
     return "AUCTION_STATUS_CHANGED";
   }

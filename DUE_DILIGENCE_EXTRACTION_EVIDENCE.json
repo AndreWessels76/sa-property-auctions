@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-08T10:31:06.732Z",
+  "generated_at": "2026-08-14T05:24:36.533Z",
   "extraction_version": "1.0.0",
   "principle": "Never guess. Never fabricate. Evidence required.",
   "tests_passed": 7,
@@ -107,7 +107,7 @@
         "auction_close_at": null,
         "auction_mode": "Online"
       },
-      "fields_found": 13,
+      "fields_found": 14,
       "documents_found": 0,
       "conflicts": 0,
       "missing_key_fields": [
@@ -254,7 +254,7 @@
   ],
   "summary": {
     "properties_processed": 3,
-    "fields_extracted": 32,
+    "fields_extracted": 33,
     "documents_discovered": 1,
     "conflicts": 0,
     "acceptance": {

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13T16:01:03.937Z",
+  "generated_at": "2026-08-14T05:24:38.103Z",
   "tests": [
     {
       "name": "license_blocked",
@@ -127,18 +127,13 @@
       "detail": "no master/event creation in refetch path"
     },
     {
-      "name": "live_fetch",
+      "name": "live_fetch_skipped",
       "pass": true,
-      "detail": "status=200 ok=true error=none"
+      "detail": "env not enabled"
     }
   ],
-  "live_fetch": {
-    "url": "https://www.bidderschoice.co.za/",
-    "ok": true,
-    "status": 200,
-    "bytes": 226399,
-    "hash": "3f99879430b9f18d",
-    "error": null
-  },
-  "verdict_notes": []
+  "live_fetch": null,
+  "verdict_notes": [
+    "Live BC fetch skipped — BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH not true"
+  ]
 }

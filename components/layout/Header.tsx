@@ -191,6 +191,21 @@ export default function Header() {
             Saved Searches
           </Link>
 
+          <Link
+            href="/compare"
+            className={`hidden text-sm font-medium transition-colors sm:inline ${linkClass}`}
+          >
+            Compare
+          </Link>
+          {isSignedIn ? (
+            <Link
+              href="/workspace"
+              className={`hidden text-sm font-medium transition-colors sm:inline ${linkClass}`}
+            >
+              Workspace
+            </Link>
+          ) : null}
+
           {isAdmin ? (
             <Link
               href="/admin/imports"

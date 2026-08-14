@@ -1,0 +1,30 @@
+{
+  "haenertsburg_matches": [
+    {
+      "id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+      "verification_state": "expired",
+      "listing_status": "expired",
+      "status": "expired",
+      "town": "Haenertsburg",
+      "suburb": null,
+      "bedrooms": 14
+    }
+  ],
+  "benoni_matches": [
+    {
+      "id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "title": "Insolvent Estate Online Auction Unit in Crystal Park Benoni",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+      "verification_state": "expired",
+      "listing_status": "expired",
+      "status": "expired",
+      "town": "Benoni",
+      "suburb": null,
+      "bedrooms": 2
+    }
+  ],
+  "e1": null,
+  "e2": null
+}

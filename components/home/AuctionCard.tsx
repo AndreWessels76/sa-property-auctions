@@ -17,6 +17,7 @@ import {
   getStatusStyle,
 } from "@/lib/format";
 import type { PropertyDTO } from "@/lib/dto/PropertyDTO";
+import CompareToggle from "@/components/compare/CompareToggle";
 
 function useCountdown(targetISO: string) {
   const [timeLeft, setTimeLeft] = useState({
@@ -157,9 +158,12 @@ export default function AuctionCard({ property }: { property: PropertyDTO }) {
       </div>
 
       <div className="p-6">
-        <h3 className="text-base font-semibold text-navy-900">
-          {property.title}
-        </h3>
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="text-base font-semibold text-navy-900">
+            {property.title}
+          </h3>
+          <CompareToggle propertyId={property.id} />
+        </div>
 
         <div className="mt-4 flex items-center gap-2 rounded-xl bg-navy-900 px-4 py-3 text-white">
           <Clock className="h-4 w-4 shrink-0 text-gold-400" />

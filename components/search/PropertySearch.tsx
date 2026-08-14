@@ -30,6 +30,7 @@ import { ROLES } from "@/lib/permissions/roles";
 import { buildSearchFilters } from "@/lib/savedSearches";
 import { isPremiumStatus } from "@/lib/subscription";
 import SaveSearchButton from "@/components/saved-searches/SaveSearchButton";
+import { AGRICULTURAL_SEARCH_TYPES } from "@/lib/intelligence/agriculturalSearch";
 
 const DEFAULT_PAGE_SIZE = 24;
 
@@ -138,6 +139,24 @@ export default function PropertySearch({ initialResult }: Props) {
     searchParams.get("priceRange") ?? "All",
   );
   const [sortBy, setSortBy] = useState(searchParams.get("sort") ?? "auction");
+  const [town, setTown] = useState(searchParams.get("town") ?? "");
+  const [suburb, setSuburb] = useState(searchParams.get("suburb") ?? "");
+  const [auctionFrom, setAuctionFrom] = useState(
+    searchParams.get("auctionFrom") ?? "",
+  );
+  const [auctionTo, setAuctionTo] = useState(searchParams.get("auctionTo") ?? "");
+  const [status, setStatus] = useState(searchParams.get("status") ?? "All");
+  const [minBedrooms, setMinBedrooms] = useState(
+    searchParams.get("minBedrooms") ?? "",
+  );
+  const [agriculturalType, setAgriculturalType] = useState(
+    searchParams.get("agriculturalType") ?? "",
+  );
+  const [agency, setAgency] = useState(searchParams.get("agency") ?? "");
+  const [minHectares, setMinHectares] = useState(
+    searchParams.get("minHectares") ?? "",
+  );
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [result, setResult] = useState(initialResult);
   const [aiMeta, setAiMeta] = useState<AISearchDTO | null>(null);
   const [loading, setLoading] = useState(false);
@@ -171,11 +190,20 @@ export default function PropertySearch({ initialResult }: Props) {
       if (type !== "All") params.set("propertyType", type);
       if (price !== "All") params.set("priceRange", price);
       if (sort !== "auction") params.set("sort", sort);
+      if (town.trim()) params.set("town", town.trim());
+      if (suburb.trim()) params.set("suburb", suburb.trim());
+      if (auctionFrom) params.set("auctionFrom", auctionFrom);
+      if (auctionTo) params.set("auctionTo", auctionTo);
+      if (status !== "All") params.set("status", status);
+      if (minBedrooms) params.set("minBedrooms", minBedrooms);
+      if (agriculturalType) params.set("agriculturalType", agriculturalType);
+      if (agency.trim()) params.set("agency", agency.trim());
+      if (minHectares) params.set("minHectares", minHectares);
 
       const qs = params.toString();
       router.replace(qs ? `/?${qs}#featured` : "/#featured", { scroll: false });
     },
-    [pageFromUrl, priceRange, propertyType, province, router, search, sortBy],
+    [agency, agriculturalType, auctionFrom, auctionTo, minBedrooms, minHectares, pageFromUrl, priceRange, propertyType, province, router, search, sortBy, status, suburb, town],
   );
 
   const fetchPage = useCallback(
@@ -238,6 +266,17 @@ export default function PropertySearch({ initialResult }: Props) {
         params.set("propertyType", ai.filters.propertyType);
       }
       if (ai?.filters.suburb) params.set("suburb", ai.filters.suburb);
+      if (!ai?.filters.town && town.trim()) params.set("town", town.trim());
+      if (!ai?.filters.suburb && suburb.trim()) params.set("suburb", suburb.trim());
+      if (auctionFrom) params.set("auctionFrom", auctionFrom);
+      if (auctionTo) params.set("auctionTo", auctionTo);
+      if (status !== "All") params.set("status", status);
+      if (minBedrooms && !ai?.filters.minBedrooms) {
+        params.set("minBedrooms", minBedrooms);
+      }
+      if (agriculturalType) params.set("agriculturalType", agriculturalType);
+      if (agency.trim()) params.set("agency", agency.trim());
+      if (minHectares) params.set("minHectares", minHectares);
 
       setLoading(true);
       setError(null);
@@ -255,7 +294,17 @@ export default function PropertySearch({ initialResult }: Props) {
         setLoading(false);
       }
     },
-    [],
+    [
+      agency,
+      agriculturalType,
+      auctionFrom,
+      auctionTo,
+      minBedrooms,
+      minHectares,
+      status,
+      suburb,
+      town,
+    ],
   );
 
   const runAiThenPage = useCallback(
@@ -456,6 +505,15 @@ export default function PropertySearch({ initialResult }: Props) {
     setPropertyType("All");
     setPriceRange("All");
     setSortBy("auction");
+    setTown("");
+    setSuburb("");
+    setAuctionFrom("");
+    setAuctionTo("");
+    setStatus("All");
+    setMinBedrooms("");
+    setAgriculturalType("");
+    setAgency("");
+    setMinHectares("");
     setAiMeta(null);
     setError(null);
     setShowUpgradeCta(false);
@@ -589,6 +647,116 @@ export default function PropertySearch({ initialResult }: Props) {
             <RotateCcw className="h-5 w-5" />
             Reset Filters
           </button>
+        </div>
+
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={() => setShowAdvanced((v) => !v)}
+            className="text-sm font-semibold text-navy-900 underline"
+          >
+            {showAdvanced ? "Hide" : "Show"} more filters
+          </button>
+          {showAdvanced ? (
+            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <input
+                value={town}
+                onChange={(e) => setTown(e.target.value)}
+                placeholder="Town"
+                className="rounded-xl border border-slate-300 px-3 py-2 text-sm"
+              />
+              <input
+                value={suburb}
+                onChange={(e) => setSuburb(e.target.value)}
+                placeholder="Suburb"
+                className="rounded-xl border border-slate-300 px-3 py-2 text-sm"
+              />
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="rounded-xl border border-slate-300 px-3 py-2 text-sm"
+              >
+                <option value="All">Upcoming + live</option>
+                <option value="upcoming">Upcoming</option>
+                <option value="live">Live</option>
+              </select>
+              <label className="text-xs text-slate-500">
+                Auction from
+                <input
+                  type="date"
+                  value={auctionFrom}
+                  onChange={(e) => setAuctionFrom(e.target.value)}
+                  className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <label className="text-xs text-slate-500">
+                Auction to
+                <input
+                  type="date"
+                  value={auctionTo}
+                  onChange={(e) => setAuctionTo(e.target.value)}
+                  className="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"
+                />
+              </label>
+              <input
+                value={minBedrooms}
+                onChange={(e) => setMinBedrooms(e.target.value)}
+                placeholder="Min bedrooms"
+                inputMode="numeric"
+                className="rounded-xl border border-slate-300 px-3 py-2 text-sm"
+              />
+              <select
+                value={agriculturalType}
+                onChange={(e) => setAgriculturalType(e.target.value)}
+                className="rounded-xl border border-slate-300 px-3 py-2 text-sm"
+                disabled={!canUseAiSearch}
+              >
+                <option value="">Agricultural type (premium)</option>
+                {AGRICULTURAL_SEARCH_TYPES.filter((t) => t.needles.length).map(
+                  (t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.label}
+                    </option>
+                  ),
+                )}
+              </select>
+              <input
+                value={minHectares}
+                onChange={(e) => setMinHectares(e.target.value)}
+                placeholder="Min hectares (premium)"
+                inputMode="decimal"
+                disabled={!canUseAiSearch}
+                className="rounded-xl border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+              <input
+                value={agency}
+                onChange={(e) => setAgency(e.target.value)}
+                placeholder="Agency (premium)"
+                disabled={!canUseAiSearch}
+                className="rounded-xl border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-50"
+              />
+              <button
+                type="button"
+                className="rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white"
+                onClick={() => {
+                  syncUrl({ page: 1 });
+                  startTransition(() => {
+                    void fetchPage({
+                      q: normalizeSearchQuery(search),
+                      page: 1,
+                      province,
+                      propertyType,
+                      priceRange,
+                      sort: sortBy,
+                      ai: aiMeta,
+                    });
+                  });
+                }}
+              >
+                Apply filters
+              </button>
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-5 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">

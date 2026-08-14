@@ -1,3 +1,4 @@
+import { persistPricingObservations } from "@/lib/acquisition/pricing/pricingService";
 import {
   corpusFromProperty,
   runDueDiligenceExtraction,
@@ -62,6 +63,8 @@ export type PersistRefetchExtractionResult = {
   extraction: ExtractionResult;
   fieldsFound: number;
   conflicts: number;
+  pricingObservations: number;
+  pricingConflicts: number;
 };
 
 /**
@@ -112,6 +115,25 @@ export async function persistRefetchExtraction(
     resultJson: resultWithProvenance,
   });
 
+  const pricing = await persistPricingObservations({
+    propertyId: property.id,
+    corpus: {
+      ...property,
+      agricultural_details: property.agricultural_details as Record<
+        string,
+        unknown
+      > | null,
+      source_page_text: sourcePageText,
+      auction_price: property.auction_price,
+      reserve_price: property.reserve_price,
+      estimated_value: property.estimated_value,
+    },
+    sourcePageText,
+    sourceSnapshotId: input.snapshotId ?? null,
+    contentHash: input.contentHash ?? extraction.source_hash,
+    extractionRunId: row?.id ?? null,
+  });
+
   LoggerService.audit("source.refetch.extraction_persisted", {
     propertyId: property.id,
     extractionRunId: row?.id ?? null,
@@ -120,12 +142,16 @@ export async function persistRefetchExtraction(
     refetchRunCode: input.refetchRunCode,
     fieldsFound: extraction.stats.fields_found,
     conflicts: extraction.stats.conflicts,
+    pricingObservations: pricing.observationIds.length,
+    pricingConflicts: pricing.conflicts,
   });
 
   return {
     extractionRunId: row?.id ?? null,
     extraction,
     fieldsFound: extraction.stats.fields_found,
-    conflicts: extraction.stats.conflicts,
+    conflicts: extraction.stats.conflicts + pricing.conflicts,
+    pricingObservations: pricing.observationIds.length,
+    pricingConflicts: pricing.conflicts,
   };
 }

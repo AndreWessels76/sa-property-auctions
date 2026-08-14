@@ -263,7 +263,8 @@ export class PropertyIdentityService {
       auctionTime: input.listing.auction_time,
       venue: input.listing.auction_venue,
       reservePrice: input.listing.reserve_price,
-      guidePrice: input.listing.auction_price,
+      // Never map auction_price → guide_price (Pricing Data Acquisition 1.0 semantics).
+      guidePrice: null,
       listingStatus: input.listing.listing_status ?? input.listing.status,
       verificationState: input.listing.verification_state,
       sourceName: input.sourceName ?? input.listing.source_name,

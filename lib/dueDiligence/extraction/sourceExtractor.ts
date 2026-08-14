@@ -255,6 +255,9 @@ export function corpusFromProperty(property: {
   verification_state?: string | null;
   agricultural_details?: Record<string, unknown> | null;
   source_page_text?: string | null;
+  auction_price?: number | null;
+  reserve_price?: number | null;
+  estimated_value?: number | null;
 }): ExtractionCorpus {
   return { ...property };
 }

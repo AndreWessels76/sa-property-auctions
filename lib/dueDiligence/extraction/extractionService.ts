@@ -1,3 +1,7 @@
+import {
+  extractPricingObservations,
+  pricingDraftsToFieldEvidence,
+} from "@/lib/acquisition/pricing/pricingExtractor";
 import { extractAgriculturalFields } from "./agriculturalExtractor";
 import { extractAuctionFields } from "./auctionExtractor";
 import { extractDocuments } from "./documentExtractor";
@@ -37,6 +41,8 @@ export function runDueDiligenceExtraction(
   const { fields: agriFields, land } = extractAgriculturalFields(corpus, text);
   const { documents, fields: docFields } = extractDocuments(corpus, text);
   const legalFields = extractLegalFields(corpus, text);
+  const pricingDrafts = extractPricingObservations(corpus, text);
+  const pricingFields = pricingDraftsToFieldEvidence(pricingDrafts, corpus);
 
   const all = [
     ...propertyFields,
@@ -45,6 +51,7 @@ export function runDueDiligenceExtraction(
     ...agriFields,
     ...docFields,
     ...legalFields,
+    ...pricingFields,
   ];
 
   const conflicts = detectConflicts(all);

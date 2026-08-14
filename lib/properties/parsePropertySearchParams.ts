@@ -110,6 +110,51 @@ export function parsePropertySearchParams(
     filters.auctionTo = auctionTo;
   }
 
+  const minGarages = parseNumber(searchParams.get("minGarages"));
+  if (minGarages) {
+    filters.minGarages = minGarages;
+  }
+
+  const minErfSize = parseNumber(searchParams.get("minErfSize"));
+  if (minErfSize) {
+    filters.minErfSize = minErfSize;
+  }
+
+  const maxErfSize = parseNumber(searchParams.get("maxErfSize"));
+  if (maxErfSize) {
+    filters.maxErfSize = maxErfSize;
+  }
+
+  const minFloorSize = parseNumber(searchParams.get("minFloorSize"));
+  if (minFloorSize) {
+    filters.minFloorSize = minFloorSize;
+  }
+
+  const maxFloorSize = parseNumber(searchParams.get("maxFloorSize"));
+  if (maxFloorSize) {
+    filters.maxFloorSize = maxFloorSize;
+  }
+
+  const minHectares = parseNumber(searchParams.get("minHectares"));
+  if (minHectares) {
+    filters.minHectares = minHectares;
+  }
+
+  const maxHectares = parseNumber(searchParams.get("maxHectares"));
+  if (maxHectares) {
+    filters.maxHectares = maxHectares;
+  }
+
+  const agriculturalType = searchParams.get("agriculturalType")?.trim();
+  if (agriculturalType) {
+    filters.agriculturalType = agriculturalType;
+  }
+
+  const agency = searchParams.get("agency")?.trim();
+  if (agency) {
+    filters.agency = agency;
+  }
+
   const sort = searchParams.get("sort");
   if (SORT_OPTIONS.includes(sort as PropertySearchDTO["sort"])) {
     filters.sort = sort as PropertySearchDTO["sort"];

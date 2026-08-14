@@ -45,6 +45,7 @@ import { buildAuctionResearchReport } from "@/lib/property/researchReport";
 import { getRelatedListingGroups } from "@/lib/property/relatedListings";
 import {
   AuctionIntelligenceService,
+  AuctionPriceIntelligenceService,
   PropertyIntelligenceService,
   PropertyService,
 } from "@/lib/services";
@@ -186,6 +187,9 @@ export default async function PropertyPage({ params }: PageProps) {
   const isFarm = isFarmPropertyType(property.property_type);
   const intelligence = PropertyIntelligence.analyse(property);
   const canonicalUrl = `${siteUrl}/properties/${property.id}`;
+
+  const priceIntelligence =
+    await AuctionPriceIntelligenceService.fromProperty(property);
 
   const gallerySlides = images
     .filter((image) => Boolean(image.image_url?.trim()))
@@ -351,7 +355,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
               <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
                 <PropertyPricingIntelligence
-                  property={property}
+                  intelligence={priceIntelligence}
                   confidence={intelligence.confidence}
                 />
                 <PropertyAIInsightsSection

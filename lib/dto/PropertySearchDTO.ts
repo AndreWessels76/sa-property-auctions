@@ -23,8 +23,20 @@ export interface PropertySearchDTO {
   minBathrooms?: number;
   maxBathrooms?: number;
 
+  minGarages?: number;
+
   auctionFrom?: string;
   auctionTo?: string;
+
+  minErfSize?: number;
+  maxErfSize?: number;
+  minFloorSize?: number;
+  maxFloorSize?: number;
+  minHectares?: number;
+  maxHectares?: number;
+
+  agriculturalType?: string;
+  agency?: string;
 
   sort?:
     | "auction"

@@ -6,6 +6,7 @@ import ImportStatus from "./components/ImportStatus";
 import InvestorOpsPanels from "./components/InvestorOpsPanels";
 import DueDiligenceExtractionPanel from "./components/DueDiligenceExtractionPanel";
 import SourceRefreshQueue from "./components/SourceRefreshQueue";
+import PricingAcquisitionPanel from "./components/PricingAcquisitionPanel";
 
 export default function OperationsPage() {
   return (
@@ -68,8 +69,11 @@ export default function OperationsPage() {
 
       <SourceRefreshQueue />
 
+      <PricingAcquisitionPanel />
+
       <DueDiligenceExtractionPanel />
 
     </div>
   );
 }
+

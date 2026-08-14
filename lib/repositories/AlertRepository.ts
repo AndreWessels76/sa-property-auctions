@@ -116,4 +116,25 @@ export class AlertRepository extends BaseRepository {
 
     return (data as Alert[]) ?? [];
   }
+
+  static async listRecent(userId: string, limit = 12): Promise<Alert[]> {
+    const db = await this.db();
+
+    const { data, error } = await db
+      .from("alerts")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      const msg = (error.message ?? "").toLowerCase();
+      if (error.code === "42P01" || msg.includes("does not exist")) {
+        return [];
+      }
+      this.handleError("AlertRepository.listRecent", error);
+    }
+
+    return (data as Alert[]) ?? [];
+  }
 }

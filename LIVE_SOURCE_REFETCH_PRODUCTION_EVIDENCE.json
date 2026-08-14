@@ -1,0 +1,349 @@
+{
+  "generated_at": "2026-08-13T14:12:14.778Z",
+  "supabase_project": "erflfvhxqitpprczmbiq",
+  "checks": {
+    "runs_table": {
+      "ok": true,
+      "count": 7
+    },
+    "snapshots_table": {
+      "ok": true,
+      "count": 5
+    },
+    "dd_extraction_table": {
+      "ok": true,
+      "count": 0
+    },
+    "acceptance": {
+      "runs_exist": true,
+      "ui_batch_match": false,
+      "successful_hashes": true,
+      "snapshots_have_sha256": true,
+      "no_change_no_duplicate_snapshots": true,
+      "no_dd_extraction_during_no_change_batch": true,
+      "zero_conflicts": true,
+      "no_duplicate_events": true,
+      "bc_listings_present": true
+    }
+  },
+  "latest_batch": {
+    "window_minutes": 15,
+    "latest_started_at": "2026-08-13T14:06:25.716+00:00",
+    "processed": 7,
+    "completed": 1,
+    "no_change": 6,
+    "changed": 1,
+    "conflicts": 0,
+    "skipped_license": 0,
+    "skipped_robots": 0,
+    "skipped_other": 0,
+    "unavailable": 0,
+    "failed": 0,
+    "ui_match": {
+      "processed_5": false,
+      "changed_0": false,
+      "unchanged_2": false,
+      "conflicts_0": true,
+      "license_skips_0": true,
+      "robots_skips_0": true,
+      "unavailable_0": true,
+      "failed_0": true
+    }
+  },
+  "runs": [
+    {
+      "id": "4dca1047-11c2-4d15-ab49-871f39cb52c1",
+      "run_code": "rf_65e5d16d-9",
+      "property_id": "78e0ab0e-0b33-4a2a-a9e3-eda3677c6209",
+      "partner_code": "bidders_choice",
+      "connector_id": "bidders_choice",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-2x-sectional-title-units-pretoria/",
+      "operator": "wesselsandre76@gmail.com",
+      "status": "no_change",
+      "http_status": 200,
+      "content_hash": "3e4f1c33aea27fdc1ed1c8437e7eeab8f3d79d6a7132c9cbc585c20a6e2e5d87",
+      "previous_hash": "3e4f1c33aea27fdc1ed1c8437e7eeab8f3d79d6a7132c9cbc585c20a6e2e5d87",
+      "changed": false,
+      "change_classes": [
+        "NO_CHANGE"
+      ],
+      "fields_changed": 0,
+      "conflicts": 0,
+      "extraction_run_id": null,
+      "started_at": "2026-08-13T14:06:25.716+00:00",
+      "completed_at": "2026-08-13T14:06:29.327+00:00",
+      "duration_ms": 3611,
+      "sha256_valid": true,
+      "error": null
+    },
+    {
+      "id": "00bf158b-0812-4eb5-bd46-8902b9eedcbf",
+      "run_code": "rf_8bc89b0a-8",
+      "property_id": "8125134b-387c-42dd-923a-c6f01826277f",
+      "partner_code": "bidders_choice",
+      "connector_id": "bidders_choice",
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-20-bedroom-guest-lodge-rosettenville-johannesburg/",
+      "operator": "wesselsandre76@gmail.com",
+      "status": "no_change",
+      "http_status": 200,
+      "content_hash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+      "previous_hash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+      "changed": false,
+      "change_classes": [
+        "NO_CHANGE"
+      ],
+      "fields_changed": 0,
+      "conflicts": 0,
+      "extraction_run_id": null,
+      "started_at": "2026-08-13T14:06:18.296+00:00",
+      "completed_at": "2026-08-13T14:06:22.554+00:00",
+      "duration_ms": 4258,
+      "sha256_valid": true,
+      "error": null
+    },
+    {
+      "id": "eb77b8f6-e9ea-427f-81f9-6ae8a682d5e6",
+      "run_code": "rf_bfe82696-1",
+      "property_id": "b8eb4cb5-d9c1-46de-a338-266357d3d8f9",
+      "partner_code": "bidders_choice",
+      "connector_id": "bidders_choice",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-vacant-stand-louis-trichardt/",
+      "operator": "wesselsandre76@gmail.com",
+      "status": "no_change",
+      "http_status": 200,
+      "content_hash": "31b7422f7213d2778571a5e3fc2dd968b06c706e30a5a83f08cae0269020a2de",
+      "previous_hash": "31b7422f7213d2778571a5e3fc2dd968b06c706e30a5a83f08cae0269020a2de",
+      "changed": false,
+      "change_classes": [
+        "NO_CHANGE"
+      ],
+      "fields_changed": 0,
+      "conflicts": 0,
+      "extraction_run_id": null,
+      "started_at": "2026-08-13T14:05:45.266+00:00",
+      "completed_at": "2026-08-13T14:05:48.849+00:00",
+      "duration_ms": 3583,
+      "sha256_valid": true,
+      "error": null
+    },
+    {
+      "id": "2215c199-0e6c-4e72-a507-4820082c0b8d",
+      "run_code": "rf_6d484090-a",
+      "property_id": "78e0ab0e-0b33-4a2a-a9e3-eda3677c6209",
+      "partner_code": "bidders_choice",
+      "connector_id": "bidders_choice",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-2x-sectional-title-units-pretoria/",
+      "operator": "wesselsandre76@gmail.com",
+      "status": "no_change",
+      "http_status": 200,
+      "content_hash": "3e4f1c33aea27fdc1ed1c8437e7eeab8f3d79d6a7132c9cbc585c20a6e2e5d87",
+      "previous_hash": "3e4f1c33aea27fdc1ed1c8437e7eeab8f3d79d6a7132c9cbc585c20a6e2e5d87",
+      "changed": false,
+      "change_classes": [
+        "NO_CHANGE"
+      ],
+      "fields_changed": 0,
+      "conflicts": 0,
+      "extraction_run_id": null,
+      "started_at": "2026-08-13T14:05:41.009+00:00",
+      "completed_at": "2026-08-13T14:05:44.458+00:00",
+      "duration_ms": 3449,
+      "sha256_valid": true,
+      "error": null
+    },
+    {
+      "id": "fa629e8a-8436-4ff2-b60a-225a53ace411",
+      "run_code": "rf_c751e80d-0",
+      "property_id": "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+      "partner_code": "bidders_choice",
+      "connector_id": "bidders_choice",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+      "operator": "wesselsandre76@gmail.com",
+      "status": "completed",
+      "http_status": 200,
+      "content_hash": "ae2890667eba5c0c3197ca85c14652bcc5c39b1655905f8d105c71fee5bb01a9",
+      "previous_hash": null,
+      "changed": true,
+      "change_classes": [
+        "PROPERTY_DATA_CHANGED",
+        "AUCTION_DATE_CHANGED",
+        "AUCTION_STATUS_CHANGED",
+        "LAND_DATA_CHANGED",
+        "LEGAL_DATA_CHANGED"
+      ],
+      "fields_changed": 18,
+      "conflicts": 0,
+      "extraction_run_id": null,
+      "started_at": "2026-08-13T14:05:35.697+00:00",
+      "completed_at": "2026-08-13T14:05:39.438+00:00",
+      "duration_ms": 3741,
+      "sha256_valid": true,
+      "error": null
+    },
+    {
+      "id": "f5e3851c-9d82-46d3-8aa9-ab795e975b3b",
+      "run_code": "rf_240441c8-a",
+      "property_id": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "partner_code": "bidders_choice",
+      "connector_id": "bidders_choice",
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-328ha-prime-agricultural-holding-tzaneen/",
+      "operator": "wesselsandre76@gmail.com",
+      "status": "no_change",
+      "http_status": 200,
+      "content_hash": "5c3f4b29f7c31e83fb6b005630fb4da835940dc1a85e1991a35839bea9e4b4a1",
+      "previous_hash": "5c3f4b29f7c31e83fb6b005630fb4da835940dc1a85e1991a35839bea9e4b4a1",
+      "changed": false,
+      "change_classes": [
+        "NO_CHANGE"
+      ],
+      "fields_changed": 0,
+      "conflicts": 0,
+      "extraction_run_id": null,
+      "started_at": "2026-08-13T14:05:31.147+00:00",
+      "completed_at": "2026-08-13T14:05:34.905+00:00",
+      "duration_ms": 3758,
+      "sha256_valid": true,
+      "error": null
+    },
+    {
+      "id": "699ac26c-d7c0-42a6-8804-0143f83c373a",
+      "run_code": "rf_f23a607c-3",
+      "property_id": "8125134b-387c-42dd-923a-c6f01826277f",
+      "partner_code": "bidders_choice",
+      "connector_id": "bidders_choice",
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-20-bedroom-guest-lodge-rosettenville-johannesburg/",
+      "operator": "wesselsandre76@gmail.com",
+      "status": "no_change",
+      "http_status": 200,
+      "content_hash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+      "previous_hash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+      "changed": false,
+      "change_classes": [
+        "NO_CHANGE"
+      ],
+      "fields_changed": 0,
+      "conflicts": 0,
+      "extraction_run_id": null,
+      "started_at": "2026-08-13T14:05:24.82+00:00",
+      "completed_at": "2026-08-13T14:05:29.473+00:00",
+      "duration_ms": 4653,
+      "sha256_valid": true,
+      "error": null
+    }
+  ],
+  "snapshots": [
+    {
+      "id": "bcd9d752-c762-4be8-895f-70a7292aeef6",
+      "property_id": "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+      "content_hash": "ae2890667eba5c0c3197ca85c14652bcc5c39b1655905f8d105c71fee5bb01a9",
+      "previous_hash": null,
+      "fetched_at": "2026-08-13T14:05:39.29+00:00",
+      "change_class": "PROPERTY_DATA_CHANGED",
+      "extraction_version": "1.0.0",
+      "http_status": 200,
+      "sha256_valid": true
+    },
+    {
+      "id": "e14e7c5b-18d4-4937-a384-73a82fa1ee1e",
+      "property_id": "b8eb4cb5-d9c1-46de-a338-266357d3d8f9",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-vacant-stand-louis-trichardt/",
+      "content_hash": "31b7422f7213d2778571a5e3fc2dd968b06c706e30a5a83f08cae0269020a2de",
+      "previous_hash": null,
+      "fetched_at": "2026-08-08T13:40:04.269+00:00",
+      "change_class": "PROPERTY_DATA_CHANGED",
+      "extraction_version": "1.0.0",
+      "http_status": 200,
+      "sha256_valid": true
+    },
+    {
+      "id": "a6adabcd-20af-4400-9e38-09377682715c",
+      "property_id": "78e0ab0e-0b33-4a2a-a9e3-eda3677c6209",
+      "source_url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-2x-sectional-title-units-pretoria/",
+      "content_hash": "3e4f1c33aea27fdc1ed1c8437e7eeab8f3d79d6a7132c9cbc585c20a6e2e5d87",
+      "previous_hash": null,
+      "fetched_at": "2026-08-08T13:39:59.736+00:00",
+      "change_class": "PROPERTY_DATA_CHANGED",
+      "extraction_version": "1.0.0",
+      "http_status": 200,
+      "sha256_valid": true
+    },
+    {
+      "id": "7237ba95-feff-42c4-9712-b70b6b4af240",
+      "property_id": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-328ha-prime-agricultural-holding-tzaneen/",
+      "content_hash": "5c3f4b29f7c31e83fb6b005630fb4da835940dc1a85e1991a35839bea9e4b4a1",
+      "previous_hash": null,
+      "fetched_at": "2026-08-08T13:39:55.462+00:00",
+      "change_class": "PROPERTY_DATA_CHANGED",
+      "extraction_version": "1.0.0",
+      "http_status": 200,
+      "sha256_valid": true
+    },
+    {
+      "id": "61cb217e-66b1-4e0f-9a3a-cecc99637efb",
+      "property_id": "8125134b-387c-42dd-923a-c6f01826277f",
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-20-bedroom-guest-lodge-rosettenville-johannesburg/",
+      "content_hash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+      "previous_hash": null,
+      "fetched_at": "2026-08-08T13:39:50.987+00:00",
+      "change_class": "PROPERTY_DATA_CHANGED",
+      "extraction_version": "1.0.0",
+      "http_status": 200,
+      "sha256_valid": true
+    }
+  ],
+  "extraction_runs": [],
+  "duplicate_checks": {
+    "duplicate_snapshot_same_hash": [],
+    "no_change_new_snapshots_near_run": [],
+    "duplicate_auction_events": [],
+    "masters_created_in_batch": 0
+  },
+  "verified_integrity": [
+    {
+      "id": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "title": "Online Auction: ± 32,8Ha Prime Agricultural Holding, Tzaneen",
+      "verification_state": "verified",
+      "last_verified_at": "2026-08-03T10:13:30.199+00:00",
+      "updated_at": "2026-08-13T04:38:38.596+00:00",
+      "verified_unchanged_state": true
+    },
+    {
+      "id": "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+      "title": "Insolvent Estate Auction: 8.5HA Vacant Land, Louis Trichardt",
+      "verification_state": "verified",
+      "last_verified_at": "2026-08-03T10:12:58.465+00:00",
+      "updated_at": "2026-08-13T04:38:39.409+00:00",
+      "verified_unchanged_state": true
+    },
+    {
+      "id": "8125134b-387c-42dd-923a-c6f01826277f",
+      "title": "Online Auction 20 Bed Guest Lodge Rosettenville Johannesburg",
+      "verification_state": "verified",
+      "last_verified_at": "2026-08-03T10:13:13.752+00:00",
+      "updated_at": "2026-08-13T04:38:37.923+00:00",
+      "verified_unchanged_state": true
+    },
+    {
+      "id": "78e0ab0e-0b33-4a2a-a9e3-eda3677c6209",
+      "title": "Insolvent Estate Auction: 2x Sectional Title Units, Pretoria",
+      "verification_state": "verified",
+      "last_verified_at": "2026-08-03T10:12:50.07+00:00",
+      "updated_at": "2026-08-13T04:38:39.646+00:00",
+      "verified_unchanged_state": true
+    },
+    {
+      "id": "b8eb4cb5-d9c1-46de-a338-266357d3d8f9",
+      "title": "Insolvent Estate Auction: Vacant Stand – Louis Trichardt",
+      "verification_state": "verified",
+      "last_verified_at": "2026-08-03T10:13:06.06+00:00",
+      "updated_at": "2026-08-13T04:38:39.529+00:00",
+      "verified_unchanged_state": true
+    }
+  ],
+  "verdict": "PRODUCTION READY WITH EVIDENCE GAP",
+  "verdict_notes": [
+    "UI batch mismatch: processed=7 changed=1 no_change=6 conflicts=0 skipped_license=0 skipped_robots=0 unavailable=0 failed=0"
+  ]
+}

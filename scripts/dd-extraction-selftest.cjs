@@ -27,50 +27,44 @@ function transpileFile(filePath) {
 
 const cache = new Map();
 
-function loadTs(relFromExtraction) {
-  const abs = path.join(srcDir, relFromExtraction);
+function loadFromAbs(abs) {
   if (cache.has(abs)) return cache.get(abs);
 
   const code = transpileFile(abs);
   const mod = new Module(abs, module);
   mod.filename = abs;
   mod.paths = Module._nodeModulePaths(path.dirname(abs));
-  // Rewrite relative .ts-less requires that point to sibling TS files
-  const wrapped = code.replace(
-    /require\((["'])\.\/([^"']+)\1\)/g,
-    (full, q, spec) => {
-      if (spec.endsWith(".json")) return full;
-      const candidate = path.join(path.dirname(abs), spec);
-      const tsFile = candidate.endsWith(".ts") ? candidate : `${candidate}.ts`;
-      if (fs.existsSync(tsFile)) {
-        return `require(${JSON.stringify(tsFile)})`;
-      }
-      return full;
-    },
-  );
 
-  // Hook require for .ts files under extraction
   const originalRequire = mod.require.bind(mod);
   mod.require = (id) => {
-    if (id.endsWith(".ts") || (id.includes("dueDiligence") && !id.includes("node_modules"))) {
-      if (fs.existsSync(id) && id.endsWith(".ts")) {
-        return loadTs(path.relative(srcDir, id));
-      }
+    if (id.startsWith("@/")) {
+      const aliasAbs = path.join(root, id.slice(2));
+      const tsPath = aliasAbs.endsWith(".ts") ? aliasAbs : `${aliasAbs}.ts`;
+      const indexTs = path.join(aliasAbs, "index.ts");
+      if (fs.existsSync(tsPath)) return loadFromAbs(tsPath);
+      if (fs.existsSync(indexTs)) return loadFromAbs(indexTs);
+    }
+    if (id.endsWith(".ts") && fs.existsSync(id)) {
+      return loadFromAbs(id);
     }
     if (id.startsWith("./") || id.startsWith("../")) {
       const resolved = path.resolve(path.dirname(abs), id);
       const tsPath = resolved.endsWith(".ts") ? resolved : `${resolved}.ts`;
-      if (fs.existsSync(tsPath)) {
-        return loadTs(path.relative(srcDir, tsPath));
-      }
+      const indexTs = path.join(resolved, "index.ts");
+      if (fs.existsSync(tsPath)) return loadFromAbs(tsPath);
+      if (fs.existsSync(indexTs)) return loadFromAbs(indexTs);
     }
     return originalRequire(id);
   };
 
   cache.set(abs, mod.exports);
-  mod._compile(wrapped, abs);
+  mod._compile(code, abs);
   cache.set(abs, mod.exports);
   return mod.exports;
+}
+
+function loadTs(relFromExtraction) {
+  return loadFromAbs(path.join(srcDir, relFromExtraction));
 }
 
 const { runDueDiligenceExtraction } = loadTs("extractionService.ts");

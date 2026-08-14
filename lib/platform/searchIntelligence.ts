@@ -67,6 +67,11 @@ export function searchRankingScore(input: {
   province?: string | null;
   verificationState?: string | null;
   now?: Date;
+  /** Deterministic filter-match boosts — never AI-invented. */
+  townMatch?: boolean;
+  typeMatch?: boolean;
+  hasAgency?: boolean;
+  hasLandSize?: boolean;
 }): number {
   let score = 0;
   if (input.featured) score += 1000;
@@ -74,6 +79,10 @@ export function searchRankingScore(input: {
   if (input.hasImages) score += 20;
   if (input.town?.trim()) score += 10;
   if (input.province?.trim()) score += 10;
+  if (input.townMatch) score += 40;
+  if (input.typeMatch) score += 25;
+  if (input.hasAgency) score += 8;
+  if (input.hasLandSize) score += 8;
 
   if (input.auctionDate) {
     const d = new Date(input.auctionDate);

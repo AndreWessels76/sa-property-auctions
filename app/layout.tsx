@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import AuthProvider from "@/app/components/auth/AuthProvider";
 import SessionProvider from "@/app/components/auth/SessionProvider";
+import CompareBar from "@/components/compare/CompareBar";
 import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
@@ -107,7 +108,10 @@ export default async function RootLayout({
           }}
         />
         <AuthProvider initialSession={session} initialProfile={profile}>
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            {children}
+            <CompareBar />
+          </SessionProvider>
         </AuthProvider>
         <Toaster richColors position="top-right" />
       </body>

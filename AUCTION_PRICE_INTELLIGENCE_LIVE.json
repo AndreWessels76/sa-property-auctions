@@ -1,0 +1,96 @@
+{
+  "generated_at": "2026-08-13T19:33:17.157Z",
+  "samples": [
+    {
+      "label": "upcoming_verified",
+      "id": "8125134b-387c-42dd-923a-c6f01826277f",
+      "title": "Online Auction 20 Bed Guest Lodge Rosettenville Johannesburg",
+      "verification_state": "verified",
+      "listing_status": "upcoming",
+      "public_catalogue": true,
+      "auction_price": 0,
+      "estimated_value": 0,
+      "reserve_price": null,
+      "floor_size": null,
+      "hectares": null,
+      "property_master_id": null,
+      "event_count": 0,
+      "intelligence": {
+        "auctionDisplay": "Not supplied",
+        "guideDisplay": "Not supplied",
+        "reserveDisplay": "Not supplied",
+        "estimatedDisplay": "Not supplied",
+        "difference": null,
+        "perM2": "Not available",
+        "perHa": "Not available",
+        "historicalPoints": 0,
+        "limitations": [
+          "Auction price not supplied.",
+          "Estimated value not supplied.",
+          "Building size not supplied — price per m² unavailable."
+        ]
+      }
+    },
+    {
+      "label": "residential_upcoming",
+      "id": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "title": "Online Auction: ± 32,8Ha Prime Agricultural Holding, Tzaneen",
+      "verification_state": "verified",
+      "listing_status": "upcoming",
+      "public_catalogue": true,
+      "auction_price": 0,
+      "estimated_value": 0,
+      "reserve_price": null,
+      "floor_size": null,
+      "hectares": null,
+      "property_master_id": null,
+      "event_count": 0,
+      "intelligence": {
+        "auctionDisplay": "Not supplied",
+        "guideDisplay": "Not supplied",
+        "reserveDisplay": "Not supplied",
+        "estimatedDisplay": "Not supplied",
+        "difference": null,
+        "perM2": "Not available",
+        "perHa": "Not available",
+        "historicalPoints": 0,
+        "limitations": [
+          "Auction price not supplied.",
+          "Estimated value not supplied.",
+          "Building size not supplied — price per m² unavailable."
+        ]
+      }
+    },
+    {
+      "label": "agricultural_historical_haenertsburg",
+      "id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+      "verification_state": "expired",
+      "listing_status": "expired",
+      "public_catalogue": false,
+      "auction_price": 0,
+      "estimated_value": 0,
+      "reserve_price": null,
+      "floor_size": null,
+      "hectares": null,
+      "property_master_id": null,
+      "event_count": 0,
+      "intelligence": {
+        "auctionDisplay": "Not supplied",
+        "guideDisplay": "Not supplied",
+        "reserveDisplay": "Not supplied",
+        "estimatedDisplay": "Not supplied",
+        "difference": null,
+        "perM2": "Not available",
+        "perHa": "Not available",
+        "historicalPoints": 0,
+        "limitations": [
+          "Auction price not supplied.",
+          "Estimated value not supplied.",
+          "Building size not supplied — price per m² unavailable.",
+          "Hectares not supplied — price per hectare unavailable."
+        ]
+      }
+    }
+  ]
+}

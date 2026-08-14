@@ -12,3 +12,4 @@ export * from "./VerificationRepository";
 export * from "./PropertyIdentityRepository";
 export * from "./PartnershipRepository";
 export * from "./DueDiligenceExtractionRepository";
+export * from "./PricingObservationRepository";

@@ -115,6 +115,24 @@ export class DueDiligenceExtractionService {
       resultJson: result,
     });
 
+    const { persistPricingObservations } = await import(
+      "@/lib/acquisition/pricing/pricingService"
+    );
+    await persistPricingObservations({
+      propertyId: property.id,
+      corpus: {
+        ...property,
+        agricultural_details: property.agricultural_details as Record<
+          string,
+          unknown
+        > | null,
+        auction_price: property.auction_price,
+        reserve_price: property.reserve_price,
+        estimated_value: property.estimated_value,
+      },
+      contentHash: result.source_hash,
+    });
+
     LoggerService.audit("due_diligence.extraction.run", {
       propertyId: property.id,
       fieldsFound: result.stats.fields_found,

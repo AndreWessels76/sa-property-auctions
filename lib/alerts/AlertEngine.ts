@@ -109,6 +109,26 @@ export function propertyMatchesFilters(
     return false;
   }
 
+  if (filters.agency) {
+    const needle = filters.agency.trim().toLowerCase();
+    const hay = `${property.auction_agency ?? ""} ${property.source_name ?? ""}`.toLowerCase();
+    if (!hay.includes(needle)) return false;
+  }
+
+  if (
+    filters.minErfSize != null &&
+    (property.erf_size == null || property.erf_size < filters.minErfSize)
+  ) {
+    return false;
+  }
+
+  if (
+    filters.maxErfSize != null &&
+    (property.erf_size == null || property.erf_size > filters.maxErfSize)
+  ) {
+    return false;
+  }
+
   return true;
 }
 

@@ -1,0 +1,135 @@
+{
+  "sprint": "Pricing Data Acquisition & Normalisation 1.0",
+  "generated_at": "2026-08-13T20:07:20.834Z",
+  "parser_version": "pricing-parser-1.0.0",
+  "principles": [
+    "no_fabrication",
+    "no_cross_mapping",
+    "no_silent_verified_overwrite",
+    "public_catalogue_upcoming_live_only"
+  ],
+  "samples": [
+    {
+      "label": "residential_upcoming",
+      "property_id": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "title": "Online Auction: ± 32,8Ha Prime Agricultural Holding, Tzaneen",
+      "source": "Bidders Choice",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-328ha-prime-agricultural-holding-tzaneen/",
+      "public_catalogue": true,
+      "listing_status": "upcoming",
+      "property_master_id": null,
+      "auction_event_id": null,
+      "snapshot_id": "7237ba95-feff-42c4-9712-b70b6b4af240",
+      "content_hash": "5c3f4b29f7c31e83fb6b005630fb4da835940dc1a85e1991a35839bea9e4b4a1",
+      "parser_version": "pricing-parser-1.0.0",
+      "listing_fields": {
+        "auction_price": 0,
+        "reserve_price": null,
+        "estimated_value": 0,
+        "floor_size": null,
+        "hectares": null
+      },
+      "extraction_status": "not_supplied",
+      "extracted_fields": [
+        {
+          "field": "floor_size_m2",
+          "raw": "± 425m² Building",
+          "normalized": 425,
+          "currency": null,
+          "is_approximate": true,
+          "is_range": false,
+          "min": null,
+          "max": null,
+          "status": "extracted",
+          "evidence": "± 425m² Building",
+          "notes": null
+        },
+        {
+          "field": "total_hectares",
+          "raw": "Combined Extent: ± 32.8202 Ha",
+          "normalized": 32.8202,
+          "currency": null,
+          "is_approximate": true,
+          "is_range": false,
+          "min": null,
+          "max": null,
+          "status": "extracted",
+          "evidence": "Combined Extent: ± 32.8202 Ha",
+          "notes": null
+        }
+      ],
+      "existing_observations": [],
+      "conflicts": [],
+      "note": "Pricing not supplied by source",
+      "extracted_at": "2026-08-13T20:07:19.072Z"
+    },
+    {
+      "label": "agricultural",
+      "property_id": "603a7e65-c6e0-4f8d-850a-688cb27549df",
+      "title": "± 749Ha Cattle Farm, Springbokvlakte, Limpopo – Auction",
+      "source": "Bidders Choice",
+      "url": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
+      "public_catalogue": false,
+      "listing_status": "expired",
+      "property_master_id": null,
+      "auction_event_id": null,
+      "snapshot_id": null,
+      "content_hash": null,
+      "parser_version": "pricing-parser-1.0.0",
+      "listing_fields": {
+        "auction_price": 0,
+        "reserve_price": null,
+        "estimated_value": 0,
+        "floor_size": null,
+        "hectares": null
+      },
+      "extraction_status": "not_supplied",
+      "extracted_fields": [
+        {
+          "field": "total_hectares",
+          "raw": "± 749Ha",
+          "normalized": 749,
+          "currency": null,
+          "is_approximate": true,
+          "is_range": false,
+          "min": null,
+          "max": null,
+          "status": "extracted",
+          "evidence": "± 749Ha",
+          "notes": null
+        }
+      ],
+      "existing_observations": [],
+      "conflicts": [],
+      "note": "Pricing not supplied by source",
+      "extracted_at": "2026-08-13T20:07:19.987Z"
+    },
+    {
+      "label": "listing_without_price",
+      "property_id": "8125134b-387c-42dd-923a-c6f01826277f",
+      "title": "Online Auction 20 Bed Guest Lodge Rosettenville Johannesburg",
+      "source": "Bidders Choice",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-20-bedroom-guest-lodge-rosettenville-johannesburg/",
+      "public_catalogue": true,
+      "listing_status": "upcoming",
+      "property_master_id": null,
+      "auction_event_id": null,
+      "snapshot_id": "61cb217e-66b1-4e0f-9a3a-cecc99637efb",
+      "content_hash": "33ae0053a63405166c61b9859389b3afb6853cc7ea1f8a9486ae038e73018e5e",
+      "parser_version": "pricing-parser-1.0.0",
+      "listing_fields": {
+        "auction_price": 0,
+        "reserve_price": null,
+        "estimated_value": 0,
+        "floor_size": null,
+        "hectares": null
+      },
+      "extraction_status": "not_supplied",
+      "extracted_fields": [],
+      "existing_observations": [],
+      "conflicts": [],
+      "note": "Pricing not supplied by source",
+      "extracted_at": "2026-08-13T20:07:20.834Z"
+    }
+  ]
+}

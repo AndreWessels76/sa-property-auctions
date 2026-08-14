@@ -5,12 +5,19 @@ import {
   type SearchResult,
 } from "@/lib/dto/SearchResult";
 import type { Property } from "@/lib/types/property";
+import { agriculturalSearchNeedle } from "@/lib/intelligence/agriculturalSearch";
 import {
   isPubliclyActiveListing,
   PUBLIC_VERIFICATION_STATES,
   publicCatalogueTodayIso,
   HISTORICAL_INTELLIGENCE_STATES,
 } from "@/lib/data/publicListingPolicy";
+
+function sanitizeIlike(value: string | null | undefined): string | null {
+  if (!value?.trim()) return null;
+  const cleaned = value.trim().replace(/[%_,.()]/g, "").slice(0, 80);
+  return cleaned.length > 0 ? cleaned : null;
+}
 
 export class PropertyRepository extends BaseRepository {
   static readonly DEFAULT_PAGE_SIZE = 24;
@@ -277,6 +284,42 @@ address.ilike.%${filters.search}%
 
     if (filters.source) {
       query = query.eq("source", filters.source);
+    }
+
+    if (filters.minGarages) {
+      query = query.gte("garages", filters.minGarages);
+    }
+
+    if (filters.minErfSize) {
+      query = query.gte("erf_size", filters.minErfSize);
+    }
+
+    if (filters.maxErfSize) {
+      query = query.lte("erf_size", filters.maxErfSize);
+    }
+
+    if (filters.minFloorSize) {
+      query = query.gte("floor_size", filters.minFloorSize);
+    }
+
+    if (filters.maxFloorSize) {
+      query = query.lte("floor_size", filters.maxFloorSize);
+    }
+
+    const agency = sanitizeIlike(filters.agency);
+    if (agency) {
+      query = query.or(
+        `auction_agency.ilike.%${agency}%,source_name.ilike.%${agency}%`,
+      );
+    }
+
+    const agriNeedle = sanitizeIlike(
+      agriculturalSearchNeedle(filters.agriculturalType ?? null) ?? undefined,
+    );
+    if (agriNeedle) {
+      query = query.or(
+        `property_type.ilike.%${agriNeedle}%,title.ilike.%${agriNeedle}%`,
+      );
     }
 
     switch (filters.sort) {
