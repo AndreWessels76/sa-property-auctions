@@ -1,11 +1,17 @@
 /**
- * Deterministic historical enrichment queue with priority tiers.
+ * Deterministic historical enrichment queue with priority tiers (HDE 4.1).
+ *
+ * P1 — historical event + eligible source + unknown outcome
+ * P2 — known outcome + missing sale price
+ * P3 — SOLD + sale price + missing property size
+ * P4 — low-value enrichment / unresolved review
  */
 
 import { isPubliclyActiveListing } from "@/lib/data/publicListingPolicy";
 import type { HistoricalEventObservation } from "@/lib/intelligence/historical/types";
 import type { OutcomeObservationRow } from "@/lib/repositories/OutcomeIntelligenceRepository";
 import type { EnrichmentRunRow, EnrichmentReviewRow } from "@/lib/repositories/HistoricalEnrichmentRepository";
+import { hasVerifiedSize } from "./funnel";
 import { resolveHistoricalSource, type HistoricalSourceResolution } from "./sourceResolution";
 
 export type QueuePriority = 1 | 2 | 3 | 4;
@@ -21,11 +27,19 @@ export type HistoricalQueueItem = {
   salePrice: number | null;
   sourceResolution: HistoricalSourceResolution;
   reason: string;
+  retryFailed: boolean;
 };
 
 function confirmedOutcome(outcome: string | null | undefined): boolean {
   if (!outcome) return false;
   return !["UNKNOWN", "COMPLETED_UNKNOWN"].includes(outcome);
+}
+
+function isVerifiedSalePrice(obs: OutcomeObservationRow | null): boolean {
+  if (!obs || obs.outcome !== "SOLD") return false;
+  if (obs.sale_price == null) return false;
+  const conf = (obs.sale_price_confidence ?? "").toLowerCase();
+  return conf === "high" || conf === "medium";
 }
 
 function latestOutcomeForEvent(
@@ -44,13 +58,8 @@ function lastRunForProperty(
   propertyId: string,
   runs: EnrichmentRunRow[],
 ): EnrichmentRunRow | null {
-  return (
-    runs.find((r) => r.property_id === propertyId) ??
-    runs.filter((r) => r.property_id === propertyId).sort((a, b) =>
-      b.created_at.localeCompare(a.created_at),
-    )[0] ??
-    null
-  );
+  const propertyRuns = runs.filter((r) => r.property_id === propertyId);
+  return propertyRuns.sort((a, b) => b.created_at.localeCompare(a.created_at))[0] ?? null;
 }
 
 function hasReview(
@@ -65,6 +74,10 @@ function hasReview(
   );
 }
 
+function isRetryFailedRun(status: string | null | undefined): boolean {
+  return status === "FAILED" || status === "SOURCE_UNAVAILABLE" || status === "FETCH_FAILED";
+}
+
 export function buildHistoricalEnrichmentQueue(input: {
   events: HistoricalEventObservation[];
   observations?: OutcomeObservationRow[];
@@ -74,6 +87,10 @@ export function buildHistoricalEnrichmentQueue(input: {
     connector?: string;
     agency?: string;
     outcomeState?: string;
+    priority?: QueuePriority;
+    retryFailed?: boolean;
+    propertyMasterId?: string;
+    auctionEventId?: string;
   };
 }): HistoricalQueueItem[] {
   const observations = input.observations ?? [];
@@ -83,6 +100,12 @@ export function buildHistoricalEnrichmentQueue(input: {
 
   for (const event of input.events) {
     if (!event.listingPropertyId) continue;
+    if (input.filters?.propertyMasterId && event.propertyMasterId !== input.filters.propertyMasterId) {
+      continue;
+    }
+    if (input.filters?.auctionEventId && event.auctionEventId !== input.filters.auctionEventId) {
+      continue;
+    }
     if (
       isPubliclyActiveListing({
         verification_state: event.verificationState,
@@ -111,6 +134,9 @@ export function buildHistoricalEnrichmentQueue(input: {
     const salePrice = obs?.sale_price ?? null;
     const lastRun = lastRunForProperty(event.listingPropertyId, runs);
     const openReview = hasReview(event, reviews);
+    const retryFailed = isRetryFailedRun(lastRun?.status);
+
+    if (input.filters?.retryFailed && !retryFailed) continue;
 
     const sourceResolution = resolveHistoricalSource({
       event,
@@ -126,21 +152,21 @@ export function buildHistoricalEnrichmentQueue(input: {
     if (openReview || sourceResolution.status === "REVIEW_REQUIRED") {
       priority = 4;
       reason = "Unresolved conflict / review";
-    } else if (
-      lastRun?.status === "SOURCE_UNAVAILABLE" ||
-      lastRun?.status === "FETCH_FAILED"
-    ) {
-      priority = 3;
-      reason = "Retry — source previously unavailable";
-    } else if (confirmedOutcome(outcome) && salePrice == null) {
-      priority = 2;
-      reason = "Confirmed outcome — missing sale price";
     } else if (!confirmedOutcome(outcome)) {
       priority = 1;
       reason = "No confirmed outcome";
+    } else if (confirmedOutcome(outcome) && salePrice == null) {
+      priority = 2;
+      reason = "Confirmed outcome — missing sale price";
+    } else if (isVerifiedSalePrice(obs) && !hasVerifiedSize(event)) {
+      priority = 3;
+      reason = "SOLD + verified sale price — missing property size";
     } else {
-      continue;
+      priority = 4;
+      reason = "Low-value enrichment — core data present";
     }
+
+    if (input.filters?.priority != null && priority !== input.filters.priority) continue;
 
     if (sourceResolution.status === "LICENSE_BLOCKED") continue;
 
@@ -155,6 +181,7 @@ export function buildHistoricalEnrichmentQueue(input: {
       salePrice,
       sourceResolution,
       reason,
+      retryFailed,
     });
   }
 
@@ -168,6 +195,7 @@ export function queueSummary(items: HistoricalQueueItem[]) {
     priority2: items.filter((i) => i.priority === 2).length,
     priority3: items.filter((i) => i.priority === 3).length,
     priority4: items.filter((i) => i.priority === 4).length,
+    retryFailed: items.filter((i) => i.retryFailed).length,
     eligible: items.filter((i) => i.sourceResolution.status === "ELIGIBLE").length,
     reviewRequired: items.filter((i) => i.sourceResolution.status === "REVIEW_REQUIRED").length,
   };

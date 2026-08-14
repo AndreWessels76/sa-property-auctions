@@ -218,15 +218,35 @@ export async function persistOutcomeObservations(
     issues,
   });
 
+  const persistedStatus =
+    conflictDrafts.length > 0
+      ? "conflict"
+      : draft.review_required
+        ? "review_required"
+        : "persisted";
+
+  if (
+    persistedStatus === "persisted" &&
+    draft.outcome === "SOLD" &&
+    draft.sale_price != null &&
+    (draft.sale_price_confidence === "high" || draft.sale_price_confidence === "medium")
+  ) {
+    try {
+      const { HistoricalIntelligence40Service } = await import(
+        "@/lib/services/HistoricalIntelligence40Service"
+      );
+      await HistoricalIntelligence40Service.rebuild(
+        input.operator ?? "outcome_sale_price_persist",
+      );
+    } catch {
+      /* soft-fail — rebuild can be triggered manually */
+    }
+  }
+
   return {
     skipped: false,
     reason: null,
-    status:
-      conflictDrafts.length > 0
-        ? "conflict"
-        : draft.review_required
-          ? "review_required"
-          : "persisted",
+    status: persistedStatus,
     draft,
     observationId: row?.id ?? null,
     conflicts: conflictDrafts.length,

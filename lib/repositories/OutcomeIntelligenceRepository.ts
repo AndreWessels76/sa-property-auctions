@@ -22,6 +22,7 @@ export type OutcomeObservationRow = {
   evidence_type: string | null;
   extraction_method: string | null;
   sale_price: number | null;
+  sale_price_confidence: string | null;
   idempotency_key: string | null;
   review_category: string | null;
   created_at: string;

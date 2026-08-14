@@ -4,9 +4,13 @@ import { isPubliclyActiveListing } from "@/lib/data/publicListingPolicy";
 import {
   buildHistoricalEnrichmentQueue,
   queueSummary,
+  buildEnrichmentFunnel,
   HISTORICAL_DATA_ACQUISITION_VERSION,
-  HDA40_DEFAULT_BATCH_LIMIT,
+  HISTORICAL_DATA_ENRICHMENT41_VERSION,
+  HDE41_DEFAULT_DRY_RUN_LIMIT,
+  HDE41_DEFAULT_BATCH_LIMIT,
   HDA40_MAX_BATCH_LIMIT,
+  type QueuePriority,
 } from "@/lib/acquisition/historical";
 import { persistOutcomeObservations } from "@/lib/acquisition/outcomes/outcomeService";
 import { SourceRefetchService } from "@/lib/services/SourceRefetchService";
@@ -14,6 +18,7 @@ import { PropertyRepository } from "@/lib/repositories/PropertyRepository";
 import { PropertyMapper } from "@/lib/mappers/PropertyMapper";
 import { HistoricalEnrichmentRepository } from "@/lib/repositories/HistoricalEnrichmentRepository";
 import { OutcomeIntelligenceRepository } from "@/lib/repositories/OutcomeIntelligenceRepository";
+import { HistoricalIntelligence40Service } from "@/lib/services/HistoricalIntelligence40Service";
 import { HistoricalIntelligenceService } from "@/lib/services/HistoricalIntelligenceService";
 import { publicHistoricalRows } from "@/lib/intelligence/historical";
 import { LoggerService } from "@/lib/logger";
@@ -30,6 +35,7 @@ export type EnrichmentBatchResult = {
   ok: boolean;
   runId: string;
   dryRun?: boolean;
+  version?: string;
   processed: number;
   completed: number;
   noChange: number;
@@ -38,6 +44,13 @@ export type EnrichmentBatchResult = {
   salePricesExtracted: number;
   outcomesFound: number;
   salePricesFound: number;
+  salePricesVerified: number;
+  soldFound: number;
+  eligible: number;
+  attempted: number;
+  fetched: number;
+  unchanged: number;
+  skippedLicense: number;
   conflicts: number;
   reviewRequired: number;
   skippedNotHistorical: number;
@@ -52,7 +65,33 @@ export type EnrichmentBatchResult = {
   }>;
   message: string;
   queueSummary?: ReturnType<typeof queueSummary>;
+  funnel?: ReturnType<typeof buildEnrichmentFunnel>;
 };
+
+export type EnrichmentQueueFilters = {
+  connector?: string;
+  agency?: string;
+  outcomeState?: string;
+  priority?: QueuePriority;
+  retryFailed?: boolean;
+  propertyMasterId?: string;
+  auctionEventId?: string;
+};
+
+function isVerifiedSalePriceObs(
+  outcome: string | null | undefined,
+  salePrice: number | null | undefined,
+  confidence: string | null | undefined,
+): boolean {
+  if (outcome !== "SOLD" || salePrice == null) return false;
+  const conf = (confidence ?? "").toLowerCase();
+  return conf === "high" || conf === "medium";
+}
+
+async function latestOutcomeForProperty(propertyId: string) {
+  const rows = await OutcomeIntelligenceRepository.listByProperty(propertyId);
+  return rows[0] ?? null;
+}
 
 function isHistoricalForEnrichment(p: PropertyDTO): boolean {
   if (
@@ -77,11 +116,7 @@ async function getPropertyDto(propertyId: string): Promise<PropertyDTO | null> {
 }
 
 export class HistoricalEnrichmentService {
-  static async buildQueue(filters?: {
-    connector?: string;
-    agency?: string;
-    outcomeState?: string;
-  }) {
+  static async buildQueue(filters?: EnrichmentQueueFilters) {
     const observations = await HistoricalIntelligenceService.loadObservations();
     const historical = publicHistoricalRows(observations);
     const persisted = await OutcomeIntelligenceRepository.listRecent(5000);
@@ -94,27 +129,26 @@ export class HistoricalEnrichmentService {
       openReviews: reviews,
       filters,
     });
-    return { version: HISTORICAL_DATA_ACQUISITION_VERSION, queue, summary: queueSummary(queue) };
+    return {
+      version: HISTORICAL_DATA_ENRICHMENT41_VERSION,
+      hdaVersion: HISTORICAL_DATA_ACQUISITION_VERSION,
+      queue,
+      summary: queueSummary(queue),
+    };
   }
 
-  static async dryRunBatch(input: {
-    limit?: number;
-    connector?: string;
-    agency?: string;
-    outcomeState?: string;
-  }) {
-    const limit = Math.min(Math.max(input.limit ?? HDA40_DEFAULT_BATCH_LIMIT, 1), HDA40_MAX_BATCH_LIMIT);
-    const { queue, summary } = await this.buildQueue({
-      connector: input.connector,
-      agency: input.agency,
-      outcomeState: input.outcomeState,
-    });
+  static async dryRunBatch(input: EnrichmentQueueFilters & { limit?: number }) {
+    const limit = Math.min(
+      Math.max(input.limit ?? HDE41_DEFAULT_DRY_RUN_LIMIT, 1),
+      HDA40_MAX_BATCH_LIMIT,
+    );
+    const { queue, summary } = await this.buildQueue(input);
     const selected = queue.slice(0, limit);
     return {
       ok: true,
       dryRun: true,
       runId: `dry_run_${Date.now().toString(36)}`,
-      version: HISTORICAL_DATA_ACQUISITION_VERSION,
+      version: HISTORICAL_DATA_ENRICHMENT41_VERSION,
       wouldProcess: selected.length,
       queueSummary: summary,
       candidates: selected.map((q) => ({
@@ -137,6 +171,7 @@ export class HistoricalEnrichmentService {
     runId?: string;
     mode?: "refetch" | "snapshot";
   }) {
+    const started = Date.now();
     const runId = input.runId ?? `enrich_${Date.now().toString(36)}`;
     const property = await getPropertyDto(input.propertyId);
     if (!property) {
@@ -201,12 +236,13 @@ export class HistoricalEnrichmentService {
         operator: input.operator ?? null,
         meta: { extractionRunId: enriched.extractionRunId },
       });
+      const obs = await latestOutcomeForProperty(property.id);
       return {
         ok: true as const,
         propertyId: property.id,
         status: "COMPLETED",
-        outcome: null,
-        salePrice: null,
+        outcome: obs?.outcome ?? null,
+        salePrice: obs?.sale_price ?? null,
         message: "Snapshot extraction completed",
       };
     }
@@ -259,19 +295,30 @@ export class HistoricalEnrichmentService {
       }
     }
 
+    const obs = await latestOutcomeForProperty(property.id);
+    const durationMs = Date.now() - started;
+    const propertyRow = await PropertyRepository.getById(property.id);
+
     await HistoricalEnrichmentRepository.recordRun({
       runId,
       propertyId: property.id,
+      propertyMasterId: propertyRow?.property_master_id ?? null,
+      auctionEventId: null,
       sourceUrl: refetch.sourceUrl,
       snapshotId: refetch.snapshotId,
       sourceHash: refetch.contentHash,
       status,
+      outcome: obs?.outcome ?? null,
+      salePrice: obs?.sale_price ?? null,
       conflicts: refetch.conflicts,
       reviewRequired: refetch.conflicts > 0,
       operator: input.operator ?? null,
       meta: {
         refetchStatus: refetch.status,
         changeClasses: refetch.changeClasses,
+        forced: input.force === true,
+        durationMs,
+        outcomeObservationId: obs?.id ?? null,
       },
     });
 
@@ -280,46 +327,69 @@ export class HistoricalEnrichmentService {
       runId,
       status,
       refetchStatus: refetch.status,
+      durationMs,
+      outcome: obs?.outcome ?? null,
+      salePrice: obs?.sale_price ?? null,
     });
 
     return {
       ok: status === "COMPLETED" || status === "NO_CHANGE",
       propertyId: property.id,
       status,
-      outcome: null,
-      salePrice: null,
+      outcome: obs?.outcome ?? null,
+      salePrice: obs?.sale_price ?? null,
       message: refetch.message,
     };
   }
 
-  static async enrichBatch(input: {
+  static async enrichBatch(input: EnrichmentQueueFilters & {
     scope: EnrichmentScope;
     propertyId?: string;
     partnerCode?: string;
-    connector?: string;
-    agency?: string;
-    outcomeState?: string;
     limit?: number;
     force?: boolean;
     dryRun?: boolean;
     operator?: string | null;
     mode?: "refetch" | "snapshot";
+    rebuild?: boolean;
   }): Promise<EnrichmentBatchResult> {
+    const emptyCounters = {
+      eligible: 0,
+      attempted: 0,
+      fetched: 0,
+      unchanged: 0,
+      skippedLicense: 0,
+    };
+
     if (input.dryRun) {
       const dry = await this.dryRunBatch(input);
+      const observations = await HistoricalIntelligenceService.loadObservations();
+      const historical = publicHistoricalRows(observations);
+      const persisted = await OutcomeIntelligenceRepository.listRecent(5000);
+      const runs = await HistoricalEnrichmentRepository.listRecentRuns(500);
+      const funnel = buildEnrichmentFunnel({
+        events: historical,
+        observations: persisted,
+        runs,
+      });
       return {
         ok: dry.ok,
         runId: dry.runId,
         dryRun: true,
+        version: HISTORICAL_DATA_ENRICHMENT41_VERSION,
         processed: dry.wouldProcess,
         completed: 0,
         noChange: 0,
         changed: 0,
-        outcomesExtracted: 0,
-        salePricesExtracted: 0,
-        outcomesFound: 0,
-        salePricesFound: 0,
-        conflicts: 0,
+        outcomesExtracted: funnel.outcomeExtracted,
+        salePricesExtracted: funnel.salePriceFound,
+        outcomesFound: funnel.outcomeExtracted,
+        salePricesFound: funnel.salePriceFound,
+        salePricesVerified: funnel.salePriceVerified,
+        soldFound: funnel.soldConfirmed,
+        ...emptyCounters,
+        eligible: funnel.sourceEligible,
+        conflicts: funnel.conflicts,
         reviewRequired: 0,
         skippedNotHistorical: 0,
         failed: 0,
@@ -333,18 +403,24 @@ export class HistoricalEnrichmentService {
         })),
         message: dry.message,
         queueSummary: dry.queueSummary,
+        funnel,
       };
     }
 
     const runId = `enrich_batch_${Date.now().toString(36)}`;
-    const limit = Math.min(Math.max(input.limit ?? HDA40_DEFAULT_BATCH_LIMIT, 1), HDA40_MAX_BATCH_LIMIT);
+    const limit = Math.min(
+      Math.max(input.limit ?? HDE41_DEFAULT_BATCH_LIMIT, 1),
+      HDA40_MAX_BATCH_LIMIT,
+    );
     let candidates: string[] = [];
+    let eligible = 0;
 
     if (input.scope === "single") {
       if (!input.propertyId) {
         return {
           ok: false,
           runId,
+          version: HISTORICAL_DATA_ENRICHMENT41_VERSION,
           processed: 0,
           completed: 0,
           noChange: 0,
@@ -353,6 +429,9 @@ export class HistoricalEnrichmentService {
           salePricesExtracted: 0,
           outcomesFound: 0,
           salePricesFound: 0,
+          salePricesVerified: 0,
+          soldFound: 0,
+          ...emptyCounters,
           conflicts: 0,
           reviewRequired: 0,
           skippedNotHistorical: 0,
@@ -363,12 +442,18 @@ export class HistoricalEnrichmentService {
         };
       }
       candidates = [input.propertyId];
+      eligible = 1;
     } else {
       const { queue } = await this.buildQueue({
         connector: input.connector ?? input.partnerCode,
         agency: input.agency,
         outcomeState: input.outcomeState,
+        priority: input.priority,
+        retryFailed: input.retryFailed,
+        propertyMasterId: input.propertyMasterId,
+        auctionEventId: input.auctionEventId,
       });
+      eligible = queue.filter((q) => q.sourceResolution.status === "ELIGIBLE").length;
       candidates = queue.slice(0, limit).map((q) => q.propertyId);
     }
 
@@ -381,6 +466,10 @@ export class HistoricalEnrichmentService {
     let skippedNotHistorical = 0;
     let failed = 0;
     let unavailable = 0;
+    let skippedLicense = 0;
+    let fetched = 0;
+    let soldFound = 0;
+    let salePricesVerified = 0;
 
     for (const propertyId of candidates) {
       const r = await this.enrichProperty({
@@ -400,24 +489,59 @@ export class HistoricalEnrichmentService {
       if (r.status === "COMPLETED") {
         completed += 1;
         changed += 1;
-      } else if (r.status === "NO_CHANGE") noChange += 1;
-      else if (r.status === "SKIPPED_NOT_HISTORICAL") skippedNotHistorical += 1;
+        fetched += 1;
+      } else if (r.status === "NO_CHANGE") {
+        noChange += 1;
+        fetched += 1;
+      } else if (r.status === "SKIPPED_NOT_HISTORICAL") skippedNotHistorical += 1;
       else if (r.status === "SOURCE_UNAVAILABLE") unavailable += 1;
+      else if (r.status === "SKIPPED_LICENSE") skippedLicense += 1;
       else if (r.status === "CONFLICT") {
         conflicts += 1;
         reviewRequired += 1;
+        fetched += 1;
+        changed += 1;
       } else failed += 1;
+
+      if (r.outcome === "SOLD") soldFound += 1;
+      const latestObs = await latestOutcomeForProperty(propertyId);
+      if (
+        isVerifiedSalePriceObs(
+          latestObs?.outcome,
+          latestObs?.sale_price,
+          latestObs?.sale_price_confidence,
+        )
+      ) {
+        salePricesVerified += 1;
+      }
     }
 
-    const obs = await OutcomeIntelligenceRepository.listRecent(5000);
-    const outcomesExtracted = obs.filter((o) => !["UNKNOWN", "COMPLETED_UNKNOWN"].includes(o.outcome)).length;
-    const salePricesExtracted = obs.filter((o) => o.sale_price != null).length;
+    if (input.rebuild && salePricesVerified > 0) {
+      await HistoricalIntelligence40Service.rebuild(input.operator ?? "historical_enrichment_batch");
+    }
+
+    const observations = await HistoricalIntelligenceService.loadObservations();
+    const historical = publicHistoricalRows(observations);
+    const persisted = await OutcomeIntelligenceRepository.listRecent(5000);
+    const runs = await HistoricalEnrichmentRepository.listRecentRuns(500);
+    const funnel = buildEnrichmentFunnel({
+      events: historical,
+      observations: persisted,
+      runs,
+    });
+    const outcomesExtracted = funnel.outcomeExtracted;
+    const salePricesExtracted = funnel.salePriceFound;
     const { summary } = await this.buildQueue();
 
     return {
       ok: completed + noChange > 0 || results.length === 0,
       runId,
+      version: HISTORICAL_DATA_ENRICHMENT41_VERSION,
       processed: results.length,
+      attempted: results.length,
+      eligible,
+      fetched,
+      unchanged: noChange,
       completed,
       noChange,
       changed,
@@ -425,14 +549,40 @@ export class HistoricalEnrichmentService {
       salePricesExtracted,
       outcomesFound: outcomesExtracted,
       salePricesFound: salePricesExtracted,
+      salePricesVerified: funnel.salePriceVerified,
+      soldFound: funnel.soldConfirmed,
       conflicts,
       reviewRequired,
       skippedNotHistorical,
       failed,
       unavailable,
+      skippedLicense,
       results,
       queueSummary: summary,
-      message: `Processed ${results.length}: ${completed} completed, ${noChange} no change, ${changed} changed, ${conflicts} conflicts, ${unavailable} unavailable, ${failed} failed`,
+      funnel,
+      message: `Processed ${results.length}: ${completed} completed, ${noChange} no change, ${fetched} fetched, ${conflicts} conflicts, ${unavailable} unavailable, ${skippedLicense} license blocked, ${failed} failed`,
+    };
+  }
+
+  static async hde41Dashboard() {
+    const base = await this.hda40Dashboard();
+    const observations = await HistoricalIntelligenceService.loadObservations();
+    const historical = publicHistoricalRows(observations);
+    const persisted = await OutcomeIntelligenceRepository.listRecent(5000);
+    const runs = await HistoricalEnrichmentRepository.listRecentRuns(500);
+    const funnel = buildEnrichmentFunnel({
+      events: historical,
+      observations: persisted,
+      runs,
+    });
+    const safety = await HistoricalIntelligence40Service.publicSafetyCheck();
+    return {
+      ...base,
+      version: HISTORICAL_DATA_ENRICHMENT41_VERSION,
+      hdaVersion: HISTORICAL_DATA_ACQUISITION_VERSION,
+      funnel,
+      milestones: funnel.milestones,
+      publicSafety: safety,
     };
   }
 
@@ -474,6 +624,12 @@ export class HistoricalEnrichmentService {
       verifiedSalePrices,
       message: `Intelligence corpus refreshed — ${historical.length} historical events, ${verifiedOutcomes} verified outcomes, ${verifiedSalePrices} verified sale prices`,
     };
+  }
+
+  static async rebuildIntelligenceFull(operator?: string) {
+    return HistoricalIntelligence40Service.rebuild(
+      operator ?? "historical_enrichment_rebuild",
+    );
   }
 
   static async adminDashboard() {

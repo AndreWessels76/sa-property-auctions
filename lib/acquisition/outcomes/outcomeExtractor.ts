@@ -7,6 +7,31 @@ import { parseMoneyExpression } from "@/lib/acquisition/pricing/pricingParser";
 import type { ExtractionCorpus } from "@/lib/dueDiligence/extraction/types";
 import type { OutcomeExtractionDraft, OutcomeEvidenceKind, ExtractedOutcomeState } from "./types";
 
+const BLOCKS_SOLD_WITHOUT_EXPLICIT = [
+  /\bauction\s+closed\b/i,
+  /\bauction\s+completed\b/i,
+  /\blisting\s+expired\b/i,
+  /\bpage\s+removed\b/i,
+  /\bno\s+longer\s+available\b/i,
+  /\bunder\s+offer\b/i,
+  /\breserve\s+not\s+met\b/i,
+];
+
+const EXPLICIT_SOLD_PATTERNS = [
+  /\bsold\s+for\b/i,
+  /\b(?:property\s+)?sold\b/i,
+  /\bsuccessful\s+sale\b/i,
+  /\bfinal\s+sale\s+price\b/i,
+  /\bhammer\s+price\b/i,
+  /\bsuccessful\s+bid\b/i,
+];
+
+function blocksSoldInference(haystack: string, snippet: string): boolean {
+  const hasExplicitSold = EXPLICIT_SOLD_PATTERNS.some((re) => re.test(haystack));
+  if (hasExplicitSold) return false;
+  return BLOCKS_SOLD_WITHOUT_EXPLICIT.some((re) => re.test(snippet) || re.test(haystack));
+}
+
 const OUTCOME_RULES: Array<{
   outcome: ExtractedOutcomeState;
   confidence: "high" | "medium" | "low";
@@ -23,6 +48,7 @@ const OUTCOME_RULES: Array<{
       /\bstatus\s*[:\-]\s*sold\b/i,
       /\bauction\s+result\s*[:\-]\s*sold\b/i,
       /\bsuccessfully\s+sold\b/i,
+      /\bsuccessful\s+sale\b/i,
       /\bknocked\s+down\b/i,
       /\bfinal\s+sale\b/i,
       /\bpurchaser\s+confirmed\b/i,
@@ -76,7 +102,7 @@ const OUTCOME_RULES: Array<{
 ];
 
 const SALE_PRICE_PATTERNS = [
-  /(?:sold\s*(?:for|at)|sale\s*price|purchase\s*price|hammer\s*price|final\s*selling\s*price|winning\s*bid|knocked\s*down\s*(?:at|for)?)\s*[:\-]?\s*([^\n;|]{3,60})/i,
+  /(?:sold\s*(?:for|at)|sale\s*price|purchase\s*price|hammer\s*price|final\s*(?:sale\s*)?price|final\s*selling\s*price|winning\s*bid|successful\s*bid(?:\s+of)?|knocked\s*down\s*(?:at|for)?)\s*[:\-]?\s*([^\n;|]{3,60})/i,
 ];
 
 const REJECT_SALE_CONTEXT = /\b(reserve|guide|estimated|estimate|valuation|starting\s*bid|opening\s*bid|auction\s*price|from\s*price)\b/i;
@@ -135,6 +161,9 @@ export function extractOutcomeFromText(
       const m = haystack.match(re);
       if (!m) continue;
       const snippet = m[0].trim();
+      if (rule.outcome === "SOLD" && blocksSoldInference(haystack, snippet)) {
+        continue;
+      }
       best = {
         outcome: rule.outcome,
         confidence: rule.confidence,

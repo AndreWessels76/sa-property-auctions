@@ -4,6 +4,14 @@ import { SessionService } from "@/lib/auth/SessionService";
 import { HistoricalEnrichmentRepository } from "@/lib/repositories/HistoricalEnrichmentRepository";
 import { HistoricalEnrichmentService } from "@/lib/services/HistoricalEnrichmentService";
 import { LoggerService } from "@/lib/logger";
+import type { QueuePriority } from "@/lib/acquisition/historical";
+
+function parsePriority(value: string | null): QueuePriority | undefined {
+  if (!value) return undefined;
+  const n = Number(value);
+  if (n === 1 || n === 2 || n === 3 || n === 4) return n;
+  return undefined;
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,10 +22,14 @@ export async function GET(request: NextRequest) {
         connector: url.searchParams.get("connector") ?? undefined,
         agency: url.searchParams.get("agency") ?? undefined,
         outcomeState: url.searchParams.get("outcomeState") ?? undefined,
+        priority: parsePriority(url.searchParams.get("priority")),
+        retryFailed: url.searchParams.get("retryFailed") === "true",
+        propertyMasterId: url.searchParams.get("propertyMasterId") ?? undefined,
+        auctionEventId: url.searchParams.get("auctionEventId") ?? undefined,
       });
       return NextResponse.json({ ok: true, ...queue });
     }
-    const dashboard = await HistoricalEnrichmentService.hda40Dashboard();
+    const dashboard = await HistoricalEnrichmentService.hde41Dashboard();
     return NextResponse.json({ ok: true, ...dashboard });
   } catch (error) {
     return NextResponse.json(
@@ -39,16 +51,24 @@ export async function POST(request: NextRequest) {
         | "extract_prices"
         | "batch"
         | "dry_run"
+        | "enrich_p1"
+        | "enrich_p2"
+        | "retry_failed"
         | "rebuild_intelligence"
         | "resolve_review";
       propertyId?: string;
+      propertyMasterId?: string;
+      auctionEventId?: string;
       scope?: "single" | "batch" | "historical";
       limit?: number;
       force?: boolean;
       dryRun?: boolean;
+      rebuild?: boolean;
       connector?: string;
       agency?: string;
       outcomeState?: string;
+      priority?: number;
+      retryFailed?: boolean;
       reviewId?: string;
       reviewStatus?: string;
       resolutionNote?: string;
@@ -75,20 +95,73 @@ export async function POST(request: NextRequest) {
     }
 
     if (body.action === "rebuild_intelligence") {
-      const result = await HistoricalEnrichmentService.rebuildIntelligence();
+      const result = await HistoricalEnrichmentService.rebuildIntelligenceFull(operator);
       LoggerService.audit("historical.enrichment.rebuild", { operator, ...result });
       return NextResponse.json({ ok: result.ok, result });
     }
 
+    const batchFilters = {
+      connector: body.connector,
+      agency: body.agency,
+      outcomeState: body.outcomeState,
+      propertyMasterId: body.propertyMasterId,
+      auctionEventId: body.auctionEventId,
+      limit: body.limit,
+      force: body.force,
+      operator,
+      rebuild: body.rebuild,
+    };
+
     if (body.action === "dry_run" || body.dryRun) {
       const result = await HistoricalEnrichmentService.enrichBatch({
         scope: body.scope ?? "historical",
-        limit: body.limit,
-        connector: body.connector,
-        agency: body.agency,
-        outcomeState: body.outcomeState,
+        ...batchFilters,
         dryRun: true,
+      });
+      return NextResponse.json({ ok: result.ok, result });
+    }
+
+    if (body.action === "enrich_p1") {
+      const result = await HistoricalEnrichmentService.enrichBatch({
+        scope: "historical",
+        ...batchFilters,
+        priority: 1,
+      });
+      LoggerService.audit("historical.enrichment.batch", {
         operator,
+        action: "enrich_p1",
+        runId: result.runId,
+        processed: result.processed,
+      });
+      return NextResponse.json({ ok: result.ok, result });
+    }
+
+    if (body.action === "enrich_p2") {
+      const result = await HistoricalEnrichmentService.enrichBatch({
+        scope: "historical",
+        ...batchFilters,
+        priority: 2,
+      });
+      LoggerService.audit("historical.enrichment.batch", {
+        operator,
+        action: "enrich_p2",
+        runId: result.runId,
+        processed: result.processed,
+      });
+      return NextResponse.json({ ok: result.ok, result });
+    }
+
+    if (body.action === "retry_failed" || body.retryFailed) {
+      const result = await HistoricalEnrichmentService.enrichBatch({
+        scope: "historical",
+        ...batchFilters,
+        retryFailed: true,
+      });
+      LoggerService.audit("historical.enrichment.batch", {
+        operator,
+        action: "retry_failed",
+        runId: result.runId,
+        processed: result.processed,
       });
       return NextResponse.json({ ok: result.ok, result });
     }
@@ -101,12 +174,9 @@ export async function POST(request: NextRequest) {
       const result = await HistoricalEnrichmentService.enrichBatch({
         scope: body.scope ?? "historical",
         propertyId: body.propertyId,
-        limit: body.limit,
-        force: body.force,
-        connector: body.connector,
-        agency: body.agency,
-        outcomeState: body.outcomeState,
-        operator,
+        priority: parsePriority(body.priority != null ? String(body.priority) : null),
+        retryFailed: body.retryFailed,
+        ...batchFilters,
         mode: body.action === "extract_prices" ? "snapshot" : "refetch",
       });
       LoggerService.audit("historical.enrichment.batch", {

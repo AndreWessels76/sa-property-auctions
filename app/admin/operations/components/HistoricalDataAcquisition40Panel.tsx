@@ -40,8 +40,34 @@ type Dashboard = {
     priority2: number;
     priority3: number;
     priority4: number;
+    retryFailed?: number;
     eligible: number;
     reviewRequired: number;
+  };
+  funnel?: {
+    historicalEvents: number;
+    sourceEligible: number;
+    fetchAttempted: number;
+    sourceFound: number;
+    unchanged: number;
+    changed: number;
+    outcomeExtracted: number;
+    soldConfirmed: number;
+    salePriceFound: number;
+    salePriceVerified: number;
+    comparableReady: number;
+    conflicts: number;
+    failed: number;
+    skippedLicense: number;
+    sourceUnavailable: number;
+  };
+  milestones?: {
+    firstVerifiedSold: boolean;
+    firstVerifiedSalePrice: boolean;
+    threeComparableReady: boolean;
+    fiveVerifiedSales: boolean;
+    tenVerifiedSales: boolean;
+    twentyFiveVerifiedSales: boolean;
   };
   outcomeBreakdown?: {
     sold: number;
@@ -169,15 +195,17 @@ export default function HistoricalDataAcquisition40Panel() {
 
   const ob = data?.outcomeBreakdown;
   const qs = data?.queueSummary;
+  const funnel = data?.funnel;
+  const milestones = data?.milestones;
 
   return (
     <section className="mt-10 rounded-2xl border border-emerald-800/60 bg-slate-800/60 p-6 text-white">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold">Historical Data Acquisition 4.0</h2>
+          <h2 className="text-xl font-bold">Historical Data Enrichment 4.1</h2>
           <p className="mt-1 text-sm text-slate-300">
-            Sold &amp; outcome evidence platform — refetch licensed sources, extract verified
-            outcomes and sale prices. Never fabricates evidence.
+            Verified historical outcome &amp; sale price acquisition — extends HDA 4.0 queue,
+            refetch, and extraction. Never fabricates evidence.
           </p>
           {data?.version ? (
             <p className="mt-1 text-[11px] text-slate-500">{data.version}</p>
@@ -211,6 +239,51 @@ export default function HistoricalDataAcquisition40Panel() {
             <Stat label="Queue eligible" value={qs?.eligible ?? 0} />
           </div>
 
+          {funnel ? (
+            <div className="mt-4">
+              <h3 className="text-sm font-semibold text-slate-300">Acquisition funnel</h3>
+              <div className="mt-2 grid gap-2 sm:grid-cols-4 lg:grid-cols-6 text-xs">
+                <Stat label="Historical events" value={funnel.historicalEvents} />
+                <Stat label="Source eligible" value={funnel.sourceEligible} />
+                <Stat label="Fetch attempted" value={funnel.fetchAttempted} />
+                <Stat label="Source found" value={funnel.sourceFound} />
+                <Stat label="Outcome extracted" value={funnel.outcomeExtracted} />
+                <Stat label="SOLD confirmed" value={funnel.soldConfirmed} />
+                <Stat label="Sale price found" value={funnel.salePriceFound} />
+                <Stat label="Sale price verified" value={funnel.salePriceVerified} />
+                <Stat label="Comparable ready" value={funnel.comparableReady} />
+                <Stat label="License blocked" value={funnel.skippedLicense} />
+                <Stat label="Source unavailable" value={funnel.sourceUnavailable} />
+                <Stat label="Failed" value={funnel.failed} />
+              </div>
+            </div>
+          ) : null}
+
+          {milestones ? (
+            <div className="mt-4">
+              <h3 className="text-sm font-semibold text-slate-300">Milestones</h3>
+              <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                {[
+                  ["First verified SOLD", milestones.firstVerifiedSold],
+                  ["First verified sale price", milestones.firstVerifiedSalePrice],
+                  ["3 comparable-ready", milestones.threeComparableReady],
+                  ["5 verified sales", milestones.fiveVerifiedSales],
+                  ["10 verified sales", milestones.tenVerifiedSales],
+                  ["25 verified sales", milestones.twentyFiveVerifiedSales],
+                ].map(([label, done]) => (
+                  <span
+                    key={String(label)}
+                    className={`rounded-full px-2 py-0.5 ${
+                      done ? "bg-emerald-900/60 text-emerald-200" : "bg-slate-700 text-slate-400"
+                    }`}
+                  >
+                    {label as string}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
           {ob ? (
             <div className="mt-4">
               <h3 className="text-sm font-semibold text-slate-300">Outcomes</h3>
@@ -231,8 +304,9 @@ export default function HistoricalDataAcquisition40Panel() {
               <div className="mt-2 grid gap-2 sm:grid-cols-4 text-xs">
                 <Stat label="P1 — no outcome" value={qs.priority1} />
                 <Stat label="P2 — missing price" value={qs.priority2} />
-                <Stat label="P3 — retry unavailable" value={qs.priority3} />
-                <Stat label="P4 — conflicts" value={qs.priority4} />
+                <Stat label="P3 — missing size" value={qs.priority3} />
+                <Stat label="P4 — low value / review" value={qs.priority4} />
+                <Stat label="Retry failed" value={qs.retryFailed ?? 0} />
               </div>
             </div>
           ) : null}
@@ -267,11 +341,31 @@ export default function HistoricalDataAcquisition40Panel() {
           type="button"
           disabled={pending}
           onClick={() =>
-            void postAction({ action: "dry_run", limit: batchLimit }, "Dry run")
+            void postAction({ action: "dry_run", limit: 5 }, "Dry run (5 events)")
           }
           className="rounded-lg bg-slate-700 px-3 py-1.5 text-xs font-medium hover:bg-slate-600 disabled:opacity-50"
         >
-          Dry run
+          Dry run (5)
+        </button>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() =>
+            void postAction({ action: "enrich_p1", limit: batchLimit }, "Enrich P1")
+          }
+          className="rounded-lg bg-emerald-800 px-3 py-1.5 text-xs font-medium hover:bg-emerald-700 disabled:opacity-50"
+        >
+          Enrich P1
+        </button>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() =>
+            void postAction({ action: "enrich_p2", limit: batchLimit }, "Enrich P2")
+          }
+          className="rounded-lg bg-emerald-700 px-3 py-1.5 text-xs font-medium hover:bg-emerald-600 disabled:opacity-50"
+        >
+          Enrich P2
         </button>
         <button
           type="button"
@@ -279,12 +373,25 @@ export default function HistoricalDataAcquisition40Panel() {
           onClick={() =>
             void postAction(
               { action: "batch", scope: "historical", limit: batchLimit },
-              "Enrich historical auctions",
+              "Enrich batch",
             )
           }
           className="rounded-lg bg-emerald-700 px-3 py-1.5 text-xs font-medium hover:bg-emerald-600 disabled:opacity-50"
         >
-          Enrich historical auctions
+          Enrich batch
+        </button>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() =>
+            void postAction(
+              { action: "retry_failed", limit: batchLimit },
+              "Retry failed",
+            )
+          }
+          className="rounded-lg bg-amber-900/70 px-3 py-1.5 text-xs font-medium hover:bg-amber-800 disabled:opacity-50"
+        >
+          Retry failed
         </button>
         <button
           type="button"
