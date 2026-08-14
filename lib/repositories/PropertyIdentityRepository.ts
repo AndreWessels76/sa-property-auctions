@@ -62,6 +62,22 @@ export class PropertyMasterRepository extends BaseRepository {
     return (data as PropertyMaster[]) ?? [];
   }
 
+  static async count(): Promise<number> {
+    try {
+      const db = this.adminDb();
+      const { count, error } = await db
+        .from("property_masters")
+        .select("id", { count: "exact", head: true });
+      if (error) {
+        if (isMissingRelation(error)) return 0;
+        this.handleError("PropertyMasterRepository.count", error);
+      }
+      return count ?? 0;
+    } catch {
+      return 0;
+    }
+  }
+
   static async insert(
     row: Record<string, unknown>,
   ): Promise<PropertyMaster | null> {
@@ -179,6 +195,22 @@ export class AuctionEventRepository extends BaseRepository {
       this.handleError("AuctionEventRepository.upsertEvent.insert", error);
     }
     return data as { id: string } | null;
+  }
+
+  static async count(): Promise<number> {
+    try {
+      const db = this.adminDb();
+      const { count, error } = await db
+        .from("auction_events")
+        .select("id", { count: "exact", head: true });
+      if (error) {
+        if (isMissingRelation(error)) return 0;
+        this.handleError("AuctionEventRepository.count", error);
+      }
+      return count ?? 0;
+    } catch {
+      return 0;
+    }
   }
 
   static async listByMaster(propertyMasterId: string): Promise<unknown[]> {

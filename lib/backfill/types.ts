@@ -68,6 +68,12 @@ export type BackfillRecordResult = {
   pricingLinked: number;
   skipped: boolean;
   dryRun: boolean;
+  /** Confirmed database write succeeded (execute mode only). */
+  masterPersisted: boolean;
+  eventPersisted: boolean;
+  /** Would create on execute — dry-run projection only. */
+  masterProposed: boolean;
+  eventProposed: boolean;
 };
 
 export type BackfillSummary = {
@@ -75,10 +81,12 @@ export type BackfillSummary = {
   dryRun: boolean;
   recordsScanned: number;
   mastersCreated: number;
+  mastersProposed: number;
   mastersMatched: number;
   masterReview: number;
   masterSkipped: number;
   eventsCreated: number;
+  eventsProposed: number;
   eventsMatched: number;
   eventReview: number;
   eventSkipped: number;

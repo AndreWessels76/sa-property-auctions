@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-08-14T06:38:39.844Z",
+  "counts": {
+    "property_masters": 0,
+    "auction_events": 0,
+    "property_history_backfill_runs": 1,
+    "property_history_backfill_items": 0,
+    "property_history_backfill_reviews": 0
+  },
+  "latestRun": {
+    "id": "6a21a953-da47-4cdd-8bfa-3f7ff43d36c7",
+    "run_kind": "preview",
+    "dry_run": true,
+    "status": "completed",
+    "batch_limit": 200,
+    "records_scanned": 38,
+    "masters_created": 38,
+    "masters_matched": 0,
+    "master_review": 0,
+    "master_skipped": 0,
+    "events_created": 38,
+    "events_matched": 0,
+    "event_review": 0,
+    "event_skipped": 0,
+    "duplicates_skipped": 0,
+    "identity_conflicts": 0,
+    "insufficient_evidence": 0,
+    "pricing_linked": 0,
+    "location_review": 0,
+    "meta": null,
+    "error_message": null,
+    "started_at": "2026-08-14T06:34:22.735851+00:00",
+    "completed_at": "2026-08-14T06:34:39.702+00:00",
+    "created_at": "2026-08-14T06:34:22.735851+00:00",
+    "updated_at": "2026-08-14T06:34:39.703+00:00"
+  },
+  "sampleMasters": [],
+  "sampleEvents": [],
+  "relationships": {
+    "historicalProperties": 38,
+    "propertyMasterIdPopulated": 0,
+    "auctionEventsLinkedToValidMasters": 0,
+    "orphanEvents": 0,
+    "totalEvents": 0
+  },
+  "dashboardQuerySimulation": {
+    "property_masters_via_listCandidates": 0,
+    "property_masters_query_error": null,
+    "auction_events_via_listAll": 0,
+    "auction_events_query_error": null
+  }
+}

@@ -37,10 +37,12 @@ import { isPubliclyActiveListing } from "@/lib/data/publicListingPolicy";
 type Counters = {
   recordsScanned: number;
   mastersCreated: number;
+  mastersProposed: number;
   mastersMatched: number;
   masterReview: number;
   masterSkipped: number;
   eventsCreated: number;
+  eventsProposed: number;
   eventsMatched: number;
   eventReview: number;
   eventSkipped: number;
@@ -52,6 +54,14 @@ type Counters = {
   sourceBreakdown: Record<string, number>;
 };
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function persistedUuid(value: string | null | undefined): string | null {
+  if (!value?.trim()) return null;
+  return UUID_RE.test(value) ? value : null;
+}
+
 function bumpSource(map: Record<string, number>, source: string | null | undefined) {
   const key = source?.trim() || "unknown";
   map[key] = (map[key] ?? 0) + 1;
@@ -61,10 +71,12 @@ function emptyCounters(): Counters {
   return {
     recordsScanned: 0,
     mastersCreated: 0,
+    mastersProposed: 0,
     mastersMatched: 0,
     masterReview: 0,
     masterSkipped: 0,
     eventsCreated: 0,
+    eventsProposed: 0,
     eventsMatched: 0,
     eventReview: 0,
     eventSkipped: 0,
@@ -111,8 +123,8 @@ export class PropertyHistoryBackfillService {
     const reviews = await PropertyHistoryBackfillRepository.listPendingReviews(100);
 
     const [masterCount, eventCount, obsCount] = await Promise.all([
-      PropertyMasterRepository.listCandidates(5000).then((r) => r.length).catch(() => 0),
-      AuctionEventRepository.listAll(5000).then((r) => r.length).catch(() => 0),
+      PropertyMasterRepository.count().catch(() => 0),
+      AuctionEventRepository.count().catch(() => 0),
       PricingObservationRepository.listRecent(5000).then((r) => r.length).catch(() => 0),
     ]);
 
@@ -250,14 +262,19 @@ export class PropertyHistoryBackfillService {
             await PropertyHistoryBackfillRepository.insertItem({
               run_id: runId,
               listing_property_id: listing.id,
-              property_master_id: record.propertyMasterId,
-              auction_event_id: record.auctionEventId,
+              property_master_id: persistedUuid(record.propertyMasterId),
+              auction_event_id: persistedUuid(record.auctionEventId),
               identity_decision: record.identity.decision,
               audit_status: status,
               confidence: record.identity.confidence,
               event_fingerprint: record.event.eventFingerprint,
               matching_signals: record.identity.signals,
               evidence: {
+                dryRun: record.dryRun,
+                masterPersisted: record.masterPersisted,
+                eventPersisted: record.eventPersisted,
+                masterProposed: record.masterProposed,
+                eventProposed: record.eventProposed,
                 identityNotes: record.identity.notes,
                 eventNotes: record.event.notes,
                 eventStatus: record.event.status,
@@ -303,11 +320,11 @@ export class PropertyHistoryBackfillService {
           status: "completed",
           completed_at: new Date().toISOString(),
           records_scanned: counters.recordsScanned,
-          masters_created: counters.mastersCreated,
+          masters_created: input.dryRun ? 0 : counters.mastersCreated,
           masters_matched: counters.mastersMatched,
           master_review: counters.masterReview,
           master_skipped: counters.masterSkipped,
-          events_created: counters.eventsCreated,
+          events_created: input.dryRun ? 0 : counters.eventsCreated,
           events_matched: counters.eventsMatched,
           event_review: counters.eventReview,
           event_skipped: counters.eventSkipped,
@@ -316,6 +333,12 @@ export class PropertyHistoryBackfillService {
           insufficient_evidence: counters.insufficientEvidence,
           pricing_linked: counters.pricingLinked,
           location_review: counters.locationReview,
+          meta: input.dryRun
+            ? {
+                masters_proposed: counters.mastersProposed,
+                events_proposed: counters.eventsProposed,
+              }
+            : null,
         });
       }
 
@@ -346,7 +369,15 @@ export class PropertyHistoryBackfillService {
 
   private static applyRecordCounters(counters: Counters, record: BackfillRecordResult) {
     const id = record.identity.decision;
-    if (id === "NEW_MASTER" && isAutoAttachDecision(id)) counters.mastersCreated += 1;
+
+    if (record.dryRun) {
+      if (record.masterProposed) counters.mastersProposed += 1;
+      if (record.eventProposed) counters.eventsProposed += 1;
+    } else {
+      if (record.masterPersisted) counters.mastersCreated += 1;
+      if (record.eventPersisted) counters.eventsCreated += 1;
+    }
+
     if (
       id === "MATCH_CONFIRMED" ||
       id === "MATCH_HIGH_CONFIDENCE" ||
@@ -363,9 +394,6 @@ export class PropertyHistoryBackfillService {
     }
 
     if (record.event.isDuplicate) counters.duplicatesSkipped += 1;
-    if (record.event.auditStatus === "EVENT_CREATED" && isAutoAttachDecision(id)) {
-      counters.eventsCreated += 1;
-    }
     if (record.event.auditStatus === "EVENT_MATCHED") {
       counters.eventsMatched += 1;
     }
@@ -441,10 +469,15 @@ export class PropertyHistoryBackfillService {
     let auctionEventId: string | null = null;
     let pricingLinked = 0;
     let createdMaster = false;
+    let masterPersisted = false;
+    let eventPersisted = false;
+    let masterProposed = false;
+    let eventProposed = false;
 
     if (isAutoAttachDecision(identity.decision) && !dryRun) {
       if (listing.property_master_id) {
         propertyMasterId = listing.property_master_id;
+        masterPersisted = true;
         auditStatuses.push("MASTER_MATCHED");
       } else {
         const attached = await PropertyIdentityService.resolveAndAttach({
@@ -453,9 +486,11 @@ export class PropertyHistoryBackfillService {
           sourceName: listing.source_name ?? "history_backfill",
           connectorId: listing.connector_id ?? undefined,
         });
-        propertyMasterId = attached.master?.id ?? identity.matchedMasterId ?? null;
+        propertyMasterId = attached.master?.id ?? null;
         createdMaster = attached.createdMaster;
         auctionEventId = attached.auctionEventId;
+        masterPersisted = Boolean(attached.master?.id && attached.schemaAvailable);
+        eventPersisted = Boolean(attached.auctionEventId);
         auditStatuses.push(
           identityDecisionToAuditStatus(identity.decision, createdMaster),
         );
@@ -464,8 +499,7 @@ export class PropertyHistoryBackfillService {
         }
       }
     } else if (isAutoAttachDecision(identity.decision) && dryRun) {
-      propertyMasterId =
-        listing.property_master_id ?? identity.matchedMasterId ?? "dry-run-master";
+      masterProposed = true;
       auditStatuses.push(
         identityDecisionToAuditStatus(identity.decision, identity.decision === "NEW_MASTER"),
       );
@@ -493,7 +527,7 @@ export class PropertyHistoryBackfillService {
       description: listing.description,
     });
 
-    if (propertyMasterId && !auctionEventId) {
+    if ((propertyMasterId || masterProposed) && !auctionEventId) {
       const existing =
         listing.connector_id && listing.external_listing_id
           ? await AuctionEventRepository.findByExternal(
@@ -503,7 +537,7 @@ export class PropertyHistoryBackfillService {
           : null;
 
       eventAssessment = assessBackfillEvent({
-        propertyMasterId,
+        propertyMasterId: propertyMasterId ?? "unknown",
         listingPropertyId: listing.id,
         externalListingId: listing.external_listing_id,
         connectorId: listing.connector_id,
@@ -522,9 +556,12 @@ export class PropertyHistoryBackfillService {
       if (eventAssessment.isDuplicate) {
         auditStatuses.push("DUPLICATE_EVENT");
         auctionEventId = eventAssessment.existingEventId;
+        if (auctionEventId) eventPersisted = true;
       } else if (eventAssessment.canCreate && isAutoAttachDecision(identity.decision)) {
         auditStatuses.push(eventAssessment.auditStatus);
-        if (!dryRun) {
+        if (dryRun) {
+          eventProposed = true;
+        } else if (propertyMasterId) {
           const event = buildBackfillAuctionEvent({
             propertyMasterId,
             listingPropertyId: listing.id,
@@ -549,6 +586,7 @@ export class PropertyHistoryBackfillService {
           });
           const upserted = await AuctionEventRepository.upsertEvent(event);
           auctionEventId = upserted?.id ?? null;
+          eventPersisted = Boolean(upserted?.id);
           if (auctionEventId) {
             pricingLinked = await PricingObservationRepository.linkToMasterAndEvent({
               propertyId: listing.id,
@@ -572,14 +610,18 @@ export class PropertyHistoryBackfillService {
 
     return {
       listingPropertyId: listing.id,
-      propertyMasterId,
-      auctionEventId,
+      propertyMasterId: persistedUuid(propertyMasterId),
+      auctionEventId: persistedUuid(auctionEventId),
       identity,
       event: eventAssessment,
       auditStatuses,
       pricingLinked,
       skipped: !isAutoAttachDecision(identity.decision),
       dryRun,
+      masterPersisted,
+      eventPersisted,
+      masterProposed,
+      eventProposed,
     };
   }
 

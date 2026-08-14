@@ -9,6 +9,7 @@ type BackfillAudit = {
     latest?: {
       id: string;
       dry_run: boolean;
+      run_kind: string;
       status: string;
       records_scanned: number;
       masters_created: number;
@@ -19,6 +20,7 @@ type BackfillAudit = {
       duplicates_skipped: number;
       insufficient_evidence: number;
       pricing_linked: number;
+      meta?: { masters_proposed?: number; events_proposed?: number } | null;
       started_at: string;
       completed_at: string | null;
     };
@@ -90,8 +92,8 @@ export default function PropertyHistoryBackfillPanel() {
         setError(null);
         setMessage(
           action === "preview"
-            ? `Preview: ${json.summary.recordsScanned} scanned, ${json.summary.mastersCreated} new masters, ${json.summary.masterReview} review`
-            : `Backfill complete: ${json.summary.mastersCreated} masters created, ${json.summary.eventsCreated} events`,
+            ? `Dry run: ${json.summary.recordsScanned} scanned, ${json.summary.mastersProposed ?? json.summary.mastersCreated} masters proposed, ${json.summary.eventsProposed ?? json.summary.eventsCreated} events proposed (nothing written)`
+            : `Backfill complete: ${json.summary.mastersCreated} masters persisted, ${json.summary.eventsCreated} events persisted`,
         );
         load();
       } catch (e) {
@@ -102,6 +104,12 @@ export default function PropertyHistoryBackfillPanel() {
 
   const latest = data?.audit?.latest;
   const db = data?.audit?.database;
+  const proposedMasters =
+    latest?.meta?.masters_proposed ??
+    (latest?.dry_run ? latest?.masters_created : undefined);
+  const proposedEvents =
+    latest?.meta?.events_proposed ??
+    (latest?.dry_run ? latest?.events_created : undefined);
 
   return (
     <section className="mt-10 rounded-2xl border border-slate-700 bg-slate-800/60 p-6 text-white">
@@ -169,13 +177,28 @@ export default function PropertyHistoryBackfillPanel() {
 
       {latest && (
         <div className="mt-6 rounded-xl bg-slate-900/40 p-4 text-sm">
-          <p className="font-medium text-slate-200">Last run ({latest.status})</p>
+          <p className="font-medium text-slate-200">
+            Last run ({latest.status}
+            {latest.dry_run ? " · dry run — no database writes" : " · execute"}
+            {latest.run_kind === "preview" ? " · preview" : ""})
+          </p>
           <ul className="mt-2 grid gap-1 text-slate-300 sm:grid-cols-2">
             <li>Scanned: {latest.records_scanned}</li>
-            <li>Masters created: {latest.masters_created}</li>
+            {latest.dry_run ? (
+              <>
+                <li>Masters proposed: {proposedMasters ?? "—"}</li>
+                <li>Events proposed: {proposedEvents ?? "—"}</li>
+                <li>Masters persisted: 0</li>
+                <li>Events persisted: 0</li>
+              </>
+            ) : (
+              <>
+                <li>Masters persisted: {latest.masters_created}</li>
+                <li>Events persisted: {latest.events_created}</li>
+              </>
+            )}
             <li>Masters matched: {latest.masters_matched}</li>
             <li>Review required: {latest.master_review}</li>
-            <li>Events created: {latest.events_created}</li>
             <li>Duplicates skipped: {latest.duplicates_skipped}</li>
             <li>Insufficient evidence: {latest.insufficient_evidence}</li>
             <li>Pricing linked: {latest.pricing_linked}</li>
