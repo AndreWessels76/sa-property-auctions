@@ -33,6 +33,7 @@ import {
 } from "@/lib/repositories/PropertyHistoryBackfillRepository";
 import { PropertyIdentityService } from "./PropertyIdentityService";
 import { isPubliclyActiveListing } from "@/lib/data/publicListingPolicy";
+import { POST_EXECUTION_SHARED_MASTER_CASES } from "@/lib/backfill/sharedMasterReviewCases";
 
 type Counters = {
   recordsScanned: number;
@@ -156,6 +157,76 @@ export class PropertyHistoryBackfillService {
     return PropertyHistoryBackfillRepository.listPendingReviews(100);
   }
 
+  /**
+   * Seed post-execution shared-master identity reviews into the admin queue.
+   * Does not modify Property Masters, events, or listing links.
+   */
+  static async seedSharedMasterReviews(): Promise<{
+    ok: true;
+    seeded: number;
+    cases: Array<{ caseId: string; reviewId: string | null; listingId: string }>;
+  }> {
+    const seeded: Array<{ caseId: string; reviewId: string | null; listingId: string }> = [];
+
+    for (const reviewCase of POST_EXECUTION_SHARED_MASTER_CASES) {
+      const listing = await PropertyRepository.getById(reviewCase.reviewListingId);
+      if (!listing) {
+        seeded.push({
+          caseId: reviewCase.caseId,
+          reviewId: null,
+          listingId: reviewCase.reviewListingId,
+        });
+        continue;
+      }
+
+      const enriched = enrichVerifiedListing(listing);
+      const fpInput = fingerprintInputFromProperty({
+        ...listing,
+        farm_name: enriched.address.farmName,
+        erf_number: enriched.address.erfNumber,
+        town: enriched.address.town ?? listing.town,
+      });
+      const fp = computePropertyFingerprint(fpInput);
+      const anchor = await PropertyRepository.getById(reviewCase.anchorListingId);
+
+      const row = await PropertyHistoryBackfillRepository.upsertReview({
+        run_id: null,
+        listing_property_id: reviewCase.reviewListingId,
+        review_kind: "identity",
+        proposed_master_id: reviewCase.masterId,
+        identity_decision: "IDENTITY_REVIEW_REQUIRED",
+        confidence: 35,
+        matching_signals: ["town", "province", "source_agency"],
+        conflict_reason: reviewCase.summary,
+        evidence: {
+          source: "post_execution_shared_master_review_1.0",
+          caseId: reviewCase.caseId,
+          masterId: reviewCase.masterId,
+          anchorListingId: reviewCase.anchorListingId,
+          anchorTitle: anchor?.title ?? null,
+          listingFingerprint: fp.fingerprint,
+          listingFingerprintComponents: fp.components,
+          recommendedAction: "Admin must confirm same property or split into separate masters",
+        },
+      });
+
+      seeded.push({
+        caseId: reviewCase.caseId,
+        reviewId: row?.id ?? null,
+        listingId: reviewCase.reviewListingId,
+      });
+
+      LoggerService.audit("property_history_backfill.shared_master_review_seeded", {
+        caseId: reviewCase.caseId,
+        reviewId: row?.id,
+        masterId: reviewCase.masterId,
+        listingId: reviewCase.reviewListingId,
+      });
+    }
+
+    return { ok: true, seeded: seeded.filter((s) => s.reviewId).length, cases: seeded };
+  }
+
   static async approveReview(input: {
     reviewId: string;
     action: "approve_match" | "reject_match" | "create_new_master" | "approve_event" | "reject_event";
@@ -189,6 +260,7 @@ export class PropertyHistoryBackfillService {
         listingPropertyId: property.id,
         sourceName: property.source_name ?? "backfill_review",
         connectorId: property.connector_id ?? undefined,
+        forceNewMaster: true,
       });
       await PropertyHistoryBackfillRepository.resolveReview(review.id, {
         status: "new_master",

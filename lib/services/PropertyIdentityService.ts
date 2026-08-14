@@ -41,6 +41,8 @@ export class PropertyIdentityService {
     sourceName?: string;
     connectorId?: string;
     changes?: Array<{ field: string; oldValue?: string | null; newValue?: string | null }>;
+    /** Admin split — always insert a new master; skip candidate matching. */
+    forceNewMaster?: boolean;
   }): Promise<ResolveIdentityResult> {
     const enrichment = enrichVerifiedListing(input.listing);
     const fpInput = fingerprintInputFromProperty({
@@ -52,50 +54,56 @@ export class PropertyIdentityService {
     });
 
     let candidates: PropertyMaster[] = [];
-    try {
-      candidates = await PropertyMasterRepository.listCandidates(300);
-    } catch (error) {
-      LoggerService.warn("property_identity.candidates_unavailable", {
-        error: error instanceof Error ? error.message : "unknown",
-      });
-      return {
-        master: null,
-        match: assessIdentityMatch(fpInput, []),
-        auctionEventId: null,
-        createdMaster: false,
-        schemaAvailable: false,
-      };
-    }
-
-    const match = assessIdentityMatch(
-      fpInput,
-      candidates.map((c) => ({
-        id: c.id,
-        fingerprint: c.fingerprint,
-        latitude: c.latitude,
-        longitude: c.longitude,
-        streetAddress: c.street_address,
-        farmName: c.farm_name,
-        farmNumber: c.farm_number,
-        erfNumber: c.erf_number,
-        portionNumber: c.portion_number,
-        title: c.title,
-        town: c.town,
-        province: c.province,
-        landSizeSqm: c.land_size_sqm != null ? Number(c.land_size_sqm) : null,
-        combinedExtent: c.combined_extent,
-        primaryImageHash: c.primary_image_hash,
-        externalReferences: [],
-      })),
-    );
-
-    // Also try exact fingerprint lookup (cache path)
-    const byFp = await PropertyMasterRepository.findByFingerprint(match.fingerprint);
-    let master = byFp;
+    let match: IdentityMatchResult;
+    let master: PropertyMaster | null = null;
     let createdMaster = false;
 
-    if (!master && match.recommendLink && match.matchedMasterId) {
-      master = await PropertyMasterRepository.findById(match.matchedMasterId);
+    if (input.forceNewMaster) {
+      match = assessIdentityMatch(fpInput, []);
+    } else {
+      try {
+        candidates = await PropertyMasterRepository.listCandidates(300);
+      } catch (error) {
+        LoggerService.warn("property_identity.candidates_unavailable", {
+          error: error instanceof Error ? error.message : "unknown",
+        });
+        return {
+          master: null,
+          match: assessIdentityMatch(fpInput, []),
+          auctionEventId: null,
+          createdMaster: false,
+          schemaAvailable: false,
+        };
+      }
+
+      match = assessIdentityMatch(
+        fpInput,
+        candidates.map((c) => ({
+          id: c.id,
+          fingerprint: c.fingerprint,
+          latitude: c.latitude,
+          longitude: c.longitude,
+          streetAddress: c.street_address,
+          farmName: c.farm_name,
+          farmNumber: c.farm_number,
+          erfNumber: c.erf_number,
+          portionNumber: c.portion_number,
+          title: c.title,
+          town: c.town,
+          province: c.province,
+          landSizeSqm: c.land_size_sqm != null ? Number(c.land_size_sqm) : null,
+          combinedExtent: c.combined_extent,
+          primaryImageHash: c.primary_image_hash,
+          externalReferences: [],
+        })),
+      );
+
+      const byFp = await PropertyMasterRepository.findByFingerprint(match.fingerprint);
+      master = byFp;
+
+      if (!master && match.recommendLink && match.matchedMasterId) {
+        master = await PropertyMasterRepository.findById(match.matchedMasterId);
+      }
     }
 
     const classification = classificationFromProperty(input.listing);

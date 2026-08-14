@@ -77,6 +77,11 @@ export async function POST(request: Request) {
       return NextResponse.json(result);
     }
 
+    if (body.action === "seed_shared_master_reviews") {
+      const result = await PropertyHistoryBackfillService.seedSharedMasterReviews();
+      return NextResponse.json(result);
+    }
+
     return NextResponse.json({ ok: false, error: "Unknown action" }, { status: 400 });
   } catch (error) {
     return NextResponse.json(

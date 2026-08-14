@@ -1,0 +1,616 @@
+{
+  "generatedAt": "2026-08-14T07:11:00.622Z",
+  "principle": "Do not decide from title similarity alone. No production writes.",
+  "productionState": {
+    "propertyMasters": 2,
+    "sharedMasterCases": 2
+  },
+  "cases": [
+    {
+      "caseId": "CASE_1",
+      "master_id": "852a132f-ff3c-4ca0-a324-a5dfd4d54ee4",
+      "masterFingerprint": "pf_bef9d699_8f8a8c1d",
+      "listing_1": {
+        "propertyId": "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+        "title": "Insolvent Estate Auction: 8.5HA Vacant Land, Louis Trichardt",
+        "normalizedAddress": null,
+        "street": null,
+        "suburb": null,
+        "town": "Louis Trichardt",
+        "province": "Limpopo",
+        "municipality": null,
+        "farmName": null,
+        "farmNumber": null,
+        "erf": null,
+        "portion": null,
+        "propertyType": "Vacant Land",
+        "propertyTypeConfidence": 80,
+        "bedrooms": 0,
+        "bathrooms": 0,
+        "landSize": null,
+        "latitude": null,
+        "longitude": null,
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+        "sourceAgency": "Bidders Choice",
+        "auctionDate": "2026-09-08T00:00:00+00:00",
+        "connectorId": "bidders_choice",
+        "externalListingId": "bc_insolvent-estate-auction-85ha-vacant-land-louis-trichardt",
+        "verificationState": "verified",
+        "listingStatus": "upcoming",
+        "propertyMasterId": "852a132f-ff3c-4ca0-a324-a5dfd4d54ee4",
+        "fingerprint": "pf_bef9d699_8f8a8c1d",
+        "fingerprintComponents": [
+          "town:louis trichardt",
+          "province:limpopo",
+          "ext:bc insolvent estate auction 85ha vacant land louis trichardt,https bidderschoice co za property listings insolvent estate auction 85ha vacant land louis trichardt",
+          "title:insolvent estate auction 8 5ha vacant land louis trichardt"
+        ],
+        "externalReferences": [
+          "bc_insolvent-estate-auction-85ha-vacant-land-louis-trichardt",
+          "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/"
+        ],
+        "provenance": {
+          "dataClassification": "production",
+          "verificationState": "verified",
+          "sourceName": "Bidders Choice"
+        },
+        "auctionEvents": [
+          {
+            "id": "c79111be-9f5d-4a9d-8e26-91cfd33febb5",
+            "propertyMasterId": "852a132f-ff3c-4ca0-a324-a5dfd4d54ee4",
+            "auctionDate": "2026-09-08T00:00:00+00:00",
+            "agency": "Bidders Choice",
+            "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+            "externalListingId": "bc_insolvent-estate-auction-85ha-vacant-land-louis-trichardt",
+            "eventFingerprint": "ev_52e612a5_2ab01875"
+          }
+        ]
+      },
+      "listing_2": {
+        "propertyId": "b8eb4cb5-d9c1-46de-a338-266357d3d8f9",
+        "title": "Insolvent Estate Auction: Vacant Stand – Louis Trichardt",
+        "normalizedAddress": "41 Flamboyant Street",
+        "street": "41 Flamboyant Street",
+        "suburb": null,
+        "town": "Louis Trichardt",
+        "province": "Limpopo",
+        "municipality": null,
+        "farmName": null,
+        "farmNumber": null,
+        "erf": null,
+        "portion": null,
+        "propertyType": "Vacant Land",
+        "propertyTypeConfidence": 80,
+        "bedrooms": 0,
+        "bathrooms": 0,
+        "landSize": null,
+        "latitude": null,
+        "longitude": null,
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-vacant-stand-louis-trichardt/",
+        "sourceAgency": "Bidders Choice",
+        "auctionDate": "2026-09-08T00:00:00+00:00",
+        "connectorId": "bidders_choice",
+        "externalListingId": "bc_insolvent-estate-auction-vacant-stand-louis-trichardt",
+        "verificationState": "verified",
+        "listingStatus": "upcoming",
+        "propertyMasterId": "852a132f-ff3c-4ca0-a324-a5dfd4d54ee4",
+        "fingerprint": "pf_92d9ef98_ee62c524",
+        "fingerprintComponents": [
+          "street:41 flamboyant street",
+          "town:louis trichardt",
+          "province:limpopo",
+          "ext:bc insolvent estate auction vacant stand louis trichardt,https bidderschoice co za property listings insolvent estate auction vacant stand louis trichardt",
+          "title:insolvent estate auction vacant stand louis trichardt"
+        ],
+        "externalReferences": [
+          "bc_insolvent-estate-auction-vacant-stand-louis-trichardt",
+          "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-vacant-stand-louis-trichardt/"
+        ],
+        "provenance": {
+          "dataClassification": "production",
+          "verificationState": "verified",
+          "sourceName": "Bidders Choice"
+        },
+        "auctionEvents": [
+          {
+            "id": "99934215-607f-4b3a-a86a-d739b0c15aa3",
+            "propertyMasterId": "852a132f-ff3c-4ca0-a324-a5dfd4d54ee4",
+            "auctionDate": "2026-09-08T00:00:00+00:00",
+            "agency": "Bidders Choice",
+            "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-vacant-stand-louis-trichardt/",
+            "externalListingId": "bc_insolvent-estate-auction-vacant-stand-louis-trichardt",
+            "eventFingerprint": "ev_b960d845_9e956835"
+          }
+        ]
+      },
+      "fieldComparisons": [
+        {
+          "field": "normalizedAddress",
+          "listing1": null,
+          "listing2": "41 Flamboyant Street",
+          "match": false
+        },
+        {
+          "field": "street",
+          "listing1": null,
+          "listing2": "41 Flamboyant Street",
+          "match": false
+        },
+        {
+          "field": "suburb",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "town",
+          "listing1": "Louis Trichardt",
+          "listing2": "Louis Trichardt",
+          "match": true
+        },
+        {
+          "field": "province",
+          "listing1": "Limpopo",
+          "listing2": "Limpopo",
+          "match": true
+        },
+        {
+          "field": "municipality",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "farmName",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "farmNumber",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "erf",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "portion",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "propertyType",
+          "listing1": "Vacant Land",
+          "listing2": "Vacant Land",
+          "match": true
+        },
+        {
+          "field": "bedrooms",
+          "listing1": "0",
+          "listing2": "0",
+          "match": true
+        },
+        {
+          "field": "bathrooms",
+          "listing1": "0",
+          "listing2": "0",
+          "match": true
+        },
+        {
+          "field": "landSize",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "buildingSize",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "agriculturalHectares",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "sourceUrl",
+          "listing1": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+          "listing2": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-vacant-stand-louis-trichardt/",
+          "match": false
+        },
+        {
+          "field": "sourceAgency",
+          "listing1": "Bidders Choice",
+          "listing2": "Bidders Choice",
+          "match": true
+        },
+        {
+          "field": "connectorId",
+          "listing1": "bidders_choice",
+          "listing2": "bidders_choice",
+          "match": true
+        },
+        {
+          "field": "externalListingId",
+          "listing1": "bc_insolvent-estate-auction-85ha-vacant-land-louis-trichardt",
+          "listing2": "bc_insolvent-estate-auction-vacant-stand-louis-trichardt",
+          "match": false
+        },
+        {
+          "field": "fingerprint",
+          "listing1": "pf_bef9d699_8f8a8c1d",
+          "listing2": "pf_92d9ef98_ee62c524",
+          "match": false
+        },
+        {
+          "field": "latitude",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "longitude",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        }
+      ],
+      "identity_decision": "DISTINCT_PROPERTIES_REQUIRES_SPLIT",
+      "confidence": "high",
+      "matching_evidence": [
+        "town: Louis Trichardt",
+        "province: Limpopo",
+        "propertyType: Vacant Land",
+        "bedrooms: 0",
+        "bathrooms: 0",
+        "sourceAgency: Bidders Choice",
+        "connectorId: bidders_choice"
+      ],
+      "conflicting_evidence": [
+        {
+          "field": "normalizedAddress",
+          "listing1": null,
+          "listing2": "41 Flamboyant Street"
+        },
+        {
+          "field": "street",
+          "listing1": null,
+          "listing2": "41 Flamboyant Street"
+        },
+        {
+          "field": "sourceUrl",
+          "listing1": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+          "listing2": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-vacant-stand-louis-trichardt/"
+        },
+        {
+          "field": "externalListingId",
+          "listing1": "bc_insolvent-estate-auction-85ha-vacant-land-louis-trichardt",
+          "listing2": "bc_insolvent-estate-auction-vacant-stand-louis-trichardt"
+        },
+        {
+          "field": "fingerprint",
+          "listing1": "pf_bef9d699_8f8a8c1d",
+          "listing2": "pf_92d9ef98_ee62c524"
+        }
+      ],
+      "recommended_action": "Split into separate Property Masters — assign second listing to new master via admin review"
+    },
+    {
+      "caseId": "CASE_2",
+      "master_id": "7eaf47fc-4468-4902-96f5-1ddcf6435f51",
+      "masterFingerprint": "pf_a4fe9fc8_92bff1cc",
+      "listing_1": {
+        "propertyId": "78e0ab0e-0b33-4a2a-a9e3-eda3677c6209",
+        "title": "Insolvent Estate Auction: 2x Sectional Title Units, Pretoria",
+        "normalizedAddress": "83 Greef Street, Trevenna",
+        "street": "83 Greef Street, Trevenna",
+        "suburb": null,
+        "town": "Pretoria",
+        "province": "Gauteng",
+        "municipality": null,
+        "farmName": null,
+        "farmNumber": null,
+        "erf": null,
+        "portion": null,
+        "propertyType": "Apartment",
+        "propertyTypeConfidence": 80,
+        "bedrooms": 1,
+        "bathrooms": 1,
+        "landSize": null,
+        "latitude": null,
+        "longitude": null,
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-2x-sectional-title-units-pretoria/",
+        "sourceAgency": "Bidders Choice",
+        "auctionDate": "2026-09-08T00:00:00+00:00",
+        "connectorId": "bidders_choice",
+        "externalListingId": "bc_insolvent-estate-auction-2x-sectional-title-units-pretoria",
+        "verificationState": "verified",
+        "listingStatus": "upcoming",
+        "propertyMasterId": "7eaf47fc-4468-4902-96f5-1ddcf6435f51",
+        "fingerprint": "pf_a4fe9fc8_92bff1cc",
+        "fingerprintComponents": [
+          "street:83 greef street trevenna",
+          "town:pretoria",
+          "province:gauteng",
+          "ext:bc insolvent estate auction 2x sectional title units pretoria,https bidderschoice co za property listings insolvent estate auction 2x sectional title units pretoria",
+          "title:insolvent estate auction 2x sectional title units pretoria"
+        ],
+        "externalReferences": [
+          "bc_insolvent-estate-auction-2x-sectional-title-units-pretoria",
+          "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-2x-sectional-title-units-pretoria/"
+        ],
+        "provenance": {
+          "dataClassification": "production",
+          "verificationState": "verified",
+          "sourceName": "Bidders Choice"
+        },
+        "auctionEvents": [
+          {
+            "id": "1174ccf7-001f-4b17-864e-fcf10537ae53",
+            "propertyMasterId": "7eaf47fc-4468-4902-96f5-1ddcf6435f51",
+            "auctionDate": "2026-09-08T00:00:00+00:00",
+            "agency": "Bidders Choice",
+            "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-2x-sectional-title-units-pretoria/",
+            "externalListingId": "bc_insolvent-estate-auction-2x-sectional-title-units-pretoria",
+            "eventFingerprint": "ev_78629d36_4a44e2d4"
+          }
+        ]
+      },
+      "listing_2": {
+        "propertyId": "ec3e90f0-5d86-4b32-9b20-4dee592654c3",
+        "title": "Online Auction: Agricultural Holding Fundus, Pretoria North",
+        "normalizedAddress": null,
+        "street": null,
+        "suburb": null,
+        "town": "Pretoria",
+        "province": "Gauteng",
+        "municipality": null,
+        "farmName": null,
+        "farmNumber": null,
+        "erf": null,
+        "portion": null,
+        "propertyType": "House",
+        "propertyTypeConfidence": 80,
+        "bedrooms": 5,
+        "bathrooms": 5,
+        "landSize": null,
+        "latitude": null,
+        "longitude": null,
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north/",
+        "sourceAgency": "Bidders Choice",
+        "auctionDate": "2026-05-05T00:00:00+00:00",
+        "connectorId": "bidders_choice",
+        "externalListingId": "bc_online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north",
+        "verificationState": "expired",
+        "listingStatus": "expired",
+        "propertyMasterId": "7eaf47fc-4468-4902-96f5-1ddcf6435f51",
+        "fingerprint": "pf_8774c80f_13414b0f",
+        "fingerprintComponents": [
+          "town:pretoria",
+          "province:gauteng",
+          "ext:bc online auction 1ha agricultural holding fundus ah pretoria north,https bidderschoice co za property listings online auction 1ha agricultural holding fundus ah pretoria north",
+          "title:online auction agricultural holding fundus pretoria north"
+        ],
+        "externalReferences": [
+          "bc_online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north",
+          "https://bidderschoice.co.za/property-listings/online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north/"
+        ],
+        "provenance": {
+          "dataClassification": "needs_verification",
+          "verificationState": "expired",
+          "sourceName": "Bidders Choice"
+        },
+        "auctionEvents": [
+          {
+            "id": "e105c520-2d04-479c-a99f-f34f1478a1af",
+            "propertyMasterId": "7eaf47fc-4468-4902-96f5-1ddcf6435f51",
+            "auctionDate": "2026-05-05T00:00:00+00:00",
+            "agency": "Bidders Choice",
+            "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north/",
+            "externalListingId": "bc_online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north",
+            "eventFingerprint": "ev_c4eea02f_ec167b5f"
+          }
+        ]
+      },
+      "fieldComparisons": [
+        {
+          "field": "normalizedAddress",
+          "listing1": "83 Greef Street, Trevenna",
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "street",
+          "listing1": "83 Greef Street, Trevenna",
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "suburb",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "town",
+          "listing1": "Pretoria",
+          "listing2": "Pretoria",
+          "match": true
+        },
+        {
+          "field": "province",
+          "listing1": "Gauteng",
+          "listing2": "Gauteng",
+          "match": true
+        },
+        {
+          "field": "municipality",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "farmName",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "farmNumber",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "erf",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "portion",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "propertyType",
+          "listing1": "Apartment",
+          "listing2": "House",
+          "match": false
+        },
+        {
+          "field": "bedrooms",
+          "listing1": "1",
+          "listing2": "5",
+          "match": false
+        },
+        {
+          "field": "bathrooms",
+          "listing1": "1",
+          "listing2": "5",
+          "match": false
+        },
+        {
+          "field": "landSize",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "buildingSize",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "agriculturalHectares",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "sourceUrl",
+          "listing1": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-2x-sectional-title-units-pretoria/",
+          "listing2": "https://bidderschoice.co.za/property-listings/online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north/",
+          "match": false
+        },
+        {
+          "field": "sourceAgency",
+          "listing1": "Bidders Choice",
+          "listing2": "Bidders Choice",
+          "match": true
+        },
+        {
+          "field": "connectorId",
+          "listing1": "bidders_choice",
+          "listing2": "bidders_choice",
+          "match": true
+        },
+        {
+          "field": "externalListingId",
+          "listing1": "bc_insolvent-estate-auction-2x-sectional-title-units-pretoria",
+          "listing2": "bc_online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north",
+          "match": false
+        },
+        {
+          "field": "fingerprint",
+          "listing1": "pf_a4fe9fc8_92bff1cc",
+          "listing2": "pf_8774c80f_13414b0f",
+          "match": false
+        },
+        {
+          "field": "latitude",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        },
+        {
+          "field": "longitude",
+          "listing1": null,
+          "listing2": null,
+          "match": false
+        }
+      ],
+      "identity_decision": "DISTINCT_PROPERTIES_REQUIRES_SPLIT",
+      "confidence": "high",
+      "matching_evidence": [
+        "town: Pretoria",
+        "province: Gauteng",
+        "sourceAgency: Bidders Choice",
+        "connectorId: bidders_choice"
+      ],
+      "conflicting_evidence": [
+        {
+          "field": "normalizedAddress",
+          "listing1": "83 Greef Street, Trevenna",
+          "listing2": null
+        },
+        {
+          "field": "street",
+          "listing1": "83 Greef Street, Trevenna",
+          "listing2": null
+        },
+        {
+          "field": "propertyType",
+          "listing1": "Apartment",
+          "listing2": "House"
+        },
+        {
+          "field": "bedrooms",
+          "listing1": "1",
+          "listing2": "5"
+        },
+        {
+          "field": "bathrooms",
+          "listing1": "1",
+          "listing2": "5"
+        },
+        {
+          "field": "sourceUrl",
+          "listing1": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-2x-sectional-title-units-pretoria/",
+          "listing2": "https://bidderschoice.co.za/property-listings/online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north/"
+        },
+        {
+          "field": "externalListingId",
+          "listing1": "bc_insolvent-estate-auction-2x-sectional-title-units-pretoria",
+          "listing2": "bc_online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north"
+        },
+        {
+          "field": "fingerprint",
+          "listing1": "pf_a4fe9fc8_92bff1cc",
+          "listing2": "pf_8774c80f_13414b0f"
+        }
+      ],
+      "recommended_action": "Split into separate Property Masters — assign second listing to new master via admin review"
+    }
+  ]
+}

@@ -282,4 +282,30 @@ console.log("history-backfill-selftest: idempotency projection");
   assert.equal(match.matchClass, "same");
 }
 
+console.log("history-backfill-selftest: shared master review cases");
+
+{
+  const { POST_EXECUTION_SHARED_MASTER_CASES } = load("backfill/sharedMasterReviewCases.ts");
+  assert.equal(POST_EXECUTION_SHARED_MASTER_CASES.length, 2);
+  assert.equal(POST_EXECUTION_SHARED_MASTER_CASES[0].caseId, "CASE_1");
+  assert.equal(POST_EXECUTION_SHARED_MASTER_CASES[1].masterId, "7eaf47fc-4468-4902-96f5-1ddcf6435f51");
+}
+
+console.log("history-backfill-selftest: distinct fingerprint pairs");
+
+{
+  const fp1 = computePropertyFingerprint(
+    fpInput({ town: "Louis Trichardt", province: "Limpopo", title: "8.5HA Vacant Land" }),
+  );
+  const fp2 = computePropertyFingerprint(
+    fpInput({
+      streetAddress: "41 Flamboyant Street",
+      town: "Louis Trichardt",
+      province: "Limpopo",
+      title: "Vacant Stand",
+    }),
+  );
+  assert.notEqual(fp1.fingerprint, fp2.fingerprint);
+}
+
 console.log("history-backfill-selftest: PASS");

@@ -45,9 +45,16 @@ type BackfillAudit = {
     id: string;
     review_kind: string;
     listing_property_id: string;
+    proposed_master_id: string | null;
     identity_decision: string | null;
     confidence: number | null;
     conflict_reason: string | null;
+    evidence?: {
+      caseId?: string;
+      anchorTitle?: string;
+      listingFingerprint?: string;
+      recommendedAction?: string;
+    } | null;
   }>;
   publicSafety?: {
     publicCatalogueCount: number;
@@ -112,6 +119,61 @@ export default function PropertyHistoryBackfillPanel() {
     });
   }
 
+  function seedSharedMasterReviews() {
+    startTransition(async () => {
+      setMessage(null);
+      try {
+        const res = await fetch("/api/admin/intelligence/history-backfill", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "seed_shared_master_reviews" }),
+        });
+        const json = await res.json();
+        if (!json.ok) {
+          setError(json.error ?? "Failed to seed reviews");
+          return;
+        }
+        setError(null);
+        setMessage(`Queued ${json.seeded} shared-master identity review(s) for admin decision`);
+        load();
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Seed failed");
+      }
+    });
+  }
+
+  function resolveReview(
+    reviewId: string,
+    action: "approve_match" | "create_new_master",
+  ) {
+    const label =
+      action === "approve_match" ? "confirm same property" : "split into separate masters";
+    if (!window.confirm(`Apply "${label}" for this review? This writes to production.`)) {
+      return;
+    }
+
+    startTransition(async () => {
+      setMessage(null);
+      try {
+        const res = await fetch("/api/admin/intelligence/history-backfill", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action, reviewId }),
+        });
+        const json = await res.json();
+        if (!json.ok) {
+          setError(json.error ?? "Review action failed");
+          return;
+        }
+        setError(null);
+        setMessage(`Review resolved: ${label}`);
+        load();
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Review action failed");
+      }
+    });
+  }
+
   const latest = data?.audit?.latest;
   const db = data?.audit?.database;
   const proposedMasters =
@@ -147,6 +209,14 @@ export default function PropertyHistoryBackfillPanel() {
             className="rounded-lg bg-emerald-700 px-3 py-1.5 text-xs font-medium hover:bg-emerald-600 disabled:opacity-50"
           >
             Execute backfill
+          </button>
+          <button
+            type="button"
+            onClick={seedSharedMasterReviews}
+            disabled={pending}
+            className="rounded-lg bg-amber-800 px-3 py-1.5 text-xs font-medium hover:bg-amber-700 disabled:opacity-50"
+          >
+            Queue shared-master reviews
           </button>
           <button
             type="button"
@@ -222,11 +292,47 @@ export default function PropertyHistoryBackfillPanel() {
       {(data?.reviews?.length ?? 0) > 0 && (
         <div className="mt-6">
           <h3 className="text-sm font-semibold text-slate-200">Pending reviews</h3>
-          <ul className="mt-2 space-y-2 text-xs text-slate-300">
+          <p className="mt-1 text-xs text-slate-400">
+            Explicit admin decision required — nothing splits or merges automatically.
+          </p>
+          <ul className="mt-2 space-y-3 text-xs text-slate-300">
             {data!.reviews!.slice(0, 8).map((r) => (
-              <li key={r.id} className="rounded-lg bg-slate-900/40 p-2">
-                {r.review_kind} · {r.identity_decision ?? "event"} · conf{" "}
-                {r.confidence ?? "—"} · {r.conflict_reason ?? "No reason recorded"}
+              <li key={r.id} className="rounded-lg bg-slate-900/40 p-3">
+                <p className="font-medium text-slate-200">
+                  {r.evidence?.caseId ?? r.review_kind} ·{" "}
+                  {r.identity_decision ?? "event"} · conf {r.confidence ?? "—"}
+                </p>
+                <p className="mt-1">{r.conflict_reason ?? "No reason recorded"}</p>
+                {r.evidence?.anchorTitle && (
+                  <p className="mt-1 text-slate-400">
+                    Paired with: {r.evidence.anchorTitle}
+                  </p>
+                )}
+                {r.evidence?.listingFingerprint && (
+                  <p className="mt-1 font-mono text-[10px] text-slate-500">
+                    fp: {r.evidence.listingFingerprint}
+                  </p>
+                )}
+                {r.review_kind === "identity" && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      disabled={pending || !r.proposed_master_id}
+                      onClick={() => resolveReview(r.id, "approve_match")}
+                      className="rounded bg-emerald-800 px-2 py-1 text-[11px] hover:bg-emerald-700 disabled:opacity-50"
+                    >
+                      Confirm same property
+                    </button>
+                    <button
+                      type="button"
+                      disabled={pending}
+                      onClick={() => resolveReview(r.id, "create_new_master")}
+                      className="rounded bg-rose-800 px-2 py-1 text-[11px] hover:bg-rose-700 disabled:opacity-50"
+                    >
+                      Split into separate masters
+                    </button>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
