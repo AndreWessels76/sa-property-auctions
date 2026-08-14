@@ -22,6 +22,8 @@ import { buildSaleEvidence } from "./saleEvidence";
 import { pricePerHa, pricePerM2 } from "./priceMetrics";
 import { buildMatchingEvidenceList, scoreComparable } from "./scoring";
 import { compatiblePropertyTypes, minimumMatchingSignals } from "./matching";
+import { mapLegacyRejectionToCodes } from "@/lib/intelligence/historicalResolution/comparableEligibility";
+import type { ComparableRejectionReason } from "@/lib/intelligence/historicalResolution/types";
 import { buildCacheKey, dataVersionFromObservations, provenanceForObservation } from "./provenance";
 
 function rejectCandidate(
@@ -72,6 +74,11 @@ function rejectCandidate(
   return reasons;
 }
 
+function rejectionCodes(subject: HistoricalEventObservation, candidate: HistoricalEventObservation): ComparableRejectionReason[] {
+  const legacy = rejectCandidate(subject, candidate);
+  return mapLegacyRejectionToCodes(legacy);
+}
+
 function rowFromCandidate(
   subject: HistoricalEventObservation,
   candidate: HistoricalEventObservation,
@@ -80,6 +87,7 @@ function rowFromCandidate(
   pricingObs: PricingObservationRow[],
 ): ComparableRow {
   const rejectionReasons = rejectCandidate(subject, candidate);
+  const rejectionCodesList = rejectionCodes(subject, candidate);
   const rejected = rejectionReasons.length > 0;
   const { matching, conflicting, distanceKm } = buildMatchingEvidenceList(
     subject,
@@ -114,6 +122,7 @@ function rowFromCandidate(
     conflictingEvidence: conflicting,
     rejected,
     rejectionReasons,
+    rejectionCodes: rejectionCodesList,
     provenance: provenanceForObservation(candidate),
   };
 }

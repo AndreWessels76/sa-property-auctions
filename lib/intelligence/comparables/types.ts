@@ -3,6 +3,7 @@
  */
 
 import type { HistoricalEventObservation, HistoricalEventState, NumericMetric } from "@/lib/intelligence/historical/types";
+import type { ComparableRejectionReason } from "@/lib/intelligence/historicalResolution/types";
 
 export type ComparableConfidenceLevel =
   | "High"
@@ -84,6 +85,7 @@ export type ComparableRow = {
   conflictingEvidence: string[];
   rejected: boolean;
   rejectionReasons: string[];
+  rejectionCodes?: ComparableRejectionReason[];
   provenance: ComparableProvenance;
 };
 

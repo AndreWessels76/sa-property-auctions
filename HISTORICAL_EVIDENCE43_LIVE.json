@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-08-14T11:37:42.975Z",
+  "version": "historical-evidence-acquisition-4.3.0",
+  "property_masters": null,
+  "auction_events": null,
+  "historical_events": 0,
+  "eligible_queue": 0,
+  "sources_found": 0,
+  "sources_fetched": 0,
+  "outcomes_extracted": 0,
+  "verified_outcomes": 0,
+  "verified_sale_prices": 0,
+  "conflicts": 0,
+  "reviews": 0,
+  "insufficient_data": 0,
+  "public_catalogue_leaks": 0,
+  "dry_run_preview": {
+    "limit": 5,
+    "would_process": 0,
+    "message": "DRY RUN — NOTHING WRITTEN",
+    "candidates": []
+  },
+  "queue": {
+    "total": 0,
+    "priority1": 0,
+    "priority2": 0,
+    "priority3": 0,
+    "priority4": 0,
+    "strongIdentity": 0,
+    "weakIdentity": 0,
+    "withSourceUrl": 0
+  },
+  "verdict": "INSUFFICIENT DATA — EVIDENCE ENGINE HEALTHY"
+}

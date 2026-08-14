@@ -24,8 +24,34 @@ export async function GET(request: Request) {
     }
 
     const url = new URL(request.url);
+    const useHea43 = url.searchParams.get("engine") === "hea43";
     const limit = Number(url.searchParams.get("limit") ?? "5");
     const force = url.searchParams.get("force") === "1";
+
+    if (useHea43) {
+      const { HistoricalEvidenceAcquisition43Service } = await import(
+        "@/lib/services/HistoricalEvidenceAcquisition43Service"
+      );
+      const result = await HistoricalEvidenceAcquisition43Service.acquireBatch({
+        limit: Number.isFinite(limit) ? limit : 5,
+        force,
+        operator: "cron",
+        priority: 1,
+      });
+      LoggerService.audit("cron.historical_evidence43", {
+        runId: result.runId,
+        processed: result.processed,
+        verified: result.funnel.verified,
+      });
+      return jsonOk({
+        ok: result.ok,
+        engine: "hea43",
+        runId: result.runId,
+        message: result.message,
+        processed: result.processed,
+        funnel: result.funnel,
+      });
+    }
 
     const result = await HistoricalEnrichmentService.enrichBatch({
       scope: "historical",
