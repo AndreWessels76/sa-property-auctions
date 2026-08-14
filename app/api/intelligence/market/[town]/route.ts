@@ -2,7 +2,6 @@ import { NextRequest } from "next/server";
 import { jsonError, jsonOk } from "@/lib/api/http";
 import { clientIp, rateLimit } from "@/lib/api/rateLimit";
 import { HistoricalIntelligenceService } from "@/lib/services/HistoricalIntelligenceService";
-import { ComparableIntelligenceService } from "@/lib/services/ComparableIntelligenceService";
 import { OutcomeIntelligenceService } from "@/lib/services/OutcomeIntelligenceService";
 
 type RouteContext = {
@@ -12,7 +11,7 @@ type RouteContext = {
 export async function GET(request: NextRequest, context: RouteContext) {
   try {
     const limited = rateLimit({
-      key: `hist-area:${clientIp(request)}`,
+      key: `market-town:${clientIp(request)}`,
       limit: 40,
       windowMs: 60_000,
     });
@@ -26,16 +25,9 @@ export async function GET(request: NextRequest, context: RouteContext) {
     const window = HistoricalIntelligenceService.parseWindow(
       new URL(request.url).searchParams.get("window"),
     );
-    const data = await HistoricalIntelligenceService.forArea(decoded, window);
-    const marketEvidence = await ComparableIntelligenceService.forArea(decoded, window);
-    const outcomePerformance = await OutcomeIntelligenceService.forTown(decoded, window);
-    return jsonOk({
-      ...data,
-      marketEvidence: marketEvidence.marketEvidence,
-      activity: marketEvidence.activity,
-      outcomePerformance: outcomePerformance.report,
-    });
+    const data = await OutcomeIntelligenceService.forTown(decoded, window);
+    return jsonOk(data);
   } catch (error) {
-    return jsonError(error, "Area historical intelligence failed");
+    return jsonError(error, "Town market intelligence failed");
   }
 }

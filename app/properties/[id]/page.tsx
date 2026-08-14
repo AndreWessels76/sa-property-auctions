@@ -26,6 +26,7 @@ import PropertyMobileActions from "@/components/property/detail/PropertyMobileAc
 import PropertyPricingIntelligence from "@/components/property/detail/PropertyPricingIntelligence";
 import HistoricalAuctionActivityPanel from "@/components/property/detail/HistoricalAuctionActivityPanel";
 import HistoricalMarketEvidencePanel from "@/components/property/detail/HistoricalMarketEvidencePanel";
+import HistoricalOutcomePerformancePanel from "@/components/property/detail/HistoricalOutcomePerformancePanel";
 import PropertyRelatedSection from "@/components/property/detail/PropertyRelatedSection";
 import PropertyStructuredData from "@/components/property/detail/PropertyStructuredData";
 import PropertySummarySection from "@/components/property/detail/PropertySummarySection";
@@ -50,6 +51,7 @@ import {
   AuctionPriceIntelligenceService,
   ComparableIntelligenceService,
   HistoricalIntelligenceService,
+  OutcomeIntelligenceService,
   PropertyIntelligenceService,
   PropertyService,
 } from "@/lib/services";
@@ -213,6 +215,15 @@ export default async function PropertyPage({ params }: PageProps) {
     marketEvidence = await ComparableIntelligenceService.forProperty(property.id);
   } catch {
     marketEvidence = null;
+  }
+
+  let outcomeHistory: Awaited<
+    ReturnType<typeof OutcomeIntelligenceService.propertyHistory>
+  > | null = null;
+  try {
+    outcomeHistory = await OutcomeIntelligenceService.propertyHistory(property.id);
+  } catch {
+    outcomeHistory = null;
   }
 
   const gallerySlides = images
@@ -384,6 +395,14 @@ export default async function PropertyPage({ params }: PageProps) {
                     }
                     comparablesCount={marketEvidence.comparables.comparables.length}
                     researchHref={`/properties/${property.id}/research`}
+                  />
+                ) : null}
+
+                {outcomeHistory?.ok ? (
+                  <HistoricalOutcomePerformancePanel
+                    premium={outcomeHistory.premium}
+                    chain={outcomeHistory.chain}
+                    priceChange={outcomeHistory.priceChange}
                   />
                 ) : null}
 

@@ -3,6 +3,7 @@
  */
 
 import { isValidPositiveAmount, isValidPositiveArea } from "@/lib/intelligence/pricing/priceCalculations";
+import { COMPARABLE_WEIGHTS } from "@/lib/intelligence/outcomes/config";
 import type { HistoricalEventObservation } from "@/lib/intelligence/historical/types";
 import type { ComparableIntelligenceConfig } from "./config";
 import type { ComparableConfidenceLevel, ComparableScoreBreakdown } from "./types";
@@ -24,19 +25,23 @@ export function scoreComparable(
   const typeCompat = compatiblePropertyTypes(subject.propertyType, candidate.propertyType);
 
   let location_match = 0;
-  if (matchingEvidence.some((s) => s.startsWith("Same suburb"))) location_match += 40;
-  else if (matchingEvidence.some((s) => s.startsWith("Same town"))) location_match += 25;
+  if (matchingEvidence.some((s) => s.startsWith("Same suburb"))) location_match += COMPARABLE_WEIGHTS.suburb;
+  else if (matchingEvidence.some((s) => s.startsWith("Same town"))) location_match += COMPARABLE_WEIGHTS.town;
   else if (matchingEvidence.some((s) => s.startsWith("Same province"))) location_match += 10;
-  if (matchingEvidence.some((s) => s.includes("km"))) location_match += 10;
+  if (matchingEvidence.some((s) => s.includes("km"))) location_match += COMPARABLE_WEIGHTS.distanceKm;
 
-  const property_type_match = typeCompat.exact ? 30 : typeCompat.match ? 15 : 0;
+  const property_type_match = typeCompat.exact
+    ? COMPARABLE_WEIGHTS.propertyTypeExact
+    : typeCompat.match
+      ? COMPARABLE_WEIGHTS.propertyTypeCompatible
+      : 0;
 
   let size_similarity = 0;
   if (
     isValidPositiveArea(subject.floorSizeM2) &&
     sizeWithinTolerance(subject.floorSizeM2, candidate.floorSizeM2, config.floorSizeTolerancePct)
   ) {
-    size_similarity = 20;
+    size_similarity = COMPARABLE_WEIGHTS.floorSize;
   }
 
   let land_similarity = 0;
@@ -44,7 +49,7 @@ export function scoreComparable(
     isValidPositiveArea(subject.hectares) &&
     sizeWithinTolerance(subject.hectares, candidate.hectares, config.hectareTolerancePct)
   ) {
-    land_similarity = 15;
+    land_similarity = COMPARABLE_WEIGHTS.landHectares;
   }
 
   let agricultural_similarity = 0;
@@ -53,7 +58,7 @@ export function scoreComparable(
     candidate.agriculturalSubtype &&
     subject.agriculturalSubtype === candidate.agriculturalSubtype
   ) {
-    agricultural_similarity = 15;
+    agricultural_similarity = COMPARABLE_WEIGHTS.agriculturalType;
   }
 
   let bedroom_similarity = 0;
@@ -62,7 +67,7 @@ export function scoreComparable(
     candidate.bedrooms != null &&
     subject.bedrooms === candidate.bedrooms
   ) {
-    bedroom_similarity = 5;
+    bedroom_similarity = COMPARABLE_WEIGHTS.bedrooms;
   }
 
   let bathroom_similarity = 0;
@@ -71,12 +76,12 @@ export function scoreComparable(
     candidate.bathrooms != null &&
     subject.bathrooms === candidate.bathrooms
   ) {
-    bathroom_similarity = 5;
+    bathroom_similarity = COMPARABLE_WEIGHTS.bathrooms;
   }
 
   let sale_outcome_quality = 0;
   if (evidence.verifiedSale && isValidPositiveAmount(evidence.salePrice)) {
-    sale_outcome_quality = 25;
+    sale_outcome_quality = COMPARABLE_WEIGHTS.verifiedSale;
   } else if (candidate.state === "sold") {
     sale_outcome_quality = 10;
   }
@@ -116,7 +121,7 @@ export function scoreComparable(
   let confidence: ComparableConfidenceLevel;
   if (matchingEvidence.length < minimumMatchingSignals(subject)) {
     confidence = "Insufficient data";
-  } else if (total >= 70 && sale_outcome_quality >= 25) {
+  } else if (total >= 70 && sale_outcome_quality >= COMPARABLE_WEIGHTS.verifiedSale) {
     confidence = "High";
   } else if (total >= 45) {
     confidence = "Medium";

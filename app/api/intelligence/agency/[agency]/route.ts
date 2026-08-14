@@ -3,6 +3,7 @@ import { jsonError, jsonOk } from "@/lib/api/http";
 import { clientIp, rateLimit } from "@/lib/api/rateLimit";
 import { HistoricalIntelligenceService } from "@/lib/services/HistoricalIntelligenceService";
 import { ComparableIntelligenceService } from "@/lib/services/ComparableIntelligenceService";
+import { OutcomeIntelligenceService } from "@/lib/services/OutcomeIntelligenceService";
 
 type RouteContext = {
   params: Promise<{ agency: string }>;
@@ -27,7 +28,13 @@ export async function GET(request: NextRequest, context: RouteContext) {
     );
     const data = await HistoricalIntelligenceService.forAgency(decoded, window);
     const marketEvidence = await ComparableIntelligenceService.forAgency(decoded, window);
-    return jsonOk({ ...data, marketEvidence: marketEvidence.marketEvidence, activity: marketEvidence.activity });
+    const outcomePerformance = await OutcomeIntelligenceService.forAgency(decoded, window);
+    return jsonOk({
+      ...data,
+      marketEvidence: marketEvidence.marketEvidence,
+      activity: marketEvidence.activity,
+      outcomePerformance: outcomePerformance.report,
+    });
   } catch (error) {
     return jsonError(error, "Agency historical intelligence failed");
   }

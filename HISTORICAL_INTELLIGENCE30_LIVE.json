@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-08-14T07:44:14.873Z",
+  "version": "historical-intelligence-3.0.0",
+  "tableCounts": {
+    "property_masters": 38,
+    "auction_events": 38,
+    "pricing_observations": 0,
+    "auction_outcome_observations": 0,
+    "historical_outcome_conflicts": 0
+  },
+  "historicalIntelligence": {
+    "corpusObservations": 33,
+    "eventBacked": 33,
+    "outcomeBreakdown": {
+      "sold": 0,
+      "withdrawn": 0,
+      "cancelled": 0,
+      "expired": 0,
+      "unsold": 0,
+      "unknown": 33
+    },
+    "verifiedSalePrices": 0,
+    "outcomeCoverage": {
+      "numerator": 0,
+      "denominator": 33,
+      "label": "Confirmed outcomes / total historical events",
+      "percentage": 0
+    },
+    "saleRate": {
+      "value": null,
+      "numerator": 0,
+      "denominator": 0,
+      "label": "Sold / auctions with confirmed outcome",
+      "calculable": false
+    },
+    "medianSalePrice": null,
+    "medianSalePriceLabel": "Insufficient data — 0 verified sales (5 required)",
+    "insufficientSaleData": true
+  },
+  "conflicts": {
+    "detected": 0,
+    "sample": []
+  },
+  "masterHistory": {
+    "propertyMasterId": "852a132f-ff3c-4ca0-a324-a5dfd4d54ee4",
+    "events": 0,
+    "sample": []
+  },
+  "publicSafety": {
+    "historicalLeaks": 0
+  },
+  "verdict": "HISTORICAL INTELLIGENCE 3.0 READY WITH LIMITATIONS"
+}
