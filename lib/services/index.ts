@@ -24,4 +24,5 @@ export { AuctionPriceIntelligenceService } from "./AuctionPriceIntelligenceServi
 export { HistoricalIntelligenceService } from "./HistoricalIntelligenceService";
 export { ComparableIntelligenceService } from "./ComparableIntelligenceService";
 export { OutcomeIntelligenceService } from "./OutcomeIntelligenceService";
+export { HistoricalEnrichmentService } from "./HistoricalEnrichmentService";
 export { PropertyHistoryBackfillService } from "./PropertyHistoryBackfillService";

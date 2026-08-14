@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-08-14T08:25:17.434Z",
+  "version": "historical-data-acquisition-4.0.0",
+  "historical_events": 33,
+  "processed": 0,
+  "source_200": 0,
+  "source_no_change": 0,
+  "source_changed": 0,
+  "outcomes_found": 0,
+  "sold": 0,
+  "passed_in": 0,
+  "withdrawn": 0,
+  "cancelled": 0,
+  "postponed": 0,
+  "unknown": 33,
+  "sale_prices_found": 0,
+  "sale_prices_verified": 0,
+  "sale_prices_rejected": 0,
+  "conflicts": 0,
+  "identity_review": 0,
+  "duplicates": 0,
+  "public_catalogue_leaks": 0,
+  "queue": {
+    "total": 33,
+    "priority1": 33,
+    "priority2": 0,
+    "priority3": 0,
+    "priority4": 0,
+    "eligible": 33,
+    "reviewRequired": 0
+  },
+  "tableCounts": {
+    "property_masters": 38,
+    "auction_events": 38,
+    "properties": 53,
+    "historical_listings": 33,
+    "auction_outcome_observations": 0,
+    "historical_enrichment_runs": 0,
+    "historical_outcome_conflicts": 0
+  },
+  "verdict": "HISTORICAL DATA ACQUISITION 4.0 — READY WITH LIMITATIONS"
+}

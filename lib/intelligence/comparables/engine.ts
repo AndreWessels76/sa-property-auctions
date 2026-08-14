@@ -50,6 +50,12 @@ function rejectCandidate(
   }
 
   const evidence = buildSaleEvidence(candidate);
+  if (candidate.state !== "sold") {
+    reasons.push("Not a verified SOLD outcome — excluded from sale comparables");
+  }
+  if (!isValidPositiveAmount(evidence.salePrice)) {
+    reasons.push("No verified sale price");
+  }
   if (candidate.state === "sold" && !isValidPositiveAmount(evidence.salePrice) && evidence.salePriceConflict) {
     reasons.push("Sale price conflict");
   }

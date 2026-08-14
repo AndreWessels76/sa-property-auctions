@@ -1,4 +1,5 @@
 import { persistPricingObservations } from "@/lib/acquisition/pricing/pricingService";
+import { persistOutcomeObservations } from "@/lib/acquisition/outcomes/outcomeService";
 import {
   corpusFromProperty,
   runDueDiligenceExtraction,
@@ -65,6 +66,9 @@ export type PersistRefetchExtractionResult = {
   conflicts: number;
   pricingObservations: number;
   pricingConflicts: number;
+  outcomeObservations: number;
+  outcomeConflicts: number;
+  outcomeReviews: number;
 };
 
 /**
@@ -134,6 +138,24 @@ export async function persistRefetchExtraction(
     extractionRunId: row?.id ?? null,
   });
 
+  const outcome = await persistOutcomeObservations({
+    propertyId: property.id,
+    corpus: {
+      ...property,
+      verification_state: property.verification_state,
+      listing_status: property.listing_status ?? property.status,
+      agricultural_details: property.agricultural_details as Record<
+        string,
+        unknown
+      > | null,
+      source_page_text: sourcePageText,
+    },
+    sourcePageText,
+    sourceSnapshotId: input.snapshotId ?? null,
+    contentHash: input.contentHash ?? extraction.source_hash,
+    operator: input.operator ?? null,
+  });
+
   LoggerService.audit("source.refetch.extraction_persisted", {
     propertyId: property.id,
     extractionRunId: row?.id ?? null,
@@ -144,14 +166,20 @@ export async function persistRefetchExtraction(
     conflicts: extraction.stats.conflicts,
     pricingObservations: pricing.observationIds.length,
     pricingConflicts: pricing.conflicts,
+    outcomeObservation: outcome.observationId,
+    outcomeConflicts: outcome.conflicts,
   });
 
   return {
     extractionRunId: row?.id ?? null,
     extraction,
     fieldsFound: extraction.stats.fields_found,
-    conflicts: extraction.stats.conflicts + pricing.conflicts,
+    conflicts:
+      extraction.stats.conflicts + pricing.conflicts + outcome.conflicts,
     pricingObservations: pricing.observationIds.length,
     pricingConflicts: pricing.conflicts,
+    outcomeObservations: outcome.observationId ? 1 : 0,
+    outcomeConflicts: outcome.conflicts,
+    outcomeReviews: outcome.reviews,
   };
 }

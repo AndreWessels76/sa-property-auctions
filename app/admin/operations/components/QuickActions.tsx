@@ -58,6 +58,31 @@ export const QUICK_ACTION_ROUTES = {
   analytics: "/intelligence",
 } as const;
 
+type HistoricalEnrichmentResult = {
+  ok?: boolean;
+  result?: {
+    runId?: string;
+    message?: string;
+    processed?: number;
+    completed?: number;
+    noChange?: number;
+    changed?: number;
+    outcomesFound?: number;
+    salePricesFound?: number;
+    conflicts?: number;
+    failed?: number;
+    unavailable?: number;
+    dryRun?: boolean;
+  };
+  error?: string;
+};
+
+/** Backend endpoint for historical enrichment quick actions. */
+export const HISTORICAL_ENRICHMENT_API = "/api/admin/intelligence/historical-enrichment";
+
+/** Visible label — used by regression selftests. */
+export const ENRICH_HISTORICAL_AUCTIONS_LABEL = "Enrich Historical Auctions";
+
 /** Visible label — used by regression selftests. */
 export const REFRESH_UPCOMING_SOURCES_LABEL = "Refresh Upcoming Sources";
 
@@ -70,8 +95,10 @@ export default function QuickActions() {
   const [runningAll, setRunningAll] = useState(false);
   const [runningSheriff, setRunningSheriff] = useState(false);
   const [runningRefetch, setRunningRefetch] = useState(false);
+  const [runningHistorical, setRunningHistorical] = useState(false);
   const [lastRun, setLastRun] = useState<RunAllResult | null>(null);
   const [lastRefetch, setLastRefetch] = useState<RefetchBatchResult | null>(null);
+  const [lastHistorical, setLastHistorical] = useState<HistoricalEnrichmentResult | null>(null);
 
   async function runAllImports() {
     if (runningAll || runningSheriff || runningRefetch) return;
@@ -199,6 +226,50 @@ export default function QuickActions() {
     }
   }
 
+  async function enrichHistoricalAuctions() {
+    if (runningAll || runningSheriff || runningRefetch || runningHistorical) return;
+    setRunningHistorical(true);
+    setLastHistorical(null);
+    toast.message("Enriching historical auctions...");
+
+    try {
+      const res = await fetch(HISTORICAL_ENRICHMENT_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "batch", scope: "historical", limit: 10 }),
+      });
+      const data = (await res.json()) as HistoricalEnrichmentResult;
+
+      if (!res.ok) {
+        const msg =
+          data.error ??
+          (res.status === 401
+            ? "You must sign in to perform this action."
+            : res.status === 403
+              ? "You are not authorized to perform this action."
+              : "Historical enrichment failed.");
+        toast.error(msg);
+        setLastHistorical({ ok: false, error: msg });
+        return;
+      }
+
+      setLastHistorical(data);
+      const result = data.result;
+      if ((result?.processed ?? 0) === 0) {
+        toast.message(result?.message ?? "No eligible historical events in queue.");
+      } else if (data.ok === false) {
+        toast.error(result?.message ?? "Historical enrichment completed with errors.");
+      } else {
+        toast.success(result?.message ?? "Historical enrichment completed.");
+      }
+    } catch {
+      toast.error("Historical enrichment failed.");
+      setLastHistorical({ ok: false, error: "Historical enrichment failed." });
+    } finally {
+      setRunningHistorical(false);
+    }
+  }
+
   function openSources() {
     toast.message("Opening Sources...");
     startTransition(() => {
@@ -213,7 +284,7 @@ export default function QuickActions() {
     });
   }
 
-  const busy = runningAll || runningSheriff || runningRefetch || pending;
+  const busy = runningAll || runningSheriff || runningRefetch || runningHistorical || pending;
 
   return (
     <div className="rounded-2xl bg-white p-6 shadow">
@@ -265,6 +336,17 @@ export default function QuickActions() {
           className="rounded-xl border py-3 font-semibold disabled:cursor-not-allowed disabled:opacity-70"
         >
           {runningRefetch ? "Refreshing Sources..." : REFRESH_UPCOMING_SOURCES_LABEL}
+        </button>
+
+        <button
+          type="button"
+          data-testid="enrich-historical-auctions"
+          disabled={busy}
+          onClick={() => void enrichHistoricalAuctions()}
+          aria-busy={runningHistorical}
+          className="rounded-xl border py-3 font-semibold disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {runningHistorical ? "Enriching Historical..." : ENRICH_HISTORICAL_AUCTIONS_LABEL}
         </button>
       </div>
 
@@ -353,6 +435,46 @@ export default function QuickActions() {
           {lastRefetch.runId ? (
             <p className="mt-2 text-[11px] text-slate-400">
               Run ID: {lastRefetch.runId}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+
+      {lastHistorical ? (
+        <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm">
+          <h3 className="font-bold text-navy-900">Historical Enrichment Complete</h3>
+          <p className="mt-1 text-xs text-slate-600">
+            {lastHistorical.result?.message ?? lastHistorical.error}
+          </p>
+          <table className="mt-3 w-full text-left text-xs">
+            <tbody>
+              {(
+                [
+                  ["Processed", lastHistorical.result?.processed],
+                  ["Completed", lastHistorical.result?.completed],
+                  ["No change", lastHistorical.result?.noChange],
+                  ["Changed", lastHistorical.result?.changed],
+                  ["Outcomes found", lastHistorical.result?.outcomesFound],
+                  ["Sale prices found", lastHistorical.result?.salePricesFound],
+                  ["Conflicts", lastHistorical.result?.conflicts],
+                  ["Unavailable", lastHistorical.result?.unavailable],
+                  ["Failed", lastHistorical.result?.failed],
+                ] as const
+              ).map(([label, value]) =>
+                value != null ? (
+                  <tr key={label} className="border-t border-slate-200">
+                    <td className="py-1 text-slate-500">{label}</td>
+                    <td className="py-1 text-right font-semibold text-navy-900">
+                      {value}
+                    </td>
+                  </tr>
+                ) : null,
+              )}
+            </tbody>
+          </table>
+          {lastHistorical.result?.runId ? (
+            <p className="mt-2 text-[11px] text-slate-400">
+              Run ID: {lastHistorical.result.runId}
             </p>
           ) : null}
         </div>

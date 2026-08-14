@@ -51,6 +51,17 @@ export function validatePricingDrafts(
       next.status = "needs_verification";
     }
 
+    if (d.field_name === "sale_price" && d.normalized_value != null) {
+      if (d.normalized_value < 10_000) {
+        issues.push(`${d.field_name}: suspiciously low sale price — review required`);
+        next.status = "needs_verification";
+      }
+      if (/\b(erf|hectare|ha|m²|sqm|bedroom|bathroom)\b/i.test(d.evidence_text ?? "")) {
+        issues.push(`${d.field_name}: rejected — evidence appears non-price context`);
+        continue;
+      }
+    }
+
     out.push(next);
   }
 

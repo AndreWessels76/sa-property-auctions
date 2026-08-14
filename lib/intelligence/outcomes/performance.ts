@@ -30,20 +30,25 @@ export function buildAuctionPerformance(
   const withdrawn = classifications.filter((c) => c.outcome === "WITHDRAWN").length;
   const cancelled = classifications.filter((c) => c.outcome === "CANCELLED").length;
   const expired = classifications.filter((c) => c.outcome === "EXPIRED").length;
-  const unsold = classifications.filter((c) => c.outcome === "UNSOLD").length;
+  const passedIn = classifications.filter((c) => c.outcome === "PASSED_IN").length;
   const postponed = classifications.filter((c) => c.outcome === "POSTPONED").length;
+  const completedUnknown = classifications.filter(
+    (c) => c.outcome === "COMPLETED_UNKNOWN",
+  ).length;
   const unknown = classifications.filter((c) => c.outcome === "UNKNOWN").length;
   const total = classifications.length;
-  const confirmed = sold + withdrawn + cancelled;
+  const confirmed = sold + withdrawn + cancelled + passedIn;
 
   return {
     totalAuctions: total,
     sold,
-    unsold,
+    unsold: passedIn,
+    passedIn,
     withdrawn,
     cancelled,
     expired,
     postponed,
+    completedUnknown,
     unknown,
     confirmedOutcomes: confirmed,
     saleRate: rate(sold, confirmed, "Sold / auctions with confirmed outcome"),

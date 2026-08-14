@@ -11,6 +11,7 @@ import {
   AuctionIntelligenceService,
   ComparableIntelligenceService,
   HistoricalIntelligenceService,
+  OutcomeIntelligenceService,
   PropertyService,
 } from "@/lib/services";
 import { getComparableSales } from "@/lib/maps/getComparableSales";
@@ -115,12 +116,20 @@ export default async function ResearchReportPage({ params }: PageProps) {
   let hiHistorical: Awaited<
     ReturnType<typeof HistoricalIntelligenceService.forProperty>
   > | null = null;
+  let outcomeHistory: Awaited<
+    ReturnType<typeof OutcomeIntelligenceService.propertyHistory>
+  > | null = null;
   try {
     hiComparables = await ComparableIntelligenceService.forProperty(property.id);
     hiHistorical = await HistoricalIntelligenceService.forProperty(property.id);
+    outcomeHistory = await OutcomeIntelligenceService.propertyHistory(
+      property.id,
+      hiHistorical?.propertyMasterId ?? null,
+    );
   } catch {
     hiComparables = null;
     hiHistorical = null;
+    outcomeHistory = null;
   }
 
   return (
@@ -231,7 +240,7 @@ export default async function ResearchReportPage({ params }: PageProps) {
             </ol>
           </section>
 
-          {hiComparables?.ok || hiHistorical?.ok ? (
+          {hiComparables?.ok || hiHistorical?.ok || outcomeHistory?.ok ? (
             <section className="rounded-xl border border-slate-200 bg-white p-4">
               <h2 className="text-lg font-bold text-navy-900">
                 Historical Intelligence (event-backed)
@@ -240,6 +249,47 @@ export default async function ResearchReportPage({ params }: PageProps) {
                 Auction Events · verified sale evidence · comparable confidence —
                 not investment advice.
               </p>
+              {outcomeHistory?.ok && outcomeHistory.chain.events.length > 0 ? (
+                <div className="mt-4">
+                  <h3 className="text-sm font-semibold text-navy-900">
+                    Historical evidence
+                  </h3>
+                  <ol className="mt-2 space-y-2 text-sm">
+                    {outcomeHistory.chain.events.map((ev) => (
+                      <li
+                        key={ev.auctionEventId ?? ev.auctionDate ?? ev.outcome}
+                        className="rounded-lg border border-slate-100 px-3 py-2"
+                      >
+                        <span className="text-slate-500">
+                          {ev.auctionDate?.slice(0, 10) ?? "Date unknown"}
+                        </span>
+                        {" · "}
+                        <span className="font-medium text-navy-900">{ev.outcome}</span>
+                        {ev.salePrice != null ? (
+                          <>
+                            {" · "}
+                            <span className="font-medium">
+                              R{ev.salePrice.toLocaleString("en-ZA")}
+                            </span>
+                          </>
+                        ) : null}
+                        {ev.outcome !== "UNKNOWN" &&
+                        ev.outcome !== "COMPLETED_UNKNOWN" &&
+                        ev.outcomeEvidence.confidence !== "low" ? (
+                          <span className="ml-2 text-[10px] uppercase text-emerald-700">
+                            Source confirmed
+                          </span>
+                        ) : null}
+                        {ev.sourceUrl ? (
+                          <p className="mt-1 truncate text-[11px] text-slate-400">
+                            {ev.sourceUrl}
+                          </p>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ) : null}
               {hiHistorical?.ok ? (
                 <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
                   <div>

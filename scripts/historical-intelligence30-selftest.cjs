@@ -128,12 +128,12 @@ assert.equal(classifyAuctionOutcome(obs({ state: "withdrawn" })), "WITHDRAWN");
 console.log("hi30: 3 CANCELLED classification");
 assert.equal(classifyAuctionOutcome(obs({ state: "cancelled" })), "CANCELLED");
 
-console.log("hi30: 4 EXPIRED classification (not UNSOLD)");
+console.log("hi30: 4 EXPIRED classification (not PASSED_IN)");
 assert.equal(classifyAuctionOutcome(obs({ state: "expired" })), "EXPIRED");
-assert.notEqual(classifyAuctionOutcome(obs({ state: "expired" })), "UNSOLD");
+assert.notEqual(classifyAuctionOutcome(obs({ state: "expired" })), "PASSED_IN");
 
 console.log("hi30: 5 UNKNOWN classification");
-assert.equal(classifyAuctionOutcome(obs({ state: "completed" })), "UNKNOWN");
+assert.equal(classifyAuctionOutcome(obs({ state: "completed" })), "COMPLETED_UNKNOWN");
 assert.equal(classifyAuctionOutcome(obs({ state: "unknown" })), "UNKNOWN");
 
 console.log("hi30: 6 sale price semantics");
@@ -311,14 +311,14 @@ console.log("hi30: 20 provenance");
   assert.equal(isConfirmedOutcome(c.outcome), true);
 }
 
-console.log("hi30: UNSOLD only with explicit evidence");
+console.log("hi30: PASSED_IN only with explicit evidence");
 assert.equal(classifyAuctionOutcome(obs({ state: "expired" })), "EXPIRED");
 assert.equal(
   classifyAuctionOutcome(obs({ state: "completed" }), { rawStatus: "passed in" }),
-  "UNSOLD",
+  "PASSED_IN",
 );
 
-console.log("hi30: no sale price does not imply UNSOLD");
+console.log("hi30: no sale price does not imply PASSED_IN");
 {
   const c = classifyObservation(obs({ state: "expired", prices: { ...obs().prices, sale_price: null } }));
   assert.equal(c.outcome, "EXPIRED");

@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-08-14T07:57:25.970Z",
+  "version": "historical-intelligence-3.1.0",
+  "tableCounts": {
+    "auction_outcome_observations": 0,
+    "historical_enrichment_runs": 0,
+    "historical_enrichment_reviews": 0,
+    "pricing_observations": 0
+  },
+  "samples": {
+    "upcomingListing": {
+      "property_id": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "property_master_id": "0cfe015c-ef4f-4539-b3e7-9388bd9a09c7",
+      "auction_event_id": null,
+      "source_url": "https://bidderschoice.co.za/property-listings/online-auction-328ha-prime-agricultural-holding-tzaneen/",
+      "publicCatalogue": true
+    },
+    "historicalEvent": {
+      "property_id": "603a7e65-c6e0-4f8d-850a-688cb27549df",
+      "property_master_id": "7d6f2084-2db9-48f3-abff-5960ec2fad50",
+      "verification_state": "expired",
+      "source_url": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/"
+    },
+    "snapshotExtraction": {
+      "source_snapshot_id": "bf6fa956-dc7c-4a9e-ab09-6a5636a47749",
+      "source_hash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+      "outcome": "UNKNOWN",
+      "sale_price": null,
+      "confidence": "low",
+      "evidence_text": "No explicit outcome evidence in source"
+    }
+  },
+  "coverage": {
+    "historicalEvents": 33,
+    "verifiedSoldEvents": 0,
+    "verifiedSalePrices": 0,
+    "persistedOutcomeObservations": 0,
+    "persistedSalePrices": 0,
+    "unknownOutcomes": 33,
+    "marketStatistics": "Insufficient data"
+  },
+  "publicSafety": {
+    "historicalLeaks": 0
+  },
+  "verdict": "PRODUCTION READY FOR DATA ENRICHMENT WITH SALE-PRICE COVERAGE LIMITATION"
+}

@@ -10,8 +10,9 @@ export type AuctionOutcomeState =
   | "WITHDRAWN"
   | "CANCELLED"
   | "EXPIRED"
-  | "UNSOLD"
+  | "PASSED_IN"
   | "POSTPONED"
+  | "COMPLETED_UNKNOWN"
   | "UNKNOWN";
 
 export type OutcomeEvidenceType =
@@ -60,6 +61,8 @@ export type AuctionPerformanceMetrics = {
   totalAuctions: number;
   sold: number;
   unsold: number;
+  passedIn: number;
+  completedUnknown: number;
   withdrawn: number;
   cancelled: number;
   expired: number;

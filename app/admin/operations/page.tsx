@@ -9,6 +9,7 @@ import SourceRefreshQueue from "./components/SourceRefreshQueue";
 import PricingAcquisitionPanel from "./components/PricingAcquisitionPanel";
 import HistoricalIntelligencePanel from "./components/HistoricalIntelligencePanel";
 import HistoricalOutcomeAuditPanel from "./components/HistoricalOutcomeAuditPanel";
+import HistoricalDataAcquisition40Panel from "./components/HistoricalDataAcquisition40Panel";
 import PropertyHistoryBackfillPanel from "./components/PropertyHistoryBackfillPanel";
 
 export default function OperationsPage() {
@@ -77,6 +78,8 @@ export default function OperationsPage() {
       <HistoricalIntelligencePanel />
 
       <HistoricalOutcomeAuditPanel />
+
+      <HistoricalDataAcquisition40Panel />
 
       <PropertyHistoryBackfillPanel />
 

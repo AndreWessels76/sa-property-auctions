@@ -42,7 +42,7 @@ const LABEL_RULES: Array<{
   {
     field: "sale_price",
     patterns: [
-      /(?:sold\s*(?:for|at)|sale\s*price|purchase\s*price|hammer\s*price)\s*[:\-]?\s*([^\n;|]{3,60})/i,
+      /(?:sold\s*(?:for|at)|sale\s*price|purchase\s*price|hammer\s*price|final\s*selling\s*price)\s*[:\-]?\s*([^\n;|]{3,60})/i,
       /winning\s*bid\s*[:\-]?\s*([^\n;|]{3,60})/i,
     ],
   },

@@ -115,7 +115,7 @@ async function main() {
         withdrawn: classifications.filter((c) => c.outcome === "WITHDRAWN").length,
         cancelled: classifications.filter((c) => c.outcome === "CANCELLED").length,
         expired: classifications.filter((c) => c.outcome === "EXPIRED").length,
-        unsold: classifications.filter((c) => c.outcome === "UNSOLD").length,
+        passedIn: classifications.filter((c) => c.outcome === "PASSED_IN").length,
         unknown: classifications.filter((c) => c.outcome === "UNKNOWN").length,
       },
       verifiedSalePrices: withSalePrice.length,

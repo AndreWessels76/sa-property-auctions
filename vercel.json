@@ -16,6 +16,10 @@
     {
       "path": "/api/cron/data-foundation?cadence=monthly",
       "schedule": "0 6 1 * *"
+    },
+    {
+      "path": "/api/cron/historical-enrichment?limit=5",
+      "schedule": "30 3 * * *"
     }
   ]
 }

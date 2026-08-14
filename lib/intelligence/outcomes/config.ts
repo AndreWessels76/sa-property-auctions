@@ -2,7 +2,7 @@
  * Historical Intelligence 3.0 — outcome & market performance configuration.
  */
 
-export const OUTCOME_INTELLIGENCE_VERSION = "historical-intelligence-3.0.0";
+export const OUTCOME_INTELLIGENCE_VERSION = "historical-intelligence-3.1.0";
 
 export type OutcomeIntelligenceConfig = {
   minimumMarketSales: number;

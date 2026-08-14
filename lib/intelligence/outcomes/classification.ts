@@ -1,12 +1,12 @@
 /**
  * Deterministic auction outcome classification.
- * Never infer expired→unsold, no price→unsold, or passed date→sold.
+ * Never infer expired→passed-in, no price→sold, or passed date→sold.
  */
 
 import type { HistoricalEventObservation } from "@/lib/intelligence/historical/types";
 import type { AuctionOutcomeState } from "./types";
 
-const UNSOLD_MARKERS = /\b(unsold|not sold|no sale|passed in|pass[- ]?in)\b/i;
+const PASSED_IN_MARKERS = /\b(unsold|not sold|no sale|passed in|pass[- ]?in)\b/i;
 
 export function classifyAuctionOutcome(
   row: HistoricalEventObservation,
@@ -16,7 +16,7 @@ export function classifyAuctionOutcome(
   const evidence = extra?.evidenceText ?? "";
 
   if (raw.includes("postpon") || raw.includes("postpone")) return "POSTPONED";
-  if (UNSOLD_MARKERS.test(raw) || UNSOLD_MARKERS.test(evidence)) return "UNSOLD";
+  if (PASSED_IN_MARKERS.test(raw) || PASSED_IN_MARKERS.test(evidence)) return "PASSED_IN";
 
   switch (row.state) {
     case "sold":
@@ -28,7 +28,7 @@ export function classifyAuctionOutcome(
     case "expired":
       return "EXPIRED";
     case "completed":
-      return "UNKNOWN";
+      return "COMPLETED_UNKNOWN";
     case "unknown":
       return "UNKNOWN";
     case "upcoming":
@@ -40,7 +40,12 @@ export function classifyAuctionOutcome(
 }
 
 export function isConfirmedOutcome(outcome: AuctionOutcomeState): boolean {
-  return outcome === "SOLD" || outcome === "WITHDRAWN" || outcome === "CANCELLED";
+  return (
+    outcome === "SOLD" ||
+    outcome === "WITHDRAWN" ||
+    outcome === "CANCELLED" ||
+    outcome === "PASSED_IN"
+  );
 }
 
 export function isHistoricalPerformanceOutcome(outcome: AuctionOutcomeState): boolean {
@@ -49,12 +54,31 @@ export function isHistoricalPerformanceOutcome(outcome: AuctionOutcomeState): bo
     outcome === "WITHDRAWN" ||
     outcome === "CANCELLED" ||
     outcome === "EXPIRED" ||
-    outcome === "UNSOLD" ||
+    outcome === "PASSED_IN" ||
     outcome === "POSTPONED" ||
+    outcome === "COMPLETED_UNKNOWN" ||
     outcome === "UNKNOWN"
   );
 }
 
 export function outcomeLabel(outcome: AuctionOutcomeState): string {
-  return outcome.charAt(0) + outcome.slice(1).toLowerCase().replace("_", " ");
+  return outcome.charAt(0) + outcome.slice(1).toLowerCase().replace(/_/g, " ");
+}
+
+/** Map persisted DB outcome strings to intelligence states. */
+export function normalizePersistedOutcome(outcome: string): AuctionOutcomeState {
+  if (outcome === "UNSOLD") return "PASSED_IN";
+  const allowed: AuctionOutcomeState[] = [
+    "SOLD",
+    "WITHDRAWN",
+    "CANCELLED",
+    "EXPIRED",
+    "PASSED_IN",
+    "POSTPONED",
+    "COMPLETED_UNKNOWN",
+    "UNKNOWN",
+  ];
+  return allowed.includes(outcome as AuctionOutcomeState)
+    ? (outcome as AuctionOutcomeState)
+    : "UNKNOWN";
 }
