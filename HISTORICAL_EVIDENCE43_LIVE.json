@@ -1,34 +1,70 @@
 {
-  "timestamp": "2026-08-14T11:37:42.975Z",
+  "timestamp": "2026-08-14T13:19:59.326Z",
   "version": "historical-evidence-acquisition-4.3.0",
-  "property_masters": null,
-  "auction_events": null,
-  "historical_events": 0,
-  "eligible_queue": 0,
-  "sources_found": 0,
+  "property_masters": 38,
+  "auction_events": 38,
+  "historical_events": 33,
+  "eligible_queue": 33,
+  "sources_found": 33,
   "sources_fetched": 0,
   "outcomes_extracted": 0,
   "verified_outcomes": 0,
   "verified_sale_prices": 0,
   "conflicts": 0,
   "reviews": 0,
-  "insufficient_data": 0,
+  "insufficient_data": 33,
   "public_catalogue_leaks": 0,
   "dry_run_preview": {
     "limit": 5,
-    "would_process": 0,
+    "would_process": 5,
     "message": "DRY RUN — NOTHING WRITTEN",
-    "candidates": []
+    "candidates": [
+      {
+        "propertyId": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+        "priority": 1,
+        "reason": "P1 — exact licensed source URL",
+        "candidateCount": 1,
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/"
+      },
+      {
+        "propertyId": "5b71ae7c-c460-41ec-965f-c080d965888c",
+        "priority": 1,
+        "reason": "P1 — exact licensed source URL",
+        "candidateCount": 1,
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/"
+      },
+      {
+        "propertyId": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+        "priority": 1,
+        "reason": "P1 — exact licensed source URL",
+        "candidateCount": 1,
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/"
+      },
+      {
+        "propertyId": "7cb6a434-c0ae-49b1-8613-d3b3eafaeeee",
+        "priority": 1,
+        "reason": "P1 — exact licensed source URL",
+        "candidateCount": 1,
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/"
+      },
+      {
+        "propertyId": "603a7e65-c6e0-4f8d-850a-688cb27549df",
+        "priority": 1,
+        "reason": "P1 — exact licensed source URL",
+        "candidateCount": 1,
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/"
+      }
+    ]
   },
   "queue": {
-    "total": 0,
-    "priority1": 0,
+    "total": 33,
+    "priority1": 33,
     "priority2": 0,
     "priority3": 0,
     "priority4": 0,
-    "strongIdentity": 0,
+    "strongIdentity": 33,
     "weakIdentity": 0,
-    "withSourceUrl": 0
+    "withSourceUrl": 33
   },
   "verdict": "INSUFFICIENT DATA — EVIDENCE ENGINE HEALTHY"
 }

@@ -1,0 +1,48 @@
+{
+  "version": "operations-metrics-1.0.0",
+  "generatedAt": "2026-08-14T13:17:48.231Z",
+  "timezone": "Africa/Johannesburg",
+  "saDate": "2026-08-14",
+  "dayBounds": {
+    "startIso": "2026-08-13T22:00:00.000Z",
+    "endIso": "2026-08-14T22:00:00.000Z",
+    "dateLabel": "2026-08-14"
+  },
+  "noHardcodedDemoValues": true,
+  "metrics": {
+    "properties": {
+      "total": 38,
+      "today": 0,
+      "todayLabel": "0 today",
+      "source": "properties (excluding seed/demo data_classification)"
+    },
+    "images": {
+      "total": 443,
+      "today": 0,
+      "todayLabel": "0 today",
+      "source": "property_images"
+    },
+    "mergedRecords": {
+      "value": 0,
+      "source": "property_merge_history row count (logged merge/deduplication actions)",
+      "unavailable": null
+    },
+    "failedImports": {
+      "value": 0,
+      "source": "import_jobs where status in Failed/error",
+      "unavailable": null
+    },
+    "importQueue": {
+      "total": 0,
+      "completed": 0,
+      "failed": 0,
+      "waiting": 0,
+      "running": 0,
+      "percentage": 0,
+      "label": "No active queue items",
+      "formula": "completedItems / totalItems * 100 (rounded)",
+      "source": "import_queue.queue_status",
+      "unavailable": null
+    }
+  }
+}

@@ -14,6 +14,7 @@ import {
   OutcomeIntelligenceService,
   HistoricalIntelligence40Service,
   HistoricalEvidenceQuality44Service,
+  InvestorIntelligence46Service,
   PropertyService,
 } from "@/lib/services";
 import { getComparableSales } from "@/lib/maps/getComparableSales";
@@ -127,6 +128,9 @@ export default async function ResearchReportPage({ params }: PageProps) {
   let evidenceQuality: Awaited<
     ReturnType<typeof HistoricalEvidenceQuality44Service.forProperty>
   > | null = null;
+  let investor46: Awaited<
+    ReturnType<typeof InvestorIntelligence46Service.forProperty>
+  > | null = null;
   try {
     hiComparables = await ComparableIntelligenceService.forProperty(property.id);
     hiHistorical = await HistoricalIntelligenceService.forProperty(property.id);
@@ -136,12 +140,14 @@ export default async function ResearchReportPage({ params }: PageProps) {
     );
     hiPerformance = await HistoricalIntelligence40Service.propertyPerformance(property.id);
     evidenceQuality = await HistoricalEvidenceQuality44Service.forProperty(property.id);
+    investor46 = await InvestorIntelligence46Service.forProperty(property.id);
   } catch {
     hiComparables = null;
     hiHistorical = null;
     outcomeHistory = null;
     hiPerformance = null;
     evidenceQuality = null;
+    investor46 = null;
   }
 
   return (
@@ -425,6 +431,89 @@ export default async function ResearchReportPage({ params }: PageProps) {
                     </dl>
                   )}
                 </div>
+              ) : null}
+              {investor46?.ok ? (
+                <section className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50/50 p-4">
+                  <h3 className="text-sm font-semibold text-navy-900">
+                    Investor Evidence Summary
+                  </h3>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Evidence coverage and acquisition feedback — not investment advice.
+                  </p>
+                  <p className="mt-2 text-sm font-medium text-navy-900">
+                    Overall coverage: {investor46.result.research.evidenceCoverage.overall.replace(/_/g, " ")}
+                  </p>
+                  <p className="mt-1 text-sm">
+                    Decision status: {investor46.result.decisionStatus.replace(/_/g, " ")}
+                  </p>
+                  <dl className="mt-3 grid gap-2 text-xs sm:grid-cols-2 lg:grid-cols-4">
+                    {investor46.result.research.evidenceCoverage.dimensions.map((d) => (
+                      <div key={d.dimension} className="rounded border border-slate-100 bg-white px-2 py-1.5">
+                        <dt className="uppercase tracking-wide text-slate-400">{d.dimension}</dt>
+                        <dd className="font-semibold text-navy-900">{d.level.replace(/_/g, " ")}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  {investor46.result.investorLabels && investor46.result.investorLabels.length > 0 ? (
+                    <dl className="mt-4 space-y-2">
+                      {investor46.result.investorLabels.map((item) => (
+                        <div
+                          key={item.label}
+                          className="rounded border border-slate-100 bg-white px-3 py-2 text-sm"
+                        >
+                          <dt className="text-xs font-semibold uppercase text-slate-500">
+                            {item.label}
+                          </dt>
+                          <dd className="mt-0.5 font-medium text-navy-900">{item.detail}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  ) : null}
+                  {investor46.result.evidenceSummary.whatWeKnow.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="text-xs font-semibold uppercase text-slate-500">What we know</h4>
+                      <ul className="mt-1 list-inside list-disc text-xs text-slate-700">
+                        {investor46.result.evidenceSummary.whatWeKnow.slice(0, 6).map((w) => (
+                          <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                  {investor46.result.evidenceSummary.whatWeDoNotKnow.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="text-xs font-semibold uppercase text-slate-500">What we do not know</h4>
+                      <ul className="mt-1 list-inside list-disc text-xs text-slate-700">
+                        {investor46.result.evidenceSummary.whatWeDoNotKnow.slice(0, 6).map((w) => (
+                          <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                  {investor46.result.evidenceSummary.whatNeedsVerification.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="text-xs font-semibold uppercase text-amber-700">What needs verification</h4>
+                      <ul className="mt-1 list-inside list-disc text-xs text-amber-900">
+                        {investor46.result.evidenceSummary.whatNeedsVerification.map((w) => (
+                          <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                  {investor46.result.acquisitionGaps46.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="text-xs font-semibold uppercase text-slate-500">
+                        Recommended data acquisition
+                      </h4>
+                      <ul className="mt-1 space-y-1 text-xs text-slate-700">
+                        {investor46.result.acquisitionGaps46.slice(0, 5).map((g) => (
+                          <li key={`${g.gapCode}-${g.priority}`}>
+                            {g.gapCode} ({g.priority}) → {g.recommendedExistingQueue}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </section>
               ) : null}
               {hiHistorical?.ok ? (
                 <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">

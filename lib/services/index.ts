@@ -19,6 +19,8 @@ export {
 } from "./InvestorWorkspaceService";
 export { DueDiligenceExtractionService } from "./DueDiligenceExtractionService";
 export { OperationsQuickActionsService } from "./OperationsQuickActionsService";
+export { OperationsMetricsService } from "./OperationsMetricsService";
+export { InvestorIntelligence47Service } from "./InvestorIntelligence47Service";
 export { SourceRefetchService } from "./SourceRefetchService";
 export { AuctionPriceIntelligenceService } from "./AuctionPriceIntelligenceService";
 export { HistoricalIntelligenceService } from "./HistoricalIntelligenceService";
@@ -29,4 +31,6 @@ export { HistoricalIntelligence40Service } from "./HistoricalIntelligence40Servi
 export { HistoricalIntelligence42Service } from "./HistoricalIntelligence42Service";
 export { HistoricalEvidenceAcquisition43Service } from "./HistoricalEvidenceAcquisition43Service";
 export { HistoricalEvidenceQuality44Service } from "./HistoricalEvidenceQuality44Service";
+export { InvestorIntelligence45Service } from "./InvestorIntelligence45Service";
+export { InvestorIntelligence46Service } from "./InvestorIntelligence46Service";
 export { PropertyHistoryBackfillService } from "./PropertyHistoryBackfillService";

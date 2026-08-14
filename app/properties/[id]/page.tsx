@@ -27,6 +27,7 @@ import PropertyPricingIntelligence from "@/components/property/detail/PropertyPr
 import HistoricalAuctionActivityPanel from "@/components/property/detail/HistoricalAuctionActivityPanel";
 import HistoricalMarketEvidencePanel from "@/components/property/detail/HistoricalMarketEvidencePanel";
 import HistoricalOutcomePerformancePanel from "@/components/property/detail/HistoricalOutcomePerformancePanel";
+import InvestorIntelligenceSnapshotPanel from "@/components/property/detail/InvestorIntelligenceSnapshotPanel";
 import PropertyRelatedSection from "@/components/property/detail/PropertyRelatedSection";
 import PropertyStructuredData from "@/components/property/detail/PropertyStructuredData";
 import PropertySummarySection from "@/components/property/detail/PropertySummarySection";
@@ -52,6 +53,8 @@ import {
   ComparableIntelligenceService,
   HistoricalIntelligenceService,
   OutcomeIntelligenceService,
+  InvestorIntelligence46Service,
+  InvestorIntelligence45Service,
   PropertyIntelligenceService,
   PropertyService,
 } from "@/lib/services";
@@ -226,6 +229,15 @@ export default async function PropertyPage({ params }: PageProps) {
     outcomeHistory = null;
   }
 
+  let investorIntelligence: Awaited<
+    ReturnType<typeof InvestorIntelligence46Service.forProperty>
+  > | null = null;
+  try {
+    investorIntelligence = await InvestorIntelligence46Service.forProperty(property.id);
+  } catch {
+    investorIntelligence = null;
+  }
+
   const gallerySlides = images
     .filter((image) => Boolean(image.image_url?.trim()))
     .map((image) => ({
@@ -394,6 +406,16 @@ export default async function PropertyPage({ params }: PageProps) {
                         : null
                     }
                     comparablesCount={marketEvidence.comparables.comparables.length}
+                    researchHref={`/properties/${property.id}/research`}
+                  />
+                ) : null}
+
+                {investorIntelligence?.ok ? (
+                  <InvestorIntelligenceSnapshotPanel
+                    decisionStatus={investorIntelligence.result.decisionStatus}
+                    decisionReasons={investorIntelligence.result.decisionReasons}
+                    snapshot={investorIntelligence.result.snapshot}
+                    premium={investorIntelligence.result.premium}
                     researchHref={`/properties/${property.id}/research`}
                   />
                 ) : null}

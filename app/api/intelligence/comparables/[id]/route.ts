@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { jsonError, jsonOk } from "@/lib/api/http";
 import { clientIp, rateLimit } from "@/lib/api/rateLimit";
 import { ComparableIntelligenceService } from "@/lib/services/ComparableIntelligenceService";
+import { presentComparables } from "@/lib/intelligence/investorIntelligence45";
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -32,6 +33,9 @@ export async function GET(request: NextRequest, context: RouteContext) {
         marketEvidence: result.marketEvidence,
         masterHistory: result.masterHistory,
         timeline: result.timeline,
+        investorIntelligence45: {
+          presentations: presentComparables(result.comparables.comparables),
+        },
       },
       confidence: result.comparables.confidence,
       sampleSize: result.comparables.sampleSize,

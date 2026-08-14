@@ -1,8 +1,7 @@
-﻿import LiveStatCard from "./components/LiveStatCard";
+﻿import LiveOperationsMetrics from "./components/LiveOperationsMetrics";
 import HealthPanel from "./components/HealthPanel";
 import ActivityFeed from "./components/ActivityFeed";
 import QuickActions from "./components/QuickActions";
-import ImportStatus from "./components/ImportStatus";
 import InvestorOpsPanels from "./components/InvestorOpsPanels";
 import DueDiligenceExtractionPanel from "./components/DueDiligenceExtractionPanel";
 import SourceRefreshQueue from "./components/SourceRefreshQueue";
@@ -14,6 +13,8 @@ import HistoricalIntelligence40Panel from "./components/HistoricalIntelligence40
 import HistoricalResolution42Panel from "./components/HistoricalResolution42Panel";
 import HistoricalEvidenceAcquisition43Panel from "./components/HistoricalEvidenceAcquisition43Panel";
 import HistoricalEvidenceQuality44Panel from "./components/HistoricalEvidenceQuality44Panel";
+import InvestorIntelligence46Panel from "./components/InvestorIntelligence46Panel";
+import InvestorIntelligence47Panel from "./components/InvestorIntelligence47Panel";
 import PropertyHistoryBackfillPanel from "./components/PropertyHistoryBackfillPanel";
 
 export default function OperationsPage() {
@@ -24,40 +25,11 @@ export default function OperationsPage() {
         Live Operations Centre
       </h1>
 
-      <div className="mb-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-
-        <LiveStatCard
-          title="Properties"
-          value="18,432"
-          change="+245 Today"
-          color="green"
-        />
-
-        <LiveStatCard
-          title="Images"
-          value="57,892"
-          change="+612 Today"
-        />
-
-        <LiveStatCard
-          title="Merged Records"
-          value="842"
-          color="yellow"
-        />
-
-        <LiveStatCard
-          title="Failed Imports"
-          value="3"
-          color="red"
-        />
-
-      </div>
+      <LiveOperationsMetrics />
 
       <div className="grid gap-6 lg:grid-cols-3">
 
         <div className="space-y-6 lg:col-span-2">
-
-          <ImportStatus />
 
           <ActivityFeed />
 
@@ -93,6 +65,10 @@ export default function OperationsPage() {
 
       <HistoricalEvidenceQuality44Panel />
 
+      <InvestorIntelligence46Panel />
+
+      <InvestorIntelligence47Panel />
+
       <PropertyHistoryBackfillPanel />
 
       <DueDiligenceExtractionPanel />
@@ -100,4 +76,3 @@ export default function OperationsPage() {
     </div>
   );
 }
-

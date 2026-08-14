@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import { requestOperationsMetricsRefresh } from "@/lib/operations/metricsRefresh";
 
 type RunAllResult = {
   ok?: boolean;
@@ -134,6 +135,7 @@ export default function QuickActions() {
         toast.error(data.message ?? "Import failed. Please check the import logs.");
       } else {
         toast.success(data.message ?? "Imports completed successfully.");
+        requestOperationsMetricsRefresh();
       }
     } catch {
       toast.error("Import failed. Please check the import logs.");
@@ -170,6 +172,7 @@ export default function QuickActions() {
         toast.message(data.message ?? "Sheriff import is not configured yet.");
       } else {
         toast.success(data.message ?? "Sheriff import completed.");
+        requestOperationsMetricsRefresh();
       }
     } catch {
       toast.error("Sheriff connector is not configured.");

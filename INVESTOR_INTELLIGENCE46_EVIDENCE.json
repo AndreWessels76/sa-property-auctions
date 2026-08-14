@@ -1,0 +1,7 @@
+{
+  "version": "investor-intelligence-4.6.0",
+  "modules": [
+    "lib/intelligence/investorIntelligence46/"
+  ],
+  "tests": "scripts/investor-intelligence46-selftest.cjs"
+}

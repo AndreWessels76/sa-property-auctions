@@ -1,0 +1,24 @@
+{
+  "version": "investor-intelligence-4.5.0",
+  "modules": [
+    "lib/intelligence/investorIntelligence45/",
+    "lib/services/InvestorIntelligence45Service.ts",
+    "app/api/intelligence/property/[id]/investor/",
+    "app/api/admin/intelligence/investor/"
+  ],
+  "tests": "scripts/investor-intelligence45-selftest.cjs",
+  "live": {
+    "propertyMasters": null,
+    "auctionEvents": 0,
+    "historicalEvents": 0,
+    "verifiedSold": 0,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "marketReadyAgencies": 0,
+    "evidenceQualityHigh": 0,
+    "openConflicts": 0,
+    "publicCatalogueLeaks": 0,
+    "acquisitionGaps": 0
+  }
+}

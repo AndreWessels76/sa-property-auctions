@@ -1,0 +1,45 @@
+{
+  "version": "investor-intelligence-4.6.0",
+  "generatedAt": "2026-08-14T13:19:08.073Z",
+  "verdict": "INSUFFICIENT DATA — ENGINE READY",
+  "databaseFacts": {
+    "propertiesSampled": 0,
+    "auctionEventsSampled": 0,
+    "historicalEvents": 0,
+    "verifiedSold": 0,
+    "verifiedSalePrices": 0
+  },
+  "engineResults": {
+    "dashboard": {
+      "propertiesAnalysed": 0,
+      "highEvidence": 0,
+      "mediumEvidence": 0,
+      "lowEvidence": 0,
+      "insufficientData": 0,
+      "conflicts": 0,
+      "acquisitionGaps": 0,
+      "p1": 0,
+      "p2": 0,
+      "p3": 0,
+      "p4": 0
+    },
+    "gapPriority": {
+      "p1": 0,
+      "p2": 0,
+      "p3": 0,
+      "p4": 0,
+      "total": 0
+    },
+    "marketStatisticsAvailable": false
+  },
+  "insufficientData": {
+    "verifiedSalePricesBelowMinimum": true,
+    "minimumRequired": 5
+  },
+  "conflicts": 0,
+  "acquisitionGaps": 0,
+  "publicSafety": {
+    "catalogueLeaks": 0,
+    "ok": true
+  }
+}

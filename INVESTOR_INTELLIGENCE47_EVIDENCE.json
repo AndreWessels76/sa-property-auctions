@@ -1,0 +1,18 @@
+{
+  "version": "investor-intelligence-4.7.0",
+  "modules": [
+    "lib/intelligence/investorIntelligence47/"
+  ],
+  "services": [
+    "lib/services/InvestorIntelligence47Service.ts"
+  ],
+  "api": "/api/admin/intelligence/investor/coverage",
+  "tests": "scripts/investor-intelligence47-selftest.cjs",
+  "repositories": [
+    "PropertyRepository.getIntelligenceCorpus",
+    "AuctionEventRepository.count",
+    "PropertyMasterRepository.count",
+    "OutcomeIntelligenceRepository.listRecent",
+    "HistoricalEnrichmentRepository.listRecentRuns"
+  ]
+}

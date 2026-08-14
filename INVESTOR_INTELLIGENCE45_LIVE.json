@@ -1,0 +1,33 @@
+{
+  "version": "investor-intelligence-4.5.0",
+  "generatedAt": "2026-08-14T12:54:38.766Z",
+  "verdict": "INSUFFICIENT DATA — ENGINE READY",
+  "counts": {
+    "propertyMasters": null,
+    "auctionEvents": 0,
+    "historicalEvents": 0,
+    "verifiedSold": 0,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "marketReadyAgencies": 0,
+    "evidenceQualityHigh": 0,
+    "openConflicts": 0,
+    "publicCatalogueLeaks": 0,
+    "acquisitionGaps": 0
+  },
+  "marketStatisticsAvailable": false,
+  "dashboard": {
+    "historicalEvents": 0,
+    "verifiedSales": 0,
+    "verifiedSalePrices": 0,
+    "comparableReadyEvents": 0,
+    "marketReadyTowns": 0,
+    "marketReadyAgencies": 0,
+    "evidenceQualityHigh": 0,
+    "openConflicts": 0,
+    "reviewRequired": 0,
+    "insufficientData": 0
+  },
+  "gapsPreview": []
+}
