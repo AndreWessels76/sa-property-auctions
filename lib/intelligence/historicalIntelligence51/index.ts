@@ -29,6 +29,7 @@ export {
   filterP1NeverAttempted,
   countNeverAttempted,
   buildFetchResultsSummary,
+  selectP1AcquireTargets,
   buildEnhancedDryRunCandidates,
   buildLegacyDryRunCandidates,
 } from "./legacyRecovery";

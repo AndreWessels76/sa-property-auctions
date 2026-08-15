@@ -1,6 +1,6 @@
 {
   "version": "historical-intelligence-5.4.0",
-  "generatedAt": "2026-08-15T12:37:39.501Z",
+  "generatedAt": "2026-08-15T12:52:55.740Z",
   "connectivity": {
     "status": "CONNECTED",
     "message": "Production database reachable"
@@ -16,7 +16,7 @@
     "queueBlocked": 0,
     "queueUnavailable": 0,
     "queueCompleted": 0,
-    "enrichmentAttempts": 132,
+    "enrichmentAttempts": 142,
     "successfulFetches": 9,
     "failedFetches": 5,
     "sourceFound": 33,
@@ -143,8 +143,8 @@
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:28:56.604+00:00",
-      "attemptNumber": 19,
+      "lastAttempt": "2026-08-15T12:47:03.891+00:00",
+      "attemptNumber": 21,
       "nextAction": "REVIEW SOURCE"
     },
     {
@@ -169,8 +169,8 @@
       "salePrice": "SOLD_WITHOUT_PRICE",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:28:54.09+00:00",
-      "attemptNumber": 19,
+      "lastAttempt": "2026-08-15T12:47:00.993+00:00",
+      "attemptNumber": 21,
       "nextAction": "REVIEW SOURCE"
     },
     {
@@ -195,8 +195,8 @@
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:28:58.898+00:00",
-      "attemptNumber": 19,
+      "lastAttempt": "2026-08-15T12:47:06.228+00:00",
+      "attemptNumber": 21,
       "nextAction": "REVIEW SOURCE"
     },
     {
@@ -221,8 +221,8 @@
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:29:03.687+00:00",
-      "attemptNumber": 17,
+      "lastAttempt": "2026-08-15T12:47:11.052+00:00",
+      "attemptNumber": 19,
       "nextAction": "REVIEW SOURCE"
     },
     {
@@ -247,8 +247,8 @@
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:29:01.355+00:00",
-      "attemptNumber": 17,
+      "lastAttempt": "2026-08-15T12:47:08.741+00:00",
+      "attemptNumber": 19,
       "nextAction": "REVIEW SOURCE"
     },
     {
@@ -987,7 +987,7 @@
       "town": "Benoni",
       "source": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-15T12:28:56.604+00:00",
+      "lastAttempt": "2026-08-15T12:47:03.891+00:00",
       "failure": "LEGACY_UNKNOWN_FAILURE",
       "nextAction": "REVIEW SOURCE",
       "priority": 4,
@@ -999,7 +999,7 @@
       "town": "Secunda",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
       "currentState": "OUTCOME_FOUND",
-      "lastAttempt": "2026-08-15T12:28:54.09+00:00",
+      "lastAttempt": "2026-08-15T12:47:00.993+00:00",
       "failure": "LEGACY_UNKNOWN_FAILURE",
       "nextAction": "REVIEW SOURCE",
       "priority": 4,
@@ -1011,7 +1011,7 @@
       "town": "Haenertsburg",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-15T12:28:58.898+00:00",
+      "lastAttempt": "2026-08-15T12:47:06.228+00:00",
       "failure": "LEGACY_UNKNOWN_FAILURE",
       "nextAction": "REVIEW SOURCE",
       "priority": 4,
@@ -1023,7 +1023,7 @@
       "town": "Roodepoort",
       "source": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-15T12:29:03.687+00:00",
+      "lastAttempt": "2026-08-15T12:47:11.052+00:00",
       "failure": "LEGACY_UNKNOWN_FAILURE",
       "nextAction": "REVIEW SOURCE",
       "priority": 4,
@@ -1035,7 +1035,7 @@
       "town": "of",
       "source": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-15T12:29:01.355+00:00",
+      "lastAttempt": "2026-08-15T12:47:08.741+00:00",
       "failure": "LEGACY_UNKNOWN_FAILURE",
       "nextAction": "REVIEW SOURCE",
       "priority": 4,
@@ -1450,6 +1450,19 @@
     "legacy": 5
   },
   "batchHistory": [
+    {
+      "batchId": "hea43_msudelqv",
+      "action": "acquire_p1",
+      "operator": "wesselsandre76@gmail.com",
+      "started": "2026-08-15T12:47:00.743+00:00",
+      "completed": "2026-08-15T12:47:11.052+00:00",
+      "eventsSelected": 10,
+      "eventsSucceeded": 0,
+      "eventsFailed": 10,
+      "snapshotsCreated": 0,
+      "outcomesExtracted": 10,
+      "pricesVerified": 0
+    },
     {
       "batchId": "hea43_msucrbvz",
       "action": "acquire_p1",

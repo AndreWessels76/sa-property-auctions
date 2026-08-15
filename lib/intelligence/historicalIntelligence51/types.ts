@@ -78,6 +78,7 @@ export type Hi51DryRunCandidate = {
   eventId: string | null;
   observationId: string;
   propertyMasterId: string | null;
+  listingPropertyId?: string | null;
   propertyLabel: string;
   town: string | null;
   agency: string | null;
@@ -86,6 +87,7 @@ export type Hi51DryRunCandidate = {
   priority: number;
   currentState: string;
   lastAttempt: string | null;
+  whyEligible?: string;
   expectedAction: string;
 };
 

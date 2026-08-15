@@ -103,6 +103,7 @@ const {
   buildLegacyDryRunCandidates,
   buildFetchResultsSummary,
   countNeverAttempted,
+  selectP1AcquireTargets,
 } = load("intelligence/historicalIntelligence51/index.ts");
 
 function baseHscEvent(overrides = {}) {
@@ -272,6 +273,33 @@ test("4 P1 idempotency — same input same candidates", () => {
   const a = buildEnhancedDryRunCandidates(rows, 5);
   const b = buildEnhancedDryRunCandidates(rows, 5);
   assert.deepEqual(a.map((x) => x.observationId), b.map((x) => x.observationId));
+});
+
+test("4b P1 acquire targets align with dry-run and skip missing property ids", () => {
+  const rows = [
+    baseHi50EventRow({ observationId: "obs-a" }),
+    baseHi50EventRow({ observationId: "obs-b" }),
+    baseHi50EventRow({ observationId: "obs-c" }),
+  ];
+  const idMap = new Map([
+    ["obs-a", "prop-a"],
+    ["obs-b", null],
+    ["obs-c", "prop-c"],
+  ]);
+  const { selected, skipped } = selectP1AcquireTargets({
+    events: rows,
+    limit: 5,
+    listingPropertyIdByObservation: idMap,
+  });
+  assert.deepEqual(
+    selected.map((r) => r.observationId),
+    ["obs-a", "obs-c"],
+  );
+  assert.equal(skipped.length, 1);
+  assert.equal(skipped[0].observationId, "obs-b");
+  assert.equal(skipped[0].reason, "MISSING_LISTING_PROPERTY_ID");
+  const dry = buildEnhancedDryRunCandidates(rows, 5).map((c) => c.observationId);
+  assert.deepEqual(dry, ["obs-a", "obs-b", "obs-c"]);
 });
 
 test("5 fetch success classification", () => {

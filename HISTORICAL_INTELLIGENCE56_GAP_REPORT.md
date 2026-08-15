@@ -1,4 +1,4 @@
-# Historical Intelligence 5.5 — Gap Report
+# Historical Intelligence 5.6 — Gap Report
 
 Generated: 2026-08-15T12:52:55.740Z
 
