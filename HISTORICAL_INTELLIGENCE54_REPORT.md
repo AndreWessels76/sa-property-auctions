@@ -1,6 +1,6 @@
 # Historical Intelligence 5.4 — Live Report
 
-Generated: 2026-08-15T12:10:41.378Z
+Generated: 2026-08-15T12:37:39.501Z
 
 ## VERDICT
 
@@ -23,7 +23,7 @@ P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaini
 - Historical events: 33
 - Licensed sources: 33/33
 - Fetch attempted: 14/33
-- Fetch successful: 14
+- Fetch successful: 9
 
 ## TESTED
 
@@ -33,7 +33,7 @@ P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaini
 
 ## RECOVERED
 
-- 14 successful fetches in production
+- 9 successful fetches in production
 - 9/33 snapshots available
 - 14/33 extractions available
 - 4/33 outcome observations
@@ -41,12 +41,13 @@ P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaini
 ## STILL MISSING
 
 - 19 events never fetch-attempted
+- 5 legacy failures awaiting modern metadata retry
 - No verified SOLD outcomes
 - No verified sale prices
 
 ## REVIEW REQUIRED
 
-- 14 review queue items
+- 19 review queue items
 
 ## INSUFFICIENT DATA
 
@@ -58,7 +59,7 @@ P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaini
 
 33 Licensed Sources
 ↓ 14 Fetch Attempted
-↓ 14 Fetch Successful
+↓ 9 Fetch Successful
 ↓ 9 Snapshots
 ↓ 14 Extractions
 ↓ 4 Outcome Evidence
@@ -74,6 +75,7 @@ P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaini
 Recommended: Acquire P1 (5)
 
 - FETCH_NOT_ATTEMPTED: 19/33 → Acquire P1 (5)
+- FETCH_FAILURE: 5/33 → Retry Failed (5) / Retry Network Failures (5)
 - MISSING_OUTCOME: 10/33 → Resolve Evidence
 - MISSING_SALE_PRICE: 4/33 → Quality Audit — explicit sale evidence only
 

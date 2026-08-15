@@ -1,0 +1,342 @@
+{
+  "version": "historical-intelligence-5.5.0",
+  "generatedAt": "2026-08-15T12:37:39.501Z",
+  "connectivity": {
+    "status": "CONNECTED",
+    "message": "Production database reachable"
+  },
+  "verdict": "CAMPAIGN IN PROGRESS",
+  "reason": "Historical evidence recovery still has unattempted or incomplete events",
+  "campaign55": {
+    "status": "CAMPAIGN_IN_PROGRESS",
+    "summaryLine": "P1 Progress [░░░░░░░░░░░░░░░░] 0 / 19 · Remaining: 19",
+    "dataCoverageImproving": false,
+    "dataCoverageReady": false
+  },
+  "p1Progress55": {
+    "originalP1": 19,
+    "processed": 0,
+    "remaining": 19,
+    "blocked": 5,
+    "successful": 9,
+    "failed": 5,
+    "retryable": 0,
+    "reviewRequired": 19,
+    "progressBar": "░░░░░░░░░░░░░░░░",
+    "progressLabel": "0 / 19"
+  },
+  "batchPlan55": {
+    "remaining": 19,
+    "batchSize": 5,
+    "batchesRequired": 4,
+    "steps": [
+      {
+        "batchNumber": 1,
+        "plannedSize": 5,
+        "cumulativeProcessed": 5,
+        "remainingAfter": 14
+      },
+      {
+        "batchNumber": 2,
+        "plannedSize": 5,
+        "cumulativeProcessed": 10,
+        "remainingAfter": 9
+      },
+      {
+        "batchNumber": 3,
+        "plannedSize": 5,
+        "cumulativeProcessed": 15,
+        "remainingAfter": 4
+      },
+      {
+        "batchNumber": 4,
+        "plannedSize": 4,
+        "cumulativeProcessed": 19,
+        "remainingAfter": 0
+      }
+    ],
+    "note": "4 admin-triggered batch(es) of ≤5 required — never process all 19 automatically"
+  },
+  "recoveryLanes55": {
+    "neverAttempted": 19,
+    "legacyUnknownFailures": 5,
+    "retryableFailures": 0,
+    "snapshotExtractionPending": 0,
+    "note": "P1 never-attempted and legacy unknown failures are separate recovery lanes"
+  },
+  "evidenceFunnel55": [
+    {
+      "key": "licensedSources",
+      "label": "Licensed Sources",
+      "value": 33
+    },
+    {
+      "key": "fetchAttempted",
+      "label": "Fetch Attempted",
+      "value": 14
+    },
+    {
+      "key": "fetchSuccessful",
+      "label": "Fetch Successful",
+      "value": 9
+    },
+    {
+      "key": "snapshots",
+      "label": "Snapshots",
+      "value": 9
+    },
+    {
+      "key": "extractions",
+      "label": "Extractions",
+      "value": 14
+    },
+    {
+      "key": "outcomeEvidence",
+      "label": "Outcome Evidence",
+      "value": 4
+    },
+    {
+      "key": "verifiedSold",
+      "label": "Verified SOLD",
+      "value": 0
+    },
+    {
+      "key": "verifiedSalePrices",
+      "label": "Verified Sale Price",
+      "value": 0
+    },
+    {
+      "key": "comparableReady",
+      "label": "Comparable Ready",
+      "value": 0
+    },
+    {
+      "key": "marketReadyTowns",
+      "label": "Market Ready",
+      "value": 0
+    }
+  ],
+  "bottleneck55": {
+    "code": "FETCH_NOT_ATTEMPTED",
+    "count": 19,
+    "total": 33,
+    "percentage": 57.6,
+    "recommendedAction": "Acquire P1 (5)"
+  },
+  "bottleneckRanked55": [
+    {
+      "code": "FETCH_NOT_ATTEMPTED",
+      "count": 19,
+      "total": 33,
+      "percentage": 57.6,
+      "recommendedAction": "Acquire P1 (5)"
+    },
+    {
+      "code": "FETCH_FAILURE",
+      "count": 5,
+      "total": 33,
+      "percentage": 15.2,
+      "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
+    },
+    {
+      "code": "MISSING_OUTCOME",
+      "count": 10,
+      "total": 33,
+      "percentage": 30.3,
+      "recommendedAction": "Resolve Evidence"
+    },
+    {
+      "code": "MISSING_SALE_PRICE",
+      "count": 4,
+      "total": 33,
+      "percentage": 12.1,
+      "recommendedAction": "Quality Audit — explicit sale evidence only"
+    }
+  ],
+  "safety55": {
+    "catalogueLeaks": 0,
+    "catalogueSafe": true,
+    "rebuildAllowed": true,
+    "rebuildStatus": "ALLOWED"
+  },
+  "coverage52": {
+    "historicalEvents": 33,
+    "licensedSources": "33/33",
+    "fetchAttempted": "14/33",
+    "neverAttempted": 19,
+    "fetchSuccessful": 9,
+    "fetchFailed": 5,
+    "retryable": 0,
+    "permanent": 5,
+    "legacyFailures": 5,
+    "snapshots": "9/33",
+    "missingExtraction": 0,
+    "extractions": "14/33",
+    "outcomeEvidence": "4/33",
+    "verifiedSold": 0,
+    "soldWithoutPrice": 4,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0
+  },
+  "nextAdminAction": "Dry Run P1 (5) → Acquire P1 (5) — 19 never-attempted remaining",
+  "eventStateSample55": [
+    {
+      "observationId": "event:d4b95b88-2b87-4dd1-ac67-ba199829130b",
+      "state": "LEGACY_UNKNOWN_FAILURE",
+      "propertyLabel": "Benoni"
+    },
+    {
+      "observationId": "event:1549f73a-684c-4497-9835-1b80041c9173",
+      "state": "LEGACY_UNKNOWN_FAILURE",
+      "propertyLabel": "Secunda"
+    },
+    {
+      "observationId": "event:37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
+      "state": "LEGACY_UNKNOWN_FAILURE",
+      "propertyLabel": "Haenertsburg"
+    },
+    {
+      "observationId": "event:66316a65-9ba8-41a1-b668-9a594b113129",
+      "state": "LEGACY_UNKNOWN_FAILURE",
+      "propertyLabel": "Roodepoort"
+    },
+    {
+      "observationId": "event:f9962d13-5821-4054-9934-1cabf293adc3",
+      "state": "LEGACY_UNKNOWN_FAILURE",
+      "propertyLabel": "of"
+    },
+    {
+      "observationId": "event:f79a330b-7779-4719-8c21-174252c9ab3f",
+      "state": "EXTRACTED",
+      "propertyLabel": "Groblersdal"
+    },
+    {
+      "observationId": "event:5fd4b3fa-0693-4b31-966b-8e1298ba01fa",
+      "state": "EXTRACTED",
+      "propertyLabel": "Groblersdal"
+    },
+    {
+      "observationId": "event:fa7207e6-9ff8-404c-9ffb-1ede4094ffe2",
+      "state": "SOLD_WITHOUT_PRICE",
+      "propertyLabel": "Pre-fab wall"
+    },
+    {
+      "observationId": "event:e8f8a339-e607-4cff-bf4b-39de60160113",
+      "state": "EXTRACTED",
+      "propertyLabel": "Parys"
+    },
+    {
+      "observationId": "event:ccaf70ac-380b-41b4-9a28-b603c3ea8b8c",
+      "state": "SOLD_WITHOUT_PRICE",
+      "propertyLabel": "Port Elizabeth"
+    },
+    {
+      "observationId": "event:51a22806-445f-479f-aa27-a60158075278",
+      "state": "EXTRACTED",
+      "propertyLabel": "Johannesburg"
+    },
+    {
+      "observationId": "event:d3a1d1ff-1940-4019-965d-47cb5b8b5da1",
+      "state": "SOLD_WITHOUT_PRICE",
+      "propertyLabel": "Hartbeespoort Dam"
+    },
+    {
+      "observationId": "event:4ca6f3ee-ff14-4dbd-b85e-af0e733e20b5",
+      "state": "EXTRACTED",
+      "propertyLabel": "Johannesburg"
+    },
+    {
+      "observationId": "event:8a6d7558-9fa3-466d-90f2-da461f6554e6",
+      "state": "EXTRACTED",
+      "propertyLabel": "Randburg"
+    },
+    {
+      "observationId": "event:01c5c920-ee74-46c0-8a5a-2305bf55dab0",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Randburg"
+    },
+    {
+      "observationId": "event:1035c18c-d257-40d1-8e2d-f6a65c98fc7d",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Bedfordview"
+    },
+    {
+      "observationId": "event:b8e60326-3bcd-4d4a-a2f4-3841eae93e9f",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Port Alfred"
+    },
+    {
+      "observationId": "event:e105c520-2d04-479c-a99f-f34f1478a1af",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Pretoria North"
+    },
+    {
+      "observationId": "event:376c3389-2de0-4240-9e5d-dd06ae895b37",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Pretoria"
+    },
+    {
+      "observationId": "event:7ae4a73e-b8c8-497e-bbd7-907a7aee3c16",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Bettys Bay"
+    },
+    {
+      "observationId": "event:2eeb5157-8342-41d1-9abd-39c15066eb1b",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Clanwilliam"
+    },
+    {
+      "observationId": "event:8be1de09-5e59-4c95-ad2c-49e0326840c1",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "and are strictly farmed and managed on t"
+    },
+    {
+      "observationId": "event:3becbaeb-dea3-4823-aed3-7b474fa296b3",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Northam"
+    },
+    {
+      "observationId": "event:f0727ccd-a8a8-457d-86c5-75725f482d55",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Pretoria"
+    },
+    {
+      "observationId": "event:faeb4be7-8701-493c-a602-9ed20f88c6d8",
+      "state": "FETCH_ELIGIBLE",
+      "propertyLabel": "Germiston"
+    }
+  ],
+  "reportLabels": {
+    "proven": [
+      "Public catalogue safety — 0 leaks",
+      "Historical events: 33",
+      "Licensed sources: 33/33",
+      "Fetch attempted: 14/33",
+      "Fetch successful: 9"
+    ],
+    "tested": [
+      "HI 5.5 orchestration over HI 5.4",
+      "Batch limit clamp ≤5",
+      "Dry-run no writes",
+      "Catalogue leak rebuild guard",
+      "Legacy vs never-attempted lanes"
+    ],
+    "missing": [
+      "Verified sale prices",
+      "Verified SOLD",
+      "Comparable-ready corpus",
+      "Market-ready towns",
+      "19 never-attempted fetches"
+    ],
+    "reviewRequired": [
+      "19 review queue items"
+    ]
+  },
+  "productionWritesExecuted": [],
+  "productionWritesNotExecuted": [
+    "Acquire P1 (5)",
+    "Extract / Retry / Resolve / Quality / Rebuild"
+  ]
+}

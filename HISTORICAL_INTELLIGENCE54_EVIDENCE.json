@@ -1,6 +1,6 @@
 {
   "version": "historical-intelligence-5.4.0",
-  "generatedAt": "2026-08-15T12:10:41.378Z",
+  "generatedAt": "2026-08-15T12:37:39.501Z",
   "connectivity": {
     "status": "CONNECTED",
     "message": "Production database reachable"
@@ -10,9 +10,9 @@
     "licensedSources": "33/33",
     "fetchAttempted": "14/33",
     "neverAttempted": 19,
-    "fetchSuccessful": 14,
-    "fetchFailed": 0,
-    "legacyFailuresRequiringRefetch": 0,
+    "fetchSuccessful": 9,
+    "fetchFailed": 5,
+    "legacyFailuresRequiringRefetch": 5,
     "snapshots": 9,
     "extractions": 14,
     "outcomeEvidence": 4,
@@ -31,14 +31,14 @@
     "FETCH_ELIGIBLE": 19
   },
   "successRates": {
-    "fetchSuccessRate": 100,
+    "fetchSuccessRate": 64.3,
     "snapshotRate": 64.3,
     "extractionRate": 42.4,
     "outcomeEvidenceRate": 12.1,
     "verifiedSalePriceRate": 0,
     "denominators": {
       "fetchAttempts": 14,
-      "fetchSuccessful": 14,
+      "fetchSuccessful": 9,
       "snapshots": 9,
       "extractions": 14,
       "historicalEvents": 33,
@@ -62,22 +62,22 @@
       "auctionDate": "2026-08-11T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 1,
+      "recoveryPriority": 4,
       "evidenceState": "EXTRACTION_AVAILABLE",
-      "fetchState": "EXTRACTION_AVAILABLE",
-      "httpStatus": 200,
-      "errorCode": null,
-      "failureClassification": "NONE",
+      "fetchState": "FETCH_HTTP_ERROR",
+      "httpStatus": null,
+      "errorCode": "CONTENT_UNAVAILABLE",
+      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
       "retryable": false,
-      "snapshot": true,
+      "snapshot": false,
       "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T20:03:51.071+00:00",
-      "attemptNumber": 13,
-      "nextAction": "DO_NOT_RETRY"
+      "lastAttempt": "2026-08-15T12:28:56.604+00:00",
+      "attemptNumber": 19,
+      "nextAction": "REVIEW SOURCE"
     },
     {
       "observationId": "event:1549f73a-684c-4497-9835-1b80041c9173",
@@ -88,22 +88,22 @@
       "auctionDate": "2026-08-11T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 1,
+      "recoveryPriority": 4,
       "evidenceState": "OUTCOME_FOUND",
-      "fetchState": "EXTRACTION_AVAILABLE",
-      "httpStatus": 200,
-      "errorCode": null,
-      "failureClassification": "NONE",
+      "fetchState": "FETCH_HTTP_ERROR",
+      "httpStatus": null,
+      "errorCode": "CONTENT_UNAVAILABLE",
+      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
       "retryable": false,
-      "snapshot": true,
+      "snapshot": false,
       "extraction": "SUCCESS",
       "outcome": "SOLD",
       "salePrice": "SOLD_WITHOUT_PRICE",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T20:03:42.901+00:00",
-      "attemptNumber": 13,
-      "nextAction": "DO_NOT_RETRY"
+      "lastAttempt": "2026-08-15T12:28:54.09+00:00",
+      "attemptNumber": 19,
+      "nextAction": "REVIEW SOURCE"
     },
     {
       "observationId": "event:37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
@@ -114,22 +114,22 @@
       "auctionDate": "2026-08-04T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 1,
+      "recoveryPriority": 4,
       "evidenceState": "EXTRACTION_AVAILABLE",
-      "fetchState": "EXTRACTION_AVAILABLE",
-      "httpStatus": 200,
-      "errorCode": null,
-      "failureClassification": "NONE",
+      "fetchState": "FETCH_HTTP_ERROR",
+      "httpStatus": null,
+      "errorCode": "CONTENT_UNAVAILABLE",
+      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
       "retryable": false,
-      "snapshot": true,
+      "snapshot": false,
       "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T20:03:57.773+00:00",
-      "attemptNumber": 13,
-      "nextAction": "DO_NOT_RETRY"
+      "lastAttempt": "2026-08-15T12:28:58.898+00:00",
+      "attemptNumber": 19,
+      "nextAction": "REVIEW SOURCE"
     },
     {
       "observationId": "event:66316a65-9ba8-41a1-b668-9a594b113129",
@@ -140,22 +140,22 @@
       "auctionDate": "2026-07-29T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 1,
+      "recoveryPriority": 4,
       "evidenceState": "EXTRACTION_AVAILABLE",
-      "fetchState": "EXTRACTION_AVAILABLE",
-      "httpStatus": 200,
-      "errorCode": null,
-      "failureClassification": "NONE",
+      "fetchState": "FETCH_HTTP_ERROR",
+      "httpStatus": null,
+      "errorCode": "CONTENT_UNAVAILABLE",
+      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
       "retryable": false,
-      "snapshot": true,
+      "snapshot": false,
       "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T20:04:14.556+00:00",
-      "attemptNumber": 11,
-      "nextAction": "DO_NOT_RETRY"
+      "lastAttempt": "2026-08-15T12:29:03.687+00:00",
+      "attemptNumber": 17,
+      "nextAction": "REVIEW SOURCE"
     },
     {
       "observationId": "event:f9962d13-5821-4054-9934-1cabf293adc3",
@@ -166,22 +166,22 @@
       "auctionDate": "2026-07-29T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 1,
+      "recoveryPriority": 4,
       "evidenceState": "EXTRACTION_AVAILABLE",
-      "fetchState": "EXTRACTION_AVAILABLE",
-      "httpStatus": 200,
-      "errorCode": null,
-      "failureClassification": "NONE",
+      "fetchState": "FETCH_HTTP_ERROR",
+      "httpStatus": null,
+      "errorCode": "CONTENT_UNAVAILABLE",
+      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
       "retryable": false,
-      "snapshot": true,
+      "snapshot": false,
       "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T20:04:07.139+00:00",
-      "attemptNumber": 11,
-      "nextAction": "DO_NOT_RETRY"
+      "lastAttempt": "2026-08-15T12:29:01.355+00:00",
+      "attemptNumber": 17,
+      "nextAction": "REVIEW SOURCE"
     },
     {
       "observationId": "event:f79a330b-7779-4719-8c21-174252c9ab3f",
@@ -913,14 +913,14 @@
     }
   ],
   "chainSuccessRates": {
-    "fetchSuccessRate": 100,
-    "snapshotRate": 64.3,
+    "fetchSuccessRate": 64.3,
+    "snapshotRate": 100,
     "extractionRate": 155.6,
     "outcomeEvidenceRate": 28.6,
     "salePriceRate": 0,
     "denominators": {
       "fetchAttempts": 14,
-      "successfulFetches": 14,
+      "successfulFetches": 9,
       "snapshots": 9,
       "extractions": 14,
       "outcomeEvidence": 4
@@ -960,13 +960,52 @@
   },
   "fetchResults": {
     "attempted": 14,
-    "successful": 14,
+    "successful": 9,
     "failed": 0,
     "retryable": 0,
-    "permanent": 0,
-    "legacy": 0
+    "permanent": 5,
+    "legacy": 5
   },
   "batchHistory": [
+    {
+      "batchId": "hea43_msucrbvz",
+      "action": "acquire_p1",
+      "operator": "wesselsandre76@gmail.com",
+      "started": "2026-08-15T12:28:53.856+00:00",
+      "completed": "2026-08-15T12:29:03.687+00:00",
+      "eventsSelected": 10,
+      "eventsSucceeded": 0,
+      "eventsFailed": 10,
+      "snapshotsCreated": 0,
+      "outcomesExtracted": 10,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "hea43_msuci5ku",
+      "action": "acquire_p1",
+      "operator": "wesselsandre76@gmail.com",
+      "started": "2026-08-15T12:21:46.507+00:00",
+      "completed": "2026-08-15T12:21:56.35+00:00",
+      "eventsSelected": 10,
+      "eventsSucceeded": 0,
+      "eventsFailed": 10,
+      "snapshotsCreated": 0,
+      "outcomesExtracted": 10,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "hea43_msucey2d",
+      "action": "acquire_p1",
+      "operator": "wesselsandre76@gmail.com",
+      "started": "2026-08-15T12:19:16.71+00:00",
+      "completed": "2026-08-15T12:19:27.461+00:00",
+      "eventsSelected": 10,
+      "eventsSucceeded": 0,
+      "eventsFailed": 10,
+      "snapshotsCreated": 0,
+      "outcomesExtracted": 10,
+      "pricesVerified": 0
+    },
     {
       "batchId": "enrich_batch_msttloe0",
       "action": "enrichment_batch",
@@ -1116,12 +1155,12 @@
     "totalEvents": 33,
     "neverAttempted": 19,
     "fetchAttempted": 14,
-    "fetchSuccessful": 14,
-    "fetchFailed": 0,
+    "fetchSuccessful": 9,
+    "fetchFailed": 5,
     "remaining": 19,
     "progressRatio": 0.424,
     "progressBar": "████████░░░░░░░░░░░░",
-    "summaryLine": "14 / 33 attempted · 14 successful · 0 failed · 19 remaining"
+    "summaryLine": "14 / 33 attempted · 9 successful · 5 failed · 19 remaining"
   },
   "campaign54": {
     "status": "CAMPAIGN_IN_PROGRESS",
@@ -1132,10 +1171,10 @@
     "total": 19,
     "completed": 0,
     "remaining": 19,
-    "successful": 14,
-    "failed": 0,
+    "successful": 9,
+    "failed": 5,
     "retryable": 0,
-    "permanent": 0,
+    "permanent": 5,
     "batchSize": 5,
     "plannedBatches": 4
   },
@@ -1143,11 +1182,11 @@
     "originalP1": 20,
     "processed": 1,
     "remaining": 19,
-    "blocked": 0,
-    "successful": 14,
-    "failed": 0,
+    "blocked": 5,
+    "successful": 9,
+    "failed": 5,
     "retryable": 0,
-    "reviewRequired": 14,
+    "reviewRequired": 19,
     "progressBar": "█░░░░░░░░░░░░░░░",
     "progressLabel": "1 / 20"
   },
@@ -1196,7 +1235,7 @@
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 14
+      "value": 9
     },
     {
       "key": "snapshots",
@@ -1238,7 +1277,7 @@
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 14
+      "value": 9
     },
     {
       "key": "snapshots",
@@ -1297,6 +1336,12 @@
       "recommendedAction": "Acquire P1 (5)"
     },
     {
+      "code": "LEGACY_UNKNOWN_FAILURE",
+      "count": 5,
+      "total": 33,
+      "recommendedAction": "Retry Legacy (5)"
+    },
+    {
       "code": "OUTCOME_MISSING",
       "count": 10,
       "total": 33,
@@ -1316,6 +1361,13 @@
       "total": 33,
       "percentage": 57.6,
       "recommendedAction": "Acquire P1 (5)"
+    },
+    {
+      "code": "FETCH_FAILURE",
+      "count": 5,
+      "total": 33,
+      "percentage": 15.2,
+      "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
     },
     {
       "code": "MISSING_OUTCOME",
@@ -1362,9 +1414,18 @@
       "observationId": "event:d4b95b88-2b87-4dd1-ac67-ba199829130b",
       "eventId": "d4b95b88-2b87-4dd1-ac67-ba199829130b",
       "propertyLabel": "Benoni",
+      "category": "source_unavailable",
+      "reason": "Source blocked, permanent failure, or unavailable",
+      "priority": 4,
+      "nextAction": "REVIEW SOURCE"
+    },
+    {
+      "observationId": "event:d4b95b88-2b87-4dd1-ac67-ba199829130b",
+      "eventId": "d4b95b88-2b87-4dd1-ac67-ba199829130b",
+      "propertyLabel": "Benoni",
       "category": "outcome",
       "reason": "Extraction complete but outcome unknown — do not infer SOLD",
-      "priority": 1,
+      "priority": 4,
       "nextAction": "Resolve Evidence"
     },
     {
@@ -1373,8 +1434,26 @@
       "propertyLabel": "Secunda",
       "category": "sale_price",
       "reason": "SOLD without verified sale price — SALE_PRICE_REVIEW_REQUIRED",
-      "priority": 1,
+      "priority": 4,
       "nextAction": "Quality Audit — explicit sale evidence only"
+    },
+    {
+      "observationId": "event:1549f73a-684c-4497-9835-1b80041c9173",
+      "eventId": "1549f73a-684c-4497-9835-1b80041c9173",
+      "propertyLabel": "Secunda",
+      "category": "source_unavailable",
+      "reason": "Source blocked, permanent failure, or unavailable",
+      "priority": 4,
+      "nextAction": "REVIEW SOURCE"
+    },
+    {
+      "observationId": "event:37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
+      "eventId": "37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
+      "propertyLabel": "Haenertsburg",
+      "category": "source_unavailable",
+      "reason": "Source blocked, permanent failure, or unavailable",
+      "priority": 4,
+      "nextAction": "REVIEW SOURCE"
     },
     {
       "observationId": "event:37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
@@ -1382,8 +1461,17 @@
       "propertyLabel": "Haenertsburg",
       "category": "outcome",
       "reason": "Extraction complete but outcome unknown — do not infer SOLD",
-      "priority": 1,
+      "priority": 4,
       "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:66316a65-9ba8-41a1-b668-9a594b113129",
+      "eventId": "66316a65-9ba8-41a1-b668-9a594b113129",
+      "propertyLabel": "Roodepoort",
+      "category": "source_unavailable",
+      "reason": "Source blocked, permanent failure, or unavailable",
+      "priority": 4,
+      "nextAction": "REVIEW SOURCE"
     },
     {
       "observationId": "event:66316a65-9ba8-41a1-b668-9a594b113129",
@@ -1391,8 +1479,17 @@
       "propertyLabel": "Roodepoort",
       "category": "outcome",
       "reason": "Extraction complete but outcome unknown — do not infer SOLD",
-      "priority": 1,
+      "priority": 4,
       "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:f9962d13-5821-4054-9934-1cabf293adc3",
+      "eventId": "f9962d13-5821-4054-9934-1cabf293adc3",
+      "propertyLabel": "of",
+      "category": "source_unavailable",
+      "reason": "Source blocked, permanent failure, or unavailable",
+      "priority": 4,
+      "nextAction": "REVIEW SOURCE"
     },
     {
       "observationId": "event:f9962d13-5821-4054-9934-1cabf293adc3",
@@ -1400,7 +1497,7 @@
       "propertyLabel": "of",
       "category": "outcome",
       "reason": "Extraction complete but outcome unknown — do not infer SOLD",
-      "priority": 1,
+      "priority": 4,
       "nextAction": "Resolve Evidence"
     },
     {
@@ -1491,7 +1588,7 @@
       "Historical events: 33",
       "Licensed sources: 33/33",
       "Fetch attempted: 14/33",
-      "Fetch successful: 14"
+      "Fetch successful: 9"
     ],
     "tested": [
       "HI 5.3 campaign controller (batch limit 5)",
@@ -1499,18 +1596,19 @@
       "Ranked bottleneck + review queue"
     ],
     "recovered": [
-      "14 successful fetches in production",
+      "9 successful fetches in production",
       "9/33 snapshots available",
       "14/33 extractions available",
       "4/33 outcome observations"
     ],
     "stillMissing": [
       "19 events never fetch-attempted",
+      "5 legacy failures awaiting modern metadata retry",
       "No verified SOLD outcomes",
       "No verified sale prices"
     ],
     "reviewRequired": [
-      "14 review queue items"
+      "19 review queue items"
     ],
     "insufficientData": [
       "Sale statistics — INSUFFICIENT_DATA (no verified sale prices)",
@@ -1527,11 +1625,11 @@
       "town": "Benoni",
       "source": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-14T20:03:51.071+00:00",
-      "failure": null,
-      "nextAction": "DO_NOT_RETRY",
-      "priority": 1,
-      "group": "P1"
+      "lastAttempt": "2026-08-15T12:28:56.604+00:00",
+      "failure": "LEGACY_UNKNOWN_FAILURE",
+      "nextAction": "REVIEW SOURCE",
+      "priority": 4,
+      "group": "P4"
     },
     {
       "eventId": "1549f73a-684c-4497-9835-1b80041c9173",
@@ -1539,11 +1637,11 @@
       "town": "Secunda",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
       "currentState": "OUTCOME_FOUND",
-      "lastAttempt": "2026-08-14T20:03:42.901+00:00",
-      "failure": null,
-      "nextAction": "DO_NOT_RETRY",
-      "priority": 1,
-      "group": "P1"
+      "lastAttempt": "2026-08-15T12:28:54.09+00:00",
+      "failure": "LEGACY_UNKNOWN_FAILURE",
+      "nextAction": "REVIEW SOURCE",
+      "priority": 4,
+      "group": "P4"
     },
     {
       "eventId": "37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
@@ -1551,11 +1649,11 @@
       "town": "Haenertsburg",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-14T20:03:57.773+00:00",
-      "failure": null,
-      "nextAction": "DO_NOT_RETRY",
-      "priority": 1,
-      "group": "P1"
+      "lastAttempt": "2026-08-15T12:28:58.898+00:00",
+      "failure": "LEGACY_UNKNOWN_FAILURE",
+      "nextAction": "REVIEW SOURCE",
+      "priority": 4,
+      "group": "P4"
     },
     {
       "eventId": "66316a65-9ba8-41a1-b668-9a594b113129",
@@ -1563,11 +1661,11 @@
       "town": "Roodepoort",
       "source": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-14T20:04:14.556+00:00",
-      "failure": null,
-      "nextAction": "DO_NOT_RETRY",
-      "priority": 1,
-      "group": "P1"
+      "lastAttempt": "2026-08-15T12:29:03.687+00:00",
+      "failure": "LEGACY_UNKNOWN_FAILURE",
+      "nextAction": "REVIEW SOURCE",
+      "priority": 4,
+      "group": "P4"
     },
     {
       "eventId": "f9962d13-5821-4054-9934-1cabf293adc3",
@@ -1575,11 +1673,11 @@
       "town": "of",
       "source": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-14T20:04:07.139+00:00",
-      "failure": null,
-      "nextAction": "DO_NOT_RETRY",
-      "priority": 1,
-      "group": "P1"
+      "lastAttempt": "2026-08-15T12:29:01.355+00:00",
+      "failure": "LEGACY_UNKNOWN_FAILURE",
+      "nextAction": "REVIEW SOURCE",
+      "priority": 4,
+      "group": "P4"
     },
     {
       "eventId": "f79a330b-7779-4719-8c21-174252c9ab3f",
