@@ -1,6 +1,6 @@
 {
   "version": "historical-intelligence-5.4.0",
-  "generatedAt": "2026-08-14T20:14:11.336Z",
+  "generatedAt": "2026-08-15T12:10:41.378Z",
   "connectivity": {
     "status": "CONNECTED",
     "message": "Production database reachable"
@@ -9,21 +9,21 @@
     "propertyMasters": 38,
     "auctionEvents": 38,
     "historicalEvents": 33,
-    "p1": 29,
+    "p1": 33,
     "p2": 0,
     "p3": 0,
-    "p4": 4,
+    "p4": 0,
     "queueBlocked": 0,
     "queueUnavailable": 0,
     "queueCompleted": 0,
-    "enrichmentAttempts": 97,
-    "successfulFetches": 9,
-    "failedFetches": 4,
+    "enrichmentAttempts": 102,
+    "successfulFetches": 14,
+    "failedFetches": 0,
     "sourceFound": 33,
     "sourceLicensed": 33,
     "sourceBlocked": 0,
     "sourceUnavailable": 0,
-    "fetchAttempted": 13,
+    "fetchAttempted": 14,
     "tlsErrors": 0,
     "networkErrors": 0,
     "dnsErrors": 0,
@@ -32,16 +32,16 @@
     "http404": 0,
     "http429": 0,
     "http5xx": 0,
-    "snapshots": 4,
+    "snapshots": 9,
     "noChange": 5,
-    "extractionAttempted": 9,
-    "extractionSuccessful": 9,
+    "extractionAttempted": 14,
+    "extractionSuccessful": 14,
     "extractionFailed": 0,
     "extractionNoEvidence": 0,
-    "outcomeObservations": 2,
+    "outcomeObservations": 4,
     "verifiedSold": 0,
-    "soldWithoutPrice": 2,
-    "unknownOutcomes": 31,
+    "soldWithoutPrice": 4,
+    "unknownOutcomes": 29,
     "verifiedSalePrices": 0,
     "conflicts": 0,
     "reviewRequired": 0,
@@ -50,9 +50,9 @@
     "acquisitionGaps": 0,
     "catalogueLeaks": 0,
     "retryableFailures": 0,
-    "retryExhausted": 4,
-    "permanentFailures": 4,
-    "contentUnusable": 4,
+    "retryExhausted": 0,
+    "permanentFailures": 0,
+    "contentUnusable": 0,
     "rateLimited": 0,
     "authRequired": 0
   },
@@ -60,26 +60,26 @@
     "total": 33,
     "sourceFound": 33,
     "sourceLicensed": 33,
-    "fetchAttempted": 13,
-    "fetchSuccessful": 9,
-    "snapshots": 9,
-    "extractions": 9,
-    "outcomeEvidence": 2,
+    "fetchAttempted": 14,
+    "fetchSuccessful": 14,
+    "snapshots": 14,
+    "extractions": 14,
+    "outcomeEvidence": 4,
     "salePriceEvidence": 0
   },
   "coverageDashboard": {
     "historicalEvents": 33,
     "licensedSources": "33/33",
-    "fetchAttempted": "13/33",
-    "neverAttempted": 20,
-    "fetchSuccessful": 9,
-    "fetchFailed": 4,
-    "legacyFailuresRequiringRefetch": 4,
-    "snapshots": 4,
-    "extractions": 9,
-    "outcomeEvidence": 2,
+    "fetchAttempted": "14/33",
+    "neverAttempted": 19,
+    "fetchSuccessful": 14,
+    "fetchFailed": 0,
+    "legacyFailuresRequiringRefetch": 0,
+    "snapshots": 9,
+    "extractions": 14,
+    "outcomeEvidence": 4,
     "verifiedSold": 0,
-    "soldWithoutPrice": 2,
+    "soldWithoutPrice": 4,
     "verifiedSalePrices": 0,
     "comparableReady": 0,
     "marketReadyTowns": 0,
@@ -88,36 +88,35 @@
     "catalogueLeaks": 0
   },
   "stateBreakdown": {
-    "EXTRACTION_AVAILABLE": 7,
-    "OUTCOME_FOUND": 2,
-    "FETCH_HTTP_ERROR": 4,
-    "FETCH_ELIGIBLE": 20
+    "EXTRACTION_AVAILABLE": 10,
+    "OUTCOME_FOUND": 4,
+    "FETCH_ELIGIBLE": 19
   },
   "recoveryPriorityCounts": {
-    "p1": 29,
+    "p1": 33,
     "p2": 0,
     "p3": 0,
-    "p4": 4
+    "p4": 0
   },
   "successRates": {
-    "fetchSuccessRate": 69.2,
-    "snapshotRate": 30.8,
-    "extractionRate": 27.3,
-    "outcomeEvidenceRate": 6.1,
+    "fetchSuccessRate": 100,
+    "snapshotRate": 64.3,
+    "extractionRate": 42.4,
+    "outcomeEvidenceRate": 12.1,
     "verifiedSalePriceRate": 0,
     "denominators": {
-      "fetchAttempts": 13,
-      "fetchSuccessful": 9,
-      "snapshots": 4,
-      "extractions": 9,
+      "fetchAttempts": 14,
+      "fetchSuccessful": 14,
+      "snapshots": 9,
+      "extractions": 14,
       "historicalEvents": 33,
-      "outcomeEvidence": 2,
+      "outcomeEvidence": 4,
       "verifiedSalePrices": 0
     }
   },
   "bottleneck": {
     "code": "FETCH_NOT_ATTEMPTED",
-    "count": 20,
+    "count": 19,
     "total": 33,
     "recommendedAction": "Acquire P1 (5)"
   },
@@ -365,22 +364,22 @@
       "auctionDate": "2026-07-14T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-commercial-building-port-elizabeth/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 4,
-      "evidenceState": "FETCH_HTTP_ERROR",
-      "fetchState": "FETCH_HTTP_ERROR",
-      "httpStatus": null,
-      "errorCode": "CONTENT_UNAVAILABLE",
-      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
+      "recoveryPriority": 1,
+      "evidenceState": "OUTCOME_FOUND",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
+      "errorCode": null,
+      "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
-      "outcome": "UNKNOWN",
-      "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "snapshot": true,
+      "extraction": "SUCCESS",
+      "outcome": "SOLD",
+      "salePrice": "SOLD_WITHOUT_PRICE",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T09:18:30.546+00:00",
-      "attemptNumber": 2,
-      "nextAction": "REVIEW SOURCE"
+      "lastAttempt": "2026-08-15T03:32:59.057+00:00",
+      "attemptNumber": 3,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:51a22806-445f-479f-aa27-a60158075278",
@@ -391,22 +390,22 @@
       "auctionDate": "2026-07-14T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-liquidation-auction-4-bedroom-double-storey-home-randpark-ridge-johannesburg/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 4,
-      "evidenceState": "FETCH_HTTP_ERROR",
-      "fetchState": "FETCH_HTTP_ERROR",
-      "httpStatus": null,
-      "errorCode": "CONTENT_UNAVAILABLE",
-      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
+      "recoveryPriority": 1,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
+      "errorCode": null,
+      "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T09:18:29.476+00:00",
-      "attemptNumber": 3,
-      "nextAction": "REVIEW SOURCE"
+      "lastAttempt": "2026-08-15T03:32:50.275+00:00",
+      "attemptNumber": 4,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:d3a1d1ff-1940-4019-965d-47cb5b8b5da1",
@@ -417,22 +416,22 @@
       "auctionDate": "2026-07-01T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/deceased-estate-auction-4-bedroom-house-hartbeespoort-dam/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 4,
-      "evidenceState": "FETCH_HTTP_ERROR",
-      "fetchState": "FETCH_HTTP_ERROR",
-      "httpStatus": null,
-      "errorCode": "CONTENT_UNAVAILABLE",
-      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
+      "recoveryPriority": 1,
+      "evidenceState": "OUTCOME_FOUND",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
+      "errorCode": null,
+      "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
-      "outcome": "UNKNOWN",
-      "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "snapshot": true,
+      "extraction": "SUCCESS",
+      "outcome": "SOLD",
+      "salePrice": "SOLD_WITHOUT_PRICE",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T09:18:32.654+00:00",
-      "attemptNumber": 2,
-      "nextAction": "REVIEW SOURCE"
+      "lastAttempt": "2026-08-15T03:33:16.031+00:00",
+      "attemptNumber": 3,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:4ca6f3ee-ff14-4dbd-b85e-af0e733e20b5",
@@ -443,22 +442,22 @@
       "auctionDate": "2026-07-01T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-3-bedroom-house-linden-johannesburg/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 4,
-      "evidenceState": "FETCH_HTTP_ERROR",
-      "fetchState": "FETCH_HTTP_ERROR",
-      "httpStatus": null,
-      "errorCode": "CONTENT_UNAVAILABLE",
-      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
+      "recoveryPriority": 1,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
+      "errorCode": null,
+      "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T09:18:31.603+00:00",
-      "attemptNumber": 2,
-      "nextAction": "REVIEW SOURCE"
+      "lastAttempt": "2026-08-15T03:33:05.839+00:00",
+      "attemptNumber": 3,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:8a6d7558-9fa3-466d-90f2-da461f6554e6",
@@ -470,21 +469,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/light-industrial-property-kya-sand-randburg-auction/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T03:33:23.067+00:00",
+      "attemptNumber": 1,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:01c5c920-ee74-46c0-8a5a-2305bf55dab0",
@@ -1095,58 +1094,58 @@
       "property": "Port Elizabeth",
       "town": "Port Elizabeth",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-commercial-building-port-elizabeth/",
-      "currentState": "FETCH_HTTP_ERROR",
-      "lastAttempt": "2026-08-14T09:18:30.546+00:00",
-      "failure": "LEGACY_UNKNOWN_FAILURE",
-      "nextAction": "REVIEW SOURCE",
-      "priority": 4,
-      "group": "P4"
+      "currentState": "OUTCOME_FOUND",
+      "lastAttempt": "2026-08-15T03:32:59.057+00:00",
+      "failure": null,
+      "nextAction": "RETRY_LATER",
+      "priority": 1,
+      "group": "P1"
     },
     {
       "eventId": "51a22806-445f-479f-aa27-a60158075278",
       "property": "Johannesburg",
       "town": "Johannesburg",
       "source": "https://bidderschoice.co.za/property-listings/online-liquidation-auction-4-bedroom-double-storey-home-randpark-ridge-johannesburg/",
-      "currentState": "FETCH_HTTP_ERROR",
-      "lastAttempt": "2026-08-14T09:18:29.476+00:00",
-      "failure": "LEGACY_UNKNOWN_FAILURE",
-      "nextAction": "REVIEW SOURCE",
-      "priority": 4,
-      "group": "P4"
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T03:32:50.275+00:00",
+      "failure": null,
+      "nextAction": "RETRY_LATER",
+      "priority": 1,
+      "group": "P1"
     },
     {
       "eventId": "d3a1d1ff-1940-4019-965d-47cb5b8b5da1",
       "property": "Hartbeespoort Dam",
       "town": "Hartbeespoort Dam",
       "source": "https://bidderschoice.co.za/property-listings/deceased-estate-auction-4-bedroom-house-hartbeespoort-dam/",
-      "currentState": "FETCH_HTTP_ERROR",
-      "lastAttempt": "2026-08-14T09:18:32.654+00:00",
-      "failure": "LEGACY_UNKNOWN_FAILURE",
-      "nextAction": "REVIEW SOURCE",
-      "priority": 4,
-      "group": "P4"
+      "currentState": "OUTCOME_FOUND",
+      "lastAttempt": "2026-08-15T03:33:16.031+00:00",
+      "failure": null,
+      "nextAction": "RETRY_LATER",
+      "priority": 1,
+      "group": "P1"
     },
     {
       "eventId": "4ca6f3ee-ff14-4dbd-b85e-af0e733e20b5",
       "property": "Johannesburg",
       "town": "Johannesburg",
       "source": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-3-bedroom-house-linden-johannesburg/",
-      "currentState": "FETCH_HTTP_ERROR",
-      "lastAttempt": "2026-08-14T09:18:31.603+00:00",
-      "failure": "LEGACY_UNKNOWN_FAILURE",
-      "nextAction": "REVIEW SOURCE",
-      "priority": 4,
-      "group": "P4"
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T03:33:05.839+00:00",
+      "failure": null,
+      "nextAction": "RETRY_LATER",
+      "priority": 1,
+      "group": "P1"
     },
     {
       "eventId": "8a6d7558-9fa3-466d-90f2-da461f6554e6",
       "property": "Randburg",
       "town": "Randburg",
       "source": "https://bidderschoice.co.za/property-listings/light-industrial-property-kya-sand-randburg-auction/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T03:33:23.067+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_LATER",
       "priority": 1,
       "group": "P1"
     },
@@ -1384,73 +1383,86 @@
   "liveDataUnavailable": false,
   "recoverySnapshot": {
     "historicalEvents": 33,
-    "fetchAttempted": 13,
-    "fetchSuccessful": 9,
-    "fetchFailed": 4,
-    "snapshots": 4,
-    "extractions": 9,
-    "outcomeEvidence": 2,
+    "fetchAttempted": 14,
+    "fetchSuccessful": 14,
+    "fetchFailed": 0,
+    "snapshots": 9,
+    "extractions": 14,
+    "outcomeEvidence": 4,
     "verifiedSold": 0,
     "verifiedSalePrices": 0,
     "comparableReady": 0,
     "marketReadyTowns": 0,
-    "soldWithoutPrice": 2
+    "soldWithoutPrice": 4
   },
   "chainSuccessRates": {
-    "fetchSuccessRate": 69.2,
-    "snapshotRate": 44.4,
-    "extractionRate": 225,
-    "outcomeEvidenceRate": 22.2,
+    "fetchSuccessRate": 100,
+    "snapshotRate": 64.3,
+    "extractionRate": 155.6,
+    "outcomeEvidenceRate": 28.6,
     "salePriceRate": 0,
     "denominators": {
-      "fetchAttempts": 13,
-      "successfulFetches": 9,
-      "snapshots": 4,
-      "extractions": 9,
-      "outcomeEvidence": 2
+      "fetchAttempts": 14,
+      "successfulFetches": 14,
+      "snapshots": 9,
+      "extractions": 14,
+      "outcomeEvidence": 4
     }
   },
   "p1Progress": {
     "originalCandidates": 20,
-    "processed": 0,
-    "remaining": 20,
+    "processed": 1,
+    "remaining": 19,
     "batchSize": 5,
     "batches": [
       {
         "batchNumber": 1,
-        "processed": 0,
-        "remaining": 20,
-        "status": "next"
+        "processed": 1,
+        "remaining": 19,
+        "status": "completed"
       },
       {
         "batchNumber": 2,
         "processed": 0,
-        "remaining": 20,
+        "remaining": 19,
         "status": "planned"
       },
       {
         "batchNumber": 3,
         "processed": 0,
-        "remaining": 20,
+        "remaining": 19,
         "status": "planned"
       },
       {
         "batchNumber": 4,
         "processed": 0,
-        "remaining": 20,
+        "remaining": 19,
         "status": "planned"
       }
     ]
   },
   "fetchResults": {
-    "attempted": 13,
-    "successful": 9,
-    "failed": 4,
+    "attempted": 14,
+    "successful": 14,
+    "failed": 0,
     "retryable": 0,
-    "permanent": 4,
-    "legacy": 4
+    "permanent": 0,
+    "legacy": 0
   },
   "batchHistory": [
+    {
+      "batchId": "enrich_batch_msttloe0",
+      "action": "enrichment_batch",
+      "operator": "cron",
+      "started": "2026-08-15T03:32:50.275+00:00",
+      "completed": "2026-08-15T03:33:23.067+00:00",
+      "eventsSelected": 5,
+      "eventsSucceeded": 5,
+      "eventsFailed": 0,
+      "snapshotsCreated": 5,
+      "outcomesExtracted": 5,
+      "pricesVerified": 0
+    },
     {
       "batchId": "hi51_legacy_mstdk98p",
       "action": "retry_legacy_failures",
@@ -1588,36 +1600,36 @@
       "Licensed sources: 33/33"
     ],
     "tested": [
-      "13 fetch attempts audited",
+      "14 fetch attempts audited",
       "HI 5.1 controlled recovery engine — batch limit 5, dry-run enforced",
       "Fetch classifier + legacy failure separation"
     ],
     "missing": [
       "No verified sale prices in production",
       "No verified SOLD outcomes in production",
-      "20 events never fetch-attempted"
+      "19 events never fetch-attempted"
     ],
     "reviewRequired": []
   },
-  "legacyRecoveryCandidates": 4,
+  "legacyRecoveryCandidates": 0,
   "missingExtractionCandidates": 0,
-  "p4ReviewCount": 4,
+  "p4ReviewCount": 0,
   "coverage52": {
     "historicalEvents": 33,
     "licensedSources": "33/33",
-    "fetchAttempted": "13/33",
-    "neverAttempted": 20,
-    "fetchSuccessful": 9,
-    "fetchFailed": 4,
+    "fetchAttempted": "14/33",
+    "neverAttempted": 19,
+    "fetchSuccessful": 14,
+    "fetchFailed": 0,
     "retryable": 0,
-    "permanent": 4,
-    "legacyFailures": 4,
-    "snapshots": "4/33",
+    "permanent": 0,
+    "legacyFailures": 0,
+    "snapshots": "9/33",
     "missingExtraction": 0,
-    "extractions": "9/33",
-    "outcomeEvidence": "2/33",
+    "extractions": "14/33",
+    "outcomeEvidence": "4/33",
     "verifiedSold": 0,
-    "soldWithoutPrice": 2,
+    "soldWithoutPrice": 4,
     "verifiedSalePrices": 0,
     "comparableReady": 0,
     "marketReadyTowns": 0,
@@ -1627,20 +1639,20 @@
     {
       "id": "A_P1",
       "label": "P1 Unattempted Recovery",
-      "eligible": 20,
+      "eligible": 19,
       "nextBatch": 5,
-      "processed": 0,
-      "remaining": 20,
+      "processed": 1,
+      "remaining": 19,
       "recommendedAction": "Dry Run P1 (5) → Acquire P1 (5)"
     },
     {
       "id": "B_LEGACY",
       "label": "Legacy Failure Recovery",
-      "eligible": 4,
-      "nextBatch": 4,
+      "eligible": 0,
+      "nextBatch": 0,
       "processed": 0,
-      "remaining": 4,
-      "recommendedAction": "Dry Run Legacy (5) → Retry Legacy Failures (5)"
+      "remaining": 0,
+      "recommendedAction": "No legacy failures"
     },
     {
       "id": "C_EXTRACTION",
@@ -1654,57 +1666,44 @@
     {
       "id": "D_RESOLUTION",
       "label": "Resolution & Quality Rebuild",
-      "eligible": 9,
+      "eligible": 14,
       "nextBatch": 5,
       "processed": 0,
-      "remaining": 9,
+      "remaining": 14,
       "recommendedAction": "Resolve Evidence → Quality Audit → Rebuild Intelligence"
     }
   ],
   "bottleneckRanked": [
     {
       "code": "FETCH_NOT_ATTEMPTED",
-      "count": 20,
+      "count": 19,
       "total": 33,
       "recommendedAction": "Acquire P1 (5)"
     },
     {
-      "code": "LEGACY_UNKNOWN_FAILURE",
-      "count": 4,
-      "total": 33,
-      "recommendedAction": "Retry Legacy Failures (5)"
-    },
-    {
       "code": "OUTCOME_MISSING",
-      "count": 7,
+      "count": 10,
       "total": 33,
       "recommendedAction": "Resolve Evidence (HI 4.2)"
     },
     {
       "code": "SALE_PRICE_MISSING",
-      "count": 2,
-      "total": 33,
-      "recommendedAction": "Quality Audit (HEQ 4.4) — explicit sale evidence only"
-    },
-    {
-      "code": "SOURCE_BLOCKED",
       "count": 4,
       "total": 33,
-      "recommendedAction": "Review source / licensing"
+      "recommendedAction": "Quality Audit (HEQ 4.4) — explicit sale evidence only"
     }
   ],
   "stateMachineCounts": {
-    "EXTRACTION_COMPLETE": 7,
-    "OUTCOME_FOUND": 2,
-    "LEGACY_UNKNOWN_FAILURE": 4,
-    "FETCH_ELIGIBLE_P1": 20
+    "EXTRACTION_COMPLETE": 10,
+    "OUTCOME_FOUND": 4,
+    "FETCH_ELIGIBLE_P1": 19
   },
   "evidenceLabels": {
     "provenInProduction": [
       "Public catalogue safety — 0 leaks",
       "Licensed sources: 33/33",
       "Historical events: 33",
-      "9 successful fetches in production"
+      "14 successful fetches in production"
     ],
     "tested": [
       "HI 5.2 controlled batch orchestration (limit 5)",
@@ -1722,33 +1721,31 @@
       "No verified sale prices — do not declare sale statistics ready",
       "Comparable ready = 0 (threshold not met)",
       "Market ready towns = 0 (min 5 sales)",
-      "20 events never fetch-attempted"
+      "19 events never fetch-attempted"
     ],
-    "reviewRequired": [
-      "4 P4 blocked records visible"
-    ]
+    "reviewRequired": []
   },
-  "nextAdminAction": "PRIMARY BOTTLENECK FETCH_NOT_ATTEMPTED 20/33 → Acquire P1 (5)",
+  "nextAdminAction": "PRIMARY BOTTLENECK FETCH_NOT_ATTEMPTED 19/33 → Acquire P1 (5)",
   "campaign": {
     "status": "CAMPAIGN_IN_PROGRESS",
     "totalEvents": 33,
-    "neverAttempted": 20,
-    "fetchAttempted": 13,
-    "fetchSuccessful": 9,
-    "fetchFailed": 4,
-    "remaining": 20,
-    "progressRatio": 0.394,
+    "neverAttempted": 19,
+    "fetchAttempted": 14,
+    "fetchSuccessful": 14,
+    "fetchFailed": 0,
+    "remaining": 19,
+    "progressRatio": 0.424,
     "progressBar": "████████░░░░░░░░░░░░",
-    "summaryLine": "13 / 33 attempted · 9 successful · 4 failed · 20 remaining"
+    "summaryLine": "14 / 33 attempted · 14 successful · 0 failed · 19 remaining"
   },
   "p1Campaign": {
-    "total": 20,
+    "total": 19,
     "completed": 0,
-    "remaining": 20,
-    "successful": 9,
-    "failed": 4,
+    "remaining": 19,
+    "successful": 14,
+    "failed": 0,
     "retryable": 0,
-    "permanent": 4,
+    "permanent": 0,
     "batchSize": 5,
     "plannedBatches": 4
   },
@@ -1757,23 +1754,23 @@
       "batchNumber": 1,
       "size": 5,
       "status": "next",
-      "remainingAfter": 15
+      "remainingAfter": 14
     },
     {
       "batchNumber": 2,
       "size": 5,
       "status": "planned",
-      "remainingAfter": 10
+      "remainingAfter": 9
     },
     {
       "batchNumber": 3,
       "size": 5,
       "status": "planned",
-      "remainingAfter": 5
+      "remainingAfter": 4
     },
     {
       "batchNumber": 4,
-      "size": 5,
+      "size": 4,
       "status": "planned",
       "remainingAfter": 0
     }
@@ -1792,27 +1789,27 @@
     {
       "key": "fetchAttempted",
       "label": "Fetch Attempted",
-      "value": 13
+      "value": 14
     },
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 9
+      "value": 14
     },
     {
       "key": "snapshots",
       "label": "Snapshots",
-      "value": 4
+      "value": 9
     },
     {
       "key": "extractions",
       "label": "Extractions",
-      "value": 9
+      "value": 14
     },
     {
       "key": "outcomeEvidence",
       "label": "Outcome Observations",
-      "value": 2
+      "value": 4
     },
     {
       "key": "verifiedSold",
@@ -1827,32 +1824,26 @@
   ],
   "bottleneck53": {
     "code": "FETCH_NOT_ATTEMPTED",
-    "count": 20,
+    "count": 19,
     "total": 33,
     "recommendedAction": "Acquire P1 (5)"
   },
   "bottleneckRanked53": [
     {
       "code": "FETCH_NOT_ATTEMPTED",
-      "count": 20,
+      "count": 19,
       "total": 33,
       "recommendedAction": "Acquire P1 (5)"
     },
     {
-      "code": "LEGACY_UNKNOWN_FAILURE",
-      "count": 4,
-      "total": 33,
-      "recommendedAction": "Retry Legacy (5)"
-    },
-    {
       "code": "OUTCOME_MISSING",
-      "count": 7,
+      "count": 10,
       "total": 33,
       "recommendedAction": "Resolve Evidence (HI 4.2)"
     },
     {
       "code": "SALE_PRICE_MISSING",
-      "count": 2,
+      "count": 4,
       "total": 33,
       "recommendedAction": "Quality Audit — explicit sale evidence only"
     }
@@ -1943,37 +1934,46 @@
       "observationId": "event:ccaf70ac-380b-41b4-9a28-b603c3ea8b8c",
       "eventId": "ccaf70ac-380b-41b4-9a28-b603c3ea8b8c",
       "propertyLabel": "Port Elizabeth",
-      "category": "source_unavailable",
-      "reason": "Source blocked, permanent failure, or unavailable",
-      "priority": 4,
-      "nextAction": "REVIEW SOURCE"
+      "category": "sale_price",
+      "reason": "SOLD without verified sale price — SALE_PRICE_REVIEW_REQUIRED",
+      "priority": 1,
+      "nextAction": "Quality Audit — explicit sale evidence only"
     },
     {
       "observationId": "event:51a22806-445f-479f-aa27-a60158075278",
       "eventId": "51a22806-445f-479f-aa27-a60158075278",
       "propertyLabel": "Johannesburg",
-      "category": "source_unavailable",
-      "reason": "Source blocked, permanent failure, or unavailable",
-      "priority": 4,
-      "nextAction": "REVIEW SOURCE"
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
     },
     {
       "observationId": "event:d3a1d1ff-1940-4019-965d-47cb5b8b5da1",
       "eventId": "d3a1d1ff-1940-4019-965d-47cb5b8b5da1",
       "propertyLabel": "Hartbeespoort Dam",
-      "category": "source_unavailable",
-      "reason": "Source blocked, permanent failure, or unavailable",
-      "priority": 4,
-      "nextAction": "REVIEW SOURCE"
+      "category": "sale_price",
+      "reason": "SOLD without verified sale price — SALE_PRICE_REVIEW_REQUIRED",
+      "priority": 1,
+      "nextAction": "Quality Audit — explicit sale evidence only"
     },
     {
       "observationId": "event:4ca6f3ee-ff14-4dbd-b85e-af0e733e20b5",
       "eventId": "4ca6f3ee-ff14-4dbd-b85e-af0e733e20b5",
       "propertyLabel": "Johannesburg",
-      "category": "source_unavailable",
-      "reason": "Source blocked, permanent failure, or unavailable",
-      "priority": 4,
-      "nextAction": "REVIEW SOURCE"
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:8a6d7558-9fa3-466d-90f2-da461f6554e6",
+      "eventId": "8a6d7558-9fa3-466d-90f2-da461f6554e6",
+      "propertyLabel": "Randburg",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
     }
   ],
   "catalogueSafe": true,
@@ -1982,8 +1982,8 @@
       "Public catalogue safety — 0 leaks",
       "Historical events: 33",
       "Licensed sources: 33/33",
-      "Fetch attempted: 13/33",
-      "Fetch successful: 9"
+      "Fetch attempted: 14/33",
+      "Fetch successful: 14"
     ],
     "tested": [
       "HI 5.3 campaign controller (batch limit 5)",
@@ -1991,19 +1991,18 @@
       "Ranked bottleneck + review queue"
     ],
     "recovered": [
-      "9 successful fetches in production",
-      "4/33 snapshots available",
-      "9/33 extractions available",
-      "2/33 outcome observations"
+      "14 successful fetches in production",
+      "9/33 snapshots available",
+      "14/33 extractions available",
+      "4/33 outcome observations"
     ],
     "stillMissing": [
-      "20 events never fetch-attempted",
-      "4 legacy failures awaiting modern metadata retry",
+      "19 events never fetch-attempted",
       "No verified SOLD outcomes",
       "No verified sale prices"
     ],
     "reviewRequired": [
-      "13 review queue items"
+      "14 review queue items"
     ],
     "insufficientData": [
       "Sale statistics — INSUFFICIENT_DATA (no verified sale prices)",
@@ -2011,22 +2010,313 @@
       "Market towns — INSUFFICIENT_DATA (min 5 sales)"
     ]
   },
+  "engineStatus54": "ENGINE_READY",
+  "dataCoverageStatus54": "DATA_COVERAGE_INSUFFICIENT",
   "campaign54": {
     "status": "CAMPAIGN_IN_PROGRESS",
-    "summaryLine": "P1 Progress [░░░░░░░░░░░░░░░░] 0 / 20 · Remaining: 20"
+    "summaryLine": "P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaining: 19",
+    "dataCoverageReady": false
   },
   "p1Progress54": {
     "originalP1": 20,
-    "processed": 0,
-    "remaining": 20,
-    "blocked": 4,
-    "successful": 9,
-    "failed": 4,
+    "processed": 1,
+    "remaining": 19,
+    "blocked": 0,
+    "successful": 14,
+    "failed": 0,
     "retryable": 0,
-    "reviewRequired": 13,
-    "progressBar": "░░░░░░░░░░░░░░░░",
-    "progressLabel": "0 / 20"
+    "reviewRequired": 14,
+    "progressBar": "█░░░░░░░░░░░░░░░",
+    "progressLabel": "1 / 20"
   },
+  "priorityBuckets54": {
+    "p1Remaining": 19,
+    "p2Remaining": 0,
+    "p3Remaining": 0,
+    "p4Blocked": 0
+  },
+  "townOpportunities54": [
+    {
+      "town": "Pretoria",
+      "historicalEvents": 4,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 4,
+      "licensedSources": 4,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Port Alfred",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 2,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "of",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Randburg",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Bedfordview",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Pretoria North",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Bettys Bay",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Clanwilliam",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "and are strictly farmed and managed on t",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Northam",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Germiston",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Municipal water and sewerage connections",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Sandton",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Phase",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Centurion",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Groblersdal",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 0,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Johannesburg",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 0,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Benoni",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 0,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Secunda",
+      "historicalEvents": 1,
+      "verifiedSales": 1,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 1,
+      "neverAttempted": 0,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Haenertsburg",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 0,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    }
+  ],
   "evidenceFunnel54": [
     {
       "key": "licensedSources",
@@ -2036,27 +2326,27 @@
     {
       "key": "fetchAttempted",
       "label": "Fetch Attempted",
-      "value": 13
+      "value": 14
     },
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 9
+      "value": 14
     },
     {
       "key": "snapshots",
       "label": "Snapshots",
-      "value": 4
+      "value": 9
     },
     {
       "key": "extractions",
       "label": "Extractions",
-      "value": 9
+      "value": 14
     },
     {
       "key": "outcomeEvidence",
       "label": "Outcome Evidence",
-      "value": 2
+      "value": 4
     },
     {
       "key": "verifiedSold",
@@ -2081,10 +2371,10 @@
   ],
   "coverageRates": {
     "sourceCoverage": 100,
-    "fetchCoverage": 39.4,
-    "snapshotCoverage": 12.1,
-    "extractionCoverage": 27.3,
-    "outcomeCoverage": 6.1,
+    "fetchCoverage": 42.4,
+    "snapshotCoverage": 27.3,
+    "extractionCoverage": 42.4,
+    "outcomeCoverage": 12.1,
     "salePriceCoverage": 0
   },
   "evidenceQualityCounts": {
@@ -2098,38 +2388,31 @@
   },
   "bottleneck54": {
     "code": "FETCH_NOT_ATTEMPTED",
-    "count": 20,
+    "count": 19,
     "total": 33,
-    "percentage": 60.6,
+    "percentage": 57.6,
     "recommendedAction": "Acquire P1 (5)"
   },
   "bottleneckRanked54": [
     {
       "code": "FETCH_NOT_ATTEMPTED",
-      "count": 20,
+      "count": 19,
       "total": 33,
-      "percentage": 60.6,
+      "percentage": 57.6,
       "recommendedAction": "Acquire P1 (5)"
     },
     {
-      "code": "FETCH_FAILURE",
-      "count": 4,
-      "total": 33,
-      "percentage": 12.1,
-      "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
-    },
-    {
       "code": "MISSING_OUTCOME",
-      "count": 7,
+      "count": 10,
       "total": 33,
-      "percentage": 21.2,
+      "percentage": 30.3,
       "recommendedAction": "Resolve Evidence"
     },
     {
       "code": "MISSING_SALE_PRICE",
-      "count": 2,
+      "count": 4,
       "total": 33,
-      "percentage": 6.1,
+      "percentage": 12.1,
       "recommendedAction": "Quality Audit — explicit sale evidence only"
     }
   ],

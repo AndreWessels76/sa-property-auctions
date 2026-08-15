@@ -1,0 +1,510 @@
+{
+  "version": "auction-evidence-dossier-1.0.0",
+  "generatedAt": "2026-08-15T12:10:41.563Z",
+  "liveStatus": "CONNECTED",
+  "productionCounts": {
+    "propertyMasters": 38,
+    "auctionEvents": 38,
+    "historicalEvents": 33,
+    "licensedSources": "33/33",
+    "fetchAttempted": 14,
+    "neverAttempted": 19,
+    "fetchSuccessful": 14,
+    "fetchFailed": 0,
+    "snapshots": "9/33",
+    "extractions": "14/33",
+    "outcomeEvidence": "4/33",
+    "verifiedSold": 0,
+    "soldWithoutPrice": 4,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0
+  },
+  "evidenceFunnel": [
+    {
+      "key": "licensedSources",
+      "label": "Licensed Sources",
+      "value": 33
+    },
+    {
+      "key": "fetchAttempted",
+      "label": "Fetch Attempted",
+      "value": 14
+    },
+    {
+      "key": "fetchSuccessful",
+      "label": "Fetch Successful",
+      "value": 14
+    },
+    {
+      "key": "snapshots",
+      "label": "Snapshots",
+      "value": 9
+    },
+    {
+      "key": "extractions",
+      "label": "Extractions",
+      "value": 14
+    },
+    {
+      "key": "outcomeEvidence",
+      "label": "Outcome Evidence",
+      "value": 4
+    },
+    {
+      "key": "verifiedSold",
+      "label": "Verified SOLD",
+      "value": 0
+    },
+    {
+      "key": "verifiedSalePrices",
+      "label": "Verified Sale Price",
+      "value": 0
+    },
+    {
+      "key": "comparableReady",
+      "label": "Comparable Ready",
+      "value": 0
+    },
+    {
+      "key": "marketReadyTowns",
+      "label": "Market Ready",
+      "value": 0
+    }
+  ],
+  "bottleneck": {
+    "code": "FETCH_NOT_ATTEMPTED",
+    "count": 19,
+    "total": 33,
+    "percentage": 57.6,
+    "recommendedAction": "Acquire P1 (5)"
+  },
+  "priorityBuckets": {
+    "p1Remaining": 19,
+    "p2Remaining": 0,
+    "p3Remaining": 0,
+    "p4Blocked": 0
+  },
+  "townOpportunities": [
+    {
+      "town": "Pretoria",
+      "historicalEvents": 4,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 4,
+      "licensedSources": 4,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Port Alfred",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 2,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "of",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Randburg",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Bedfordview",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Pretoria North",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Bettys Bay",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Clanwilliam",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "and are strictly farmed and managed on t",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Northam",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Germiston",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Municipal water and sewerage connections",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Sandton",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Phase",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Centurion",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 1,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Groblersdal",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 0,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Johannesburg",
+      "historicalEvents": 2,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 0,
+      "licensedSources": 2,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Benoni",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 0,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Secunda",
+      "historicalEvents": 1,
+      "verifiedSales": 1,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 1,
+      "neverAttempted": 0,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    },
+    {
+      "town": "Haenertsburg",
+      "historicalEvents": 1,
+      "verifiedSales": 0,
+      "verifiedSalePrices": 0,
+      "soldWithoutPrice": 0,
+      "neverAttempted": 0,
+      "licensedSources": 1,
+      "comparableReady": 0,
+      "requiredAdditionalVerifiedSales": 5,
+      "marketReady": false,
+      "priority": "LOW",
+      "reason": "5 more verified sale price(s) required for MARKET_READY (have 0/5)"
+    }
+  ],
+  "dossiers": [
+    {
+      "propertyLabel": "Benoni",
+      "town": "Benoni",
+      "outcomeLabel": "INSUFFICIENT DATA",
+      "truthStatus": "INSUFFICIENT_DATA",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 1
+    },
+    {
+      "propertyLabel": "Secunda",
+      "town": "Secunda",
+      "outcomeLabel": "SOLD WITHOUT PRICE",
+      "truthStatus": "SOURCE_CONFIRMED",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 1
+    },
+    {
+      "propertyLabel": "Haenertsburg",
+      "town": "Haenertsburg",
+      "outcomeLabel": "INSUFFICIENT DATA",
+      "truthStatus": "INSUFFICIENT_DATA",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 1
+    },
+    {
+      "propertyLabel": "Roodepoort",
+      "town": "Roodepoort",
+      "outcomeLabel": "INSUFFICIENT DATA",
+      "truthStatus": "INSUFFICIENT_DATA",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 1
+    },
+    {
+      "propertyLabel": "of",
+      "town": "of",
+      "outcomeLabel": "INSUFFICIENT DATA",
+      "truthStatus": "INSUFFICIENT_DATA",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 2
+    },
+    {
+      "propertyLabel": "Groblersdal",
+      "town": "Groblersdal",
+      "outcomeLabel": "INSUFFICIENT DATA",
+      "truthStatus": "INSUFFICIENT_DATA",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 2
+    },
+    {
+      "propertyLabel": "Pre-fab wall",
+      "town": "Pre-fab wall",
+      "outcomeLabel": "SOLD WITHOUT PRICE",
+      "truthStatus": "SOURCE_CONFIRMED",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 1
+    },
+    {
+      "propertyLabel": "Parys",
+      "town": "Parys",
+      "outcomeLabel": "INSUFFICIENT DATA",
+      "truthStatus": "INSUFFICIENT_DATA",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 1
+    },
+    {
+      "propertyLabel": "Port Elizabeth",
+      "town": "Port Elizabeth",
+      "outcomeLabel": "SOLD WITHOUT PRICE",
+      "truthStatus": "SOURCE_CONFIRMED",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 1
+    },
+    {
+      "propertyLabel": "Johannesburg",
+      "town": "Johannesburg",
+      "outcomeLabel": "INSUFFICIENT DATA",
+      "truthStatus": "INSUFFICIENT_DATA",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 2
+    },
+    {
+      "propertyLabel": "Hartbeespoort Dam",
+      "town": "Hartbeespoort Dam",
+      "outcomeLabel": "SOLD WITHOUT PRICE",
+      "truthStatus": "SOURCE_CONFIRMED",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 1
+    },
+    {
+      "propertyLabel": "Randburg",
+      "town": "Randburg",
+      "outcomeLabel": "INSUFFICIENT DATA",
+      "truthStatus": "INSUFFICIENT_DATA",
+      "salePriceDisplay": "Sale price not verified.",
+      "historicalEvents": 2
+    }
+  ],
+  "alerts": {
+    "DETECTED": 0,
+    "QUEUED": 0,
+    "DELIVERED": 0,
+    "FAILED": 0
+  },
+  "partners": {
+    "contracts": 1,
+    "activePartners": 0,
+    "verifiedPartnerEvidence": 0,
+    "pilots": []
+  },
+  "publicSafety": {
+    "catalogueLeaks": 0,
+    "rebuildStatus": "ALLOWED"
+  },
+  "labels": {
+    "proven": [
+      "Public catalogue safety — 0 leaks",
+      "Historical events: 33",
+      "Licensed sources: 33/33",
+      "Fetch attempted: 14/33",
+      "Fetch successful: 14",
+      "Sample dossiers: 12",
+      "Catalogue leaks: 0"
+    ],
+    "tested": [
+      "HI 5.4 live pipeline",
+      "Auction Evidence Dossier builder",
+      "Town acquisition opportunity ranking",
+      "Partner pilot registry (empty)",
+      "Alert delivery status (no fake DELIVERED)"
+    ],
+    "missing": [
+      "Verified sale prices",
+      "Comparable-ready corpus",
+      "Market-ready towns",
+      "19 never-attempted historical fetches"
+    ],
+    "blocked": []
+  }
+}

@@ -19,7 +19,9 @@ type Dashboard = {
   version?: string;
   verdict?: string;
   reason?: string;
-  campaign54?: { status: string; summaryLine: string };
+  engineStatus54?: string;
+  dataCoverageStatus54?: string;
+  campaign54?: { status: string; summaryLine: string; dataCoverageReady?: boolean };
   p1Progress54?: {
     originalP1: number;
     processed: number;
@@ -32,6 +34,24 @@ type Dashboard = {
     progressBar: string;
     progressLabel: string;
   };
+  priorityBuckets54?: {
+    p1Remaining: number;
+    p2Remaining: number;
+    p3Remaining: number;
+    p4Blocked: number;
+  };
+  townOpportunities54?: Array<{
+    town: string;
+    verifiedSalePrices: number;
+    requiredAdditionalVerifiedSales: number;
+    comparableReady: number;
+    historicalEvents: number;
+    licensedSources: number;
+    neverAttempted: number;
+    priority: string;
+    marketReady: boolean;
+    reason: string;
+  }>;
   evidenceFunnel54?: FunnelStep[];
   bottleneck54?: {
     code: string;
@@ -171,6 +191,57 @@ export default function HistoricalIntelligence54Panel() {
         </p>
       ) : null}
 
+      {/* Data density vs engine readiness */}
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="rounded-lg border border-slate-700 bg-slate-900/50 p-3 text-xs">
+          <p className="font-semibold text-slate-300">ENGINE STATUS</p>
+          <p className="mt-1 text-lg font-bold text-cyan-200">
+            {data?.engineStatus54 === "PRODUCTION_SAFETY_BLOCKED"
+              ? "PRODUCTION SAFETY BLOCKED"
+              : "READY"}
+          </p>
+          <p className="mt-1 text-slate-400">
+            Campaign + evidence pipeline operational — acquisition admin-triggered only.
+          </p>
+        </div>
+        <div className="rounded-lg border border-slate-700 bg-slate-900/50 p-3 text-xs">
+          <p className="font-semibold text-slate-300">DATA COVERAGE</p>
+          <p className="mt-1 text-lg font-bold text-amber-200">
+            {data?.dataCoverageStatus54 === "DATA_COVERAGE_READY"
+              ? "DATA COVERAGE READY"
+              : "INSUFFICIENT"}
+          </p>
+          <p className="mt-1 text-slate-400">
+            Verified sale prices: {displayMetric(cov?.verifiedSalePrices)} · Comparable
+            ready: {displayMetric(cov?.comparableReady)} · Market-ready towns:{" "}
+            {displayMetric(cov?.marketReadyTowns)}
+          </p>
+          <p className="mt-1 text-[11px] text-slate-500">
+            Market threshold 5 · Comparable threshold 3 — never lowered. Campaign complete ≠ data
+            coverage ready.
+          </p>
+        </div>
+      </div>
+
+      {/* Priority buckets */}
+      {data?.priorityBuckets54 ? (
+        <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] sm:grid-cols-4">
+          {(
+            [
+              ["P1 Remaining", data.priorityBuckets54.p1Remaining],
+              ["P2 Remaining", data.priorityBuckets54.p2Remaining],
+              ["P3 Remaining", data.priorityBuckets54.p3Remaining],
+              ["P4 Blocked", data.priorityBuckets54.p4Blocked],
+            ] as const
+          ).map(([label, value]) => (
+            <div key={label} className="rounded border border-slate-700 bg-slate-900/50 px-2 py-1.5">
+              <p className="text-slate-500">{label}</p>
+              <p className="font-mono text-slate-100">{value}</p>
+            </div>
+          ))}
+        </div>
+      ) : null}
+
       {/* Campaign */}
       <div className="mt-4 rounded-lg border border-cyan-900/50 bg-cyan-950/30 p-4">
         <p className="text-sm font-semibold text-cyan-100">Campaign</p>
@@ -228,6 +299,47 @@ export default function HistoricalIntelligence54Panel() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      ) : null}
+
+      {/* Town acquisition opportunities */}
+      {data?.townOpportunities54 && data.townOpportunities54.length > 0 ? (
+        <div className="mt-4 rounded-lg border border-slate-700 bg-slate-900/40 p-3">
+          <p className="text-xs font-semibold uppercase text-slate-400">
+            Town acquisition opportunities (path to MARKET_READY)
+          </p>
+          <p className="mt-1 text-[11px] text-slate-500">
+            Acquisition priority only — not fabricated market statistics. Threshold: 5 verified sale
+            prices.
+          </p>
+          <div className="mt-2 max-h-56 overflow-auto">
+            <table className="w-full text-left text-[11px] text-slate-200">
+              <thead className="text-slate-500">
+                <tr>
+                  <th className="py-1 pr-2">Town</th>
+                  <th className="py-1 pr-2">Verified</th>
+                  <th className="py-1 pr-2">Need</th>
+                  <th className="py-1 pr-2">Comps</th>
+                  <th className="py-1 pr-2">Events</th>
+                  <th className="py-1 pr-2">P1 gap</th>
+                  <th className="py-1">Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.townOpportunities54.slice(0, 12).map((t) => (
+                  <tr key={t.town} className="border-t border-slate-800">
+                    <td className="py-1 pr-2 font-medium">{t.town}</td>
+                    <td className="py-1 pr-2 font-mono">{t.verifiedSalePrices}</td>
+                    <td className="py-1 pr-2 font-mono">{t.requiredAdditionalVerifiedSales}</td>
+                    <td className="py-1 pr-2 font-mono">{t.comparableReady}</td>
+                    <td className="py-1 pr-2 font-mono">{t.historicalEvents}</td>
+                    <td className="py-1 pr-2 font-mono">{t.neverAttempted}</td>
+                    <td className="py-1">{t.priority}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       ) : null}

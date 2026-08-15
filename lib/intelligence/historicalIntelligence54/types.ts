@@ -1,5 +1,9 @@
 import type { Hi53IntelligenceReport } from "@/lib/intelligence/historicalIntelligence53";
 import type { Hi51RecoverySnapshot } from "@/lib/intelligence/historicalIntelligence51";
+import type {
+  PriorityBucketSummary,
+  TownAcquisitionOpportunity,
+} from "@/lib/intelligence/evidenceCoverage";
 
 export type Hi54CampaignStatus =
   | "CAMPAIGN_NOT_STARTED"
@@ -8,6 +12,12 @@ export type Hi54CampaignStatus =
   | "CAMPAIGN_AWAITING_REVIEW"
   | "CAMPAIGN_DATA_COVERED"
   | "CAMPAIGN_COMPLETE";
+
+export type Hi54EngineStatus = "ENGINE_READY" | "PRODUCTION_SAFETY_BLOCKED";
+
+export type Hi54DataCoverageStatus =
+  | "DATA_COVERAGE_INSUFFICIENT"
+  | "DATA_COVERAGE_READY";
 
 export type Hi54Verdict =
   | "INSUFFICIENT DATA — ENGINE READY"
@@ -75,11 +85,17 @@ export type Hi54SafetyStatus = {
 export type Hi54IntelligenceReport = Omit<Hi53IntelligenceReport, "version" | "verdict"> & {
   version: string;
   verdict: Hi54Verdict;
+  engineStatus54: Hi54EngineStatus;
+  dataCoverageStatus54: Hi54DataCoverageStatus;
   campaign54: {
     status: Hi54CampaignStatus;
     summaryLine: string;
+    /** Campaign complete ≠ data coverage ready. */
+    dataCoverageReady: boolean;
   };
   p1Progress54: Hi54P1Progress;
+  priorityBuckets54: PriorityBucketSummary;
+  townOpportunities54: TownAcquisitionOpportunity[];
   evidenceFunnel54: Hi54FunnelStep[];
   coverageRates: Hi54CoverageRates;
   evidenceQualityCounts: Hi54EvidenceQualityCounts;

@@ -9,6 +9,8 @@ export {
 
 export type {
   Hi54CampaignStatus,
+  Hi54EngineStatus,
+  Hi54DataCoverageStatus,
   Hi54Verdict,
   Hi54P1Progress,
   Hi54CoverageRates,
@@ -42,4 +44,6 @@ export {
   renderHi54GapReportMarkdown,
   clampHi54BatchLimit,
   catalogueLeakCheck,
+  deriveHi54EngineStatus,
+  deriveHi54DataCoverageStatus,
 } from "./buildReport";

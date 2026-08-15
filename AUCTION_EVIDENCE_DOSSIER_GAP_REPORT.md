@@ -1,8 +1,8 @@
-# Historical Intelligence 5.4 — Gap Report
+# Auction Evidence Dossier — Gap Report
 
-Generated: 2026-08-15T12:10:41.378Z
+Generated: 2026-08-15T12:10:41.563Z
 
-## P1
+## P1 — Fetch not attempted
 
 - **Benoni** (Benoni) — EXTRACTION_AVAILABLE → DO_NOT_RETRY
 - **Secunda** (Secunda) — OUTCOME_FOUND → DO_NOT_RETRY
@@ -37,3 +37,26 @@ Generated: 2026-08-15T12:10:41.378Z
 - **Pretoria** (Pretoria) — FETCH_ELIGIBLE → ACQUIRE
 - **Centurion** (Centurion) — FETCH_ELIGIBLE → ACQUIRE
 - **Port Alfred** (Port Alfred) — FETCH_ELIGIBLE → ACQUIRE
+
+## Town gaps to MARKET_READY
+
+- **Pretoria** — need 5 more verified sale price(s) (0/5)
+- **Port Alfred** — need 5 more verified sale price(s) (0/5)
+- **of** — need 5 more verified sale price(s) (0/5)
+- **Randburg** — need 5 more verified sale price(s) (0/5)
+- **Bedfordview** — need 5 more verified sale price(s) (0/5)
+- **Pretoria North** — need 5 more verified sale price(s) (0/5)
+- **Bettys Bay** — need 5 more verified sale price(s) (0/5)
+- **Clanwilliam** — need 5 more verified sale price(s) (0/5)
+- **and are strictly farmed and managed on t** — need 5 more verified sale price(s) (0/5)
+- **Northam** — need 5 more verified sale price(s) (0/5)
+- **Germiston** — need 5 more verified sale price(s) (0/5)
+- **Municipal water and sewerage connections** — need 5 more verified sale price(s) (0/5)
+- **Sandton** — need 5 more verified sale price(s) (0/5)
+- **Phase** — need 5 more verified sale price(s) (0/5)
+- **Centurion** — need 5 more verified sale price(s) (0/5)
+- **Groblersdal** — need 5 more verified sale price(s) (0/5)
+- **Johannesburg** — need 5 more verified sale price(s) (0/5)
+- **Benoni** — need 5 more verified sale price(s) (0/5)
+- **Secunda** — need 5 more verified sale price(s) (0/5)
+- **Haenertsburg** — need 5 more verified sale price(s) (0/5)

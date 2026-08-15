@@ -1,6 +1,6 @@
 # Historical Intelligence 5.4 — Live Report
 
-Generated: 2026-08-14T20:14:11.336Z
+Generated: 2026-08-15T12:10:41.378Z
 
 ## VERDICT
 
@@ -12,18 +12,18 @@ Historical evidence recovery still has unattempted or incomplete events
 
 **CAMPAIGN_IN_PROGRESS**
 
-P1 Progress [░░░░░░░░░░░░░░░░] 0 / 20
-Remaining: 20
+P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20
+Remaining: 19
 
-P1 Progress [░░░░░░░░░░░░░░░░] 0 / 20 · Remaining: 20
+P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaining: 19
 
 ## PROVEN IN PRODUCTION
 
 - Public catalogue safety — 0 leaks
 - Historical events: 33
 - Licensed sources: 33/33
-- Fetch attempted: 13/33
-- Fetch successful: 9
+- Fetch attempted: 14/33
+- Fetch successful: 14
 
 ## TESTED
 
@@ -33,21 +33,20 @@ P1 Progress [░░░░░░░░░░░░░░░░] 0 / 20 · Remaini
 
 ## RECOVERED
 
-- 9 successful fetches in production
-- 4/33 snapshots available
-- 9/33 extractions available
-- 2/33 outcome observations
+- 14 successful fetches in production
+- 9/33 snapshots available
+- 14/33 extractions available
+- 4/33 outcome observations
 
 ## STILL MISSING
 
-- 20 events never fetch-attempted
-- 4 legacy failures awaiting modern metadata retry
+- 19 events never fetch-attempted
 - No verified SOLD outcomes
 - No verified sale prices
 
 ## REVIEW REQUIRED
 
-- 13 review queue items
+- 14 review queue items
 
 ## INSUFFICIENT DATA
 
@@ -58,11 +57,11 @@ P1 Progress [░░░░░░░░░░░░░░░░] 0 / 20 · Remaini
 ## EVIDENCE FUNNEL
 
 33 Licensed Sources
-↓ 13 Fetch Attempted
-↓ 9 Fetch Successful
-↓ 4 Snapshots
-↓ 9 Extractions
-↓ 2 Outcome Evidence
+↓ 14 Fetch Attempted
+↓ 14 Fetch Successful
+↓ 9 Snapshots
+↓ 14 Extractions
+↓ 4 Outcome Evidence
 ↓ 0 Verified SOLD
 ↓ 0 Verified Sale Price
 ↓ 0 Comparable Ready
@@ -70,14 +69,13 @@ P1 Progress [░░░░░░░░░░░░░░░░] 0 / 20 · Remaini
 
 ## BOTTLENECK
 
-**FETCH_NOT_ATTEMPTED** — 20/33 (60.6%)
+**FETCH_NOT_ATTEMPTED** — 19/33 (57.6%)
 
 Recommended: Acquire P1 (5)
 
-- FETCH_NOT_ATTEMPTED: 20/33 → Acquire P1 (5)
-- FETCH_FAILURE: 4/33 → Retry Failed (5) / Retry Network Failures (5)
-- MISSING_OUTCOME: 7/33 → Resolve Evidence
-- MISSING_SALE_PRICE: 2/33 → Quality Audit — explicit sale evidence only
+- FETCH_NOT_ATTEMPTED: 19/33 → Acquire P1 (5)
+- MISSING_OUTCOME: 10/33 → Resolve Evidence
+- MISSING_SALE_PRICE: 4/33 → Quality Audit — explicit sale evidence only
 
 ## PUBLIC SAFETY
 
@@ -87,4 +85,4 @@ Catalogue safe: **YES**
 
 ## NEXT ADMIN ACTION
 
-PRIMARY BOTTLENECK FETCH_NOT_ATTEMPTED 20/33 → Acquire P1 (5)
+PRIMARY BOTTLENECK FETCH_NOT_ATTEMPTED 19/33 → Acquire P1 (5)

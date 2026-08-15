@@ -3,7 +3,16 @@ import {
   filterMissingExtraction,
   filterP1Eligible,
 } from "@/lib/intelligence/historicalIntelligence52";
-import { HISTORICAL_INTELLIGENCE54_VERSION, HI54_DEFAULT_BATCH_LIMIT } from "./config";
+import {
+  rankTownAcquisitionOpportunities,
+  summarizePriorityBuckets,
+} from "@/lib/intelligence/evidenceCoverage";
+import {
+  HISTORICAL_INTELLIGENCE54_VERSION,
+  HI54_DEFAULT_BATCH_LIMIT,
+  HI54_MINIMUM_MARKET_SALES,
+  HI54_MINIMUM_COMPARABLE_SALES,
+} from "./config";
 import {
   buildP1Progress54,
   deriveHi54CampaignStatus,
@@ -16,7 +25,31 @@ import {
   countEvidenceQuality,
   parseLeadingInt,
 } from "./coverage";
-import type { Hi54IntelligenceReport, Hi54SafetyStatus } from "./types";
+import type {
+  Hi54DataCoverageStatus,
+  Hi54EngineStatus,
+  Hi54IntelligenceReport,
+  Hi54SafetyStatus,
+} from "./types";
+
+export function deriveHi54EngineStatus(catalogueLeaks: number): Hi54EngineStatus {
+  return catalogueLeaks > 0 ? "PRODUCTION_SAFETY_BLOCKED" : "ENGINE_READY";
+}
+
+export function deriveHi54DataCoverageStatus(input: {
+  verifiedSalePrices: number;
+  comparableReady: number;
+  marketReadyTowns: number;
+}): Hi54DataCoverageStatus {
+  if (
+    input.verifiedSalePrices >= HI54_MINIMUM_MARKET_SALES &&
+    input.comparableReady >= HI54_MINIMUM_COMPARABLE_SALES &&
+    input.marketReadyTowns >= 1
+  ) {
+    return "DATA_COVERAGE_READY";
+  }
+  return "DATA_COVERAGE_INSUFFICIENT";
+}
 
 export function buildHi54Report(hi53: Hi53IntelligenceReport): Hi54IntelligenceReport {
   const cov = hi53.coverage52;
@@ -97,6 +130,17 @@ export function buildHi54Report(hi53: Hi53IntelligenceReport): Hi54IntelligenceR
     lastSuccessfulRebuild: null,
   };
 
+  const engineStatus54 = deriveHi54EngineStatus(cov.catalogueLeaks);
+  const dataCoverageStatus54 = deriveHi54DataCoverageStatus({
+    verifiedSalePrices: cov.verifiedSalePrices,
+    comparableReady: cov.comparableReady,
+    marketReadyTowns: cov.marketReadyTowns,
+  });
+  const dataCoverageReady = dataCoverageStatus54 === "DATA_COVERAGE_READY";
+
+  const priorityBuckets54 = summarizePriorityBuckets(hi53.events);
+  const townOpportunities54 = rankTownAcquisitionOpportunities(hi53.events).slice(0, 20);
+
   const nextAdminAction = catalogueSafe
     ? `PRIMARY BOTTLENECK ${bottleneck54.code} ${bottleneck54.count}/${bottleneck54.total} → ${bottleneck54.recommendedAction}`
     : "PUBLIC SAFETY FAILURE — BLOCK REBUILD";
@@ -108,11 +152,16 @@ export function buildHi54Report(hi53: Hi53IntelligenceReport): Hi54IntelligenceR
     version: HISTORICAL_INTELLIGENCE54_VERSION,
     verdict,
     reason,
+    engineStatus54,
+    dataCoverageStatus54,
     campaign54: {
       status,
       summaryLine,
+      dataCoverageReady,
     },
     p1Progress54,
+    priorityBuckets54,
+    townOpportunities54,
     evidenceFunnel54,
     coverageRates,
     evidenceQualityCounts,

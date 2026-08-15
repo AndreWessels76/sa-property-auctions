@@ -46,10 +46,12 @@ import {
 } from "@/lib/property/detailExperience";
 import { buildLifecycleTimeline } from "@/lib/property/lifecycleTimeline";
 import { buildAuctionResearchReport } from "@/lib/property/researchReport";
+import type { AuctionEvidenceDossier } from "@/lib/property/auctionEvidenceDossier";
 import { getRelatedListingGroups } from "@/lib/property/relatedListings";
 import {
   AuctionIntelligenceService,
   AuctionPriceIntelligenceService,
+  AuctionEvidenceDossierService,
   ComparableIntelligenceService,
   HistoricalIntelligenceService,
   OutcomeIntelligenceService,
@@ -169,6 +171,14 @@ export default async function PropertyPage({ params }: PageProps) {
     siteUrl,
     dueDiligence,
   });
+
+  let evidenceDossier: AuctionEvidenceDossier | null = null;
+  try {
+    const dossierResult = await AuctionEvidenceDossierService.forProperty(property.id);
+    if (dossierResult.ok) evidenceDossier = dossierResult.dossier;
+  } catch {
+    evidenceDossier = null;
+  }
 
   let agencyProfile = null;
   try {
@@ -295,7 +305,7 @@ export default async function PropertyPage({ params }: PageProps) {
             <AuctionIntelligencePanel panel={intelligencePanel} />
 
             {/* Research Report Summary */}
-            <ResearchReportSummaryCard report={researchReport} />
+            <ResearchReportSummaryCard report={researchReport} dossier={evidenceDossier} />
 
             {/* Gallery */}
             <PropertyGalleryExperience

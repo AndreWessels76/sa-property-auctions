@@ -35,6 +35,8 @@
     "test:historical-intelligence52": "node scripts/historical-intelligence52-selftest.cjs",
     "test:historical-intelligence53": "node scripts/historical-intelligence53-selftest.cjs",
     "test:historical-intelligence54": "node scripts/historical-intelligence54-selftest.cjs",
+    "test:auction-evidence-dossier": "node scripts/auction-evidence-dossier-selftest.cjs",
+    "dossier:live": "node --use-system-ca scripts/auction-evidence-dossier-live.cjs",
     "hi42:live": "npx --yes tsx --env-file=.env.local scripts/historical-intelligence42-live.ts",
     "hi50:live": "node --use-system-ca scripts/historical-intelligence50-live.cjs",
     "hi51:live": "node --use-system-ca scripts/historical-intelligence51-live.cjs",

@@ -881,9 +881,40 @@ test("65 QUALITY_REVIEW_REQUIRED on CONFLICT quality", () => {
   assert.ok(rankBottlenecks54(events).some((b) => b.code === "QUALITY_REVIEW_REQUIRED"));
 });
 
+test("66 engine ready vs data coverage insufficient", () => {
+  const hi54 = buildHi54Report(buildHi53Report(baseHi52({ events: manyP1(20) })));
+  assert.equal(hi54.engineStatus54, "ENGINE_READY");
+  assert.equal(hi54.dataCoverageStatus54, "DATA_COVERAGE_INSUFFICIENT");
+  assert.equal(hi54.campaign54.dataCoverageReady, false);
+  assert.ok(hi54.priorityBuckets54.p1Remaining >= 1);
+  assert.ok(Array.isArray(hi54.townOpportunities54));
+});
+
+test("67 data coverage ready requires thresholds", () => {
+  const { deriveHi54DataCoverageStatus } = load(
+    "intelligence/historicalIntelligence54/index.ts",
+  );
+  assert.equal(
+    deriveHi54DataCoverageStatus({
+      verifiedSalePrices: 4,
+      comparableReady: 3,
+      marketReadyTowns: 1,
+    }),
+    "DATA_COVERAGE_INSUFFICIENT",
+  );
+  assert.equal(
+    deriveHi54DataCoverageStatus({
+      verifiedSalePrices: 5,
+      comparableReady: 3,
+      marketReadyTowns: 1,
+    }),
+    "DATA_COVERAGE_READY",
+  );
+});
+
 console.log(`\nPassed ${passed} tests.`);
-if (passed < 60) {
-  console.error(`Expected at least 60 tests, got ${passed}`);
+if (passed < 67) {
+  console.error(`Expected at least 67 tests, got ${passed}`);
   process.exit(1);
 }
 console.log("HI 5.4 selftest PASS");

@@ -3,29 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { buildDocumentLinks } from "@/lib/property/detailExperience";
-import { buildAuctionResearchReport } from "@/lib/property/researchReport";
-import { buildLifecycleTimeline } from "@/lib/property/lifecycleTimeline";
-import { buildDueDiligenceCentre } from "@/lib/property/dueDiligence";
-import {
-  AuctionIntelligenceService,
-  ComparableIntelligenceService,
-  HistoricalIntelligenceService,
-  OutcomeIntelligenceService,
-  HistoricalIntelligence40Service,
-  HistoricalEvidenceQuality44Service,
-  InvestorIntelligence46Service,
-  HistoricalSourceCoverage48Service,
-  PropertyService,
-} from "@/lib/services";
-import { getComparableSales } from "@/lib/maps/getComparableSales";
-import { getImages } from "@/lib/images/getImages";
+import AuctionEvidenceDossierPanel from "@/components/property/dossier/AuctionEvidenceDossierPanel";
+import { AuctionEvidenceDossierService } from "@/lib/services/AuctionEvidenceDossierService";
 
 export const revalidate = 300;
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-  "https://sa-property-auctions.vercel.app";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -35,11 +16,12 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const property = await PropertyService.getProperty(id);
-  if (!property) return { title: "Research report not found" };
+  const result = await AuctionEvidenceDossierService.forProperty(id);
+  if (!result.ok) return { title: "Evidence dossier not found" };
   return {
-    title: `Research Report — ${property.title ?? "Property"} | SA Property Auctions`,
-    description: "Verified Auction Research Report — no speculative valuations.",
+    title: `Auction Evidence Dossier — ${result.property.title ?? "Property"} | SA Property Auctions`,
+    description:
+      "Don't just find the auction. Prove what happened. — source-backed auction history with provenance.",
   };
 }
 
@@ -61,7 +43,7 @@ function FieldTable({
           >
             <dt className="text-slate-500">{f.label}</dt>
             <dd className="font-medium text-navy-900">
-              {f.value ?? "Unavailable"}{" "}
+              {f.value ?? "UNKNOWN"}{" "}
               <span className="text-[10px] uppercase text-slate-400">
                 ({f.status.replace(/_/g, " ")})
               </span>
@@ -75,87 +57,21 @@ function FieldTable({
 
 export default async function ResearchReportPage({ params }: PageProps) {
   const { id } = await params;
-  const property = await PropertyService.getProperty(id);
-  if (!property) notFound();
+  const result = await AuctionEvidenceDossierService.forProperty(id);
+  if (!result.ok) notFound();
 
-  let images: Awaited<ReturnType<typeof getImages>> = [];
-  try {
-    images = await getImages(property.id);
-  } catch {
-    images = [];
-  }
-
-  let comparables: Awaited<ReturnType<typeof getComparableSales>> = [];
-  try {
-    comparables = await getComparableSales(property.id);
-  } catch {
-    comparables = [];
-  }
-
-  const hasImages = images.some((i) => Boolean(i.image_url?.trim()));
-  const hasDocuments = buildDocumentLinks(property).length > 0;
-  const timeline = buildLifecycleTimeline({
+  const {
     property,
-    hasImages,
-    hasDocuments,
-  });
-  const intelligence = await AuctionIntelligenceService.buildPanel({
-    property,
-    hasImages,
-    comparableCount: comparables.length,
-  });
-  const dueDiligence = buildDueDiligenceCentre(property);
-  const report = buildAuctionResearchReport({
-    property,
-    timeline,
-    intelligence,
-    comparableCount: comparables.length,
-    siteUrl,
-    dueDiligence,
-  });
-
-  let hiComparables: Awaited<
-    ReturnType<typeof ComparableIntelligenceService.forProperty>
-  > | null = null;
-  let hiHistorical: Awaited<
-    ReturnType<typeof HistoricalIntelligenceService.forProperty>
-  > | null = null;
-  let outcomeHistory: Awaited<
-    ReturnType<typeof OutcomeIntelligenceService.propertyHistory>
-  > | null = null;
-  let hiPerformance: Awaited<
-    ReturnType<typeof HistoricalIntelligence40Service.propertyPerformance>
-  > | null = null;
-  let evidenceQuality: Awaited<
-    ReturnType<typeof HistoricalEvidenceQuality44Service.forProperty>
-  > | null = null;
-  let investor46: Awaited<
-    ReturnType<typeof InvestorIntelligence46Service.forProperty>
-  > | null = null;
-  let acquisitionDiagnostic: Awaited<
-    ReturnType<typeof HistoricalSourceCoverage48Service.diagnosticForProperty>
-  > | null = null;
-  try {
-    hiComparables = await ComparableIntelligenceService.forProperty(property.id);
-    hiHistorical = await HistoricalIntelligenceService.forProperty(property.id);
-    outcomeHistory = await OutcomeIntelligenceService.propertyHistory(
-      property.id,
-      hiHistorical?.propertyMasterId ?? null,
-    );
-    hiPerformance = await HistoricalIntelligence40Service.propertyPerformance(property.id);
-    evidenceQuality = await HistoricalEvidenceQuality44Service.forProperty(property.id);
-    investor46 = await InvestorIntelligence46Service.forProperty(property.id);
-    acquisitionDiagnostic =
-      await HistoricalSourceCoverage48Service.diagnosticForProperty(property.id);
-  } catch {
-    hiComparables = null;
-    hiHistorical = null;
-    outcomeHistory = null;
-    hiPerformance = null;
-    evidenceQuality = null;
-    investor46 = null;
-    acquisitionDiagnostic = null;
-  }
+    report,
+    dossier,
+    hiComparables,
+    hiHistorical,
+    outcomeHistory,
+    hiPerformance,
+    evidenceQuality,
+    investor46,
+    acquisitionDiagnostic,
+  } = result;
 
   return (
     <>
@@ -170,484 +86,173 @@ export default async function ResearchReportPage({ params }: PageProps) {
               ← Back to property
             </Link>
             <div className="flex gap-2">
-              <a
+              <Link
                 href={`/properties/${property.id}/research`}
                 className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold"
               >
-                Share link
-              </a>
-              <Link
-                href={`/properties/${property.id}/research`}
-                className="rounded-lg bg-navy-900 px-3 py-1.5 text-xs font-semibold text-white"
-                // print via browser chrome — client print button on summary card
-              >
-                Version {report.version}
+                Share dossier
               </Link>
+              <span className="rounded-lg bg-navy-900 px-3 py-1.5 text-xs font-semibold text-white">
+                {dossier.version}
+              </span>
             </div>
           </div>
 
-          <header>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-600">
-              Auction research report
-            </p>
-            <h1 className="mt-1 text-3xl font-bold text-navy-900">
-              {property.title ?? "Property"}
-            </h1>
-            <p className="mt-3 text-sm leading-relaxed text-slate-700">
-              {report.executiveSummary}
-            </p>
-            <p className="mt-2 text-xs text-slate-400">
-              Generated {report.generatedAt.slice(0, 19).replace("T", " ")} UTC ·
-              Verified data only · No investment advice
-            </p>
-          </header>
+          <AuctionEvidenceDossierPanel dossier={dossier} />
 
-          <FieldTable title="Property Snapshot" fields={report.propertySnapshot} />
-          <FieldTable title="Auction Information" fields={report.auctionInformation} />
-          <FieldTable title="Land" fields={report.landInformation} />
-          <FieldTable title="Classification" fields={report.classification} />
-          <FieldTable title="Ownership" fields={report.ownership} />
-          <FieldTable title="Location Overview" fields={report.locationOverview} />
-          <FieldTable title="Agency" fields={report.agencyInformation} />
-          <FieldTable title="Verification" fields={report.verificationStatus} />
-          <FieldTable title="Provenance" fields={report.provenance} />
+          <section className="rounded-2xl border border-dashed border-slate-300 bg-white/70 p-5">
+            <h2 className="text-lg font-bold text-navy-900">
+              Listing research appendix
+            </h2>
+            <p className="mt-1 text-xs text-slate-500">
+              Verified / source-confirmed listing fields — never fabricated. Supporting
+              appendix to the Auction Evidence Dossier.
+            </p>
+            <div className="mt-4 space-y-6">
+              <FieldTable title="Property Snapshot" fields={report.propertySnapshot} />
+              <FieldTable title="Auction Information" fields={report.auctionInformation} />
+              <FieldTable title="Land" fields={report.landInformation} />
+              <FieldTable title="Classification" fields={report.classification} />
+              <FieldTable title="Ownership" fields={report.ownership} />
+              <FieldTable title="Location Overview" fields={report.locationOverview} />
+              <FieldTable title="Agency" fields={report.agencyInformation} />
+              <FieldTable title="Verification" fields={report.verificationStatus} />
+              <FieldTable title="Provenance" fields={report.provenance} />
+            </div>
 
-          {report.missingInformation.length > 0 ? (
-            <section>
-              <h2 className="text-lg font-bold text-navy-900">Missing information</h2>
-              <p className="mt-2 text-sm text-slate-600">
-                {report.missingInformation.join(", ")} — not supplied by auction source
-                (never fabricated).
-              </p>
-            </section>
-          ) : null}
+            {report.missingInformation.length > 0 ? (
+              <div className="mt-6">
+                <h3 className="text-sm font-semibold text-navy-900">Missing information</h3>
+                <p className="mt-2 text-sm text-slate-600">
+                  {report.missingInformation.join(", ")} — not supplied by auction source
+                  (never fabricated).
+                </p>
+              </div>
+            ) : null}
 
-          {report.evidenceNotes.length > 0 ? (
-            <section>
-              <h2 className="text-lg font-bold text-navy-900">Extraction evidence</h2>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
-                {report.evidenceNotes.map((n) => (
-                  <li key={n}>{n}</li>
+            {report.evidenceNotes.length > 0 ? (
+              <div className="mt-6">
+                <h3 className="text-sm font-semibold text-navy-900">Extraction evidence</h3>
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                  {report.evidenceNotes.map((n) => (
+                    <li key={n}>{n}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold text-navy-900">Documents</h3>
+              <ul className="mt-2 space-y-1 text-sm">
+                {report.documents.map((d) => (
+                  <li key={d.label} className="text-slate-700">
+                    {d.href ? (
+                      <a href={d.href} className="underline" target="_blank" rel="noreferrer">
+                        {d.label}
+                      </a>
+                    ) : (
+                      `${d.label} — ${d.status}`
+                    )}
+                  </li>
                 ))}
               </ul>
-            </section>
-          ) : null}
+            </div>
 
-          <section>
-            <h2 className="text-lg font-bold text-navy-900">Documents</h2>
-            <ul className="mt-2 space-y-1 text-sm">
-              {report.documents.map((d) => (
-                <li key={d.label} className="text-slate-700">
-                  {d.href ? (
-                    <a href={d.href} className="underline" target="_blank" rel="noreferrer">
-                      {d.label}
-                    </a>
-                  ) : (
-                    `${d.label} — ${d.status}`
-                  )}
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-bold text-navy-900">Lifecycle Timeline</h2>
-            <ol className="mt-2 space-y-2 text-sm">
-              {report.timeline.map((e) => (
-                <li key={e.id}>
-                  <span className="text-slate-400">{e.at.slice(0, 10)}</span> —{" "}
-                  <span className="font-medium text-navy-900">{e.title}</span>
-                  {e.detail ? (
-                    <span className="text-slate-600"> · {e.detail}</span>
-                  ) : null}
-                </li>
-              ))}
-            </ol>
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold text-navy-900">Lifecycle timeline</h3>
+              <ol className="mt-2 space-y-2 text-sm">
+                {report.timeline.map((e) => (
+                  <li key={e.id}>
+                    <span className="text-slate-400">{e.at.slice(0, 10)}</span> —{" "}
+                    <span className="font-medium text-navy-900">{e.title}</span>
+                    {e.detail ? (
+                      <span className="text-slate-600"> · {e.detail}</span>
+                    ) : null}
+                  </li>
+                ))}
+              </ol>
+            </div>
           </section>
 
           {hiComparables?.ok || hiHistorical?.ok || outcomeHistory?.ok ? (
             <section className="rounded-xl border border-slate-200 bg-white p-4">
               <h2 className="text-lg font-bold text-navy-900">
-                Historical Intelligence (event-backed)
+                Technical evidence appendix
               </h2>
               <p className="mt-1 text-xs text-slate-500">
-                Auction Events · verified sale evidence · comparable confidence —
-                not investment advice.
+                Engineering detail for audit — main story is in the dossier above.
               </p>
-              {outcomeHistory?.ok && outcomeHistory.chain.events.length > 0 ? (
-                <div className="mt-4">
-                  <h3 className="text-sm font-semibold text-navy-900">
-                    Historical evidence
-                  </h3>
-                  <ol className="mt-2 space-y-2 text-sm">
-                    {outcomeHistory.chain.events.map((ev) => (
-                      <li
-                        key={ev.auctionEventId ?? ev.auctionDate ?? ev.outcome}
-                        className="rounded-lg border border-slate-100 px-3 py-2"
-                      >
-                        <span className="text-slate-500">
-                          {ev.auctionDate?.slice(0, 10) ?? "Date unknown"}
-                        </span>
-                        {" · "}
-                        <span className="font-medium text-navy-900">{ev.outcome}</span>
-                        {ev.salePrice != null ? (
-                          <>
-                            {" · "}
-                            <span className="font-medium">
-                              R{ev.salePrice.toLocaleString("en-ZA")}
-                            </span>
-                          </>
-                        ) : null}
-                        {ev.outcome !== "UNKNOWN" &&
-                        ev.outcome !== "COMPLETED_UNKNOWN" &&
-                        ev.outcomeEvidence.confidence !== "low" ? (
-                          <span className="ml-2 text-[10px] uppercase text-emerald-700">
-                            Source confirmed
-                          </span>
-                        ) : null}
-                        {ev.sourceUrl ? (
-                          <p className="mt-1 truncate text-[11px] text-slate-400">
-                            {ev.sourceUrl}
-                          </p>
-                        ) : null}
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              ) : null}
               {hiPerformance ? (
-                <div className="mt-4">
-                  <h3 className="text-sm font-semibold text-navy-900">
-                    Historical performance
-                  </h3>
-                  <dl className="mt-2 grid gap-2 text-sm sm:grid-cols-3">
-                    <div>
-                      <dt className="text-slate-500">Recorded events</dt>
-                      <dd className="font-semibold">
-                        {hiPerformance.recordedAuctionEvents}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-slate-500">Verified sale prices</dt>
-                      <dd className="font-semibold">
-                        {hiPerformance.verifiedSalePrices}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-slate-500">Evidence confidence</dt>
-                      <dd className="font-semibold">
-                        {hiPerformance.historicalEvidenceConfidence}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-slate-500">Comparables</dt>
-                      <dd className="font-semibold">
-                        {hiPerformance.comparableCount} · {hiPerformance.comparableConfidence}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-slate-500">Price/m²</dt>
-                      <dd className="font-semibold">
-                        {hiPerformance.pricePerM2.calculable && hiPerformance.pricePerM2.value != null
-                          ? `R${Math.round(hiPerformance.pricePerM2.value).toLocaleString("en-ZA")}`
-                          : hiPerformance.pricePerM2.reason ?? "Insufficient data"}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-slate-500">Price/ha</dt>
-                      <dd className="font-semibold">
-                        {hiPerformance.pricePerHa.calculable && hiPerformance.pricePerHa.value != null
-                          ? `R${Math.round(hiPerformance.pricePerHa.value).toLocaleString("en-ZA")}${hiPerformance.pricePerHa.approximate ? " (approx)" : ""}`
-                          : hiPerformance.pricePerHa.reason ?? "Insufficient data"}
-                      </dd>
-                    </div>
-                  </dl>
-                  {hiPerformance.limitations.map((l) => (
-                    <p key={l} className="mt-1 text-xs text-slate-500">
-                      · {l}
-                    </p>
-                  ))}
-                </div>
-              ) : null}
-              {evidenceQuality?.ok ? (
-                <div className="mt-4 rounded-lg border border-slate-100 bg-slate-50 p-4">
-                  <h3 className="text-sm font-semibold text-navy-900">
-                    Historical Evidence Quality
-                  </h3>
-                  <p className="mt-1 text-sm font-medium text-navy-900">
-                    Historical Evidence:{" "}
-                    {evidenceQuality.overallQuality === "INSUFFICIENT_DATA"
-                      ? "INSUFFICIENT DATA"
-                      : evidenceQuality.overallQuality.replace(/_/g, " ")}
-                  </p>
-                  {evidenceQuality.overallQuality === "INSUFFICIENT_DATA" ? (
-                    <p className="mt-2 text-sm text-slate-600">
-                      No verified sale outcome or sale price was found.
-                    </p>
-                  ) : (
-                    <dl className="mt-3 space-y-2 text-sm">
-                      <div>
-                        <dt className="text-slate-500">Outcome</dt>
-                        <dd className="font-medium">
-                          {evidenceQuality.outcome?.status ?? "NOT SUPPLIED"} —{" "}
-                          {String(evidenceQuality.outcome?.value ?? "Not supplied")}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt className="text-slate-500">Sale price</dt>
-                        <dd className="font-medium">
-                          {evidenceQuality.salePrice?.status === "VERIFIED" &&
-                          evidenceQuality.salePrice?.value != null
-                            ? `VERIFIED — R${Number(evidenceQuality.salePrice.value).toLocaleString("en-ZA")}`
-                            : evidenceQuality.salePrice?.status === "NOT_SUPPLIED"
-                              ? "Not supplied"
-                              : `${evidenceQuality.salePrice?.status ?? "NOT SUPPLIED"} — Not supplied`}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt className="text-slate-500">Identity</dt>
-                        <dd className="font-medium">
-                          {evidenceQuality.identity?.status ?? "NOT SUPPLIED"}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt className="text-slate-500">Source</dt>
-                        <dd className="font-medium">
-                          {evidenceQuality.source.sourceTier.replace(/_/g, " ")}
-                          {evidenceQuality.source.sourceAuthority
-                            ? ` · ${evidenceQuality.source.sourceAuthority}`
-                            : ""}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt className="text-slate-500">Conflict</dt>
-                        <dd className="font-medium">
-                          {evidenceQuality.conflicts.length > 0
-                            ? evidenceQuality.conflicts.join("; ")
-                            : "None"}
-                        </dd>
-                      </div>
-                      {evidenceQuality.missingEvidence.length > 0 ? (
-                        <div>
-                          <dt className="text-slate-500">Missing evidence</dt>
-                          <dd className="text-slate-600">
-                            {evidenceQuality.missingEvidence.slice(0, 8).join(", ")}
-                          </dd>
-                        </div>
-                      ) : null}
-                    </dl>
-                  )}
-                </div>
-              ) : null}
-              {acquisitionDiagnostic ? (
-                <section className="mt-4 rounded-lg border border-cyan-100 bg-cyan-50/40 p-4">
-                  <h3 className="text-sm font-semibold text-navy-900">
-                    Historical Source Acquisition
-                  </h3>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Evidence chain diagnostic — fetch reliability only, no fabricated outcomes.
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-navy-900">
-                    Stopping point: {acquisitionDiagnostic.stoppingPoint}
-                  </p>
-                  {acquisitionDiagnostic.evidence.proven.length > 0 ? (
-                    <div className="mt-3">
-                      <h4 className="text-xs font-semibold uppercase text-emerald-700">Proven</h4>
-                      <ul className="mt-1 list-inside list-disc text-xs text-slate-700">
-                        {acquisitionDiagnostic.evidence.proven.map((w) => (
-                          <li key={w}>{w}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-                  {acquisitionDiagnostic.evidence.tested.length > 0 ? (
-                    <div className="mt-3">
-                      <h4 className="text-xs font-semibold uppercase text-slate-500">Tested</h4>
-                      <ul className="mt-1 list-inside list-disc text-xs text-slate-700">
-                        {acquisitionDiagnostic.evidence.tested.map((w) => (
-                          <li key={w}>{w}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-                  {acquisitionDiagnostic.evidence.missing.length > 0 ? (
-                    <div className="mt-3">
-                      <h4 className="text-xs font-semibold uppercase text-amber-700">Missing</h4>
-                      <ul className="mt-1 list-inside list-disc text-xs text-amber-900">
-                        {acquisitionDiagnostic.evidence.missing.map((w) => (
-                          <li key={w}>{w}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-                  {acquisitionDiagnostic.evidence.reviewRequired.length > 0 ? (
-                    <div className="mt-3">
-                      <h4 className="text-xs font-semibold uppercase text-red-700">Review required</h4>
-                      <ul className="mt-1 list-inside list-disc text-xs text-red-900">
-                        {acquisitionDiagnostic.evidence.reviewRequired.map((w) => (
-                          <li key={w}>{w}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-                </section>
-              ) : null}
-              {investor46?.ok ? (
-                <section className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50/50 p-4">
-                  <h3 className="text-sm font-semibold text-navy-900">
-                    Investor Evidence Summary
-                  </h3>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Evidence coverage and acquisition feedback — not investment advice.
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-navy-900">
-                    Overall coverage: {investor46.result.research.evidenceCoverage.overall.replace(/_/g, " ")}
-                  </p>
-                  <p className="mt-1 text-sm">
-                    Decision status: {investor46.result.decisionStatus.replace(/_/g, " ")}
-                  </p>
-                  <dl className="mt-3 grid gap-2 text-xs sm:grid-cols-2 lg:grid-cols-4">
-                    {investor46.result.research.evidenceCoverage.dimensions.map((d) => (
-                      <div key={d.dimension} className="rounded border border-slate-100 bg-white px-2 py-1.5">
-                        <dt className="uppercase tracking-wide text-slate-400">{d.dimension}</dt>
-                        <dd className="font-semibold text-navy-900">{d.level.replace(/_/g, " ")}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  {investor46.result.investorLabels && investor46.result.investorLabels.length > 0 ? (
-                    <dl className="mt-4 space-y-2">
-                      {investor46.result.investorLabels.map((item) => (
-                        <div
-                          key={item.label}
-                          className="rounded border border-slate-100 bg-white px-3 py-2 text-sm"
-                        >
-                          <dt className="text-xs font-semibold uppercase text-slate-500">
-                            {item.label}
-                          </dt>
-                          <dd className="mt-0.5 font-medium text-navy-900">{item.detail}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  ) : null}
-                  {investor46.result.evidenceSummary.whatWeKnow.length > 0 ? (
-                    <div className="mt-3">
-                      <h4 className="text-xs font-semibold uppercase text-slate-500">What we know</h4>
-                      <ul className="mt-1 list-inside list-disc text-xs text-slate-700">
-                        {investor46.result.evidenceSummary.whatWeKnow.slice(0, 6).map((w) => (
-                          <li key={w}>{w}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-                  {investor46.result.evidenceSummary.whatWeDoNotKnow.length > 0 ? (
-                    <div className="mt-3">
-                      <h4 className="text-xs font-semibold uppercase text-slate-500">What we do not know</h4>
-                      <ul className="mt-1 list-inside list-disc text-xs text-slate-700">
-                        {investor46.result.evidenceSummary.whatWeDoNotKnow.slice(0, 6).map((w) => (
-                          <li key={w}>{w}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-                  {investor46.result.evidenceSummary.whatNeedsVerification.length > 0 ? (
-                    <div className="mt-3">
-                      <h4 className="text-xs font-semibold uppercase text-amber-700">What needs verification</h4>
-                      <ul className="mt-1 list-inside list-disc text-xs text-amber-900">
-                        {investor46.result.evidenceSummary.whatNeedsVerification.map((w) => (
-                          <li key={w}>{w}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-                  {investor46.result.acquisitionGaps46.length > 0 ? (
-                    <div className="mt-3">
-                      <h4 className="text-xs font-semibold uppercase text-slate-500">
-                        Recommended data acquisition
-                      </h4>
-                      <ul className="mt-1 space-y-1 text-xs text-slate-700">
-                        {investor46.result.acquisitionGaps46.slice(0, 5).map((g) => (
-                          <li key={`${g.gapCode}-${g.priority}`}>
-                            {g.gapCode} ({g.priority}) → {g.recommendedExistingQueue}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-                </section>
-              ) : null}
-              {hiHistorical?.ok ? (
-                <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
+                <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-3">
                   <div>
-                    <dt className="text-slate-500">Historical events</dt>
-                    <dd className="font-semibold">
-                      {hiHistorical.summary.historicalEvents}
-                    </dd>
+                    <dt className="text-slate-500">Recorded events</dt>
+                    <dd className="font-semibold">{hiPerformance.recordedAuctionEvents}</dd>
                   </div>
                   <div>
-                    <dt className="text-slate-500">Confirmed sales</dt>
-                    <dd className="font-semibold">
-                      {hiHistorical.summary.confirmedSales}
-                    </dd>
+                    <dt className="text-slate-500">Verified sale prices</dt>
+                    <dd className="font-semibold">{hiPerformance.verifiedSalePrices}</dd>
                   </div>
                   <div>
-                    <dt className="text-slate-500">Property Master</dt>
-                    <dd className="font-mono text-xs">
-                      {hiHistorical.propertyMasterId?.slice(0, 8) ?? "Not linked"}
+                    <dt className="text-slate-500">Comparables</dt>
+                    <dd className="font-semibold">
+                      {hiPerformance.comparableCount} · {hiPerformance.comparableConfidence}
                     </dd>
                   </div>
                 </dl>
               ) : null}
+              {evidenceQuality?.ok ? (
+                <p className="mt-3 text-sm text-slate-700">
+                  HEQ overall:{" "}
+                  {evidenceQuality.overallQuality === "INSUFFICIENT_DATA"
+                    ? "INSUFFICIENT DATA"
+                    : evidenceQuality.overallQuality.replace(/_/g, " ")}
+                </p>
+              ) : null}
+              {acquisitionDiagnostic ? (
+                <p className="mt-2 text-sm text-slate-700">
+                  Acquisition stopping point: {acquisitionDiagnostic.stoppingPoint}
+                </p>
+              ) : null}
+              {investor46?.ok ? (
+                <p className="mt-2 text-sm text-slate-700">
+                  Investor decision status:{" "}
+                  {investor46.result.decisionStatus.replace(/_/g, " ")}
+                </p>
+              ) : null}
+              {hiHistorical?.ok ? (
+                <p className="mt-2 text-xs text-slate-500">
+                  Property Master {hiHistorical.propertyMasterId?.slice(0, 8) ?? "not linked"} ·{" "}
+                  {hiHistorical.summary.historicalEvents} historical events ·{" "}
+                  {hiHistorical.summary.confirmedSales} confirmed sales
+                </p>
+              ) : null}
               {hiComparables?.ok ? (
-                <>
-                  <p className="mt-3 text-sm">
-                    Comparables: {hiComparables.comparables.comparables.length} ·
-                    Confidence: {hiComparables.comparables.confidence}
-                  </p>
-                  {hiComparables.comparables.bestComparable ? (
-                    <ul className="mt-2 list-inside list-disc text-xs text-slate-600">
-                      {hiComparables.comparables.bestComparable.matchingEvidence.map(
-                        (e) => (
-                          <li key={e}>{e}</li>
-                        ),
-                      )}
+                <div className="mt-4">
+                  <h3 className="text-sm font-semibold text-navy-900">Comparable rows</h3>
+                  {hiComparables.comparables.comparables.length === 0 ? (
+                    <p className="mt-2 text-sm text-slate-600">INSUFFICIENT DATA</p>
+                  ) : (
+                    <ul className="mt-2 space-y-1 text-sm text-slate-700">
+                      {hiComparables.comparables.comparables.slice(0, 5).map((c) => (
+                        <li key={c.observationId}>
+                          {c.town ?? "—"} · {c.outcome ?? "—"} ·{" "}
+                          {c.saleEvidence.verifiedSale && c.saleEvidence.salePrice != null
+                            ? `R${c.saleEvidence.salePrice.toLocaleString("en-ZA")}`
+                            : "INSUFFICIENT DATA"}{" "}
+                          · {c.comparableConfidence}
+                        </li>
+                      ))}
                     </ul>
-                  ) : null}
-                  {hiComparables.limitations.map((l) => (
-                    <p key={l} className="mt-1 text-xs text-slate-500">
-                      · {l}
-                    </p>
-                  ))}
-                </>
+                  )}
+                </div>
               ) : null}
             </section>
           ) : null}
 
-          <section className="rounded-xl bg-slate-100 p-4 text-sm print:bg-transparent">
-            <h2 className="font-bold text-navy-900">Intelligence Summary</h2>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-slate-700">
-              <li>
-                Listing quality:{" "}
-                {report.intelligenceSummary.listingQualityPercent != null
-                  ? `${report.intelligenceSummary.listingQualityPercent}%`
-                  : "Unavailable"}
-              </li>
-              <li>
-                Verification confidence:{" "}
-                {report.intelligenceSummary.verificationConfidence ?? "Unavailable"}
-              </li>
-              <li>
-                Comparable confidence:{" "}
-                {report.intelligenceSummary.comparableConfidence ?? "Unavailable"}
-              </li>
-              {report.intelligenceSummary.notes.map((n) => (
-                <li key={n}>{n}</li>
-              ))}
-            </ul>
-            <p className="mt-3 text-xs text-slate-500">
-              PDF export reserved for premium workflow · Print via browser · Version
-              history keyed to report version {report.version}
-            </p>
-          </section>
+          <p className="text-center text-[11px] text-slate-400">
+            Generated {dossier.generatedAt.slice(0, 19).replace("T", " ")} UTC · Verified data
+            only · No investment advice · Catalogue safety enforced
+          </p>
         </div>
       </main>
       <Footer />
