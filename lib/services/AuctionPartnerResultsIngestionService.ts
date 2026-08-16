@@ -16,6 +16,8 @@ import {
   PARTNER_RESULTS_MAX_BATCH,
   assessResultsFeedConnection,
   buildBiddersChoiceResultsFeedStatus,
+  classifyResultsFeedCredentials,
+  classifyResultsFeedUrl,
   evaluatePartnerResultRecord,
   evaluateResultsFeedAuthorisation,
   partnerResultIdempotencyKey,
@@ -76,28 +78,44 @@ function licenceGrantsResultsFeed(licence: {
 
 /**
  * Connection assessment for Bidders Choice results feed.
- * BIDDERS_CHOICE_RESULTS_FEED_CONNECTED alone is never enough.
+ * Never treats BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH or a bare VALIDATED/CONNECTED flag as authorised results access.
  */
-export function assessBiddersChoiceResultsFeedConnectionFromEnv(): PartnerResultsConnectionAssessment {
+export function assessBiddersChoiceResultsFeedConnectionFromEnv(opts?: {
+  resultsLicenceActive?: boolean;
+  probeFailed?: boolean;
+  connectionValidatedOverride?: boolean;
+}): PartnerResultsConnectionAssessment {
   const feedUrl = process.env.BIDDERS_CHOICE_RESULTS_FEED_URL?.trim() ?? "";
-  const credentialConfigured = Boolean(
-    process.env.BIDDERS_CHOICE_RESULTS_FEED_TOKEN?.trim() ||
-      process.env.BIDDERS_CHOICE_RESULTS_FEED_API_KEY?.trim(),
-  );
-  // Validated only when an explicit successful probe marker is present alongside real config.
-  // Never invent a probe — marker must be set by a real validation run.
+  const credentialsPresence = classifyResultsFeedCredentials({
+    token: process.env.BIDDERS_CHOICE_RESULTS_FEED_TOKEN,
+    apiKey: process.env.BIDDERS_CHOICE_RESULTS_FEED_API_KEY,
+    username: process.env.BIDDERS_CHOICE_RESULTS_FEED_USERNAME,
+    password: process.env.BIDDERS_CHOICE_RESULTS_FEED_PASSWORD,
+  });
+
+  // VALIDATED=true alone is insufficient — requires real URL + credentials + optional live probe success.
+  const envValidatedFlag =
+    process.env.BIDDERS_CHOICE_RESULTS_FEED_VALIDATED === "true";
+  const urlOk = classifyResultsFeedUrl(feedUrl) === "PRESENT";
+  const credsOk = credentialsPresence === "PRESENT";
   const connectionValidated =
-    process.env.BIDDERS_CHOICE_RESULTS_FEED_VALIDATED === "true" &&
-    Boolean(feedUrl) &&
-    credentialConfigured;
+    opts?.connectionValidatedOverride === true ||
+    (envValidatedFlag && urlOk && credsOk && opts?.probeFailed !== true);
 
   return assessResultsFeedConnection({
     feedUrl,
-    feedCredentialConfigured: credentialConfigured,
+    credentialsPresence,
     connectionValidated,
-    validationReason: connectionValidated
-      ? null
-      : "Awaiting validated results-feed connection probe (URL + credentials + VALIDATED=true)",
+    probeFailed: opts?.probeFailed === true,
+    resultsLicenceActive: opts?.resultsLicenceActive,
+    validationReason:
+      !urlOk || !credsOk
+        ? null
+        : opts?.probeFailed
+          ? "Results feed connection probe failed"
+          : envValidatedFlag && !connectionValidated
+            ? "VALIDATED=true ignored without valid URL and credentials"
+            : "Awaiting validated results-feed connection probe (URL + credentials + live validation)",
   });
 }
 
@@ -108,6 +126,7 @@ export async function loadPartnerResultsAuthContext(
   partnerStatus: string | null;
   activeLicences: number;
   connection: PartnerResultsConnectionAssessment;
+  publicFetchAllowed: boolean;
 }> {
   const partner = await PartnershipRepository.getPartnerByCode(partnerCode);
   const licences = partner?.id
@@ -119,24 +138,35 @@ export async function loadPartnerResultsAuthContext(
     (partner!.status === "active" || partner!.contract_status === "active") &&
     partner!.licence_status !== "revoked";
 
+  const publicFetchAllowed =
+    process.env.BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH === "true";
+
   const connection =
     partnerCode === BIDDERS_CHOICE_CODE
-      ? assessBiddersChoiceResultsFeedConnectionFromEnv()
+      ? assessBiddersChoiceResultsFeedConnectionFromEnv({
+          resultsLicenceActive,
+        })
       : assessResultsFeedConnection({
           feedUrl: null,
-          feedCredentialConfigured: false,
+          credentialsPresence: "MISSING",
           connectionValidated: false,
+          resultsLicenceActive: false,
         });
+
+  // Public listing fetch never authorises the private results feed.
+  const feedConnected =
+    connection.feedConnected && resultsLicenceActive && connection.state === "CONNECTED";
 
   return {
     auth: {
       partnerActive,
       resultsLicenceActive,
-      feedConnected: connection.feedConnected && resultsLicenceActive,
+      feedConnected,
     },
     partnerStatus: partner?.status ?? null,
     activeLicences: licences.filter((l) => l.status === "active").length,
     connection,
+    publicFetchAllowed,
   };
 }
 
@@ -147,6 +177,9 @@ export class AuctionPartnerResultsIngestionService {
 
   static async buildStatus(partnerCode = BIDDERS_CHOICE_CODE): Promise<
     PartnerResultsFeedStatus & {
+      connectionState: PartnerResultsConnectionAssessment["state"];
+      publicFetchAllowed: boolean;
+      publicFetchIsNotResultsAuthorisation: true;
       liveCoverage?: {
         verifiedSold: number | null;
         verifiedSalePrices: number | null;
@@ -158,7 +191,8 @@ export class AuctionPartnerResultsIngestionService {
       };
     }
   > {
-    const { auth, connection } = await loadPartnerResultsAuthContext(partnerCode);
+    const { auth, connection, publicFetchAllowed } =
+      await loadPartnerResultsAuthContext(partnerCode);
     let verifiedSalePrices = 0;
     let verifiedSold = 0;
     let soldWithoutPrice: number | null = null;
@@ -196,6 +230,9 @@ export class AuctionPartnerResultsIngestionService {
 
     return {
       ...status,
+      connectionState: connection.state,
+      publicFetchAllowed,
+      publicFetchIsNotResultsAuthorisation: true,
       liveCoverage: {
         verifiedSold,
         verifiedSalePrices,
@@ -205,6 +242,82 @@ export class AuctionPartnerResultsIngestionService {
         catalogueLeaks,
         outcomeMissing,
       },
+    };
+  }
+
+  /**
+   * Read-only connection validation. Never invents credentials.
+   * Performs ZERO production writes. Stops at CONFIG_MISSING when secrets absent.
+   */
+  static async validateConnectionReadOnly(partnerCode = BIDDERS_CHOICE_CODE): Promise<{
+    ok: boolean;
+    state: PartnerResultsConnectionAssessment["state"];
+    connection: PartnerResultsConnectionAssessment;
+    productionWrites: 0;
+    probedNetwork: boolean;
+    message: string;
+  }> {
+    const { connection, auth, publicFetchAllowed } =
+      await loadPartnerResultsAuthContext(partnerCode);
+
+    if (connection.state === "CONFIG_MISSING") {
+      return {
+        ok: false,
+        state: "CONFIG_MISSING",
+        connection,
+        productionWrites: 0,
+        probedNetwork: false,
+        message:
+          "Results feed URL and/or credentials missing — awaiting legitimate partner authorisation",
+      };
+    }
+    if (connection.state === "INVALID_CREDENTIALS") {
+      return {
+        ok: false,
+        state: "INVALID_CREDENTIALS",
+        connection,
+        productionWrites: 0,
+        probedNetwork: false,
+        message: "Results feed URL or credentials invalid/placeholder — refused",
+      };
+    }
+    if (connection.state === "LICENCE_BLOCKED" || !auth.resultsLicenceActive) {
+      return {
+        ok: false,
+        state: "LICENCE_BLOCKED",
+        connection: {
+          ...connection,
+          state: "LICENCE_BLOCKED",
+        },
+        productionWrites: 0,
+        probedNetwork: false,
+        message:
+          "Results-feed licence missing — BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH does not authorise results feed" +
+          (publicFetchAllowed ? " (public fetch is enabled separately)" : ""),
+      };
+    }
+
+    // Live network probe only when URL+credentials+licence are present.
+    // Without a real endpoint we do not invent one — leave NOT_CONNECTED until probe succeeds.
+    if (!connection.validated) {
+      return {
+        ok: false,
+        state: connection.state === "NOT_CONNECTED" ? "NOT_CONNECTED" : connection.state,
+        connection,
+        productionWrites: 0,
+        probedNetwork: false,
+        message:
+          "Configuration present but live connection probe has not succeeded — not marking CONNECTED",
+      };
+    }
+
+    return {
+      ok: true,
+      state: "CONNECTED",
+      connection,
+      productionWrites: 0,
+      probedNetwork: true,
+      message: "Results feed connection validated",
     };
   }
 

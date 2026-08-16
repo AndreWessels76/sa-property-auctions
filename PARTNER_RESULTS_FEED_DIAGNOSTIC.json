@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T10:55:14.288Z",
+  "generatedAt": "2026-08-16T11:42:33.034Z",
   "productionWrites": "BLOCKED",
   "partnerContract": "READY",
   "partner": "BIDDERS_CHOICE",
@@ -8,20 +8,47 @@
   "authorisation": "NOT_AUTHORISED",
   "ingestion": "BLOCKED",
   "productionWrite": "BLOCKED",
+  "connectionState": "CONFIG_MISSING",
+  "connectionValidation": {
+    "ok": false,
+    "state": "CONFIG_MISSING",
+    "connection": {
+      "state": "CONFIG_MISSING",
+      "configured": false,
+      "validated": false,
+      "feedConnected": false,
+      "url": "MISSING",
+      "credentials": "MISSING",
+      "reasons": [
+        "Results feed URL not configured",
+        "Results feed credentials not configured",
+        "Results-feed licence missing or inactive (listing licence is insufficient)"
+      ]
+    },
+    "productionWrites": 0,
+    "probedNetwork": false,
+    "message": "Results feed URL and/or credentials missing — awaiting legitimate partner authorisation"
+  },
   "verifiedObservations": 0,
   "verifiedSalePrices": 0,
   "lastSuccessfulIngestion": null,
   "nextAction": "ESTABLISH AUTHORISED PARTNER RESULTS FEED — property identity, auction date, outcome, explicit transaction sale price",
   "contractVersion": "auction-partner-results-feed-1.1.0",
   "connection": {
+    "state": "CONFIG_MISSING",
     "configured": false,
     "validated": false,
     "feedConnected": false,
+    "url": "MISSING",
+    "credentials": "MISSING",
     "reasons": [
       "Results feed URL not configured",
-      "Results feed credentials not configured"
+      "Results feed credentials not configured",
+      "Results-feed licence missing or inactive (listing licence is insufficient)"
     ]
   },
+  "publicFetchAllowed": true,
+  "publicFetchIsNotResultsAuthorisation": true,
   "liveCoverage": {
     "verifiedSold": 0,
     "verifiedSalePrices": 0,
@@ -31,11 +58,13 @@
     "catalogueLeaks": 0,
     "outcomeMissing": 28
   },
-  "envFlagsPresent": {
-    "BIDDERS_CHOICE_RESULTS_FEED_URL": false,
-    "BIDDERS_CHOICE_RESULTS_FEED_TOKEN": false,
-    "BIDDERS_CHOICE_RESULTS_FEED_API_KEY": false,
-    "BIDDERS_CHOICE_RESULTS_FEED_VALIDATED": false,
-    "BIDDERS_CHOICE_RESULTS_FEED_CONNECTED": false
+  "secretsPresence": {
+    "RESULTS_FEED_URL": "MISSING",
+    "RESULTS_FEED_TOKEN": "MISSING",
+    "RESULTS_FEED_API_KEY": "MISSING",
+    "RESULTS_FEED_USERNAME": "MISSING",
+    "RESULTS_FEED_PASSWORD": "MISSING",
+    "RESULTS_FEED_VALIDATED_FLAG": "MISSING",
+    "ALLOW_PUBLIC_FETCH": "PRESENT"
   }
 }

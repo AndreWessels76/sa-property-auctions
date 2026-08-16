@@ -140,10 +140,28 @@ export type PartnerResultsAuthContext = {
   feedConnected: boolean;
 };
 
+/**
+ * Explicit connection state machine for authorised results feeds.
+ * CONNECTED requires real URL + credentials + successful validation probe + results licence (auth layer).
+ */
+export type PartnerResultsConnectionState =
+  | "NOT_CONNECTED"
+  | "CONFIG_MISSING"
+  | "NOT_AUTHORISED"
+  | "INVALID_CREDENTIALS"
+  | "LICENCE_BLOCKED"
+  | "CONNECTION_FAILED"
+  | "CONNECTED";
+
+export type PartnerResultsSecretPresence = "PRESENT" | "MISSING" | "INVALID";
+
 export type PartnerResultsConnectionAssessment = {
+  state: PartnerResultsConnectionState;
   configured: boolean;
   validated: boolean;
   feedConnected: boolean;
+  url: PartnerResultsSecretPresence;
+  credentials: PartnerResultsSecretPresence;
   reasons: string[];
 };
 
@@ -318,34 +336,124 @@ export function normalizeAuctionDate(value: string | null | undefined): string |
   return d.toISOString().slice(0, 10);
 }
 
+const PLACEHOLDER_URL_RE =
+  /(?:^|\.)example\.com$|(?:^|\.)example\.org$|placeholder|changeme|your[-_]?feed|localhost|127\.0\.0\.1|fake[-_]?url/i;
+
+export function classifyResultsFeedUrl(
+  feedUrl?: string | null,
+): PartnerResultsSecretPresence {
+  const url = feedUrl?.trim() ?? "";
+  if (!url) return "MISSING";
+  try {
+    const parsed = new URL(url);
+    if (!/^https?:$/i.test(parsed.protocol)) return "INVALID";
+    if (!parsed.hostname) return "INVALID";
+    if (PLACEHOLDER_URL_RE.test(parsed.hostname) || PLACEHOLDER_URL_RE.test(url)) {
+      return "INVALID";
+    }
+    return "PRESENT";
+  } catch {
+    return "INVALID";
+  }
+}
+
+export function classifyResultsFeedCredentials(input: {
+  token?: string | null;
+  apiKey?: string | null;
+  username?: string | null;
+  password?: string | null;
+}): PartnerResultsSecretPresence {
+  const token = input.token?.trim() ?? "";
+  const apiKey = input.apiKey?.trim() ?? "";
+  const username = input.username?.trim() ?? "";
+  const password = input.password?.trim() ?? "";
+  const any =
+    Boolean(token) ||
+    Boolean(apiKey) ||
+    (Boolean(username) && Boolean(password));
+  if (!any) return "MISSING";
+  const blob = `${token} ${apiKey} ${username} ${password}`.toLowerCase();
+  if (
+    /placeholder|changeme|todo|your[-_]?api|example|fake[-_]?key|fake[-_]?token/.test(
+      blob,
+    )
+  ) {
+    return "INVALID";
+  }
+  return "PRESENT";
+}
+
 /**
  * Assess whether a results feed is actually connected.
- * A bare env flag is never sufficient — URL + credentials + validated probe required.
+ * A bare env flag / VALIDATED=true alone is never sufficient.
  */
 export function assessResultsFeedConnection(input: {
   feedUrl?: string | null;
   feedCredentialConfigured?: boolean;
+  /** @deprecated Prefer credentialsPresence */
+  credentialsPresence?: PartnerResultsSecretPresence;
   connectionValidated?: boolean;
+  probeFailed?: boolean;
+  resultsLicenceActive?: boolean;
   validationReason?: string | null;
 }): PartnerResultsConnectionAssessment {
   const reasons: string[] = [];
-  const url = input.feedUrl?.trim() ?? "";
-  const configured = Boolean(url) && Boolean(input.feedCredentialConfigured);
-  if (!url) reasons.push("Results feed URL not configured");
-  if (!input.feedCredentialConfigured) {
+  const urlPresence = classifyResultsFeedUrl(input.feedUrl);
+  const credentials: PartnerResultsSecretPresence =
+    input.credentialsPresence ??
+    (input.feedCredentialConfigured ? "PRESENT" : "MISSING");
+
+  if (urlPresence === "MISSING") reasons.push("Results feed URL not configured");
+  if (urlPresence === "INVALID") {
+    reasons.push("Results feed URL invalid or placeholder");
+  }
+  if (credentials === "MISSING") {
     reasons.push("Results feed credentials not configured");
   }
-  const validated = Boolean(configured && input.connectionValidated);
-  if (configured && !input.connectionValidated) {
+  if (credentials === "INVALID") {
+    reasons.push("Results feed credentials invalid or placeholder");
+  }
+
+  const configured = urlPresence === "PRESENT" && credentials === "PRESENT";
+
+  if (input.resultsLicenceActive === false) {
+    reasons.push("Results-feed licence missing or inactive (listing licence is insufficient)");
+  }
+
+  if (input.probeFailed) {
+    reasons.push(
+      input.validationReason?.trim() || "Results feed connection probe failed",
+    );
+  } else if (configured && !input.connectionValidated) {
     reasons.push(
       input.validationReason?.trim() ||
-        "Feed connection not validated — probe required before CONNECTED",
+        "Feed connection not validated — live probe required before CONNECTED",
     );
   }
+
+  let state: PartnerResultsConnectionState = "NOT_CONNECTED";
+  if (urlPresence === "MISSING" || credentials === "MISSING") {
+    state = "CONFIG_MISSING";
+  } else if (urlPresence === "INVALID" || credentials === "INVALID") {
+    state = "INVALID_CREDENTIALS";
+  } else if (input.resultsLicenceActive === false) {
+    state = "LICENCE_BLOCKED";
+  } else if (input.probeFailed) {
+    state = "CONNECTION_FAILED";
+  } else if (configured && input.connectionValidated) {
+    state = "CONNECTED";
+  } else if (configured && !input.connectionValidated) {
+    state = "NOT_CONNECTED";
+  }
+
+  const validated = state === "CONNECTED";
   return {
+    state,
     configured,
     validated,
     feedConnected: validated,
+    url: urlPresence,
+    credentials,
     reasons,
   };
 }
@@ -383,13 +491,14 @@ export function buildBiddersChoiceResultsFeedStatus(input: {
     input.connection ??
     assessResultsFeedConnection({
       feedUrl: null,
-      feedCredentialConfigured: false,
-      connectionValidated: input.auth.feedConnected,
+      credentialsPresence: "MISSING",
+      connectionValidated: false,
     });
   const contract: PartnerResultsFeedStatus["contract"] = "READY";
   const partner: PartnerResultsFeedStatus["partner"] = input.auth.partnerActive
     ? "ACTIVE"
     : "INACTIVE";
+  // Surface CONNECTED only when connection assessment says so — never from public-fetch alone.
   const resultsFeed: PartnerResultsFeedStatus["resultsFeed"] = connection
     .feedConnected
     ? "CONNECTED"

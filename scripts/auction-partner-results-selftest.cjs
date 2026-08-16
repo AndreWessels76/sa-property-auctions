@@ -74,6 +74,8 @@ const {
   buildBiddersChoiceResultsFeedStatus,
   resolvePartnerResultIdentityHeuristic,
   assessResultsFeedConnection,
+  classifyResultsFeedUrl,
+  classifyResultsFeedCredentials,
   partnerResultIdempotencyKey,
   validateAuctionDateMatch,
 } = load("partnerships/auctionPartnerResultsFeedContract.ts");
@@ -426,26 +428,84 @@ test("content hash unchanged → NO_CHANGE", () => {
 test("connection assessment: env flag alone is NOT connected", () => {
   const bare = assessResultsFeedConnection({
     feedUrl: null,
-    feedCredentialConfigured: false,
+    credentialsPresence: "MISSING",
     connectionValidated: true,
   });
   assert.equal(bare.feedConnected, false);
   assert.equal(bare.configured, false);
+  assert.equal(bare.state, "CONFIG_MISSING");
 
   const configuredOnly = assessResultsFeedConnection({
-    feedUrl: "https://partner.example/results",
-    feedCredentialConfigured: true,
+    feedUrl: "https://results.bidderschoice.co.za/api/post-auction",
+    credentialsPresence: "PRESENT",
     connectionValidated: false,
+    resultsLicenceActive: true,
   });
   assert.equal(configuredOnly.configured, true);
   assert.equal(configuredOnly.feedConnected, false);
+  assert.equal(configuredOnly.state, "NOT_CONNECTED");
 
   const validated = assessResultsFeedConnection({
-    feedUrl: "https://partner.example/results",
-    feedCredentialConfigured: true,
+    feedUrl: "https://results.bidderschoice.co.za/api/post-auction",
+    credentialsPresence: "PRESENT",
     connectionValidated: true,
+    resultsLicenceActive: true,
   });
   assert.equal(validated.feedConnected, true);
+  assert.equal(validated.state, "CONNECTED");
+});
+
+test("VALIDATED=true without real URL/credentials stays CONFIG_MISSING", () => {
+  const r = assessResultsFeedConnection({
+    feedUrl: null,
+    credentialsPresence: "MISSING",
+    connectionValidated: true,
+  });
+  assert.equal(r.state, "CONFIG_MISSING");
+  assert.equal(r.feedConnected, false);
+});
+
+test("placeholder URL rejected", () => {
+  assert.equal(classifyResultsFeedUrl("https://example.com/results"), "INVALID");
+  assert.equal(classifyResultsFeedUrl(""), "MISSING");
+  assert.equal(
+    classifyResultsFeedUrl("https://results.bidderschoice.co.za/feed"),
+    "PRESENT",
+  );
+});
+
+test("placeholder credentials rejected", () => {
+  assert.equal(
+    classifyResultsFeedCredentials({ token: "changeme" }),
+    "INVALID",
+  );
+  assert.equal(classifyResultsFeedCredentials({ token: null }), "MISSING");
+  assert.equal(
+    classifyResultsFeedCredentials({ apiKey: "real-looking-key-value-9f3a" }),
+    "PRESENT",
+  );
+});
+
+test("missing results licence → LICENCE_BLOCKED", () => {
+  const r = assessResultsFeedConnection({
+    feedUrl: "https://results.bidderschoice.co.za/feed",
+    credentialsPresence: "PRESENT",
+    connectionValidated: true,
+    resultsLicenceActive: false,
+  });
+  assert.equal(r.state, "LICENCE_BLOCKED");
+  assert.equal(r.feedConnected, false);
+});
+
+test("probe failure → CONNECTION_FAILED", () => {
+  const r = assessResultsFeedConnection({
+    feedUrl: "https://results.bidderschoice.co.za/feed",
+    credentialsPresence: "PRESENT",
+    connectionValidated: false,
+    probeFailed: true,
+    resultsLicenceActive: true,
+  });
+  assert.equal(r.state, "CONNECTION_FAILED");
 });
 
 test("status defaults — feed not connected, production write blocked", () => {
@@ -453,7 +513,7 @@ test("status defaults — feed not connected, production write blocked", () => {
     auth: AUTH_NO_LICENCE,
     connection: assessResultsFeedConnection({
       feedUrl: null,
-      feedCredentialConfigured: false,
+      credentialsPresence: "MISSING",
       connectionValidated: false,
     }),
     verifiedResultsReceived: 0,
@@ -466,6 +526,32 @@ test("status defaults — feed not connected, production write blocked", () => {
   assert.equal(status.ingestion, "BLOCKED");
   assert.equal(status.productionWrite, "BLOCKED");
   assert.equal(status.activePartnerForResults, false);
+  assert.equal(status.connection.state, "CONFIG_MISSING");
+});
+
+test("execute >5 rejected; dry-run accept never writes", () => {
+  assert.equal(rejectPartnerResultsUnlimitedLimit(6).ok, false);
+  assert.equal(rejectPartnerResultsUnlimitedLimit(5).ok, true);
+  const r = evaluatePartnerResultRecord({
+    record: baseRecord(),
+    auth: AUTH_OK,
+    identity: IDENTITY_OK,
+    dryRun: true,
+  });
+  assert.equal(r.decision, "DRY_RUN_ACCEPT");
+  assert.equal(r.nextPipeline, "HI42_RESOLUTION");
+});
+
+test("starting bid / auction price classification rejected as sale price", () => {
+  for (const priceClassification of ["starting_bid", "auction_price"]) {
+    const r = evaluatePartnerResultRecord({
+      record: baseRecord({ salePrice: 500000, priceClassification }),
+      auth: AUTH_OK,
+      identity: IDENTITY_OK,
+      dryRun: true,
+    });
+    assert.equal(r.salePriceAccepted, false);
+  }
 });
 
 test("auction date match helper", () => {
@@ -493,7 +579,7 @@ test("adapter maps SOLD AT AUCTION and never maps guide→salePrice", () => {
     guidePrice: 999,
     auctionDate: "2025-06-01",
     observedAt: "2025-06-02T10:00:00.000Z",
-    sourceUrl: "https://example.test/r/1",
+    sourceUrl: "https://results.bidderschoice.co.za/r/1",
   });
   assert.equal(rec.outcome, "SOLD");
   assert.equal(rec.salePrice, 1250000);
@@ -530,6 +616,12 @@ test("ops panel + API + adapter + service exist", () => {
     "utf8",
   );
   assert.match(page, /BiddersChoiceResultsFeedPanel/);
+  const svc = fs.readFileSync(
+    path.join(root, "lib/services/AuctionPartnerResultsIngestionService.ts"),
+    "utf8",
+  );
+  assert.match(svc, /validateConnectionReadOnly/);
+  assert.match(svc, /ALLOW_PUBLIC_FETCH/);
 });
 
 console.log(`\nPassed ${passed} tests.`);

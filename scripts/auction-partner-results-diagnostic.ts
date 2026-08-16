@@ -1,6 +1,8 @@
 /**
  * Partner results feed diagnostic — read-only.
  * Usage: npm run partner-results:diagnostic
+ *
+ * Never prints secret values. Never invents credentials.
  */
 import { readFileSync, writeFileSync } from "fs";
 
@@ -17,6 +19,10 @@ function loadEnv() {
   }
 }
 
+function presence(value: string | undefined): "PRESENT" | "MISSING" {
+  return value?.trim() ? "PRESENT" : "MISSING";
+}
+
 async function main() {
   loadEnv();
   const { AuctionPartnerResultsIngestionService } = await import(
@@ -29,10 +35,14 @@ async function main() {
   const status = await AuctionPartnerResultsIngestionService.buildStatus(
     "bidders_choice",
   );
+  const validation =
+    await AuctionPartnerResultsIngestionService.validateConnectionReadOnly(
+      "bidders_choice",
+    );
 
   const out = {
     generatedAt: new Date().toISOString(),
-    productionWrites: status.productionWrite === "ALLOWED" ? "ALLOWED" : "BLOCKED",
+    productionWrites: "BLOCKED" as const,
     partnerContract: status.contract,
     partner: "BIDDERS_CHOICE",
     partnerRegistryStatus: status.partner,
@@ -40,28 +50,38 @@ async function main() {
     authorisation: status.authorisation,
     ingestion: status.ingestion,
     productionWrite: status.productionWrite,
+    connectionState: status.connectionState,
+    connectionValidation: validation,
     verifiedObservations: status.verifiedResultsReceived,
     verifiedSalePrices: status.verifiedSalePrices,
     lastSuccessfulIngestion: status.lastSuccessfulIngestion,
     nextAction: status.nextAction,
     contractVersion: AUCTION_PARTNER_RESULTS_FEED_CONTRACT.version,
     connection: status.connection,
+    publicFetchAllowed: status.publicFetchAllowed,
+    publicFetchIsNotResultsAuthorisation: true,
     liveCoverage: status.liveCoverage ?? null,
-    envFlagsPresent: {
-      BIDDERS_CHOICE_RESULTS_FEED_URL: Boolean(
-        process.env.BIDDERS_CHOICE_RESULTS_FEED_URL?.trim(),
+    secretsPresence: {
+      RESULTS_FEED_URL: presence(process.env.BIDDERS_CHOICE_RESULTS_FEED_URL),
+      RESULTS_FEED_TOKEN: presence(process.env.BIDDERS_CHOICE_RESULTS_FEED_TOKEN),
+      RESULTS_FEED_API_KEY: presence(
+        process.env.BIDDERS_CHOICE_RESULTS_FEED_API_KEY,
       ),
-      BIDDERS_CHOICE_RESULTS_FEED_TOKEN: Boolean(
-        process.env.BIDDERS_CHOICE_RESULTS_FEED_TOKEN?.trim(),
+      RESULTS_FEED_USERNAME: presence(
+        process.env.BIDDERS_CHOICE_RESULTS_FEED_USERNAME,
       ),
-      BIDDERS_CHOICE_RESULTS_FEED_API_KEY: Boolean(
-        process.env.BIDDERS_CHOICE_RESULTS_FEED_API_KEY?.trim(),
+      RESULTS_FEED_PASSWORD: presence(
+        process.env.BIDDERS_CHOICE_RESULTS_FEED_PASSWORD,
       ),
-      BIDDERS_CHOICE_RESULTS_FEED_VALIDATED:
-        process.env.BIDDERS_CHOICE_RESULTS_FEED_VALIDATED === "true",
-      // Legacy flag alone never implies CONNECTED
-      BIDDERS_CHOICE_RESULTS_FEED_CONNECTED:
-        process.env.BIDDERS_CHOICE_RESULTS_FEED_CONNECTED === "true",
+      RESULTS_FEED_VALIDATED_FLAG:
+        process.env.BIDDERS_CHOICE_RESULTS_FEED_VALIDATED === "true"
+          ? "PRESENT"
+          : "MISSING",
+      // Listing public-fetch — NOT results authorisation
+      ALLOW_PUBLIC_FETCH:
+        process.env.BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH === "true"
+          ? "PRESENT"
+          : "MISSING",
     },
   };
 
@@ -74,11 +94,18 @@ async function main() {
   console.log("PARTNER =", out.partner);
   console.log("RESULTS FEED =", out.resultsFeed);
   console.log("AUTHORISATION =", out.authorisation);
+  console.log("CONNECTION STATE =", out.connectionState);
+  console.log("CONNECTION VALIDATION =", validation.state);
   console.log("PRODUCTION WRITE =", out.productionWrite);
+  console.log("RESULTS FEED URL =", out.secretsPresence.RESULTS_FEED_URL);
+  console.log("CREDENTIALS TOKEN =", out.secretsPresence.RESULTS_FEED_TOKEN);
+  console.log("API KEY =", out.secretsPresence.RESULTS_FEED_API_KEY);
+  console.log(
+    "PUBLIC FETCH (not results auth) =",
+    out.secretsPresence.ALLOW_PUBLIC_FETCH,
+  );
   console.log("Verified observations:", out.verifiedObservations);
   console.log("Verified sale prices:", out.verifiedSalePrices);
-  console.log("Connection configured:", out.connection?.configured ?? false);
-  console.log("Connection validated:", out.connection?.validated ?? false);
   console.log("Next action:", out.nextAction);
   console.log("Wrote PARTNER_RESULTS_FEED_DIAGNOSTIC.json");
 }
