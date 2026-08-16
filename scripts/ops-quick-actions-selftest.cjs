@@ -74,6 +74,23 @@ test("Operations Centre route renders QuickActions", () => {
   assert.match(page, /<QuickActions\s*\/>/);
 });
 
+test("Operations Centre wires Bidders Choice Results Feed panel", () => {
+  const page = fs.readFileSync(operationsPagePath, "utf8");
+  assert.match(page, /BiddersChoiceResultsFeedPanel/);
+  assert.ok(
+    fs.existsSync(
+      path.join(
+        root,
+        "app",
+        "admin",
+        "operations",
+        "components",
+        "BiddersChoiceResultsFeedPanel.tsx",
+      ),
+    ),
+  );
+});
+
 test("Quick Actions API route exists", () => {
   assert.ok(
     fs.existsSync(

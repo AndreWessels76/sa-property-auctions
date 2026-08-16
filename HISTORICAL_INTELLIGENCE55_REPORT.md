@@ -1,6 +1,6 @@
 # Historical Intelligence 5.5 — Live Report
 
-Generated: 2026-08-16T10:06:27.393Z
+Generated: 2026-08-16T10:55:22.703Z
 
 ## VERDICT
 

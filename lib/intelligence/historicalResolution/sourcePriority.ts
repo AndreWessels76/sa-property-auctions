@@ -16,6 +16,12 @@ export function rankSourceEvidence(input: {
   if (evidenceType.includes("admin") || evidenceType.includes("partner_confirmed")) {
     return "LICENSED_PARTNER";
   }
+  if (
+    extractionMethod.includes("partner_results") ||
+    extractionMethod.includes("partner_results_feed")
+  ) {
+    return "LICENSED_RESULT_FEED";
+  }
   if (evidenceType.includes("document")) {
     return "OFFICIAL_CATALOGUE_DOCUMENT";
   }

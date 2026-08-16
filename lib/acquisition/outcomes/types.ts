@@ -29,7 +29,11 @@ export type OutcomeExtractionDraft = {
   evidence_text: string;
   source_url: string | null;
   source_name: string | null;
-  extraction_method: "deterministic_text" | "structured_status" | "auction_event_status";
+  extraction_method:
+    | "deterministic_text"
+    | "structured_status"
+    | "auction_event_status"
+    | "partner_results_feed";
   sale_price: number | null;
   sale_price_evidence: string | null;
   sale_price_confidence: "high" | "medium" | "low" | "none";

@@ -38,6 +38,8 @@
     "test:historical-intelligence55": "node scripts/historical-intelligence55-selftest.cjs",
     "test:historical-intelligence56": "node scripts/historical-intelligence56-selftest.cjs",
     "test:auction-evidence-dossier": "node scripts/auction-evidence-dossier-selftest.cjs",
+    "test:partner-results": "node scripts/auction-partner-results-selftest.cjs",
+    "partner-results:diagnostic": "npx --yes tsx --import ./scripts/shims/register-server-only.mjs scripts/auction-partner-results-diagnostic.ts",
     "dossier:live": "node --use-system-ca scripts/auction-evidence-dossier-live.cjs",
     "hi42:live": "npx --yes tsx --env-file=.env.local scripts/historical-intelligence42-live.ts",
     "hi50:live": "node --use-system-ca scripts/historical-intelligence50-live.cjs",
