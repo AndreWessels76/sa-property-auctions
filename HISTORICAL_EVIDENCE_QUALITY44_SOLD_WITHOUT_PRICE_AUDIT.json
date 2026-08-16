@@ -1,0 +1,308 @@
+{
+  "generatedAt": "2026-08-16T09:20:11.521Z",
+  "operator": "heq44-sold-without-price-audit",
+  "productionWritesExecuted": [
+    "enrichFromSnapshot (existing text only)",
+    "HEQ 4.4 reviewOne sale_price",
+    "HEQ 4.4 runQualityAudit",
+    "HI56 rebuildIntelligence (if catalogueLeaks=0)"
+  ],
+  "productionWritesNotExecuted": [
+    "P1 acquisition",
+    "Legacy retry",
+    "live fetch"
+  ],
+  "before": {
+    "historicalEvents": 33,
+    "fetchAttempted": "33/33",
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
+    "snapshots": "17/33",
+    "extractions": "33/33",
+    "outcomeEvidence": "5/33",
+    "outcomeMissing": 28,
+    "soldWithoutPrice": 5,
+    "verifiedSold": 0,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0,
+    "legacyUnknownFailures": 0,
+    "bottleneck56": {
+      "code": "OUTCOME_MISSING",
+      "count": 28,
+      "total": 33,
+      "percentage": 84.8,
+      "recommendedAction": "Resolve Evidence"
+    }
+  },
+  "after": {
+    "historicalEvents": 33,
+    "fetchAttempted": "33/33",
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
+    "snapshots": "17/33",
+    "extractions": "33/33",
+    "outcomeEvidence": "5/33",
+    "outcomeMissing": 28,
+    "soldWithoutPrice": 5,
+    "verifiedSold": 0,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0,
+    "legacyUnknownFailures": 0,
+    "bottleneck56": {
+      "code": "OUTCOME_MISSING",
+      "count": 28,
+      "total": 33,
+      "percentage": 84.8,
+      "recommendedAction": "Resolve Evidence"
+    }
+  },
+  "delta": {
+    "soldWithoutPrice": 0,
+    "verifiedSold": 0,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0
+  },
+  "heqEventsProcessed": 5,
+  "evidenceGain": 0,
+  "audit": {
+    "ok": true,
+    "audited": 33,
+    "message": "Quality audit completed for 33 historical event(s)"
+  },
+  "rebuild": {
+    "ok": true,
+    "blocked": false,
+    "rebuildStatus": "ALLOWED",
+    "catalogueLeaks": 0
+  },
+  "eventReports": [
+    {
+      "propertyEvent": "Secunda",
+      "eventId": "1549f73a-684c-4497-9835-1b80041c9173",
+      "listingPropertyId": "5b71ae7c-c460-41ec-965f-c080d965888c",
+      "source": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
+      "snapshotId": "44f2d2bd-da75-45fc-bee6-b39a05d7ac94",
+      "extractionId": "fba11ca0-d71c-4b14-af1d-967f848dae7a",
+      "currentOutcome": "SOLD",
+      "previousSalePrice": null,
+      "candidatePrice": null,
+      "priceType": "NONE",
+      "explicitSaleEvidence": null,
+      "provenance": {
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
+        "snapshotId": "44f2d2bd-da75-45fc-bee6-b39a05d7ac94",
+        "rejectedNonSalePrices": [],
+        "pricingAfter": []
+      },
+      "enrichment": {
+        "ok": true,
+        "status": "COMPLETED",
+        "message": "Snapshot re-extraction (no live fetch)",
+        "extractionRunId": "fba11ca0-d71c-4b14-af1d-967f848dae7a",
+        "snapshotId": "44f2d2bd-da75-45fc-bee6-b39a05d7ac94",
+        "fieldsFound": 15
+      },
+      "heqReview": {
+        "ok": true,
+        "oldQuality": "INSUFFICIENT_DATA",
+        "newQuality": "INSUFFICIENT_DATA",
+        "message": "Quality review mark_insufficient recorded"
+      },
+      "heqResult": "SOLD_WITHOUT_PRICE",
+      "verifiedSalePrice": null,
+      "quality": "INSUFFICIENT_DATA",
+      "nextAction": "Remain SOLD_WITHOUT_PRICE — no explicit transaction price in existing evidence",
+      "analysisCandidates": [],
+      "rejectedPrices": []
+    },
+    {
+      "propertyEvent": "Pre-fab wall",
+      "eventId": "fa7207e6-9ff8-404c-9ffb-1ede4094ffe2",
+      "listingPropertyId": "4db1894f-369b-4957-85c6-d3b12f88a3ed",
+      "source": "https://bidderschoice.co.za/property-listings/online-auction-2-x-industrial-properties-house-bela-bela/",
+      "snapshotId": "bd86b5d0-c9a1-42d0-8241-c572d102a68b",
+      "extractionId": "9c6104e4-f589-41b2-b2ae-ca74e9003c7c",
+      "currentOutcome": "SOLD",
+      "previousSalePrice": null,
+      "candidatePrice": null,
+      "priceType": "NONE",
+      "explicitSaleEvidence": null,
+      "provenance": {
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-2-x-industrial-properties-house-bela-bela/",
+        "snapshotId": "bd86b5d0-c9a1-42d0-8241-c572d102a68b",
+        "rejectedNonSalePrices": [],
+        "pricingAfter": []
+      },
+      "enrichment": {
+        "ok": true,
+        "status": "COMPLETED",
+        "message": "Snapshot re-extraction (no live fetch)",
+        "extractionRunId": "9c6104e4-f589-41b2-b2ae-ca74e9003c7c",
+        "snapshotId": "bd86b5d0-c9a1-42d0-8241-c572d102a68b",
+        "fieldsFound": 19
+      },
+      "heqReview": {
+        "ok": true,
+        "oldQuality": "INSUFFICIENT_DATA",
+        "newQuality": "INSUFFICIENT_DATA",
+        "message": "Quality review mark_insufficient recorded"
+      },
+      "heqResult": "SOLD_WITHOUT_PRICE",
+      "verifiedSalePrice": null,
+      "quality": "INSUFFICIENT_DATA",
+      "nextAction": "Remain SOLD_WITHOUT_PRICE — no explicit transaction price in existing evidence",
+      "analysisCandidates": [],
+      "rejectedPrices": []
+    },
+    {
+      "propertyEvent": "Port Elizabeth",
+      "eventId": "ccaf70ac-380b-41b4-9a28-b603c3ea8b8c",
+      "listingPropertyId": "98a25857-d325-4de6-a1ea-202b49c78ee0",
+      "source": "https://bidderschoice.co.za/property-listings/online-auction-commercial-building-port-elizabeth/",
+      "snapshotId": "53665b7b-f090-47c8-a341-cf942d90ae2f",
+      "extractionId": "44b372b7-cc7f-4db2-ac16-f9f38bc3568e",
+      "currentOutcome": "SOLD",
+      "previousSalePrice": null,
+      "candidatePrice": null,
+      "priceType": "NONE",
+      "explicitSaleEvidence": null,
+      "provenance": {
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-commercial-building-port-elizabeth/",
+        "snapshotId": "53665b7b-f090-47c8-a341-cf942d90ae2f",
+        "rejectedNonSalePrices": [],
+        "pricingAfter": []
+      },
+      "enrichment": {
+        "ok": true,
+        "status": "COMPLETED",
+        "message": "Snapshot re-extraction (no live fetch)",
+        "extractionRunId": "44b372b7-cc7f-4db2-ac16-f9f38bc3568e",
+        "snapshotId": "53665b7b-f090-47c8-a341-cf942d90ae2f",
+        "fieldsFound": 15
+      },
+      "heqReview": {
+        "ok": true,
+        "oldQuality": "INSUFFICIENT_DATA",
+        "newQuality": "INSUFFICIENT_DATA",
+        "message": "Quality review mark_insufficient recorded"
+      },
+      "heqResult": "SOLD_WITHOUT_PRICE",
+      "verifiedSalePrice": null,
+      "quality": "INSUFFICIENT_DATA",
+      "nextAction": "Remain SOLD_WITHOUT_PRICE — no explicit transaction price in existing evidence",
+      "analysisCandidates": [],
+      "rejectedPrices": []
+    },
+    {
+      "propertyEvent": "Hartbeespoort Dam",
+      "eventId": "d3a1d1ff-1940-4019-965d-47cb5b8b5da1",
+      "listingPropertyId": "ea4472b7-0bcc-4722-95cd-037bf6aa8dfb",
+      "source": "https://bidderschoice.co.za/property-listings/deceased-estate-auction-4-bedroom-house-hartbeespoort-dam/",
+      "snapshotId": "8b1b4078-6fdc-4bf4-99c2-12904970fdb4",
+      "extractionId": "6d74764a-24f5-4c1b-ade7-2cb0c4e0aae4",
+      "currentOutcome": "SOLD",
+      "previousSalePrice": null,
+      "candidatePrice": null,
+      "priceType": "NONE",
+      "explicitSaleEvidence": null,
+      "provenance": {
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/deceased-estate-auction-4-bedroom-house-hartbeespoort-dam/",
+        "snapshotId": "8b1b4078-6fdc-4bf4-99c2-12904970fdb4",
+        "rejectedNonSalePrices": [],
+        "pricingAfter": []
+      },
+      "enrichment": {
+        "ok": true,
+        "status": "COMPLETED",
+        "message": "Snapshot re-extraction (no live fetch)",
+        "extractionRunId": "6d74764a-24f5-4c1b-ade7-2cb0c4e0aae4",
+        "snapshotId": "8b1b4078-6fdc-4bf4-99c2-12904970fdb4",
+        "fieldsFound": 15
+      },
+      "heqReview": {
+        "ok": true,
+        "oldQuality": "INSUFFICIENT_DATA",
+        "newQuality": "INSUFFICIENT_DATA",
+        "message": "Quality review mark_insufficient recorded"
+      },
+      "heqResult": "SOLD_WITHOUT_PRICE",
+      "verifiedSalePrice": null,
+      "quality": "INSUFFICIENT_DATA",
+      "nextAction": "Remain SOLD_WITHOUT_PRICE — no explicit transaction price in existing evidence",
+      "analysisCandidates": [],
+      "rejectedPrices": []
+    },
+    {
+      "propertyEvent": "Phase",
+      "eventId": "cb1427a6-6259-49ee-99f8-c6ccb83c0407",
+      "listingPropertyId": "5907bdb8-fc4b-4a8b-b054-174e8d3a8d87",
+      "source": "https://bidderschoice.co.za/property-listings/online-auction-hope-city-phase-2-middelburg-mpumalanga/",
+      "snapshotId": "48e49d61-e2fa-4db6-a462-20ff7787e130",
+      "extractionId": "149ce14f-32c6-4e15-ab88-bccf55aa6f8a",
+      "currentOutcome": "SOLD",
+      "previousSalePrice": null,
+      "candidatePrice": null,
+      "priceType": "NONE",
+      "explicitSaleEvidence": null,
+      "provenance": {
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-hope-city-phase-2-middelburg-mpumalanga/",
+        "snapshotId": "48e49d61-e2fa-4db6-a462-20ff7787e130",
+        "rejectedNonSalePrices": [],
+        "pricingAfter": []
+      },
+      "enrichment": {
+        "ok": true,
+        "status": "COMPLETED",
+        "message": "Snapshot re-extraction (no live fetch)",
+        "extractionRunId": "149ce14f-32c6-4e15-ab88-bccf55aa6f8a",
+        "snapshotId": "48e49d61-e2fa-4db6-a462-20ff7787e130",
+        "fieldsFound": 16
+      },
+      "heqReview": {
+        "ok": true,
+        "oldQuality": "INSUFFICIENT_DATA",
+        "newQuality": "INSUFFICIENT_DATA",
+        "message": "Quality review mark_insufficient recorded"
+      },
+      "heqResult": "SOLD_WITHOUT_PRICE",
+      "verifiedSalePrice": null,
+      "quality": "INSUFFICIENT_DATA",
+      "nextAction": "Remain SOLD_WITHOUT_PRICE — no explicit transaction price in existing evidence",
+      "analysisCandidates": [],
+      "rejectedPrices": []
+    }
+  ],
+  "bottleneck56": {
+    "code": "OUTCOME_MISSING",
+    "count": 28,
+    "total": 33,
+    "percentage": 84.8,
+    "recommendedAction": "Resolve Evidence"
+  },
+  "coverage52": {
+    "historicalEvents": 33,
+    "licensedSources": "33/33",
+    "fetchAttempted": "33/33",
+    "neverAttempted": 0,
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
+    "retryable": 0,
+    "permanent": 0,
+    "legacyFailures": 0,
+    "snapshots": "17/33",
+    "missingExtraction": 0,
+    "extractions": "33/33",
+    "outcomeEvidence": "5/33",
+    "verifiedSold": 0,
+    "soldWithoutPrice": 5,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0
+  }
+}

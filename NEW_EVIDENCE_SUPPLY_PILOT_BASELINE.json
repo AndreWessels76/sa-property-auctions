@@ -1,0 +1,340 @@
+{
+  "generatedAt": "2026-08-16T09:45:06.653Z",
+  "coverage52": {
+    "historicalEvents": 33,
+    "licensedSources": "33/33",
+    "fetchAttempted": "33/33",
+    "neverAttempted": 0,
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
+    "retryable": 0,
+    "permanent": 0,
+    "legacyFailures": 0,
+    "snapshots": "17/33",
+    "missingExtraction": 0,
+    "extractions": "33/33",
+    "outcomeEvidence": "5/33",
+    "verifiedSold": 0,
+    "soldWithoutPrice": 5,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0
+  },
+  "metrics": {
+    "historicalEvents": 33,
+    "auctionEvents": 38,
+    "properties": 53,
+    "soldWithoutPrice": 5,
+    "verifiedSold": 0,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0,
+    "outcomeEvidence": "5/33",
+    "outcomeMissing": 28
+  },
+  "bottleneck56": {
+    "code": "OUTCOME_MISSING",
+    "count": 28,
+    "total": 33,
+    "percentage": 84.8,
+    "recommendedAction": "Resolve Evidence"
+  },
+  "partner": {
+    "status": "active",
+    "licence_status": "active",
+    "notes": "Production reference connector. Public fetch only when robots allow + BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH."
+  },
+  "partnerLicences": 0,
+  "livePermission": {
+    "state": "PUBLIC_FETCH_ALLOWED",
+    "allowed": true,
+    "reasons": [
+      "Operational env allow: BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH"
+    ]
+  },
+  "envPublicFetch": true,
+  "existingBcUrls": [
+    {
+      "id": "603a7e65-c6e0-4f8d-850a-688cb27549df",
+      "url": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
+      "title": "± 749Ha Cattle Farm, Springbokvlakte, Limpopo – Auction",
+      "town": "of",
+      "verification_state": "expired"
+    },
+    {
+      "id": "e5f7ca0d-8c2e-4ad0-b4c9-934e4b6243f6",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-328ha-prime-agricultural-holding-tzaneen/",
+      "title": "Online Auction: ± 32,8Ha Prime Agricultural Holding, Tzaneen",
+      "town": "Tzaneen",
+      "verification_state": "verified"
+    },
+    {
+      "id": "841748ff-7a48-42b6-9c21-988544a9f82a",
+      "url": "https://www.bidderschoice.co.za",
+      "title": "Centurion Duplex",
+      "town": "Centurion",
+      "verification_state": "pending_verification"
+    },
+    {
+      "id": "96462a0c-b059-469c-9ae3-1f55d5945554",
+      "url": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-834m2-vacant-stand-port-alfred/",
+      "title": "Liquidation Online Auction: ±834m² Vacant Stand, Port Alfred",
+      "town": "Port Alfred",
+      "verification_state": "expired"
+    },
+    {
+      "id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+      "title": "Insolvent Estate Online Auction Unit in Crystal Park Benoni",
+      "town": "Benoni",
+      "verification_state": "expired"
+    },
+    {
+      "id": "fadf0b54-632a-4ea8-9661-46ef685c5fdd",
+      "url": "https://www.bidderschoice.co.za",
+      "title": "Polokwane Family Dwelling",
+      "town": "Polokwane",
+      "verification_state": "pending_verification"
+    },
+    {
+      "id": "fece6454-b660-4a0a-afc6-7b54a3e119eb",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-2-bedroom-incomplete-project-wierda-park-ext-2-centurion/",
+      "title": "Online Auction: 2-Bedroom Incomplete Project Wierda Park Ext. 2, Centurion",
+      "town": "Pretoria",
+      "verification_state": "expired"
+    },
+    {
+      "id": "f23f9551-6202-4f50-a6aa-029dd0c96fe4",
+      "url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-3-bedroom-house-linden-johannesburg/",
+      "title": "Insolvent Estate Online Auction 3Bedroom Linden Johannesburg",
+      "town": "Johannesburg",
+      "verification_state": "expired"
+    },
+    {
+      "id": "68ba46ec-c347-441e-854b-02f6f49ce063",
+      "url": "https://bidderschoice.co.za/property-listings/online-insolvent-estate-auction-commercial-property-groblersdal-ext-2-limpopo/",
+      "title": "Online Insolvent Auction: Commercial Property Groblersdal",
+      "town": "Groblersdal",
+      "verification_state": "expired"
+    },
+    {
+      "id": "5b71ae7c-c460-41ec-965f-c080d965888c",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
+      "title": "Online Auction Guesthouse &amp; Residential Property Secunda",
+      "town": "Secunda",
+      "verification_state": "expired"
+    },
+    {
+      "id": "03888032-d214-452f-887b-0b91a0dc6bd4",
+      "url": "https://bidderschoice.co.za/property-listings/online-insolvent-estate-auction-5-bedroom-residential-property-groblersdal-limpopo/",
+      "title": "Insolvent Estate Auction Residential Property Groblersdal",
+      "town": "Groblersdal",
+      "verification_state": "expired"
+    },
+    {
+      "id": "4db1894f-369b-4957-85c6-d3b12f88a3ed",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-2-x-industrial-properties-house-bela-bela/",
+      "title": "Online Auction: 2x Industrial Properties &amp; House – Bela-Bela",
+      "town": "Pre-fab wall",
+      "verification_state": "expired"
+    },
+    {
+      "id": "f3f47cca-73c8-420c-9144-146b0f4c9aba",
+      "url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-85ha-vacant-land-louis-trichardt/",
+      "title": "Insolvent Estate Auction: 8.5HA Vacant Land, Louis Trichardt",
+      "town": "Louis Trichardt",
+      "verification_state": "verified"
+    },
+    {
+      "id": "fb42aba6-f6e0-496c-b600-38eb1dc61e12",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-%c2%b1-18-867m%c2%b2-industrial-property-chamdor-krugersdorp/",
+      "title": "Online Auction: Industrial Property, Chamdor Krugersdorp",
+      "town": "Municipal water and sewerage connections",
+      "verification_state": "expired"
+    },
+    {
+      "id": "ea4472b7-0bcc-4722-95cd-037bf6aa8dfb",
+      "url": "https://bidderschoice.co.za/property-listings/deceased-estate-auction-4-bedroom-house-hartbeespoort-dam/",
+      "title": "Deceased Estate Auction: 4-Bedroom House, Hartbeespoort Dam",
+      "town": "Hartbeespoort Dam",
+      "verification_state": "expired"
+    },
+    {
+      "id": "3b61b830-3336-4d6e-bf51-20feb1487ffb",
+      "url": "https://bidderschoice.co.za/property-listings/online-liquidation-auction-4-bedroom-double-storey-home-randpark-ridge-johannesburg/",
+      "title": "Online Liquidation Auction: Randpark Ridge, Johannesburg",
+      "town": "Johannesburg",
+      "verification_state": "expired"
+    },
+    {
+      "id": "8125134b-387c-42dd-923a-c6f01826277f",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-20-bedroom-guest-lodge-rosettenville-johannesburg/",
+      "title": "Online Auction 20 Bed Guest Lodge Rosettenville Johannesburg",
+      "town": "Johannesburg",
+      "verification_state": "verified"
+    },
+    {
+      "id": "6a43f741-8d3e-4a84-9fdb-7de865c1edbb",
+      "url": "https://bidderschoice.co.za/property-listings/exclusive-river-view-luxury-online-auction-4-bedroom-home-in-parys-golf-country-estate/",
+      "title": "Exclusive Online Auction Home in Parys Golf Country Estate",
+      "town": "Parys",
+      "verification_state": "expired"
+    },
+    {
+      "id": "98a25857-d325-4de6-a1ea-202b49c78ee0",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-commercial-building-port-elizabeth/",
+      "title": "Online Auction: Commercial Building, Port Elizabeth",
+      "town": "Port Elizabeth",
+      "verification_state": "expired"
+    },
+    {
+      "id": "7cb6a434-c0ae-49b1-8613-d3b3eafaeeee",
+      "url": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/",
+      "title": "Church Premises, Florida, Roodepoort – Online Auction",
+      "town": "Roodepoort",
+      "verification_state": "expired"
+    },
+    {
+      "id": "826032dd-3385-4f12-b67e-58d344acad64",
+      "url": "https://bidderschoice.co.za/property-listings/9x-vacant-plots-northam-limpopo-online-auction/",
+      "title": "9x Vacant Plots, Northam, Limpopo – Online Auction",
+      "town": "Northam",
+      "verification_state": "expired"
+    },
+    {
+      "id": "e7f52518-2ff1-45f9-8163-02909986a3e2",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-curator-instruction-commercial-property-germiston-cbd/",
+      "title": "Online Auction: Trustee Instruction - Commercial Property",
+      "town": "Germiston",
+      "verification_state": "expired"
+    },
+    {
+      "id": "08448def-23c9-49df-9f4a-f13898520f7f",
+      "url": "https://bidderschoice.co.za/property-listings/deceased-estate-online-auction-vacant-stand-clanwilliam-western-cape/",
+      "title": "Online Auction: Vacant Stand, Clanwilliam Hills, Western Cape",
+      "town": "Clanwilliam",
+      "verification_state": "expired"
+    },
+    {
+      "id": "a1d36b39-c24c-4e64-821b-d2bcde3e457d",
+      "url": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-3-bedroom-double-storey-house-golden-gates-estate-raslouw/",
+      "title": "Liquidation Auction: 3 Bedroom, Golden Gates Estate, Raslouw",
+      "town": "Centurion",
+      "verification_state": "expired"
+    },
+    {
+      "id": "5907bdb8-fc4b-4a8b-b054-174e8d3a8d87",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-hope-city-phase-2-middelburg-mpumalanga/",
+      "title": "Online Auction: Hope City Phase 2 Flats in Middelburg.",
+      "town": "Phase",
+      "verification_state": "expired"
+    },
+    {
+      "id": "d45d6804-6b9a-49cb-b533-162f8b5ad756",
+      "url": "https://bidderschoice.co.za/property-listings/on-site-auction-3-bedroom-home-zwavelkloof-private-estate-zwavelpoort/",
+      "title": "On-Site Auction: 3-Bedroom Home, Zwavelkloof Private Estate.",
+      "town": "Pretoria",
+      "verification_state": "expired"
+    },
+    {
+      "id": "6ea5fcfe-92cf-40e8-9992-fd966c596071",
+      "url": "https://bidderschoice.co.za/property-listings/court-order-4-bedroom-double-storey-home-villa-real-estate-bedfordview-auction-online/",
+      "title": "Villa Real Estate, Bedfordview - Court Order Online Auction",
+      "town": "Bedfordview",
+      "verification_state": "expired"
+    },
+    {
+      "id": "65ba9fac-2b8f-4139-93df-fffbd60a042e",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-in-conjunction-with-bideasy-auctioneers-prime-export-commercial-farm-%c2%b1-78ha-barberton-mpumalanga/",
+      "title": "Online Auction: Prime Commercial Farm Barberton Mpumalanga",
+      "town": "and are strictly farmed and managed on t",
+      "verification_state": "expired"
+    },
+    {
+      "id": "78e0ab0e-0b33-4a2a-a9e3-eda3677c6209",
+      "url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-2x-sectional-title-units-pretoria/",
+      "title": "Insolvent Estate Auction: 2x Sectional Title Units, Pretoria",
+      "town": "Pretoria",
+      "verification_state": "verified"
+    },
+    {
+      "id": "16b40893-1910-43ea-91c1-2733bdb11b53",
+      "url": "https://bidderschoice.co.za/property-listings/prime-export-commercial-farm-21ha-macs-with-water-rights-white-river/",
+      "title": "21Ha Export Macadamia Farm with Water Rights, White River",
+      "town": "of",
+      "verification_state": "expired"
+    },
+    {
+      "id": "ba832004-66d0-4049-9031-e0e357cd2722",
+      "url": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-bettys-bay-residential-stand/",
+      "title": "Insolvent Estate Online Auction: ± 800m² Residential Stand",
+      "town": "Bettys Bay",
+      "verification_state": "expired"
+    },
+    {
+      "id": "ef99fd5b-ccdc-4b88-9141-a851f5abff01",
+      "url": "https://bidderschoice.co.za/property-listings/light-industrial-property-kya-sand-randburg-auction/",
+      "title": "Light Industrial Property, Kya Sand, Randburg - Auction",
+      "town": "Randburg",
+      "verification_state": "expired"
+    },
+    {
+      "id": "b8eb4cb5-d9c1-46de-a338-266357d3d8f9",
+      "url": "https://bidderschoice.co.za/property-listings/insolvent-estate-auction-vacant-stand-louis-trichardt/",
+      "title": "Insolvent Estate Auction: Vacant Stand – Louis Trichardt",
+      "town": "Louis Trichardt",
+      "verification_state": "verified"
+    },
+    {
+      "id": "67b91c8b-4200-4f8f-8122-c38690741457",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-bank-instruction-6-bedroom-renovators-dream-hurlingham-manor/",
+      "title": "Online Auction: Bank Instruction 6-Bedroom Renovators Dream, Hurlingham Manor",
+      "town": "Sandton",
+      "verification_state": "expired"
+    },
+    {
+      "id": "6e21b52e-b8e6-42de-9f57-179d74e3ed27",
+      "url": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-school-property-randpark-ridge/",
+      "title": "Liquidation Online Auction: School Property, Randpark Ridge",
+      "town": "Randburg",
+      "verification_state": "expired"
+    },
+    {
+      "id": "b2fda1b4-e25b-410f-a3c8-38aa9c801588",
+      "url": "https://bidderschoice.co.za/property-listings/liquidation-auction-3-bed-home-boardwalk-meander-a-pretoria/",
+      "title": "Liquidation Auction: 3-Bed Home Boardwalk Meander A",
+      "town": "Pretoria",
+      "verification_state": "expired"
+    },
+    {
+      "id": "8ee07723-5b8f-4908-98a6-70613e9b52e6",
+      "url": "https://bidderschoice.co.za/property-listings/1_9ha-agricultural-holding-pretoria-north-online-auction/",
+      "title": "±1.9Ha Agricultural Holding, Pretoria North – Online Auction",
+      "town": "Pretoria",
+      "verification_state": "expired"
+    },
+    {
+      "id": "97442d62-e95c-4f5f-a562-17e5e809dd1c",
+      "url": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-780m2-vacant-stand-port-alfred/",
+      "title": "Liquidation Online Auction: ±780m² Vacant Stand, Port Alfred",
+      "town": "Port Alfred",
+      "verification_state": "expired"
+    },
+    {
+      "id": "ec3e90f0-5d86-4b32-9b20-4dee592654c3",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north/",
+      "title": "Online Auction: Agricultural Holding Fundus, Pretoria North",
+      "town": "Pretoria North",
+      "verification_state": "expired"
+    },
+    {
+      "id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "url": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+      "title": "Online Auction Guest Farm Haenertsburg Magoebaskloof Limpopo",
+      "town": "Haenertsburg",
+      "verification_state": "expired"
+    }
+  ]
+}
