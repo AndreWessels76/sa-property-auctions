@@ -43,3 +43,70 @@ export function evaluateFetchPermission(input: {
     reasons: ["No active partner licence — live fetch blocked"],
   };
 }
+
+export type BcFetchEligibilityState =
+  | "LICENSE_ACTIVE"
+  | "PUBLIC_FETCH_ALLOWED"
+  | "LICENSE_BLOCKED"
+  | "CONFIG_MISSING"
+  | "SOURCE_UNAVAILABLE";
+
+/**
+ * Diagnostic classification for Bidders Choice fetch eligibility.
+ * Does not perform network I/O.
+ */
+export function classifyBcFetchEligibility(input: {
+  connectorId: string;
+  sourceUrl?: string | null;
+  licence: PartnerLicenceRecord | null;
+  envAllowPublicFetch?: boolean | null;
+}): {
+  state: BcFetchEligibilityState;
+  allowed: boolean;
+  reasons: string[];
+} {
+  if (!input.sourceUrl?.trim()) {
+    return {
+      state: "SOURCE_UNAVAILABLE",
+      allowed: false,
+      reasons: ["Missing source URL"],
+    };
+  }
+
+  const envAllow = input.envAllowPublicFetch === true;
+  const gate = evaluateFetchPermission({
+    licence: input.licence,
+    connectorId: input.connectorId,
+    envAllowPublicFetch: envAllow,
+  });
+
+  if (gate.allowed && input.licence) {
+    return { state: "LICENSE_ACTIVE", allowed: true, reasons: gate.reasons };
+  }
+  if (gate.allowed && envAllow) {
+    return {
+      state: "PUBLIC_FETCH_ALLOWED",
+      allowed: true,
+      reasons: gate.reasons,
+    };
+  }
+  if (
+    input.connectorId === "bidders_choice" &&
+    !input.licence &&
+    input.envAllowPublicFetch !== true
+  ) {
+    return {
+      state: "CONFIG_MISSING",
+      allowed: false,
+      reasons: [
+        ...(gate.reasons ?? []),
+        "BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH is not true and no partner_licences row is active",
+      ],
+    };
+  }
+  return {
+    state: "LICENSE_BLOCKED",
+    allowed: false,
+    reasons: gate.reasons,
+  };
+}

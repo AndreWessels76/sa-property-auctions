@@ -33,6 +33,12 @@ export function resolveHistoricalSource(input: {
   lastRunStatus?: string | null;
   hasOpenReview?: boolean;
   hasOpenConflict?: boolean;
+  /**
+   * When true, a prior SKIPPED_LICENSE / LICENSE_BLOCKED enrichment status is
+   * treated as recoverable (planner may proceed). Live SourceRefetchService
+   * permission remains authoritative at fetch time.
+   */
+  allowLicenceRetry?: boolean;
 }): HistoricalSourceResolution {
   const notes: string[] = [];
   const sourceUrl = input.event.sourceUrl;
@@ -74,19 +80,25 @@ export function resolveHistoricalSource(input: {
 
   const run = (input.lastRunStatus ?? "").toUpperCase();
   if (run.includes("SKIPPED_LICENSE") || run === "LICENSE_BLOCKED") {
-    return {
-      propertyId: input.event.listingPropertyId,
-      auctionEventId: input.event.auctionEventId,
-      propertyMasterId: input.event.propertyMasterId,
-      sourceUrl,
-      connector,
-      partner,
-      status: "LICENSE_BLOCKED",
-      lastFetch: null,
-      lastSnapshotId: null,
-      sourceHash: null,
-      notes: ["Licence blocked"],
-    };
+    if (input.allowLicenceRetry) {
+      notes.push(
+        "Prior licence block ignored for planner — live fetch permission re-checked at SourceRefetch",
+      );
+    } else {
+      return {
+        propertyId: input.event.listingPropertyId,
+        auctionEventId: input.event.auctionEventId,
+        propertyMasterId: input.event.propertyMasterId,
+        sourceUrl,
+        connector,
+        partner,
+        status: "LICENSE_BLOCKED",
+        lastFetch: null,
+        lastSnapshotId: null,
+        sourceHash: null,
+        notes: ["Licence blocked (sticky prior run)"],
+      };
+    }
   }
   if (run.includes("ROBOTS") || run === "ROBOTS_BLOCKED") {
     return {

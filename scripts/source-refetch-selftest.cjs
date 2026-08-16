@@ -190,6 +190,7 @@ function test(name, fn) {
 
 const {
   evaluateFetchPermission,
+  classifyBcFetchEligibility,
 } = loadTs("licenseGate.ts");
 const { hostAllowed, contentTypeAllowed, refetchPriority, intervalForPriority, resolveFetchPolicy } =
   loadTs("fetchPolicy.ts");
@@ -290,6 +291,44 @@ async function run() {
     });
     assert.equal(r.allowed, true);
     record("license_env", true, "BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH");
+  });
+
+  await test("classifyBcFetchEligibility distinguishes CONFIG_MISSING", () => {
+    const missing = classifyBcFetchEligibility({
+      connectorId: "bidders_choice",
+      sourceUrl: "https://bidderschoice.co.za/x",
+      licence: null,
+      envAllowPublicFetch: false,
+    });
+    assert.equal(missing.state, "CONFIG_MISSING");
+    const allowed = classifyBcFetchEligibility({
+      connectorId: "bidders_choice",
+      sourceUrl: "https://bidderschoice.co.za/x",
+      licence: null,
+      envAllowPublicFetch: true,
+    });
+    assert.equal(allowed.state, "PUBLIC_FETCH_ALLOWED");
+    record("classify_bc_eligibility", true, `${missing.state}/${allowed.state}`);
+  });
+
+  await test("classifyBcFetchEligibility CONFIG_MISSING vs PUBLIC_FETCH_ALLOWED", () => {
+    const blocked = classifyBcFetchEligibility({
+      connectorId: "bidders_choice",
+      sourceUrl: "https://bidderschoice.co.za/x",
+      licence: null,
+      envAllowPublicFetch: false,
+    });
+    assert.equal(blocked.state, "CONFIG_MISSING");
+    assert.equal(blocked.allowed, false);
+    const allowed = classifyBcFetchEligibility({
+      connectorId: "bidders_choice",
+      sourceUrl: "https://bidderschoice.co.za/x",
+      licence: null,
+      envAllowPublicFetch: true,
+    });
+    assert.equal(allowed.state, "PUBLIC_FETCH_ALLOWED");
+    assert.equal(allowed.allowed, true);
+    record("classify_bc_eligibility", true, "CONFIG_MISSING→PUBLIC_FETCH_ALLOWED");
   });
 
   await test("host allowlist", () => {

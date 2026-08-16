@@ -1,23 +1,23 @@
 # Historical Intelligence 5.5 — Live Report
 
-Generated: 2026-08-15T12:52:55.740Z
+Generated: 2026-08-16T06:39:25.170Z
 
 ## VERDICT
 
-**CAMPAIGN IN PROGRESS**
+**ENGINE READY / DATA COVERAGE INSUFFICIENT**
 
-Historical evidence recovery still has unattempted or incomplete events
+Evidence exists but requires human review
 
 ## CAMPAIGN
 
-**CAMPAIGN_IN_PROGRESS**
+**CAMPAIGN_AWAITING_REVIEW**
 
-P1 Progress [░░░░░░░░░░░░░░░░] 0 / 19
-Remaining: 19
+P1 Progress [████████████████] 19 / 19
+Remaining: 0
 
-P1 Progress [░░░░░░░░░░░░░░░░] 0 / 19 · Remaining: 19
+P1 Progress [████████████████] 19 / 19 · Remaining: 0
 
-Data coverage improving: **NO**
+Data coverage improving: **YES**
 Data coverage ready: **NO**
 
 ## PRODUCTION COUNTS
@@ -26,15 +26,15 @@ Data coverage ready: **NO**
 |--------|-------|
 | Historical Events | 33 |
 | Licensed Sources | 33/33 |
-| Fetch Attempted | 14 |
-| Never Attempted | 19 |
-| Fetch Successful | 9 |
-| Fetch Failed | 5 |
-| Snapshots | 9/33 |
-| Extractions | 14/33 |
-| Outcome Evidence | 4/33 |
+| Fetch Attempted | 33 |
+| Never Attempted | 0 |
+| Fetch Successful | 29 |
+| Fetch Failed | 4 |
+| Snapshots | 13/33 |
+| Extractions | 33/33 |
+| Outcome Evidence | 5/33 |
 | Verified SOLD | 0 |
-| SOLD Without Price | 4 |
+| SOLD Without Price | 5 |
 | Verified Sale Prices | 0 |
 | Comparable Ready | 0 |
 | Market Ready Towns | 0 |
@@ -42,19 +42,19 @@ Data coverage ready: **NO**
 
 ## RECOVERY LANES
 
-Never attempted (P1): **19**
-Legacy unknown failures: **5**
+Never attempted (P1): **0**
+Legacy unknown failures: **4**
 Retryable failures: **0**
 Snapshot extraction pending: **0**
 
 ## EVIDENCE FUNNEL
 
 33 Licensed Sources
-↓ 14 Fetch Attempted
-↓ 9 Fetch Successful
-↓ 9 Snapshots
-↓ 14 Extractions
-↓ 4 Outcome Evidence
+↓ 33 Fetch Attempted
+↓ 29 Fetch Successful
+↓ 13 Snapshots
+↓ 33 Extractions
+↓ 5 Outcome Evidence
 ↓ 0 Verified SOLD
 ↓ 0 Verified Sale Price
 ↓ 0 Comparable Ready
@@ -62,21 +62,21 @@ Snapshot extraction pending: **0**
 
 ## BOTTLENECK
 
-**FETCH_NOT_ATTEMPTED** — 19/33 (57.6%)
+**FETCH_FAILURE** — 4/33 (12.1%)
 
-Recommended: Acquire P1 (5)
+Recommended: Retry Failed (5) / Retry Network Failures (5)
 
 ## BATCH PLAN
 
-4 admin-triggered batch(es) of ≤5 required — never process all 19 automatically
+No P1 candidates remaining — do not auto-acquire
 
 ## PROVEN
 
 - Public catalogue safety — 0 leaks
 - Historical events: 33
 - Licensed sources: 33/33
-- Fetch attempted: 14/33
-- Fetch successful: 9
+- Fetch attempted: 33/33
+- Fetch successful: 29
 
 ## TESTED
 
@@ -92,11 +92,11 @@ Recommended: Acquire P1 (5)
 - Verified sale prices: 0
 - Comparable ready: 0
 - Market-ready towns: 0
-- Never attempted remaining: 19
+- Never attempted remaining: 0
 
 ## REVIEW REQUIRED
 
-- 19 review queue items
+- 37 review queue items
 
 ## PUBLIC SAFETY
 
@@ -105,7 +105,7 @@ Rebuild: **ALLOWED**
 
 ## NEXT ADMIN ACTION
 
-Dry Run P1 (5) → Acquire P1 (5) — 19 never-attempted remaining
+Retry Legacy Failures (5) — 4 legacy failures
 
 ## PRODUCTION WRITES
 

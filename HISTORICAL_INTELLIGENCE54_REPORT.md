@@ -1,29 +1,29 @@
 # Historical Intelligence 5.4 — Live Report
 
-Generated: 2026-08-15T12:52:55.740Z
+Generated: 2026-08-16T06:39:25.170Z
 
 ## VERDICT
 
-**CAMPAIGN IN PROGRESS**
+**CAMPAIGN AWAITING REVIEW**
 
-Historical evidence recovery still has unattempted or incomplete events
+Evidence exists but requires human review
 
 ## CAMPAIGN
 
-**CAMPAIGN_IN_PROGRESS**
+**CAMPAIGN_AWAITING_REVIEW**
 
-P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20
-Remaining: 19
+P1 Progress [████████████████] 20 / 20
+Remaining: 0
 
-P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaining: 19
+P1 Progress [████████████████] 20 / 20 · Remaining: 0
 
 ## PROVEN IN PRODUCTION
 
 - Public catalogue safety — 0 leaks
 - Historical events: 33
 - Licensed sources: 33/33
-- Fetch attempted: 14/33
-- Fetch successful: 9
+- Fetch attempted: 33/33
+- Fetch successful: 29
 
 ## TESTED
 
@@ -33,21 +33,20 @@ P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaini
 
 ## RECOVERED
 
-- 9 successful fetches in production
-- 9/33 snapshots available
-- 14/33 extractions available
-- 4/33 outcome observations
+- 29 successful fetches in production
+- 13/33 snapshots available
+- 33/33 extractions available
+- 5/33 outcome observations
 
 ## STILL MISSING
 
-- 19 events never fetch-attempted
-- 5 legacy failures awaiting modern metadata retry
+- 4 legacy failures awaiting modern metadata retry
 - No verified SOLD outcomes
 - No verified sale prices
 
 ## REVIEW REQUIRED
 
-- 19 review queue items
+- 37 review queue items
 
 ## INSUFFICIENT DATA
 
@@ -58,11 +57,11 @@ P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaini
 ## EVIDENCE FUNNEL
 
 33 Licensed Sources
-↓ 14 Fetch Attempted
-↓ 9 Fetch Successful
-↓ 9 Snapshots
-↓ 14 Extractions
-↓ 4 Outcome Evidence
+↓ 33 Fetch Attempted
+↓ 29 Fetch Successful
+↓ 13 Snapshots
+↓ 33 Extractions
+↓ 5 Outcome Evidence
 ↓ 0 Verified SOLD
 ↓ 0 Verified Sale Price
 ↓ 0 Comparable Ready
@@ -70,14 +69,14 @@ P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaini
 
 ## BOTTLENECK
 
-**FETCH_NOT_ATTEMPTED** — 19/33 (57.6%)
+**FETCH_FAILURE** — 4/33 (12.1%)
 
-Recommended: Acquire P1 (5)
+Recommended: Retry Failed (5) / Retry Network Failures (5)
 
-- FETCH_NOT_ATTEMPTED: 19/33 → Acquire P1 (5)
-- FETCH_FAILURE: 5/33 → Retry Failed (5) / Retry Network Failures (5)
-- MISSING_OUTCOME: 10/33 → Resolve Evidence
-- MISSING_SALE_PRICE: 4/33 → Quality Audit — explicit sale evidence only
+- FETCH_FAILURE: 4/33 → Retry Failed (5) / Retry Network Failures (5)
+- MISSING_SNAPSHOT: 10/33 → Acquire P1 — successful fetch without snapshot
+- MISSING_OUTCOME: 28/33 → Resolve Evidence
+- MISSING_SALE_PRICE: 5/33 → Quality Audit — explicit sale evidence only
 
 ## PUBLIC SAFETY
 
@@ -87,4 +86,4 @@ Catalogue safe: **YES**
 
 ## NEXT ADMIN ACTION
 
-PRIMARY BOTTLENECK FETCH_NOT_ATTEMPTED 19/33 → Acquire P1 (5)
+PRIMARY BOTTLENECK FETCH_FAILURE 4/33 → Retry Failed (5) / Retry Network Failures (5)

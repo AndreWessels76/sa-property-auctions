@@ -1,0 +1,45 @@
+{
+  "envAllowPublicFetch": "UNSET",
+  "gateState": "CONFIG_MISSING",
+  "partnersError": null,
+  "licencesError": null,
+  "propertiesError": "column properties.agency does not exist",
+  "partnerCount": 8,
+  "licenceCount": 0,
+  "bcPartners": [
+    {
+      "id": "56ec30e8-7bad-4b46-9ad0-8673212664d6",
+      "partner_code": "bidders_choice",
+      "partner_name": "Bidders Choice",
+      "partner_type": "auctioneer",
+      "company": "Bidders Choice",
+      "contact_person": null,
+      "email": null,
+      "telephone": null,
+      "website": "https://www.bidderschoice.co.za",
+      "contract_status": "active",
+      "licence_status": "active",
+      "data_agreement": true,
+      "api_available": false,
+      "csv_available": true,
+      "manual_upload": true,
+      "import_frequency": "daily",
+      "status": "active",
+      "notes": "Production reference connector. Public fetch only when robots allow + BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH.",
+      "supported_regions": [
+        "South Africa"
+      ],
+      "supported_property_types": [],
+      "partner_health": "healthy",
+      "last_successful_import_at": null,
+      "last_failed_import_at": null,
+      "success_rate": null,
+      "verification_rate": null,
+      "connector_id": "bidders_choice",
+      "created_at": "2026-08-07T22:25:55.769342+00:00",
+      "updated_at": "2026-08-14T09:20:48.554+00:00"
+    }
+  ],
+  "licences": [],
+  "batchProperties": []
+}

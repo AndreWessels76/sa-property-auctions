@@ -1,65 +1,40 @@
 {
   "version": "historical-intelligence-5.5.0",
-  "generatedAt": "2026-08-15T12:52:55.740Z",
+  "generatedAt": "2026-08-16T06:39:25.170Z",
   "connectivity": {
     "status": "CONNECTED",
     "message": "Production database reachable"
   },
-  "verdict": "CAMPAIGN IN PROGRESS",
-  "reason": "Historical evidence recovery still has unattempted or incomplete events",
+  "verdict": "ENGINE READY / DATA COVERAGE INSUFFICIENT",
+  "reason": "Evidence exists but requires human review",
   "campaign55": {
-    "status": "CAMPAIGN_IN_PROGRESS",
-    "summaryLine": "P1 Progress [░░░░░░░░░░░░░░░░] 0 / 19 · Remaining: 19",
-    "dataCoverageImproving": false,
+    "status": "CAMPAIGN_AWAITING_REVIEW",
+    "summaryLine": "P1 Progress [████████████████] 19 / 19 · Remaining: 0",
+    "dataCoverageImproving": true,
     "dataCoverageReady": false
   },
   "p1Progress55": {
     "originalP1": 19,
-    "processed": 0,
-    "remaining": 19,
-    "blocked": 5,
-    "successful": 9,
-    "failed": 5,
+    "processed": 19,
+    "remaining": 0,
+    "blocked": 4,
+    "successful": 29,
+    "failed": 4,
     "retryable": 0,
-    "reviewRequired": 19,
-    "progressBar": "░░░░░░░░░░░░░░░░",
-    "progressLabel": "0 / 19"
+    "reviewRequired": 37,
+    "progressBar": "████████████████",
+    "progressLabel": "19 / 19"
   },
   "batchPlan55": {
-    "remaining": 19,
+    "remaining": 0,
     "batchSize": 5,
-    "batchesRequired": 4,
-    "steps": [
-      {
-        "batchNumber": 1,
-        "plannedSize": 5,
-        "cumulativeProcessed": 5,
-        "remainingAfter": 14
-      },
-      {
-        "batchNumber": 2,
-        "plannedSize": 5,
-        "cumulativeProcessed": 10,
-        "remainingAfter": 9
-      },
-      {
-        "batchNumber": 3,
-        "plannedSize": 5,
-        "cumulativeProcessed": 15,
-        "remainingAfter": 4
-      },
-      {
-        "batchNumber": 4,
-        "plannedSize": 4,
-        "cumulativeProcessed": 19,
-        "remainingAfter": 0
-      }
-    ],
-    "note": "4 admin-triggered batch(es) of ≤5 required — never process all 19 automatically"
+    "batchesRequired": 0,
+    "steps": [],
+    "note": "No P1 candidates remaining — do not auto-acquire"
   },
   "recoveryLanes55": {
-    "neverAttempted": 19,
-    "legacyUnknownFailures": 5,
+    "neverAttempted": 0,
+    "legacyUnknownFailures": 4,
     "retryableFailures": 0,
     "snapshotExtractionPending": 0,
     "note": "P1 never-attempted and legacy unknown failures are separate recovery lanes"
@@ -73,27 +48,27 @@
     {
       "key": "fetchAttempted",
       "label": "Fetch Attempted",
-      "value": 14
+      "value": 33
     },
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 9
+      "value": 29
     },
     {
       "key": "snapshots",
       "label": "Snapshots",
-      "value": 9
+      "value": 13
     },
     {
       "key": "extractions",
       "label": "Extractions",
-      "value": 14
+      "value": 33
     },
     {
       "key": "outcomeEvidence",
       "label": "Outcome Evidence",
-      "value": 4
+      "value": 5
     },
     {
       "key": "verifiedSold",
@@ -117,39 +92,39 @@
     }
   ],
   "bottleneck55": {
-    "code": "FETCH_NOT_ATTEMPTED",
-    "count": 19,
+    "code": "FETCH_FAILURE",
+    "count": 4,
     "total": 33,
-    "percentage": 57.6,
-    "recommendedAction": "Acquire P1 (5)"
+    "percentage": 12.1,
+    "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
   },
   "bottleneckRanked55": [
     {
-      "code": "FETCH_NOT_ATTEMPTED",
-      "count": 19,
-      "total": 33,
-      "percentage": 57.6,
-      "recommendedAction": "Acquire P1 (5)"
-    },
-    {
       "code": "FETCH_FAILURE",
-      "count": 5,
+      "count": 4,
       "total": 33,
-      "percentage": 15.2,
+      "percentage": 12.1,
       "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
     },
     {
-      "code": "MISSING_OUTCOME",
+      "code": "MISSING_SNAPSHOT",
       "count": 10,
       "total": 33,
       "percentage": 30.3,
+      "recommendedAction": "Acquire P1 — successful fetch without snapshot"
+    },
+    {
+      "code": "MISSING_OUTCOME",
+      "count": 28,
+      "total": 33,
+      "percentage": 84.8,
       "recommendedAction": "Resolve Evidence"
     },
     {
       "code": "MISSING_SALE_PRICE",
-      "count": 4,
+      "count": 5,
       "total": 33,
-      "percentage": 12.1,
+      "percentage": 15.2,
       "recommendedAction": "Quality Audit — explicit sale evidence only"
     }
   ],
@@ -162,25 +137,25 @@
   "coverage52": {
     "historicalEvents": 33,
     "licensedSources": "33/33",
-    "fetchAttempted": "14/33",
-    "neverAttempted": 19,
-    "fetchSuccessful": 9,
-    "fetchFailed": 5,
+    "fetchAttempted": "33/33",
+    "neverAttempted": 0,
+    "fetchSuccessful": 29,
+    "fetchFailed": 4,
     "retryable": 0,
-    "permanent": 5,
-    "legacyFailures": 5,
-    "snapshots": "9/33",
+    "permanent": 4,
+    "legacyFailures": 4,
+    "snapshots": "13/33",
     "missingExtraction": 0,
-    "extractions": "14/33",
-    "outcomeEvidence": "4/33",
+    "extractions": "33/33",
+    "outcomeEvidence": "5/33",
     "verifiedSold": 0,
-    "soldWithoutPrice": 4,
+    "soldWithoutPrice": 5,
     "verifiedSalePrices": 0,
     "comparableReady": 0,
     "marketReadyTowns": 0,
     "catalogueLeaks": 0
   },
-  "nextAdminAction": "Dry Run P1 (5) → Acquire P1 (5) — 19 never-attempted remaining",
+  "nextAdminAction": "Retry Legacy Failures (5) — 4 legacy failures",
   "eventStateSample55": [
     {
       "observationId": "event:d4b95b88-2b87-4dd1-ac67-ba199829130b",
@@ -189,7 +164,7 @@
     },
     {
       "observationId": "event:1549f73a-684c-4497-9835-1b80041c9173",
-      "state": "LEGACY_UNKNOWN_FAILURE",
+      "state": "SOLD_WITHOUT_PRICE",
       "propertyLabel": "Secunda"
     },
     {
@@ -254,57 +229,57 @@
     },
     {
       "observationId": "event:01c5c920-ee74-46c0-8a5a-2305bf55dab0",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Randburg"
     },
     {
       "observationId": "event:1035c18c-d257-40d1-8e2d-f6a65c98fc7d",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Bedfordview"
     },
     {
       "observationId": "event:b8e60326-3bcd-4d4a-a2f4-3841eae93e9f",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Port Alfred"
     },
     {
       "observationId": "event:e105c520-2d04-479c-a99f-f34f1478a1af",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Pretoria North"
     },
     {
       "observationId": "event:376c3389-2de0-4240-9e5d-dd06ae895b37",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Pretoria"
     },
     {
       "observationId": "event:7ae4a73e-b8c8-497e-bbd7-907a7aee3c16",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Bettys Bay"
     },
     {
       "observationId": "event:2eeb5157-8342-41d1-9abd-39c15066eb1b",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Clanwilliam"
     },
     {
       "observationId": "event:8be1de09-5e59-4c95-ad2c-49e0326840c1",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "and are strictly farmed and managed on t"
     },
     {
       "observationId": "event:3becbaeb-dea3-4823-aed3-7b474fa296b3",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Northam"
     },
     {
       "observationId": "event:f0727ccd-a8a8-457d-86c5-75725f482d55",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Pretoria"
     },
     {
       "observationId": "event:faeb4be7-8701-493c-a602-9ed20f88c6d8",
-      "state": "FETCH_ELIGIBLE",
+      "state": "EXTRACTED",
       "propertyLabel": "Germiston"
     }
   ],
@@ -313,8 +288,8 @@
       "Public catalogue safety — 0 leaks",
       "Historical events: 33",
       "Licensed sources: 33/33",
-      "Fetch attempted: 14/33",
-      "Fetch successful: 9"
+      "Fetch attempted: 33/33",
+      "Fetch successful: 29"
     ],
     "tested": [
       "HI 5.5 orchestration over HI 5.4",
@@ -327,11 +302,10 @@
       "Verified sale prices",
       "Verified SOLD",
       "Comparable-ready corpus",
-      "Market-ready towns",
-      "19 never-attempted fetches"
+      "Market-ready towns"
     ],
     "reviewRequired": [
-      "19 review queue items"
+      "37 review queue items"
     ]
   },
   "productionWritesExecuted": [],

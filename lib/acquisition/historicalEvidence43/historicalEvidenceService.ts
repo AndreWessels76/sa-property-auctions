@@ -46,6 +46,8 @@ export function planAcquisition(input: {
   dryRun: boolean;
   lastRunStatus?: string | null;
   hasOpenReview?: boolean;
+  /** When live licence/public-fetch permission allows, clear sticky prior licence block. */
+  allowLicenceRetry?: boolean;
 }): {
   discovery: ReturnType<typeof discoverSourcesForEvent>;
   fetchPlan: ReturnType<typeof planSourceFetch>;
@@ -55,6 +57,7 @@ export function planAcquisition(input: {
     event: input.event,
     lastRunStatus: input.lastRunStatus,
     hasOpenReview: input.hasOpenReview,
+    allowLicenceRetry: input.allowLicenceRetry,
   });
   const identity = assessIdentityMatchStrength(input.event);
   const fetchPlan = planSourceFetch({

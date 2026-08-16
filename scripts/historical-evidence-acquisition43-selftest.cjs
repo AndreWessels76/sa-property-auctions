@@ -81,6 +81,8 @@ const { assessIdentityMatchStrength } = load("acquisition/historicalEvidence43/i
 const { buildAcquireResult, planAcquisition } = load(
   "acquisition/historicalEvidence43/historicalEvidenceService.ts",
 );
+const { resolveHistoricalSource } = load("acquisition/historical/sourceResolution.ts");
+const { classifyBcFetchEligibility } = load("acquisition/refetch/licenseGate.ts");
 
 const corpus = { title: "Test", source_url: "https://example.com/listing", source_name: "Agency" };
 
@@ -327,6 +329,62 @@ console.log("hea43: queue P1 exact URL");
   assert.equal(queue[0].priority, 1);
   const summary = hea43QueueSummary(queue);
   assert.ok(summary.priority1 >= 1);
+}
+
+console.log("hea43: sticky SKIPPED_LICENSE blocks planner without allowLicenceRetry");
+{
+  const blocked = resolveHistoricalSource({
+    event: baseEvent,
+    lastRunStatus: "SKIPPED_LICENSE",
+  });
+  assert.equal(blocked.status, "LICENSE_BLOCKED");
+  const stickyPlan = planAcquisition({
+    event: baseEvent,
+    dryRun: false,
+    lastRunStatus: "SKIPPED_LICENSE",
+    allowLicenceRetry: false,
+  });
+  assert.equal(stickyPlan.discovery.licensed, false);
+  assert.equal(stickyPlan.fetchPlan.willFetch, false);
+  assert.ok(stickyPlan.fetchPlan.reason.includes("License blocked"));
+}
+
+console.log("hea43: sticky licence clears when allowLicenceRetry + live public fetch");
+{
+  const retry = resolveHistoricalSource({
+    event: baseEvent,
+    lastRunStatus: "SKIPPED_LICENSE",
+    allowLicenceRetry: true,
+  });
+  assert.equal(retry.status, "ELIGIBLE");
+  const live = classifyBcFetchEligibility({
+    connectorId: "bidders_choice",
+    sourceUrl: baseEvent.sourceUrl,
+    licence: null,
+    envAllowPublicFetch: true,
+  });
+  assert.equal(live.state, "PUBLIC_FETCH_ALLOWED");
+  assert.equal(live.allowed, true);
+  const plan = planAcquisition({
+    event: baseEvent,
+    dryRun: false,
+    lastRunStatus: "SKIPPED_LICENSE",
+    allowLicenceRetry: live.allowed,
+  });
+  assert.equal(plan.discovery.licensed, true);
+  assert.equal(plan.fetchPlan.willFetch, true);
+}
+
+console.log("hea43: force alone does not imply licence — CONFIG_MISSING when env absent");
+{
+  const live = classifyBcFetchEligibility({
+    connectorId: "bidders_choice",
+    sourceUrl: baseEvent.sourceUrl,
+    licence: null,
+    envAllowPublicFetch: false,
+  });
+  assert.equal(live.state, "CONFIG_MISSING");
+  assert.equal(live.allowed, false);
 }
 
 console.log("hea43: API + panel files exist");

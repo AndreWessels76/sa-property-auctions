@@ -1,0 +1,639 @@
+{
+  "generatedAt": "2026-08-16T06:36:36.015Z",
+  "operator": "hi56-retry-license-blocked-batch1",
+  "priorRun": "hi51_p1_msueqt04",
+  "licencePath": "PUBLIC_FETCH_ALLOWED",
+  "eligibility": {
+    "state": "PUBLIC_FETCH_ALLOWED",
+    "allowed": true,
+    "reasons": [
+      "Operational env allow: BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH"
+    ]
+  },
+  "envAllowPublicFetch": true,
+  "partnerLicencesTableRows": 0,
+  "runId": "hi56_retry_lic_msvfkm7w",
+  "targets": [
+    {
+      "label": "Bedfordview",
+      "propertyId": "6ea5fcfe-92cf-40e8-9992-fd966c596071",
+      "auctionEventId": "1035c18c-d257-40d1-8e2d-f6a65c98fc7d"
+    },
+    {
+      "label": "Clanwilliam",
+      "propertyId": "08448def-23c9-49df-9f4a-f13898520f7f",
+      "auctionEventId": "2eeb5157-8342-41d1-9abd-39c15066eb1b"
+    },
+    {
+      "label": "Germiston",
+      "propertyId": "e7f52518-2ff1-45f9-8163-02909986a3e2",
+      "auctionEventId": "faeb4be7-8701-493c-a602-9ed20f88c6d8"
+    },
+    {
+      "label": "Phase (Middelburg Hope City)",
+      "propertyId": "5907bdb8-fc4b-4a8b-b054-174e8d3a8d87",
+      "auctionEventId": "cb1427a6-6259-49ee-99f8-c6ccb83c0407"
+    },
+    {
+      "label": "Port Alfred",
+      "propertyId": "97442d62-e95c-4f5f-a562-17e5e809dd1c",
+      "auctionEventId": "34f87ade-7ad2-4d92-afbd-2b2fcee6645e"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "dryRun": false,
+      "propertyId": "6ea5fcfe-92cf-40e8-9992-fd966c596071",
+      "auctionEventId": "1035c18c-d257-40d1-8e2d-f6a65c98fc7d",
+      "state": "INSUFFICIENT_DATA",
+      "outcome": "EXPIRED",
+      "salePrice": null,
+      "resolutionState": "INSUFFICIENT_DATA",
+      "message": "NO_CHANGE — forced fetch completed; content hash unchanged; extraction skipped",
+      "candidates": [
+        {
+          "sourceUrl": "https://bidderschoice.co.za/property-listings/court-order-4-bedroom-double-storey-home-villa-real-estate-bedfordview-auction-online/",
+          "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+          "connector": "bidders_choice",
+          "partner": "Bidders Choice",
+          "score": 105,
+          "licensed": true,
+          "exactUrlMatch": true,
+          "identityStrength": "strong",
+          "notes": [
+            "Exact source URL on auction event",
+            "Licensed Bidders Choice connector"
+          ]
+        }
+      ],
+      "evidence": {
+        "eventId": "1035c18c-d257-40d1-8e2d-f6a65c98fc7d",
+        "propertyMasterId": "552b1de3-40fd-4949-8164-baa0669b9852",
+        "listingPropertyId": "6ea5fcfe-92cf-40e8-9992-fd966c596071",
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/court-order-4-bedroom-double-storey-home-villa-real-estate-bedfordview-auction-online/",
+        "sourceSnapshotId": null,
+        "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+        "sourcePublishedAt": null,
+        "fetchedAt": "2026-08-16T06:35:34.503Z",
+        "evidenceText": "verification_state: expired",
+        "evidenceHash": "ff358eacbc13d0341f5b8080998d8cec21a635785a96271b543b858956d0f187",
+        "extractedOutcome": "EXPIRED",
+        "extractedSalePrice": null,
+        "confidence": "medium",
+        "identityConfidence": "HIGH"
+      }
+    },
+    {
+      "ok": false,
+      "dryRun": false,
+      "propertyId": "08448def-23c9-49df-9f4a-f13898520f7f",
+      "auctionEventId": "2eeb5157-8342-41d1-9abd-39c15066eb1b",
+      "state": "INSUFFICIENT_DATA",
+      "outcome": "EXPIRED",
+      "salePrice": null,
+      "resolutionState": "INSUFFICIENT_DATA",
+      "message": "NO_CHANGE — forced fetch completed; content hash unchanged; extraction skipped",
+      "candidates": [
+        {
+          "sourceUrl": "https://bidderschoice.co.za/property-listings/deceased-estate-online-auction-vacant-stand-clanwilliam-western-cape/",
+          "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+          "connector": "bidders_choice",
+          "partner": "Bidders Choice",
+          "score": 105,
+          "licensed": true,
+          "exactUrlMatch": true,
+          "identityStrength": "strong",
+          "notes": [
+            "Exact source URL on auction event",
+            "Licensed Bidders Choice connector"
+          ]
+        }
+      ],
+      "evidence": {
+        "eventId": "2eeb5157-8342-41d1-9abd-39c15066eb1b",
+        "propertyMasterId": "910352a9-a573-4f76-bbdb-6cd961cb93ea",
+        "listingPropertyId": "08448def-23c9-49df-9f4a-f13898520f7f",
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/deceased-estate-online-auction-vacant-stand-clanwilliam-western-cape/",
+        "sourceSnapshotId": null,
+        "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+        "sourcePublishedAt": null,
+        "fetchedAt": "2026-08-16T06:35:45.768Z",
+        "evidenceText": "verification_state: expired",
+        "evidenceHash": "ff358eacbc13d0341f5b8080998d8cec21a635785a96271b543b858956d0f187",
+        "extractedOutcome": "EXPIRED",
+        "extractedSalePrice": null,
+        "confidence": "medium",
+        "identityConfidence": "HIGH"
+      }
+    },
+    {
+      "ok": false,
+      "dryRun": false,
+      "propertyId": "e7f52518-2ff1-45f9-8163-02909986a3e2",
+      "auctionEventId": "faeb4be7-8701-493c-a602-9ed20f88c6d8",
+      "state": "INSUFFICIENT_DATA",
+      "outcome": "EXPIRED",
+      "salePrice": null,
+      "resolutionState": "INSUFFICIENT_DATA",
+      "message": "NO_CHANGE — forced fetch completed; content hash unchanged; extraction skipped",
+      "candidates": [
+        {
+          "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-curator-instruction-commercial-property-germiston-cbd/",
+          "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+          "connector": "bidders_choice",
+          "partner": "Bidders Choice",
+          "score": 105,
+          "licensed": true,
+          "exactUrlMatch": true,
+          "identityStrength": "strong",
+          "notes": [
+            "Exact source URL on auction event",
+            "Licensed Bidders Choice connector"
+          ]
+        }
+      ],
+      "evidence": {
+        "eventId": "faeb4be7-8701-493c-a602-9ed20f88c6d8",
+        "propertyMasterId": "13c651f5-2f51-406a-96ad-2c61e79278c4",
+        "listingPropertyId": "e7f52518-2ff1-45f9-8163-02909986a3e2",
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-curator-instruction-commercial-property-germiston-cbd/",
+        "sourceSnapshotId": null,
+        "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+        "sourcePublishedAt": null,
+        "fetchedAt": "2026-08-16T06:35:56.806Z",
+        "evidenceText": "verification_state: expired",
+        "evidenceHash": "ff358eacbc13d0341f5b8080998d8cec21a635785a96271b543b858956d0f187",
+        "extractedOutcome": "EXPIRED",
+        "extractedSalePrice": null,
+        "confidence": "medium",
+        "identityConfidence": "HIGH"
+      }
+    },
+    {
+      "ok": true,
+      "dryRun": false,
+      "propertyId": "5907bdb8-fc4b-4a8b-b054-174e8d3a8d87",
+      "auctionEventId": "cb1427a6-6259-49ee-99f8-c6ccb83c0407",
+      "state": "EXTRACTED",
+      "outcome": "SOLD",
+      "salePrice": null,
+      "resolutionState": "EXTRACTED",
+      "message": "NO_CHANGE — forced fetch completed; content hash unchanged; extraction skipped",
+      "candidates": [
+        {
+          "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-hope-city-phase-2-middelburg-mpumalanga/",
+          "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+          "connector": "bidders_choice",
+          "partner": "Bidders Choice",
+          "score": 105,
+          "licensed": true,
+          "exactUrlMatch": true,
+          "identityStrength": "strong",
+          "notes": [
+            "Exact source URL on auction event",
+            "Licensed Bidders Choice connector"
+          ]
+        }
+      ],
+      "evidence": {
+        "eventId": "cb1427a6-6259-49ee-99f8-c6ccb83c0407",
+        "propertyMasterId": "10e900e5-a306-4d43-9635-81f09be3f200",
+        "listingPropertyId": "5907bdb8-fc4b-4a8b-b054-174e8d3a8d87",
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-hope-city-phase-2-middelburg-mpumalanga/",
+        "sourceSnapshotId": null,
+        "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+        "sourcePublishedAt": null,
+        "fetchedAt": "2026-08-16T06:36:07.855Z",
+        "evidenceText": "sold",
+        "evidenceHash": "a6fffccf2d95e20b779be56876f174076586fed6b6ecef72b0eba0ce87233754",
+        "extractedOutcome": "SOLD",
+        "extractedSalePrice": null,
+        "confidence": "high",
+        "identityConfidence": "HIGH"
+      }
+    },
+    {
+      "ok": false,
+      "dryRun": false,
+      "propertyId": "97442d62-e95c-4f5f-a562-17e5e809dd1c",
+      "auctionEventId": "34f87ade-7ad2-4d92-afbd-2b2fcee6645e",
+      "state": "INSUFFICIENT_DATA",
+      "outcome": "EXPIRED",
+      "salePrice": null,
+      "resolutionState": "INSUFFICIENT_DATA",
+      "message": "NO_CHANGE — forced fetch completed; content hash unchanged; extraction skipped",
+      "candidates": [
+        {
+          "sourceUrl": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-780m2-vacant-stand-port-alfred/",
+          "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+          "connector": "bidders_choice",
+          "partner": "Bidders Choice",
+          "score": 105,
+          "licensed": true,
+          "exactUrlMatch": true,
+          "identityStrength": "strong",
+          "notes": [
+            "Exact source URL on auction event",
+            "Licensed Bidders Choice connector"
+          ]
+        }
+      ],
+      "evidence": {
+        "eventId": "34f87ade-7ad2-4d92-afbd-2b2fcee6645e",
+        "propertyMasterId": "998be7fb-f7ee-45df-9475-9ec879585974",
+        "listingPropertyId": "97442d62-e95c-4f5f-a562-17e5e809dd1c",
+        "sourceUrl": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-780m2-vacant-stand-port-alfred/",
+        "sourceSnapshotId": null,
+        "sourceType": "OFFICIAL_AUCTION_RESULT_PAGE",
+        "sourcePublishedAt": null,
+        "fetchedAt": "2026-08-16T06:36:19.271Z",
+        "evidenceText": "verification_state: expired",
+        "evidenceHash": "ff358eacbc13d0341f5b8080998d8cec21a635785a96271b543b858956d0f187",
+        "extractedOutcome": "EXPIRED",
+        "extractedSalePrice": null,
+        "confidence": "medium",
+        "identityConfidence": "HIGH"
+      }
+    }
+  ],
+  "rebuild": {
+    "ok": true,
+    "message": "HI 4.2, HEQ 4.4, and II 4.6/4.7 rebuilt from existing evidence",
+    "heq": {
+      "ok": true,
+      "hi42": {
+        "ok": true,
+        "version": "historical-intelligence-4.2.0",
+        "dashboard": {
+          "totalHistoricalEvents": 33,
+          "unresolved": 0,
+          "sourceFound": 0,
+          "extracted": 0,
+          "identityPending": 0,
+          "reviewRequired": 0,
+          "verified": 0,
+          "verifiedSold": 0,
+          "soldWithoutPrice": 0,
+          "verifiedSalePrices": 0,
+          "conflicts": 0,
+          "identityReviews": 0,
+          "insufficientData": 33,
+          "comparableReady": 0,
+          "marketStatisticsAvailable": false,
+          "evidenceConfidence": {
+            "high": 0,
+            "medium": 33,
+            "low": 0,
+            "insufficient": 0
+          }
+        },
+        "hi40": {
+          "ok": true,
+          "version": "historical-intelligence-4.0.0",
+          "message": "Historical Intelligence 4.0 corpus rebuilt from persisted evidence",
+          "enrichment": {
+            "ok": true,
+            "historicalEvents": 33,
+            "verifiedOutcomes": 33,
+            "verifiedSalePrices": 0,
+            "message": "Intelligence corpus refreshed — 33 historical events, 33 verified outcomes, 0 verified sale prices"
+          },
+          "coverage": {
+            "totalHistoricalEvents": 33,
+            "confirmedOutcomes": 0,
+            "unknownOutcomes": 33,
+            "verifiedSalePrices": 0,
+            "eventsWithPricingEvidence": 0,
+            "eventsWithSourceEvidence": 33,
+            "eventsWithLocationEvidence": 33,
+            "eventsWithSizeEvidence": 0,
+            "comparableReadyEvents": 0,
+            "marketStatisticsReadyEvents": 0,
+            "insufficientDataCases": 0,
+            "averageOverallConfidence": "MEDIUM"
+          },
+          "invalidatedScopes": [
+            "market:global"
+          ]
+        }
+      },
+      "dashboard": {
+        "totalHistoricalEvents": 33,
+        "highQuality": 0,
+        "mediumQuality": 0,
+        "lowQuality": 0,
+        "reviewRequired": 0,
+        "conflicts": 0,
+        "insufficientData": 33,
+        "verifiedSold": 0,
+        "verifiedSalePrices": 0,
+        "confirmedOutcomes": 0,
+        "sourceCoverage": 100,
+        "snapshotCoverage": 100,
+        "comparableReady": 0,
+        "reviewQueue": {
+          "p1": 0,
+          "p2": 0,
+          "p3": 0,
+          "p4": 33,
+          "total": 33
+        }
+      },
+      "message": "Historical intelligence rebuilt with quality assessment"
+    },
+    "ii46": {
+      "ok": true,
+      "message": "Investor intelligence 4.6 rebuilt from existing evidence.",
+      "result": {
+        "ok": true,
+        "message": "Investor intelligence rebuilt from existing evidence (no acquisition).",
+        "summary": {
+          "historicalEventCount": 33,
+          "confirmedSold": 0,
+          "confirmedPassedIn": 0,
+          "confirmedWithdrawn": 0,
+          "confirmedCancelled": 0,
+          "unknownOutcomes": 33,
+          "verifiedSalePriceCount": 0,
+          "verifiedAuctionPriceCount": 0,
+          "verifiedSizeEvidenceCount": 0,
+          "comparableReadyCount": 0,
+          "evidenceQuality": {
+            "high": 0,
+            "medium": 33,
+            "low": 0,
+            "insufficient": 0
+          },
+          "sourceQuality": {
+            "Bidders Choice": 33
+          },
+          "lastEnrichmentDate": "2026-08-11T00:00:00+00:00",
+          "lastEvidenceUpdate": "2026-08-11T00:00:00+00:00",
+          "conflictCount": 0,
+          "provenance": {
+            "version": "investor-intelligence-4.5.0",
+            "calculatedAt": "2026-08-16T06:36:30.016Z"
+          }
+        },
+        "version": "investor-intelligence-4.5.0"
+      },
+      "coverage": {
+        "propertiesAnalysed": 33,
+        "highEvidence": 0,
+        "mediumEvidence": 0,
+        "lowEvidence": 33,
+        "insufficientData": 0,
+        "conflicts": 0,
+        "acquisitionGaps": 132,
+        "p1": 0,
+        "p2": 99,
+        "p3": 33,
+        "p4": 0
+      },
+      "version": "investor-intelligence-4.6.0"
+    },
+    "metrics": {
+      "propertyMasters": 38,
+      "auctionEvents": 38,
+      "historicalEvents": 33,
+      "p1": 29,
+      "p2": 0,
+      "p3": 0,
+      "p4": 4,
+      "queueBlocked": 0,
+      "queueUnavailable": 0,
+      "queueCompleted": 0,
+      "enrichmentAttempts": 202,
+      "successfulFetches": 29,
+      "failedFetches": 4,
+      "sourceFound": 33,
+      "sourceLicensed": 33,
+      "sourceBlocked": 0,
+      "sourceUnavailable": 0,
+      "fetchAttempted": 33,
+      "tlsErrors": 0,
+      "networkErrors": 0,
+      "dnsErrors": 0,
+      "timeouts": 0,
+      "http403": 0,
+      "http404": 0,
+      "http429": 0,
+      "http5xx": 0,
+      "snapshots": 13,
+      "noChange": 6,
+      "extractionAttempted": 33,
+      "extractionSuccessful": 33,
+      "extractionFailed": 0,
+      "extractionNoEvidence": 0,
+      "outcomeObservations": 5,
+      "verifiedSold": 0,
+      "soldWithoutPrice": 5,
+      "unknownOutcomes": 28,
+      "verifiedSalePrices": 0,
+      "conflicts": 0,
+      "reviewRequired": 0,
+      "comparableReady": 0,
+      "marketReadyTowns": 0,
+      "acquisitionGaps": 152,
+      "catalogueLeaks": 0,
+      "retryableFailures": 0,
+      "retryExhausted": 4,
+      "permanentFailures": 4,
+      "contentUnusable": 4,
+      "rateLimited": 0,
+      "authRequired": 0,
+      "p1Eligible": 29,
+      "p2Retryable": 0,
+      "p3Review": 0,
+      "p4Blocked": 4
+    },
+    "verdict": "INSUFFICIENT DATA — ENGINE READY"
+  },
+  "before": {
+    "coverage52": {
+      "historicalEvents": 33,
+      "licensedSources": "33/33",
+      "fetchAttempted": "33/33",
+      "neverAttempted": 0,
+      "fetchSuccessful": 29,
+      "fetchFailed": 4,
+      "retryable": 0,
+      "permanent": 4,
+      "legacyFailures": 4,
+      "snapshots": "13/33",
+      "missingExtraction": 0,
+      "extractions": "33/33",
+      "outcomeEvidence": "5/33",
+      "verifiedSold": 0,
+      "soldWithoutPrice": 5,
+      "verifiedSalePrices": 0,
+      "comparableReady": 0,
+      "marketReadyTowns": 0,
+      "catalogueLeaks": 0
+    },
+    "metrics": {
+      "propertyMasters": 38,
+      "auctionEvents": 38,
+      "historicalEvents": 33,
+      "p1": 29,
+      "p2": 0,
+      "p3": 0,
+      "p4": 4,
+      "queueBlocked": 0,
+      "queueUnavailable": 0,
+      "queueCompleted": 0,
+      "enrichmentAttempts": 192,
+      "successfulFetches": 29,
+      "failedFetches": 4,
+      "sourceFound": 33,
+      "sourceLicensed": 33,
+      "sourceBlocked": 0,
+      "sourceUnavailable": 0,
+      "fetchAttempted": 33,
+      "tlsErrors": 0,
+      "networkErrors": 0,
+      "dnsErrors": 0,
+      "timeouts": 0,
+      "http403": 0,
+      "http404": 0,
+      "http429": 0,
+      "http5xx": 0,
+      "snapshots": 13,
+      "noChange": 1,
+      "extractionAttempted": 33,
+      "extractionSuccessful": 33,
+      "extractionFailed": 0,
+      "extractionNoEvidence": 0,
+      "outcomeObservations": 5,
+      "verifiedSold": 0,
+      "soldWithoutPrice": 5,
+      "unknownOutcomes": 28,
+      "verifiedSalePrices": 0,
+      "conflicts": 0,
+      "reviewRequired": 0,
+      "comparableReady": 0,
+      "marketReadyTowns": 0,
+      "acquisitionGaps": 152,
+      "catalogueLeaks": 0,
+      "retryableFailures": 0,
+      "retryExhausted": 4,
+      "permanentFailures": 4,
+      "contentUnusable": 4,
+      "rateLimited": 0,
+      "authRequired": 0,
+      "p1Eligible": 29,
+      "p2Retryable": 0,
+      "p3Review": 0,
+      "p4Blocked": 4
+    },
+    "bottleneck56": {
+      "code": "LEGACY_UNKNOWN_FAILURE",
+      "count": 4,
+      "total": 33,
+      "percentage": 12.1,
+      "recommendedAction": "Dry Run Legacy (5) → Retry Legacy (5)"
+    }
+  },
+  "after": {
+    "coverage52": {
+      "historicalEvents": 33,
+      "licensedSources": "33/33",
+      "fetchAttempted": "33/33",
+      "neverAttempted": 0,
+      "fetchSuccessful": 29,
+      "fetchFailed": 4,
+      "retryable": 0,
+      "permanent": 4,
+      "legacyFailures": 4,
+      "snapshots": "13/33",
+      "missingExtraction": 0,
+      "extractions": "33/33",
+      "outcomeEvidence": "5/33",
+      "verifiedSold": 0,
+      "soldWithoutPrice": 5,
+      "verifiedSalePrices": 0,
+      "comparableReady": 0,
+      "marketReadyTowns": 0,
+      "catalogueLeaks": 0
+    },
+    "metrics": {
+      "propertyMasters": 38,
+      "auctionEvents": 38,
+      "historicalEvents": 33,
+      "p1": 29,
+      "p2": 0,
+      "p3": 0,
+      "p4": 4,
+      "queueBlocked": 0,
+      "queueUnavailable": 0,
+      "queueCompleted": 0,
+      "enrichmentAttempts": 202,
+      "successfulFetches": 29,
+      "failedFetches": 4,
+      "sourceFound": 33,
+      "sourceLicensed": 33,
+      "sourceBlocked": 0,
+      "sourceUnavailable": 0,
+      "fetchAttempted": 33,
+      "tlsErrors": 0,
+      "networkErrors": 0,
+      "dnsErrors": 0,
+      "timeouts": 0,
+      "http403": 0,
+      "http404": 0,
+      "http429": 0,
+      "http5xx": 0,
+      "snapshots": 13,
+      "noChange": 6,
+      "extractionAttempted": 33,
+      "extractionSuccessful": 33,
+      "extractionFailed": 0,
+      "extractionNoEvidence": 0,
+      "outcomeObservations": 5,
+      "verifiedSold": 0,
+      "soldWithoutPrice": 5,
+      "unknownOutcomes": 28,
+      "verifiedSalePrices": 0,
+      "conflicts": 0,
+      "reviewRequired": 0,
+      "comparableReady": 0,
+      "marketReadyTowns": 0,
+      "acquisitionGaps": 152,
+      "catalogueLeaks": 0,
+      "retryableFailures": 0,
+      "retryExhausted": 4,
+      "permanentFailures": 4,
+      "contentUnusable": 4,
+      "rateLimited": 0,
+      "authRequired": 0,
+      "p1Eligible": 29,
+      "p2Retryable": 0,
+      "p3Review": 0,
+      "p4Blocked": 4
+    },
+    "bottleneck56": {
+      "code": "LEGACY_UNKNOWN_FAILURE",
+      "count": 4,
+      "total": 33,
+      "percentage": 12.1,
+      "recommendedAction": "Dry Run Legacy (5) → Retry Legacy (5)"
+    },
+    "verdict": "ENGINE READY / DATA COVERAGE INSUFFICIENT",
+    "safety56": {
+      "catalogueLeaks": 0,
+      "catalogueSafe": true,
+      "rebuildAllowed": true,
+      "rebuildStatus": "ALLOWED"
+    }
+  },
+  "productionWritesExecuted": [
+    "Forced acquireOne ×5 (licence-blocked recovery)",
+    "HSC rebuildIntelligence"
+  ],
+  "productionWritesNotExecuted": [
+    "Batch 2 / remaining never-attempted",
+    "Legacy retry",
+    "Unlimited acquisition"
+  ]
+}

@@ -13,6 +13,8 @@ export function discoverSourcesForEvent(input: {
   lastRunStatus?: string | null;
   hasOpenReview?: boolean;
   externalListingId?: string | null;
+  /** Clear sticky prior SKIPPED_LICENSE when live permission allows retry. */
+  allowLicenceRetry?: boolean;
 }): {
   candidates: Hea43SourceCandidate[];
   licensed: boolean;
@@ -24,6 +26,7 @@ export function discoverSourcesForEvent(input: {
     event: input.event,
     lastRunStatus: input.lastRunStatus,
     hasOpenReview: input.hasOpenReview,
+    allowLicenceRetry: input.allowLicenceRetry,
   });
 
   const candidates = searchHistoricalSources({

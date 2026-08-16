@@ -24,6 +24,11 @@ import { HistoricalIntelligence40Service } from "./HistoricalIntelligence40Servi
 import { HistoricalEnrichmentRepository } from "@/lib/repositories/HistoricalEnrichmentRepository";
 import { OutcomeIntelligenceRepository } from "@/lib/repositories/OutcomeIntelligenceRepository";
 import { PropertyRepository } from "@/lib/repositories/PropertyRepository";
+import {
+  PartnerLicenceRepository,
+  PartnershipRepository,
+} from "@/lib/repositories/PartnershipRepository";
+import { classifyBcFetchEligibility } from "@/lib/acquisition/refetch/licenseGate";
 import { publicHistoricalRows } from "@/lib/intelligence/historical";
 import { LoggerService } from "@/lib/logger";
 
@@ -142,7 +147,7 @@ export class HistoricalEvidenceAcquisition43Service {
       };
     }
 
-    const runs = await HistoricalEnrichmentRepository.listRecentRuns(50);
+    const runs = await HistoricalEnrichmentRepository.listRecentRuns(500);
     const reviews = await HistoricalEnrichmentRepository.listOpenReviews(50);
     const lastRun =
       runs.find((r) => r.property_id === input.propertyId) ?? null;
@@ -153,12 +158,83 @@ export class HistoricalEvidenceAcquisition43Service {
           r.auction_event_id === match.observation.auctionEventId),
     );
 
+    // Sticky prior SKIPPED_LICENSE / LICENSE_BLOCKED must not permanently block HEA
+    // when live SourceRefetch permission now allows (LICENSE_ACTIVE / PUBLIC_FETCH_ALLOWED).
+    // force=true does NOT bypass licensing — it only retries after live permission allows.
+    const lastStatus = (lastRun?.status ?? "").toUpperCase();
+    const stickyLicenceBlock =
+      lastStatus.includes("SKIPPED_LICENSE") || lastStatus === "LICENSE_BLOCKED";
+
+    const connectorId = match.observation.sourceUrl?.includes("bidderschoice")
+      ? "bidders_choice"
+      : "unknown";
+    let activeLicence = null as Awaited<
+      ReturnType<typeof PartnerLicenceRepository.listByPartner>
+    >[number] | null;
+    if (connectorId === "bidders_choice") {
+      const partner = await PartnershipRepository.getPartnerByCode("bidders_choice");
+      if (partner?.id) {
+        const licences = await PartnerLicenceRepository.listByPartner(partner.id);
+        activeLicence =
+          licences.find((l) => l.status === "active") ?? null;
+      }
+    }
+    const envAllowPublicFetch =
+      process.env.BIDDERS_CHOICE_ALLOW_PUBLIC_FETCH === "true";
+    const livePermission = classifyBcFetchEligibility({
+      connectorId,
+      sourceUrl: match.observation.sourceUrl,
+      licence: activeLicence,
+      envAllowPublicFetch,
+    });
+
+    // Clear sticky planner block only when live permission allows — never via force alone.
+    const allowLicenceRetry = stickyLicenceBlock && livePermission.allowed;
+
     const plan = planAcquisition({
       event: match.observation,
       dryRun: input.dryRun === true,
       lastRunStatus: lastRun?.status ?? null,
       hasOpenReview: openReview,
+      allowLicenceRetry,
     });
+
+    // If live permission is blocked, refuse before enrichment even when candidates look licensed.
+    if (
+      !input.dryRun &&
+      !livePermission.allowed &&
+      connectorId === "bidders_choice"
+    ) {
+      await HistoricalEvidenceRepository.recordAcquisitionRun({
+        runId,
+        propertyId: input.propertyId,
+        propertyMasterId: match.observation.propertyMasterId,
+        auctionEventId: match.observation.auctionEventId,
+        status: "LICENSE_BLOCKED",
+        sourceUrl: match.observation.sourceUrl,
+        operator: input.operator ?? null,
+        meta: {
+          livePermission,
+          envAllowPublicFetch,
+          stickyLicenceBlock,
+          force: input.force === true,
+        },
+      });
+      return buildAcquireResult({
+        propertyId: input.propertyId,
+        auctionEventId: match.observation.auctionEventId,
+        dryRun: false,
+        enrichmentStatus: "LICENSE_BLOCKED",
+        outcome: null,
+        salePrice: null,
+        message: `Live permission ${livePermission.state} — ${livePermission.reasons.join("; ") || "no fetch"}`,
+        candidates: plan.discovery.candidates,
+        evidence: null,
+        event: match.observation,
+        classification: match.classification,
+        score: match.score,
+      });
+    }
 
     if (input.dryRun) {
       return buildAcquireResult({

@@ -1,6 +1,6 @@
 {
   "version": "historical-intelligence-5.4.0",
-  "generatedAt": "2026-08-15T12:52:55.740Z",
+  "generatedAt": "2026-08-16T06:39:25.170Z",
   "connectivity": {
     "status": "CONNECTED",
     "message": "Production database reachable"
@@ -8,16 +8,16 @@
   "coverageDashboard": {
     "historicalEvents": 33,
     "licensedSources": "33/33",
-    "fetchAttempted": "14/33",
-    "neverAttempted": 19,
-    "fetchSuccessful": 9,
-    "fetchFailed": 5,
-    "legacyFailuresRequiringRefetch": 5,
-    "snapshots": 9,
-    "extractions": 14,
-    "outcomeEvidence": 4,
+    "fetchAttempted": "33/33",
+    "neverAttempted": 0,
+    "fetchSuccessful": 29,
+    "fetchFailed": 4,
+    "legacyFailuresRequiringRefetch": 4,
+    "snapshots": 13,
+    "extractions": 33,
+    "outcomeEvidence": 5,
     "verifiedSold": 0,
-    "soldWithoutPrice": 4,
+    "soldWithoutPrice": 5,
     "verifiedSalePrices": 0,
     "comparableReady": 0,
     "marketReadyTowns": 0,
@@ -26,31 +26,30 @@
     "catalogueLeaks": 0
   },
   "stateBreakdown": {
-    "EXTRACTION_AVAILABLE": 10,
-    "OUTCOME_FOUND": 4,
-    "FETCH_ELIGIBLE": 19
+    "EXTRACTION_AVAILABLE": 28,
+    "OUTCOME_FOUND": 5
   },
   "successRates": {
-    "fetchSuccessRate": 64.3,
-    "snapshotRate": 64.3,
-    "extractionRate": 42.4,
-    "outcomeEvidenceRate": 12.1,
+    "fetchSuccessRate": 87.9,
+    "snapshotRate": 39.4,
+    "extractionRate": 100,
+    "outcomeEvidenceRate": 15.2,
     "verifiedSalePriceRate": 0,
     "denominators": {
-      "fetchAttempts": 14,
-      "fetchSuccessful": 9,
-      "snapshots": 9,
-      "extractions": 14,
+      "fetchAttempts": 33,
+      "fetchSuccessful": 29,
+      "snapshots": 13,
+      "extractions": 33,
       "historicalEvents": 33,
-      "outcomeEvidence": 4,
+      "outcomeEvidence": 5,
       "verifiedSalePrices": 0
     }
   },
   "bottleneck": {
-    "code": "FETCH_NOT_ATTEMPTED",
-    "count": 19,
+    "code": "LEGACY_UNKNOWN_FAILURE",
+    "count": 4,
     "total": 33,
-    "recommendedAction": "Acquire P1 (5)"
+    "recommendedAction": "Retry Legacy Failures (5)"
   },
   "events": [
     {
@@ -88,22 +87,22 @@
       "auctionDate": "2026-08-11T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 4,
+      "recoveryPriority": 1,
       "evidenceState": "OUTCOME_FOUND",
-      "fetchState": "FETCH_HTTP_ERROR",
-      "httpStatus": null,
-      "errorCode": "CONTENT_UNAVAILABLE",
-      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
+      "errorCode": null,
+      "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
+      "snapshot": true,
       "extraction": "SUCCESS",
       "outcome": "SOLD",
       "salePrice": "SOLD_WITHOUT_PRICE",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:47:00.993+00:00",
+      "lastAttempt": "2026-08-16T04:00:32.223+00:00",
       "attemptNumber": 21,
-      "nextAction": "REVIEW SOURCE"
+      "nextAction": "DO_NOT_RETRY"
     },
     {
       "observationId": "event:37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
@@ -427,21 +426,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-school-property-randpark-ridge/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:19:15.562+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:1035c18c-d257-40d1-8e2d-f6a65c98fc7d",
@@ -453,21 +452,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/court-order-4-bedroom-double-storey-home-villa-real-estate-bedfordview-auction-online/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-16T06:35:34.504+00:00",
+      "attemptNumber": 5,
+      "nextAction": "DO_NOT_RETRY"
     },
     {
       "observationId": "event:b8e60326-3bcd-4d4a-a2f4-3841eae93e9f",
@@ -479,21 +478,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-834m2-vacant-stand-port-alfred/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-16T04:00:03.451+00:00",
+      "attemptNumber": 1,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:e105c520-2d04-479c-a99f-f34f1478a1af",
@@ -505,21 +504,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:17:22.678+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:376c3389-2de0-4240-9e5d-dd06ae895b37",
@@ -531,21 +530,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/1_9ha-agricultural-holding-pretoria-north-online-auction/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:17:15.416+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:7ae4a73e-b8c8-497e-bbd7-907a7aee3c16",
@@ -557,21 +556,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-bettys-bay-residential-stand/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:19:25.685+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:2eeb5157-8342-41d1-9abd-39c15066eb1b",
@@ -583,21 +582,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/deceased-estate-online-auction-vacant-stand-clanwilliam-western-cape/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-16T06:35:45.769+00:00",
+      "attemptNumber": 5,
+      "nextAction": "DO_NOT_RETRY"
     },
     {
       "observationId": "event:8be1de09-5e59-4c95-ad2c-49e0326840c1",
@@ -609,21 +608,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-in-conjunction-with-bideasy-auctioneers-prime-export-commercial-farm-%c2%b1-78ha-barberton-mpumalanga/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-16T04:00:12.711+00:00",
+      "attemptNumber": 1,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:3becbaeb-dea3-4823-aed3-7b474fa296b3",
@@ -635,21 +634,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/9x-vacant-plots-northam-limpopo-online-auction/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:17:31.932+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:f0727ccd-a8a8-457d-86c5-75725f482d55",
@@ -661,21 +660,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-2-bedroom-incomplete-project-wierda-park-ext-2-centurion/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:19:35.251+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:faeb4be7-8701-493c-a602-9ed20f88c6d8",
@@ -687,21 +686,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-curator-instruction-commercial-property-germiston-cbd/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-16T06:35:56.807+00:00",
+      "attemptNumber": 5,
+      "nextAction": "DO_NOT_RETRY"
     },
     {
       "observationId": "event:13c2420b-ffca-4537-b063-fb71b3ad99db",
@@ -713,21 +712,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/prime-export-commercial-farm-21ha-macs-with-water-rights-white-river/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-16T04:00:20.019+00:00",
+      "attemptNumber": 1,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:182e7345-be81-4af1-aea4-dcb3fbdc258e",
@@ -739,21 +738,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-%c2%b1-18-867m%c2%b2-industrial-property-chamdor-krugersdorp/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:17:40.472+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:25ea7d74-6928-4eeb-b6be-dec0777102cc",
@@ -765,21 +764,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-bank-instruction-6-bedroom-renovators-dream-hurlingham-manor/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:19:45.902+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:cb1427a6-6259-49ee-99f8-c6ccb83c0407",
@@ -791,21 +790,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-hope-city-phase-2-middelburg-mpumalanga/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "OUTCOME_FOUND",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
-      "outcome": "UNKNOWN",
-      "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "snapshot": true,
+      "extraction": "SUCCESS",
+      "outcome": "SOLD",
+      "salePrice": "SOLD_WITHOUT_PRICE",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-16T06:36:07.856+00:00",
+      "attemptNumber": 5,
+      "nextAction": "DO_NOT_RETRY"
     },
     {
       "observationId": "event:ac24ac58-4751-488d-b628-6e52c690ec5d",
@@ -817,21 +816,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/on-site-auction-3-bedroom-home-zwavelkloof-private-estate-zwavelpoort/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-16T04:00:25.623+00:00",
+      "attemptNumber": 1,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:0c13b9d2-76b6-475f-a9ce-d9c8cb422f2b",
@@ -843,21 +842,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/liquidation-auction-3-bed-home-boardwalk-meander-a-pretoria/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:17:46.937+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:05fa4b39-f89a-4514-b265-95ece11eca89",
@@ -869,21 +868,21 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-3-bedroom-double-storey-house-golden-gates-estate-raslouw/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
       "snapshot": false,
-      "extraction": "NOT_RUN",
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-15T13:19:53.644+00:00",
+      "attemptNumber": 2,
+      "nextAction": "RETRY_NOW"
     },
     {
       "observationId": "event:34f87ade-7ad2-4d92-afbd-2b2fcee6645e",
@@ -895,78 +894,169 @@
       "sourceUrl": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-780m2-vacant-stand-port-alfred/",
       "sourceStatus": "LICENSED",
       "recoveryPriority": 1,
-      "evidenceState": "FETCH_ELIGIBLE",
-      "fetchState": "FETCH_QUEUED",
-      "httpStatus": null,
+      "evidenceState": "EXTRACTION_AVAILABLE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
       "errorCode": null,
       "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
-      "extraction": "NOT_RUN",
+      "snapshot": true,
+      "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
-      "resolution": "SOURCE_FOUND",
+      "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": null,
-      "attemptNumber": 0,
-      "nextAction": "ACQUIRE"
+      "lastAttempt": "2026-08-16T06:36:19.272+00:00",
+      "attemptNumber": 5,
+      "nextAction": "DO_NOT_RETRY"
     }
   ],
   "chainSuccessRates": {
-    "fetchSuccessRate": 64.3,
-    "snapshotRate": 100,
-    "extractionRate": 155.6,
-    "outcomeEvidenceRate": 28.6,
+    "fetchSuccessRate": 87.9,
+    "snapshotRate": 44.8,
+    "extractionRate": 253.8,
+    "outcomeEvidenceRate": 15.2,
     "salePriceRate": 0,
     "denominators": {
-      "fetchAttempts": 14,
-      "successfulFetches": 9,
-      "snapshots": 9,
-      "extractions": 14,
-      "outcomeEvidence": 4
+      "fetchAttempts": 33,
+      "successfulFetches": 29,
+      "snapshots": 13,
+      "extractions": 33,
+      "outcomeEvidence": 5
     }
   },
   "p1Progress": {
     "originalCandidates": 20,
-    "processed": 1,
-    "remaining": 19,
+    "processed": 20,
+    "remaining": 0,
     "batchSize": 5,
     "batches": [
       {
         "batchNumber": 1,
-        "processed": 1,
-        "remaining": 19,
+        "processed": 5,
+        "remaining": 15,
         "status": "completed"
       },
       {
         "batchNumber": 2,
-        "processed": 0,
-        "remaining": 19,
-        "status": "planned"
+        "processed": 5,
+        "remaining": 10,
+        "status": "completed"
       },
       {
         "batchNumber": 3,
-        "processed": 0,
-        "remaining": 19,
-        "status": "planned"
+        "processed": 5,
+        "remaining": 5,
+        "status": "completed"
       },
       {
         "batchNumber": 4,
-        "processed": 0,
-        "remaining": 19,
-        "status": "planned"
+        "processed": 5,
+        "remaining": 0,
+        "status": "completed"
       }
     ]
   },
   "fetchResults": {
-    "attempted": 14,
-    "successful": 9,
+    "attempted": 33,
+    "successful": 19,
     "failed": 0,
     "retryable": 0,
-    "permanent": 5,
-    "legacy": 5
+    "permanent": 4,
+    "legacy": 4
   },
   "batchHistory": [
+    {
+      "batchId": "hi56_retry_lic_msvfkm7w",
+      "action": "enrichment_batch",
+      "operator": "hi56-retry-license-blocked-batch1",
+      "started": "2026-08-16T06:35:33.894+00:00",
+      "completed": "2026-08-16T06:36:19.272+00:00",
+      "eventsSelected": 10,
+      "eventsSucceeded": 10,
+      "eventsFailed": 0,
+      "snapshotsCreated": 5,
+      "outcomesExtracted": 10,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "enrich_batch_msva0m5v",
+      "action": "enrichment_batch",
+      "operator": "cron",
+      "started": "2026-08-16T04:00:03.451+00:00",
+      "completed": "2026-08-16T04:00:32.223+00:00",
+      "eventsSelected": 5,
+      "eventsSucceeded": 5,
+      "eventsFailed": 0,
+      "snapshotsCreated": 5,
+      "outcomesExtracted": 5,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "hi56_retry_lic_msuxmgug",
+      "action": "enrichment_batch",
+      "operator": "hi56-retry-license-blocked-batch1",
+      "started": "2026-08-15T22:13:05.796+00:00",
+      "completed": "2026-08-15T22:13:52.584+00:00",
+      "eventsSelected": 10,
+      "eventsSucceeded": 10,
+      "eventsFailed": 0,
+      "snapshotsCreated": 5,
+      "outcomesExtracted": 10,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "hi56_retry_lic_msuxklyp",
+      "action": "enrichment_batch",
+      "operator": "hi56-retry-license-blocked-batch1",
+      "started": "2026-08-15T22:11:30.82+00:00",
+      "completed": "2026-08-15T22:11:36.523+00:00",
+      "eventsSelected": 5,
+      "eventsSucceeded": 0,
+      "eventsFailed": 0,
+      "snapshotsCreated": 0,
+      "outcomesExtracted": 0,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "hi51_p1_msueqt04",
+      "action": "enrichment_batch",
+      "operator": "hi56-acquire-p1-batch1",
+      "started": "2026-08-15T13:24:29.471+00:00",
+      "completed": "2026-08-15T13:24:46.983+00:00",
+      "eventsSelected": 10,
+      "eventsSucceeded": 0,
+      "eventsFailed": 10,
+      "snapshotsCreated": 0,
+      "outcomesExtracted": 0,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "hi51_p1_msuejzzr",
+      "action": "enrichment_batch",
+      "operator": "wesselsandre76@gmail.com",
+      "started": "2026-08-15T13:19:15.13+00:00",
+      "completed": "2026-08-15T13:19:53.644+00:00",
+      "eventsSelected": 10,
+      "eventsSucceeded": 10,
+      "eventsFailed": 0,
+      "snapshotsCreated": 5,
+      "outcomesExtracted": 10,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "hi51_p1_msuehena",
+      "action": "enrichment_batch",
+      "operator": "wesselsandre76@gmail.com",
+      "started": "2026-08-15T13:17:15.181+00:00",
+      "completed": "2026-08-15T13:17:46.937+00:00",
+      "eventsSelected": 10,
+      "eventsSucceeded": 10,
+      "eventsFailed": 0,
+      "snapshotsCreated": 5,
+      "outcomesExtracted": 10,
+      "pricesVerified": 0
+    },
     {
       "batchId": "hea43_msudelqv",
       "action": "acquire_p1",
@@ -1135,100 +1225,49 @@
       "snapshotsCreated": 0,
       "outcomesExtracted": 0,
       "pricesVerified": 0
-    },
-    {
-      "batchId": "enrich_batch_mssqhi18",
-      "action": "enrichment_batch",
-      "operator": "wesselsandre76@gmail.com",
-      "started": "2026-08-14T09:17:38.032+00:00",
-      "completed": "2026-08-14T09:18:05.391+00:00",
-      "eventsSelected": 10,
-      "eventsSucceeded": 3,
-      "eventsFailed": 7,
-      "snapshotsCreated": 3,
-      "outcomesExtracted": 3,
-      "pricesVerified": 0
-    },
-    {
-      "batchId": "enrich_batch_mssqba96",
-      "action": "enrichment_batch",
-      "operator": "wesselsandre76@gmail.com",
-      "started": "2026-08-14T09:12:48.7+00:00",
-      "completed": "2026-08-14T09:13:15.757+00:00",
-      "eventsSelected": 10,
-      "eventsSucceeded": 3,
-      "eventsFailed": 7,
-      "snapshotsCreated": 3,
-      "outcomesExtracted": 3,
-      "pricesVerified": 0
     }
   ],
   "campaign": {
-    "status": "CAMPAIGN_IN_PROGRESS",
+    "status": "CAMPAIGN_PARTIALLY_COVERED",
     "totalEvents": 33,
-    "neverAttempted": 19,
-    "fetchAttempted": 14,
-    "fetchSuccessful": 9,
-    "fetchFailed": 5,
-    "remaining": 19,
-    "progressRatio": 0.424,
-    "progressBar": "████████░░░░░░░░░░░░",
-    "summaryLine": "14 / 33 attempted · 9 successful · 5 failed · 19 remaining"
+    "neverAttempted": 0,
+    "fetchAttempted": 33,
+    "fetchSuccessful": 29,
+    "fetchFailed": 4,
+    "remaining": 0,
+    "progressRatio": 1,
+    "progressBar": "████████████████████",
+    "summaryLine": "33 / 33 attempted · 29 successful · 4 failed · 0 remaining"
   },
   "campaign54": {
-    "status": "CAMPAIGN_IN_PROGRESS",
-    "summaryLine": "P1 Progress [█░░░░░░░░░░░░░░░] 1 / 20 · Remaining: 19",
+    "status": "CAMPAIGN_AWAITING_REVIEW",
+    "summaryLine": "P1 Progress [████████████████] 20 / 20 · Remaining: 0",
     "dataCoverageReady": false
   },
   "p1Campaign": {
-    "total": 19,
+    "total": 0,
     "completed": 0,
-    "remaining": 19,
-    "successful": 9,
-    "failed": 5,
+    "remaining": 0,
+    "successful": 29,
+    "failed": 4,
     "retryable": 0,
-    "permanent": 5,
+    "permanent": 4,
     "batchSize": 5,
-    "plannedBatches": 4
+    "plannedBatches": 0
   },
   "p1Progress54": {
     "originalP1": 20,
-    "processed": 1,
-    "remaining": 19,
-    "blocked": 5,
-    "successful": 9,
-    "failed": 5,
+    "processed": 20,
+    "remaining": 0,
+    "blocked": 4,
+    "successful": 29,
+    "failed": 4,
     "retryable": 0,
-    "reviewRequired": 19,
-    "progressBar": "█░░░░░░░░░░░░░░░",
-    "progressLabel": "1 / 20"
+    "reviewRequired": 37,
+    "progressBar": "████████████████",
+    "progressLabel": "20 / 20"
   },
-  "batchPlan": [
-    {
-      "batchNumber": 1,
-      "size": 5,
-      "status": "next",
-      "remainingAfter": 14
-    },
-    {
-      "batchNumber": 2,
-      "size": 5,
-      "status": "planned",
-      "remainingAfter": 9
-    },
-    {
-      "batchNumber": 3,
-      "size": 5,
-      "status": "planned",
-      "remainingAfter": 4
-    },
-    {
-      "batchNumber": 4,
-      "size": 4,
-      "status": "planned",
-      "remainingAfter": 0
-    }
-  ],
+  "batchPlan": [],
   "evidenceFunnel": [
     {
       "key": "historicalEvents",
@@ -1243,27 +1282,27 @@
     {
       "key": "fetchAttempted",
       "label": "Fetch Attempted",
-      "value": 14
+      "value": 33
     },
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 9
+      "value": 29
     },
     {
       "key": "snapshots",
       "label": "Snapshots",
-      "value": 9
+      "value": 13
     },
     {
       "key": "extractions",
       "label": "Extractions",
-      "value": 14
+      "value": 33
     },
     {
       "key": "outcomeEvidence",
       "label": "Outcome Observations",
-      "value": 4
+      "value": 5
     },
     {
       "key": "verifiedSold",
@@ -1285,27 +1324,27 @@
     {
       "key": "fetchAttempted",
       "label": "Fetch Attempted",
-      "value": 14
+      "value": 33
     },
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 9
+      "value": 29
     },
     {
       "key": "snapshots",
       "label": "Snapshots",
-      "value": 9
+      "value": 13
     },
     {
       "key": "extractions",
       "label": "Extractions",
-      "value": 14
+      "value": 33
     },
     {
       "key": "outcomeEvidence",
       "label": "Outcome Evidence",
-      "value": 4
+      "value": 5
     },
     {
       "key": "verifiedSold",
@@ -1329,80 +1368,80 @@
     }
   ],
   "bottleneck53": {
-    "code": "FETCH_NOT_ATTEMPTED",
-    "count": 19,
+    "code": "LEGACY_UNKNOWN_FAILURE",
+    "count": 4,
     "total": 33,
-    "recommendedAction": "Acquire P1 (5)"
+    "recommendedAction": "Retry Legacy (5)"
   },
   "bottleneck54": {
-    "code": "FETCH_NOT_ATTEMPTED",
-    "count": 19,
+    "code": "FETCH_FAILURE",
+    "count": 4,
     "total": 33,
-    "percentage": 57.6,
-    "recommendedAction": "Acquire P1 (5)"
+    "percentage": 12.1,
+    "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
   },
   "bottleneckRanked53": [
     {
-      "code": "FETCH_NOT_ATTEMPTED",
-      "count": 19,
-      "total": 33,
-      "recommendedAction": "Acquire P1 (5)"
-    },
-    {
       "code": "LEGACY_UNKNOWN_FAILURE",
-      "count": 5,
+      "count": 4,
       "total": 33,
       "recommendedAction": "Retry Legacy (5)"
     },
     {
-      "code": "OUTCOME_MISSING",
+      "code": "SNAPSHOT_MISSING",
       "count": 10,
+      "total": 33,
+      "recommendedAction": "Acquire P1 — successful fetch without snapshot"
+    },
+    {
+      "code": "OUTCOME_MISSING",
+      "count": 28,
       "total": 33,
       "recommendedAction": "Resolve Evidence (HI 4.2)"
     },
     {
       "code": "SALE_PRICE_MISSING",
-      "count": 4,
+      "count": 5,
       "total": 33,
       "recommendedAction": "Quality Audit — explicit sale evidence only"
     }
   ],
   "bottleneckRanked54": [
     {
-      "code": "FETCH_NOT_ATTEMPTED",
-      "count": 19,
-      "total": 33,
-      "percentage": 57.6,
-      "recommendedAction": "Acquire P1 (5)"
-    },
-    {
       "code": "FETCH_FAILURE",
-      "count": 5,
+      "count": 4,
       "total": 33,
-      "percentage": 15.2,
+      "percentage": 12.1,
       "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
     },
     {
-      "code": "MISSING_OUTCOME",
+      "code": "MISSING_SNAPSHOT",
       "count": 10,
       "total": 33,
       "percentage": 30.3,
+      "recommendedAction": "Acquire P1 — successful fetch without snapshot"
+    },
+    {
+      "code": "MISSING_OUTCOME",
+      "count": 28,
+      "total": 33,
+      "percentage": 84.8,
       "recommendedAction": "Resolve Evidence"
     },
     {
       "code": "MISSING_SALE_PRICE",
-      "count": 4,
+      "count": 5,
       "total": 33,
-      "percentage": 12.1,
+      "percentage": 15.2,
       "recommendedAction": "Quality Audit — explicit sale evidence only"
     }
   ],
   "coverageRates": {
     "sourceCoverage": 100,
-    "fetchCoverage": 42.4,
-    "snapshotCoverage": 27.3,
-    "extractionCoverage": 42.4,
-    "outcomeCoverage": 12.1,
+    "fetchCoverage": 100,
+    "snapshotCoverage": 39.4,
+    "extractionCoverage": 100,
+    "outcomeCoverage": 15.2,
     "salePriceCoverage": 0
   },
   "evidenceQualityCounts": {
@@ -1447,17 +1486,8 @@
       "propertyLabel": "Secunda",
       "category": "sale_price",
       "reason": "SOLD without verified sale price — SALE_PRICE_REVIEW_REQUIRED",
-      "priority": 4,
+      "priority": 1,
       "nextAction": "Quality Audit — explicit sale evidence only"
-    },
-    {
-      "observationId": "event:1549f73a-684c-4497-9835-1b80041c9173",
-      "eventId": "1549f73a-684c-4497-9835-1b80041c9173",
-      "propertyLabel": "Secunda",
-      "category": "source_unavailable",
-      "reason": "Source blocked, permanent failure, or unavailable",
-      "priority": 4,
-      "nextAction": "REVIEW SOURCE"
     },
     {
       "observationId": "event:37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
@@ -1593,6 +1623,177 @@
       "reason": "Extraction complete but outcome unknown — do not infer SOLD",
       "priority": 1,
       "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:01c5c920-ee74-46c0-8a5a-2305bf55dab0",
+      "eventId": "01c5c920-ee74-46c0-8a5a-2305bf55dab0",
+      "propertyLabel": "Randburg",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:1035c18c-d257-40d1-8e2d-f6a65c98fc7d",
+      "eventId": "1035c18c-d257-40d1-8e2d-f6a65c98fc7d",
+      "propertyLabel": "Bedfordview",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:b8e60326-3bcd-4d4a-a2f4-3841eae93e9f",
+      "eventId": "b8e60326-3bcd-4d4a-a2f4-3841eae93e9f",
+      "propertyLabel": "Port Alfred",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:e105c520-2d04-479c-a99f-f34f1478a1af",
+      "eventId": "e105c520-2d04-479c-a99f-f34f1478a1af",
+      "propertyLabel": "Pretoria North",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:376c3389-2de0-4240-9e5d-dd06ae895b37",
+      "eventId": "376c3389-2de0-4240-9e5d-dd06ae895b37",
+      "propertyLabel": "Pretoria",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:7ae4a73e-b8c8-497e-bbd7-907a7aee3c16",
+      "eventId": "7ae4a73e-b8c8-497e-bbd7-907a7aee3c16",
+      "propertyLabel": "Bettys Bay",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:2eeb5157-8342-41d1-9abd-39c15066eb1b",
+      "eventId": "2eeb5157-8342-41d1-9abd-39c15066eb1b",
+      "propertyLabel": "Clanwilliam",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:8be1de09-5e59-4c95-ad2c-49e0326840c1",
+      "eventId": "8be1de09-5e59-4c95-ad2c-49e0326840c1",
+      "propertyLabel": "and are strictly farmed and managed on t",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:3becbaeb-dea3-4823-aed3-7b474fa296b3",
+      "eventId": "3becbaeb-dea3-4823-aed3-7b474fa296b3",
+      "propertyLabel": "Northam",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:f0727ccd-a8a8-457d-86c5-75725f482d55",
+      "eventId": "f0727ccd-a8a8-457d-86c5-75725f482d55",
+      "propertyLabel": "Pretoria",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:faeb4be7-8701-493c-a602-9ed20f88c6d8",
+      "eventId": "faeb4be7-8701-493c-a602-9ed20f88c6d8",
+      "propertyLabel": "Germiston",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:13c2420b-ffca-4537-b063-fb71b3ad99db",
+      "eventId": "13c2420b-ffca-4537-b063-fb71b3ad99db",
+      "propertyLabel": "of",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:182e7345-be81-4af1-aea4-dcb3fbdc258e",
+      "eventId": "182e7345-be81-4af1-aea4-dcb3fbdc258e",
+      "propertyLabel": "Municipal water and sewerage connections",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:25ea7d74-6928-4eeb-b6be-dec0777102cc",
+      "eventId": "25ea7d74-6928-4eeb-b6be-dec0777102cc",
+      "propertyLabel": "Sandton",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:cb1427a6-6259-49ee-99f8-c6ccb83c0407",
+      "eventId": "cb1427a6-6259-49ee-99f8-c6ccb83c0407",
+      "propertyLabel": "Phase",
+      "category": "sale_price",
+      "reason": "SOLD without verified sale price — SALE_PRICE_REVIEW_REQUIRED",
+      "priority": 1,
+      "nextAction": "Quality Audit — explicit sale evidence only"
+    },
+    {
+      "observationId": "event:ac24ac58-4751-488d-b628-6e52c690ec5d",
+      "eventId": "ac24ac58-4751-488d-b628-6e52c690ec5d",
+      "propertyLabel": "Pretoria",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:0c13b9d2-76b6-475f-a9ce-d9c8cb422f2b",
+      "eventId": "0c13b9d2-76b6-475f-a9ce-d9c8cb422f2b",
+      "propertyLabel": "Pretoria",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:05fa4b39-f89a-4514-b265-95ece11eca89",
+      "eventId": "05fa4b39-f89a-4514-b265-95ece11eca89",
+      "propertyLabel": "Centurion",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
+    },
+    {
+      "observationId": "event:34f87ade-7ad2-4d92-afbd-2b2fcee6645e",
+      "eventId": "34f87ade-7ad2-4d92-afbd-2b2fcee6645e",
+      "propertyLabel": "Port Alfred",
+      "category": "outcome",
+      "reason": "Extraction complete but outcome unknown — do not infer SOLD",
+      "priority": 1,
+      "nextAction": "Resolve Evidence"
     }
   ],
   "reportLabels": {
@@ -1600,8 +1801,8 @@
       "Public catalogue safety — 0 leaks",
       "Historical events: 33",
       "Licensed sources: 33/33",
-      "Fetch attempted: 14/33",
-      "Fetch successful: 9"
+      "Fetch attempted: 33/33",
+      "Fetch successful: 29"
     ],
     "tested": [
       "HI 5.3 campaign controller (batch limit 5)",
@@ -1609,19 +1810,18 @@
       "Ranked bottleneck + review queue"
     ],
     "recovered": [
-      "9 successful fetches in production",
-      "9/33 snapshots available",
-      "14/33 extractions available",
-      "4/33 outcome observations"
+      "29 successful fetches in production",
+      "13/33 snapshots available",
+      "33/33 extractions available",
+      "5/33 outcome observations"
     ],
     "stillMissing": [
-      "19 events never fetch-attempted",
-      "5 legacy failures awaiting modern metadata retry",
+      "4 legacy failures awaiting modern metadata retry",
       "No verified SOLD outcomes",
       "No verified sale prices"
     ],
     "reviewRequired": [
-      "19 review queue items"
+      "37 review queue items"
     ],
     "insufficientData": [
       "Sale statistics — INSUFFICIENT_DATA (no verified sale prices)",
@@ -1630,7 +1830,7 @@
     ]
   },
   "catalogueSafe": true,
-  "nextAdminAction": "PRIMARY BOTTLENECK FETCH_NOT_ATTEMPTED 19/33 → Acquire P1 (5)",
+  "nextAdminAction": "PRIMARY BOTTLENECK FETCH_FAILURE 4/33 → Retry Failed (5) / Retry Network Failures (5)",
   "gapEntries": [
     {
       "eventId": "d4b95b88-2b87-4dd1-ac67-ba199829130b",
@@ -1650,11 +1850,11 @@
       "town": "Secunda",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
       "currentState": "OUTCOME_FOUND",
-      "lastAttempt": "2026-08-15T12:47:00.993+00:00",
-      "failure": "LEGACY_UNKNOWN_FAILURE",
-      "nextAction": "REVIEW SOURCE",
-      "priority": 4,
-      "group": "P4"
+      "lastAttempt": "2026-08-16T04:00:32.223+00:00",
+      "failure": null,
+      "nextAction": "DO_NOT_RETRY",
+      "priority": 1,
+      "group": "P1"
     },
     {
       "eventId": "37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
@@ -1805,10 +2005,10 @@
       "property": "Randburg",
       "town": "Randburg",
       "source": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-school-property-randpark-ridge/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:19:15.562+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -1817,10 +2017,10 @@
       "property": "Bedfordview",
       "town": "Bedfordview",
       "source": "https://bidderschoice.co.za/property-listings/court-order-4-bedroom-double-storey-home-villa-real-estate-bedfordview-auction-online/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-16T06:35:34.504+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "DO_NOT_RETRY",
       "priority": 1,
       "group": "P1"
     },
@@ -1829,10 +2029,10 @@
       "property": "Port Alfred",
       "town": "Port Alfred",
       "source": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-834m2-vacant-stand-port-alfred/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-16T04:00:03.451+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_LATER",
       "priority": 1,
       "group": "P1"
     },
@@ -1841,10 +2041,10 @@
       "property": "Pretoria North",
       "town": "Pretoria North",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-1ha-agricultural-holding-fundus-ah-pretoria-north/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:17:22.678+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -1853,10 +2053,10 @@
       "property": "Pretoria",
       "town": "Pretoria",
       "source": "https://bidderschoice.co.za/property-listings/1_9ha-agricultural-holding-pretoria-north-online-auction/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:17:15.416+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -1865,10 +2065,10 @@
       "property": "Bettys Bay",
       "town": "Bettys Bay",
       "source": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-bettys-bay-residential-stand/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:19:25.685+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -1877,10 +2077,10 @@
       "property": "Clanwilliam",
       "town": "Clanwilliam",
       "source": "https://bidderschoice.co.za/property-listings/deceased-estate-online-auction-vacant-stand-clanwilliam-western-cape/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-16T06:35:45.769+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "DO_NOT_RETRY",
       "priority": 1,
       "group": "P1"
     },
@@ -1889,10 +2089,10 @@
       "property": "and are strictly farmed and managed on t",
       "town": "and are strictly farmed and managed on t",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-in-conjunction-with-bideasy-auctioneers-prime-export-commercial-farm-%c2%b1-78ha-barberton-mpumalanga/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-16T04:00:12.711+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_LATER",
       "priority": 1,
       "group": "P1"
     },
@@ -1901,10 +2101,10 @@
       "property": "Northam",
       "town": "Northam",
       "source": "https://bidderschoice.co.za/property-listings/9x-vacant-plots-northam-limpopo-online-auction/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:17:31.932+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -1913,10 +2113,10 @@
       "property": "Pretoria",
       "town": "Pretoria",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-2-bedroom-incomplete-project-wierda-park-ext-2-centurion/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:19:35.251+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -1925,10 +2125,10 @@
       "property": "Germiston",
       "town": "Germiston",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-curator-instruction-commercial-property-germiston-cbd/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-16T06:35:56.807+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "DO_NOT_RETRY",
       "priority": 1,
       "group": "P1"
     },
@@ -1937,10 +2137,10 @@
       "property": "of",
       "town": "of",
       "source": "https://bidderschoice.co.za/property-listings/prime-export-commercial-farm-21ha-macs-with-water-rights-white-river/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-16T04:00:20.019+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_LATER",
       "priority": 1,
       "group": "P1"
     },
@@ -1949,10 +2149,10 @@
       "property": "Municipal water and sewerage connections",
       "town": "Municipal water and sewerage connections",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-%c2%b1-18-867m%c2%b2-industrial-property-chamdor-krugersdorp/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:17:40.472+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -1961,10 +2161,10 @@
       "property": "Sandton",
       "town": "Sandton",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-bank-instruction-6-bedroom-renovators-dream-hurlingham-manor/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:19:45.902+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -1973,10 +2173,10 @@
       "property": "Phase",
       "town": "Phase",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-hope-city-phase-2-middelburg-mpumalanga/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "OUTCOME_FOUND",
+      "lastAttempt": "2026-08-16T06:36:07.856+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "DO_NOT_RETRY",
       "priority": 1,
       "group": "P1"
     },
@@ -1985,10 +2185,10 @@
       "property": "Pretoria",
       "town": "Pretoria",
       "source": "https://bidderschoice.co.za/property-listings/on-site-auction-3-bedroom-home-zwavelkloof-private-estate-zwavelpoort/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-16T04:00:25.623+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_LATER",
       "priority": 1,
       "group": "P1"
     },
@@ -1997,10 +2197,10 @@
       "property": "Pretoria",
       "town": "Pretoria",
       "source": "https://bidderschoice.co.za/property-listings/liquidation-auction-3-bed-home-boardwalk-meander-a-pretoria/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:17:46.937+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -2009,10 +2209,10 @@
       "property": "Centurion",
       "town": "Centurion",
       "source": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-3-bedroom-double-storey-house-golden-gates-estate-raslouw/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-15T13:19:53.644+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "RETRY_NOW",
       "priority": 1,
       "group": "P1"
     },
@@ -2021,10 +2221,10 @@
       "property": "Port Alfred",
       "town": "Port Alfred",
       "source": "https://bidderschoice.co.za/property-listings/liquidation-online-auction-780m2-vacant-stand-port-alfred/",
-      "currentState": "FETCH_ELIGIBLE",
-      "lastAttempt": null,
+      "currentState": "EXTRACTION_AVAILABLE",
+      "lastAttempt": "2026-08-16T06:36:19.272+00:00",
       "failure": null,
-      "nextAction": "ACQUIRE",
+      "nextAction": "DO_NOT_RETRY",
       "priority": 1,
       "group": "P1"
     }
