@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T11:42:33.034Z",
+  "generatedAt": "2026-08-16T11:55:15.985Z",
   "productionWrites": "BLOCKED",
   "partnerContract": "READY",
   "partner": "BIDDERS_CHOICE",
@@ -28,6 +28,11 @@
     "productionWrites": 0,
     "probedNetwork": false,
     "message": "Results feed URL and/or credentials missing — awaiting legitimate partner authorisation"
+  },
+  "dryRun": {
+    "status": "BLOCKED",
+    "records": 0,
+    "reason": "Results feed URL and/or credentials missing — awaiting legitimate partner authorisation"
   },
   "verifiedObservations": 0,
   "verifiedSalePrices": 0,

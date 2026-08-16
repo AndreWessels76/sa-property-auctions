@@ -148,10 +148,22 @@ export type PartnerResultsConnectionState =
   | "NOT_CONNECTED"
   | "CONFIG_MISSING"
   | "NOT_AUTHORISED"
+  | "UNAUTHORIZED"
   | "INVALID_CREDENTIALS"
   | "LICENCE_BLOCKED"
   | "CONNECTION_FAILED"
+  | "SOURCE_UNAVAILABLE"
+  | "TIMEOUT"
+  | "MALFORMED_RESPONSE"
   | "CONNECTED";
+
+export type PartnerResultsProbeFailureKind =
+  | "CONNECTION_FAILED"
+  | "SOURCE_UNAVAILABLE"
+  | "TIMEOUT"
+  | "MALFORMED_RESPONSE"
+  | "UNAUTHORIZED"
+  | "INVALID_CREDENTIALS";
 
 export type PartnerResultsSecretPresence = "PRESENT" | "MISSING" | "INVALID";
 
@@ -394,6 +406,7 @@ export function assessResultsFeedConnection(input: {
   credentialsPresence?: PartnerResultsSecretPresence;
   connectionValidated?: boolean;
   probeFailed?: boolean;
+  probeFailureKind?: PartnerResultsProbeFailureKind;
   resultsLicenceActive?: boolean;
   validationReason?: string | null;
 }): PartnerResultsConnectionAssessment {
@@ -439,7 +452,7 @@ export function assessResultsFeedConnection(input: {
   } else if (input.resultsLicenceActive === false) {
     state = "LICENCE_BLOCKED";
   } else if (input.probeFailed) {
-    state = "CONNECTION_FAILED";
+    state = input.probeFailureKind ?? "CONNECTION_FAILED";
   } else if (configured && input.connectionValidated) {
     state = "CONNECTED";
   } else if (configured && !input.connectionValidated) {

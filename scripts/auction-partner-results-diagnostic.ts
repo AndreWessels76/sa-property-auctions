@@ -40,6 +40,9 @@ async function main() {
       "bidders_choice",
     );
 
+  const dryRunBlocked =
+    status.resultsFeed !== "CONNECTED" || status.authorisation !== "AUTHORISED";
+
   const out = {
     generatedAt: new Date().toISOString(),
     productionWrites: "BLOCKED" as const,
@@ -52,6 +55,9 @@ async function main() {
     productionWrite: status.productionWrite,
     connectionState: status.connectionState,
     connectionValidation: validation,
+    dryRun: dryRunBlocked
+      ? { status: "BLOCKED", records: 0, reason: validation.message }
+      : { status: "READY", records: 0, reason: "Awaiting explicit dry-run invocation ≤5" },
     verifiedObservations: status.verifiedResultsReceived,
     verifiedSalePrices: status.verifiedSalePrices,
     lastSuccessfulIngestion: status.lastSuccessfulIngestion,
@@ -96,7 +102,11 @@ async function main() {
   console.log("AUTHORISATION =", out.authorisation);
   console.log("CONNECTION STATE =", out.connectionState);
   console.log("CONNECTION VALIDATION =", validation.state);
-  console.log("PRODUCTION WRITE =", out.productionWrite);
+  console.log(
+    "DRY RUN =",
+    dryRunBlocked ? "BLOCKED — 0 records" : "READY — await ≤5 invocation",
+  );
+  console.log("PRODUCTION WRITES =", 0);
   console.log("RESULTS FEED URL =", out.secretsPresence.RESULTS_FEED_URL);
   console.log("CREDENTIALS TOKEN =", out.secretsPresence.RESULTS_FEED_TOKEN);
   console.log("API KEY =", out.secretsPresence.RESULTS_FEED_API_KEY);

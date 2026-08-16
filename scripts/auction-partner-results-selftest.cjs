@@ -497,6 +497,26 @@ test("missing results licence → LICENCE_BLOCKED", () => {
   assert.equal(r.feedConnected, false);
 });
 
+test("probe failure kinds: TIMEOUT / SOURCE_UNAVAILABLE / MALFORMED_RESPONSE / UNAUTHORIZED", () => {
+  for (const kind of [
+    "TIMEOUT",
+    "SOURCE_UNAVAILABLE",
+    "MALFORMED_RESPONSE",
+    "UNAUTHORIZED",
+  ]) {
+    const r = assessResultsFeedConnection({
+      feedUrl: "https://results.bidderschoice.co.za/feed",
+      credentialsPresence: "PRESENT",
+      connectionValidated: false,
+      probeFailed: true,
+      probeFailureKind: kind,
+      resultsLicenceActive: true,
+    });
+    assert.equal(r.state, kind);
+    assert.equal(r.feedConnected, false);
+  }
+});
+
 test("probe failure → CONNECTION_FAILED", () => {
   const r = assessResultsFeedConnection({
     feedUrl: "https://results.bidderschoice.co.za/feed",
