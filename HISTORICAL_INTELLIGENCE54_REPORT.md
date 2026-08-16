@@ -1,6 +1,6 @@
 # Historical Intelligence 5.4 — Live Report
 
-Generated: 2026-08-16T06:39:25.170Z
+Generated: 2026-08-16T08:41:15.781Z
 
 ## VERDICT
 
@@ -23,7 +23,7 @@ P1 Progress [████████████████] 20 / 20 · Remain
 - Historical events: 33
 - Licensed sources: 33/33
 - Fetch attempted: 33/33
-- Fetch successful: 29
+- Fetch successful: 33
 
 ## TESTED
 
@@ -33,20 +33,19 @@ P1 Progress [████████████████] 20 / 20 · Remain
 
 ## RECOVERED
 
-- 29 successful fetches in production
-- 13/33 snapshots available
+- 33 successful fetches in production
+- 17/33 snapshots available
 - 33/33 extractions available
 - 5/33 outcome observations
 
 ## STILL MISSING
 
-- 4 legacy failures awaiting modern metadata retry
 - No verified SOLD outcomes
 - No verified sale prices
 
 ## REVIEW REQUIRED
 
-- 37 review queue items
+- 33 review queue items
 
 ## INSUFFICIENT DATA
 
@@ -58,8 +57,8 @@ P1 Progress [████████████████] 20 / 20 · Remain
 
 33 Licensed Sources
 ↓ 33 Fetch Attempted
-↓ 29 Fetch Successful
-↓ 13 Snapshots
+↓ 33 Fetch Successful
+↓ 17 Snapshots
 ↓ 33 Extractions
 ↓ 5 Outcome Evidence
 ↓ 0 Verified SOLD
@@ -69,11 +68,10 @@ P1 Progress [████████████████] 20 / 20 · Remain
 
 ## BOTTLENECK
 
-**FETCH_FAILURE** — 4/33 (12.1%)
+**MISSING_SNAPSHOT** — 10/33 (30.3%)
 
-Recommended: Retry Failed (5) / Retry Network Failures (5)
+Recommended: Acquire P1 — successful fetch without snapshot
 
-- FETCH_FAILURE: 4/33 → Retry Failed (5) / Retry Network Failures (5)
 - MISSING_SNAPSHOT: 10/33 → Acquire P1 — successful fetch without snapshot
 - MISSING_OUTCOME: 28/33 → Resolve Evidence
 - MISSING_SALE_PRICE: 5/33 → Quality Audit — explicit sale evidence only
@@ -86,4 +84,4 @@ Catalogue safe: **YES**
 
 ## NEXT ADMIN ACTION
 
-PRIMARY BOTTLENECK FETCH_FAILURE 4/33 → Retry Failed (5) / Retry Network Failures (5)
+PRIMARY BOTTLENECK MISSING_SNAPSHOT 10/33 → Acquire P1 — successful fetch without snapshot

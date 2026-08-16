@@ -1,0 +1,696 @@
+{
+  "generatedAt": "2026-08-16T08:38:22.186Z",
+  "operator": "hi56-resolve-evidence-batch1",
+  "limit": 5,
+  "productionWritesExecuted": [
+    "Resolve Evidence — single bounded HI 4.2 batch"
+  ],
+  "productionWritesNotExecuted": [
+    "Legacy retry",
+    "P1 acquisition"
+  ],
+  "before": {
+    "historicalEvents": 33,
+    "fetchAttempted": "33/33",
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
+    "snapshots": "13/33",
+    "extractions": "33/33",
+    "outcomeEvidence": "5/33",
+    "outcomeMissing": 28,
+    "verifiedSold": 0,
+    "soldWithoutPrice": 5,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0,
+    "legacyUnknownFailures": 0,
+    "bottleneck56": {
+      "code": "OUTCOME_MISSING",
+      "count": 28,
+      "total": 33,
+      "percentage": 84.8,
+      "recommendedAction": "Resolve Evidence"
+    }
+  },
+  "after": {
+    "historicalEvents": 33,
+    "fetchAttempted": "33/33",
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
+    "snapshots": "17/33",
+    "extractions": "33/33",
+    "outcomeEvidence": "5/33",
+    "outcomeMissing": 28,
+    "verifiedSold": 0,
+    "soldWithoutPrice": 5,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0,
+    "legacyUnknownFailures": 0,
+    "bottleneck56": {
+      "code": "OUTCOME_MISSING",
+      "count": 28,
+      "total": 33,
+      "percentage": 84.8,
+      "recommendedAction": "Resolve Evidence"
+    }
+  },
+  "delta": {
+    "outcomeEvidence": null,
+    "outcomeMissing": 0,
+    "verifiedSold": 0,
+    "soldWithoutPrice": 0,
+    "verifiedSalePrices": 0,
+    "conflicts": null
+  },
+  "candidates": [
+    {
+      "id": "1549f73a-684c-4497-9835-1b80041c9173",
+      "listingPropertyId": "5b71ae7c-c460-41ec-965f-c080d965888c",
+      "town": "Secunda",
+      "title": null,
+      "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
+      "resolutionState": "INSUFFICIENT_DATA",
+      "outcome": "COMPLETED_UNKNOWN",
+      "label": "NOT_SUPPLIED",
+      "salePrice": null,
+      "evidenceQuality": "MEDIUM",
+      "recommendedAction": null
+    },
+    {
+      "id": "d4b95b88-2b87-4dd1-ac67-ba199829130b",
+      "listingPropertyId": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "town": "Benoni",
+      "title": null,
+      "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+      "resolutionState": "INSUFFICIENT_DATA",
+      "outcome": "COMPLETED_UNKNOWN",
+      "label": "NOT_SUPPLIED",
+      "salePrice": null,
+      "evidenceQuality": "MEDIUM",
+      "recommendedAction": null
+    },
+    {
+      "id": "37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
+      "listingPropertyId": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "town": "Haenertsburg",
+      "title": null,
+      "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+      "resolutionState": "INSUFFICIENT_DATA",
+      "outcome": "COMPLETED_UNKNOWN",
+      "label": "NOT_SUPPLIED",
+      "salePrice": null,
+      "evidenceQuality": "MEDIUM",
+      "recommendedAction": null
+    },
+    {
+      "id": "f9962d13-5821-4054-9934-1cabf293adc3",
+      "listingPropertyId": "603a7e65-c6e0-4f8d-850a-688cb27549df",
+      "town": "of",
+      "title": null,
+      "sourceUrl": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
+      "resolutionState": "INSUFFICIENT_DATA",
+      "outcome": "COMPLETED_UNKNOWN",
+      "label": "NOT_SUPPLIED",
+      "salePrice": null,
+      "evidenceQuality": "MEDIUM",
+      "recommendedAction": null
+    },
+    {
+      "id": "66316a65-9ba8-41a1-b668-9a594b113129",
+      "listingPropertyId": "7cb6a434-c0ae-49b1-8613-d3b3eafaeeee",
+      "town": "Roodepoort",
+      "title": null,
+      "sourceUrl": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/",
+      "resolutionState": "INSUFFICIENT_DATA",
+      "outcome": "COMPLETED_UNKNOWN",
+      "label": "NOT_SUPPLIED",
+      "salePrice": null,
+      "evidenceQuality": "MEDIUM",
+      "recommendedAction": null
+    }
+  ],
+  "eventReports": [
+    {
+      "propertyEvent": "1549f73a-684c-4497-9835-1b80041c9173",
+      "listingPropertyId": "5b71ae7c-c460-41ec-965f-c080d965888c",
+      "town": "Secunda",
+      "title": null,
+      "source": "https://bidderschoice.co.za/property-listings/online-auction-guesthouse-double-storey-residential-property-secunda-mpumalanga/",
+      "snapshot": "existing snapshot path (mode=snapshot, no live fetch)",
+      "extraction": "COMPLETED",
+      "previousOutcome": "COMPLETED_UNKNOWN",
+      "resolvedOutcome": "EXPIRED",
+      "salePrice": null,
+      "evidence": "Snapshot extraction completed",
+      "resolution": {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED"
+      },
+      "evidenceQuality": "MEDIUM",
+      "nextAction": "Quality Audit / dossier review"
+    },
+    {
+      "propertyEvent": "d4b95b88-2b87-4dd1-ac67-ba199829130b",
+      "listingPropertyId": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+      "town": "Benoni",
+      "title": null,
+      "source": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+      "snapshot": "existing snapshot path (mode=snapshot, no live fetch)",
+      "extraction": "COMPLETED",
+      "previousOutcome": "COMPLETED_UNKNOWN",
+      "resolvedOutcome": "EXPIRED",
+      "salePrice": null,
+      "evidence": "Snapshot extraction completed",
+      "resolution": {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED"
+      },
+      "evidenceQuality": "MEDIUM",
+      "nextAction": "Quality Audit / dossier review"
+    },
+    {
+      "propertyEvent": "37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
+      "listingPropertyId": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+      "town": "Haenertsburg",
+      "title": null,
+      "source": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+      "snapshot": "existing snapshot path (mode=snapshot, no live fetch)",
+      "extraction": "COMPLETED",
+      "previousOutcome": "COMPLETED_UNKNOWN",
+      "resolvedOutcome": "EXPIRED",
+      "salePrice": null,
+      "evidence": "Snapshot extraction completed",
+      "resolution": {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED"
+      },
+      "evidenceQuality": "MEDIUM",
+      "nextAction": "Quality Audit / dossier review"
+    },
+    {
+      "propertyEvent": "f9962d13-5821-4054-9934-1cabf293adc3",
+      "listingPropertyId": "603a7e65-c6e0-4f8d-850a-688cb27549df",
+      "town": "of",
+      "title": null,
+      "source": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
+      "snapshot": "existing snapshot path (mode=snapshot, no live fetch)",
+      "extraction": "COMPLETED",
+      "previousOutcome": "COMPLETED_UNKNOWN",
+      "resolvedOutcome": "EXPIRED",
+      "salePrice": null,
+      "evidence": "Snapshot extraction completed",
+      "resolution": {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED"
+      },
+      "evidenceQuality": "MEDIUM",
+      "nextAction": "Quality Audit / dossier review"
+    },
+    {
+      "propertyEvent": "66316a65-9ba8-41a1-b668-9a594b113129",
+      "listingPropertyId": "7cb6a434-c0ae-49b1-8613-d3b3eafaeeee",
+      "town": "Roodepoort",
+      "title": null,
+      "source": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/",
+      "snapshot": "existing snapshot path (mode=snapshot, no live fetch)",
+      "extraction": "COMPLETED",
+      "previousOutcome": "COMPLETED_UNKNOWN",
+      "resolvedOutcome": "EXPIRED",
+      "salePrice": null,
+      "evidence": "Snapshot extraction completed",
+      "resolution": {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED"
+      },
+      "evidenceQuality": "MEDIUM",
+      "nextAction": "Quality Audit / dossier review"
+    }
+  ],
+  "resolution": {
+    "ok": true,
+    "processed": 5,
+    "results": [
+      {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED",
+        "audit": {
+          "id": "785f7144-dbde-40b1-9d83-7392d482fb29",
+          "auction_event_id": "d4b95b88-2b87-4dd1-ac67-ba199829130b",
+          "property_master_id": "c76b1c21-415f-419d-bd33-7036a44c0d0e",
+          "listing_property_id": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd",
+          "outcome_observation_id": null,
+          "snapshot_id": null,
+          "old_state": "INSUFFICIENT_DATA",
+          "new_state": "INSUFFICIENT_DATA",
+          "resolution_label": "NOT_SUPPLIED",
+          "evidence": {
+            "outcome": "COMPLETED_UNKNOWN",
+            "salePrice": null,
+            "provenance": {
+              "fetchedAt": "2026-08-14T19:33:52.708+00:00",
+              "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
+              "snapshotId": "dd1d2159-bc43-42d1-8ff7-ba66b48ca5de",
+              "sourceHash": "245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783",
+              "sourceName": "Bidders Choice",
+              "extractedAt": "2026-08-14T19:33:52.708+00:00",
+              "evidenceText": "verification_state: expired",
+              "parserVersion": "historical-data-acquisition-4.0.0"
+            }
+          },
+          "conflict_state": null,
+          "actor": "hi56-resolve-evidence-batch1",
+          "resolver_version": "historical-resolution-4.2.0",
+          "reason": "resolve_one",
+          "idempotency_key": "97ae53e8-ecc0-4ad0-bb8f-b52cfa9a03bd|d4b95b88-2b87-4dd1-ac67-ba199829130b|245f790c533e8fc22b3b9c9d5d84039720591b65e1ffd4953a3b3b4586daa783|INSUFFICIENT_DATA|historical-resolution-4.2.0",
+          "created_at": "2026-08-16T08:37:33.400591+00:00"
+        },
+        "message": "Resolution action resolve_one recorded",
+        "enrichment": {
+          "ok": true,
+          "status": "COMPLETED",
+          "outcome": "EXPIRED",
+          "salePrice": null,
+          "message": "Snapshot extraction completed"
+        }
+      },
+      {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED",
+        "audit": {
+          "id": "3dd18ca8-761b-428f-95b9-cdb7020817cb",
+          "auction_event_id": "37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
+          "property_master_id": "cd08d625-7c46-40eb-bf66-c271284e831d",
+          "listing_property_id": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c",
+          "outcome_observation_id": null,
+          "snapshot_id": null,
+          "old_state": "INSUFFICIENT_DATA",
+          "new_state": "INSUFFICIENT_DATA",
+          "resolution_label": "NOT_SUPPLIED",
+          "evidence": {
+            "outcome": "COMPLETED_UNKNOWN",
+            "salePrice": null,
+            "provenance": {
+              "fetchedAt": "2026-08-14T19:34:02.452+00:00",
+              "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
+              "snapshotId": "32390623-9c15-4393-833e-a0c16a17153c",
+              "sourceHash": "ce53665fb1dcb77ac9bf5b2a9f87b833915f37570920c76ea9c9bc417a74cb8a",
+              "sourceName": "Bidders Choice",
+              "extractedAt": "2026-08-14T19:34:02.452+00:00",
+              "evidenceText": "verification_state: expired",
+              "parserVersion": "historical-data-acquisition-4.0.0"
+            }
+          },
+          "conflict_state": null,
+          "actor": "hi56-resolve-evidence-batch1",
+          "resolver_version": "historical-resolution-4.2.0",
+          "reason": "resolve_one",
+          "idempotency_key": "3e7ea1ff-f237-4a6c-8b36-23bb34c4136c|37b0e59f-7a43-4a9f-a000-b50c3e323cd8|ce53665fb1dcb77ac9bf5b2a9f87b833915f37570920c76ea9c9bc417a74cb8a|INSUFFICIENT_DATA|historical-resolution-4.2.0",
+          "created_at": "2026-08-16T08:37:37.877138+00:00"
+        },
+        "message": "Resolution action resolve_one recorded",
+        "enrichment": {
+          "ok": true,
+          "status": "COMPLETED",
+          "outcome": "EXPIRED",
+          "salePrice": null,
+          "message": "Snapshot extraction completed"
+        }
+      },
+      {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED",
+        "audit": {
+          "id": "cff5369e-ee11-4833-9120-0fbd7890311f",
+          "auction_event_id": "f9962d13-5821-4054-9934-1cabf293adc3",
+          "property_master_id": "7d6f2084-2db9-48f3-abff-5960ec2fad50",
+          "listing_property_id": "603a7e65-c6e0-4f8d-850a-688cb27549df",
+          "outcome_observation_id": null,
+          "snapshot_id": null,
+          "old_state": "INSUFFICIENT_DATA",
+          "new_state": "INSUFFICIENT_DATA",
+          "resolution_label": "NOT_SUPPLIED",
+          "evidence": {
+            "outcome": "COMPLETED_UNKNOWN",
+            "salePrice": null,
+            "provenance": {
+              "fetchedAt": "2026-08-14T09:12:59.512+00:00",
+              "sourceUrl": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
+              "snapshotId": "a4dfbb60-3c3e-4af5-afa2-805fa2ba8050",
+              "sourceHash": "ce50baaab191722640c010092cb59b9090445c6430965ddde0b86d30f408a645",
+              "sourceName": "Bidders Choice",
+              "extractedAt": "2026-08-14T09:12:59.512+00:00",
+              "evidenceText": "verification_state: expired",
+              "parserVersion": "historical-data-acquisition-4.0.0"
+            }
+          },
+          "conflict_state": null,
+          "actor": "hi56-resolve-evidence-batch1",
+          "resolver_version": "historical-resolution-4.2.0",
+          "reason": "resolve_one",
+          "idempotency_key": "603a7e65-c6e0-4f8d-850a-688cb27549df|f9962d13-5821-4054-9934-1cabf293adc3|ce50baaab191722640c010092cb59b9090445c6430965ddde0b86d30f408a645|INSUFFICIENT_DATA|historical-resolution-4.2.0",
+          "created_at": "2026-08-16T08:37:42.410042+00:00"
+        },
+        "message": "Resolution action resolve_one recorded",
+        "enrichment": {
+          "ok": true,
+          "status": "COMPLETED",
+          "outcome": "EXPIRED",
+          "salePrice": null,
+          "message": "Snapshot extraction completed"
+        }
+      },
+      {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED",
+        "audit": {
+          "id": "50ae1090-a422-4bce-83f0-83d72042167a",
+          "auction_event_id": "66316a65-9ba8-41a1-b668-9a594b113129",
+          "property_master_id": "e4c82230-0f28-42b4-b7bf-a828aa340b7d",
+          "listing_property_id": "7cb6a434-c0ae-49b1-8613-d3b3eafaeeee",
+          "outcome_observation_id": null,
+          "snapshot_id": null,
+          "old_state": "INSUFFICIENT_DATA",
+          "new_state": "INSUFFICIENT_DATA",
+          "resolution_label": "NOT_SUPPLIED",
+          "evidence": {
+            "outcome": "COMPLETED_UNKNOWN",
+            "salePrice": null,
+            "provenance": {
+              "fetchedAt": "2026-08-14T09:13:05.563+00:00",
+              "sourceUrl": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/",
+              "snapshotId": "db747bd9-6e9b-4b79-8ec9-8555121f1730",
+              "sourceHash": "44516edf4191ba28bd0b455e14da71f062be3b71869a5844b2fa90b5d1dd84bf",
+              "sourceName": "Bidders Choice",
+              "extractedAt": "2026-08-14T09:13:05.563+00:00",
+              "evidenceText": "verification_state: expired",
+              "parserVersion": "historical-data-acquisition-4.0.0"
+            }
+          },
+          "conflict_state": null,
+          "actor": "hi56-resolve-evidence-batch1",
+          "resolver_version": "historical-resolution-4.2.0",
+          "reason": "resolve_one",
+          "idempotency_key": "7cb6a434-c0ae-49b1-8613-d3b3eafaeeee|66316a65-9ba8-41a1-b668-9a594b113129|44516edf4191ba28bd0b455e14da71f062be3b71869a5844b2fa90b5d1dd84bf|INSUFFICIENT_DATA|historical-resolution-4.2.0",
+          "created_at": "2026-08-16T08:37:47.344922+00:00"
+        },
+        "message": "Resolution action resolve_one recorded",
+        "enrichment": {
+          "ok": true,
+          "status": "COMPLETED",
+          "outcome": "EXPIRED",
+          "salePrice": null,
+          "message": "Snapshot extraction completed"
+        }
+      },
+      {
+        "ok": true,
+        "oldState": "INSUFFICIENT_DATA",
+        "newState": "INSUFFICIENT_DATA",
+        "resolutionLabel": "NOT_SUPPLIED",
+        "audit": {
+          "id": "c2834238-1393-49ac-857d-d8e1a4dd843d",
+          "auction_event_id": "5fd4b3fa-0693-4b31-966b-8e1298ba01fa",
+          "property_master_id": "9568ab7d-bb81-4683-9d47-ded009072c67",
+          "listing_property_id": "03888032-d214-452f-887b-0b91a0dc6bd4",
+          "outcome_observation_id": null,
+          "snapshot_id": null,
+          "old_state": "INSUFFICIENT_DATA",
+          "new_state": "INSUFFICIENT_DATA",
+          "resolution_label": "NOT_SUPPLIED",
+          "evidence": {
+            "outcome": "COMPLETED_UNKNOWN",
+            "salePrice": null,
+            "provenance": {
+              "fetchedAt": "2026-08-14T09:13:11.16+00:00",
+              "sourceUrl": "https://bidderschoice.co.za/property-listings/online-insolvent-estate-auction-5-bedroom-residential-property-groblersdal-limpopo/",
+              "snapshotId": "ec60822b-1906-4fb7-a887-e836031a0ab4",
+              "sourceHash": "23e088351cf91f7ed39a0513f2dded51432593b78ff2e60f1ec47fff8aa52866",
+              "sourceName": "Bidders Choice",
+              "extractedAt": "2026-08-14T09:13:11.161+00:00",
+              "evidenceText": "verification_state: expired",
+              "parserVersion": "historical-data-acquisition-4.0.0"
+            }
+          },
+          "conflict_state": null,
+          "actor": "hi56-resolve-evidence-batch1",
+          "resolver_version": "historical-resolution-4.2.0",
+          "reason": "resolve_one",
+          "idempotency_key": "03888032-d214-452f-887b-0b91a0dc6bd4|5fd4b3fa-0693-4b31-966b-8e1298ba01fa|23e088351cf91f7ed39a0513f2dded51432593b78ff2e60f1ec47fff8aa52866|INSUFFICIENT_DATA|historical-resolution-4.2.0",
+          "created_at": "2026-08-16T08:37:51.771401+00:00"
+        },
+        "message": "Resolution action resolve_one recorded",
+        "enrichment": {
+          "ok": true,
+          "status": "COMPLETED",
+          "outcome": "EXPIRED",
+          "salePrice": null,
+          "message": "Snapshot extraction completed"
+        }
+      }
+    ],
+    "message": "Batch resolution attempted for 5 event(s)"
+  },
+  "rebuild": {
+    "ok": true,
+    "message": "HI 4.2, HEQ 4.4, and II 4.6/4.7 rebuilt from existing evidence",
+    "heq": {
+      "ok": true,
+      "hi42": {
+        "ok": true,
+        "version": "historical-intelligence-4.2.0",
+        "dashboard": {
+          "totalHistoricalEvents": 33,
+          "unresolved": 0,
+          "sourceFound": 0,
+          "extracted": 0,
+          "identityPending": 0,
+          "reviewRequired": 0,
+          "verified": 0,
+          "verifiedSold": 0,
+          "soldWithoutPrice": 0,
+          "verifiedSalePrices": 0,
+          "conflicts": 0,
+          "identityReviews": 0,
+          "insufficientData": 33,
+          "comparableReady": 0,
+          "marketStatisticsAvailable": false,
+          "evidenceConfidence": {
+            "high": 0,
+            "medium": 33,
+            "low": 0,
+            "insufficient": 0
+          }
+        },
+        "hi40": {
+          "ok": true,
+          "version": "historical-intelligence-4.0.0",
+          "message": "Historical Intelligence 4.0 corpus rebuilt from persisted evidence",
+          "enrichment": {
+            "ok": true,
+            "historicalEvents": 33,
+            "verifiedOutcomes": 33,
+            "verifiedSalePrices": 0,
+            "message": "Intelligence corpus refreshed — 33 historical events, 33 verified outcomes, 0 verified sale prices"
+          },
+          "coverage": {
+            "totalHistoricalEvents": 33,
+            "confirmedOutcomes": 0,
+            "unknownOutcomes": 33,
+            "verifiedSalePrices": 0,
+            "eventsWithPricingEvidence": 0,
+            "eventsWithSourceEvidence": 33,
+            "eventsWithLocationEvidence": 33,
+            "eventsWithSizeEvidence": 0,
+            "comparableReadyEvents": 0,
+            "marketStatisticsReadyEvents": 0,
+            "insufficientDataCases": 0,
+            "averageOverallConfidence": "MEDIUM"
+          },
+          "invalidatedScopes": [
+            "market:global"
+          ]
+        }
+      },
+      "dashboard": {
+        "totalHistoricalEvents": 33,
+        "highQuality": 0,
+        "mediumQuality": 0,
+        "lowQuality": 0,
+        "reviewRequired": 0,
+        "conflicts": 0,
+        "insufficientData": 33,
+        "verifiedSold": 0,
+        "verifiedSalePrices": 0,
+        "confirmedOutcomes": 0,
+        "sourceCoverage": 100,
+        "snapshotCoverage": 100,
+        "comparableReady": 0,
+        "reviewQueue": {
+          "p1": 0,
+          "p2": 0,
+          "p3": 0,
+          "p4": 33,
+          "total": 33
+        }
+      },
+      "message": "Historical intelligence rebuilt with quality assessment"
+    },
+    "ii46": {
+      "ok": true,
+      "message": "Investor intelligence 4.6 rebuilt from existing evidence.",
+      "result": {
+        "ok": true,
+        "message": "Investor intelligence rebuilt from existing evidence (no acquisition).",
+        "summary": {
+          "historicalEventCount": 33,
+          "confirmedSold": 0,
+          "confirmedPassedIn": 0,
+          "confirmedWithdrawn": 0,
+          "confirmedCancelled": 0,
+          "unknownOutcomes": 33,
+          "verifiedSalePriceCount": 0,
+          "verifiedAuctionPriceCount": 0,
+          "verifiedSizeEvidenceCount": 0,
+          "comparableReadyCount": 0,
+          "evidenceQuality": {
+            "high": 0,
+            "medium": 33,
+            "low": 0,
+            "insufficient": 0
+          },
+          "sourceQuality": {
+            "Bidders Choice": 33
+          },
+          "lastEnrichmentDate": "2026-08-11T00:00:00+00:00",
+          "lastEvidenceUpdate": "2026-08-11T00:00:00+00:00",
+          "conflictCount": 0,
+          "provenance": {
+            "version": "investor-intelligence-4.5.0",
+            "calculatedAt": "2026-08-16T08:37:57.309Z"
+          }
+        },
+        "version": "investor-intelligence-4.5.0"
+      },
+      "coverage": {
+        "propertiesAnalysed": 33,
+        "highEvidence": 0,
+        "mediumEvidence": 0,
+        "lowEvidence": 33,
+        "insufficientData": 0,
+        "conflicts": 0,
+        "acquisitionGaps": 132,
+        "p1": 0,
+        "p2": 99,
+        "p3": 33,
+        "p4": 0
+      },
+      "version": "investor-intelligence-4.6.0"
+    },
+    "metrics": {
+      "propertyMasters": 38,
+      "auctionEvents": 38,
+      "historicalEvents": 33,
+      "p1": 33,
+      "p2": 0,
+      "p3": 0,
+      "p4": 0,
+      "queueBlocked": 0,
+      "queueUnavailable": 0,
+      "queueCompleted": 0,
+      "enrichmentAttempts": 215,
+      "successfulFetches": 33,
+      "failedFetches": 0,
+      "sourceFound": 33,
+      "sourceLicensed": 33,
+      "sourceBlocked": 0,
+      "sourceUnavailable": 0,
+      "fetchAttempted": 33,
+      "tlsErrors": 0,
+      "networkErrors": 0,
+      "dnsErrors": 0,
+      "timeouts": 0,
+      "http403": 0,
+      "http404": 0,
+      "http429": 0,
+      "http5xx": 0,
+      "snapshots": 17,
+      "noChange": 6,
+      "extractionAttempted": 33,
+      "extractionSuccessful": 33,
+      "extractionFailed": 0,
+      "extractionNoEvidence": 0,
+      "outcomeObservations": 5,
+      "verifiedSold": 0,
+      "soldWithoutPrice": 5,
+      "unknownOutcomes": 28,
+      "verifiedSalePrices": 0,
+      "conflicts": 0,
+      "reviewRequired": 0,
+      "comparableReady": 0,
+      "marketReadyTowns": 0,
+      "acquisitionGaps": 152,
+      "catalogueLeaks": 0,
+      "retryableFailures": 0,
+      "retryExhausted": 0,
+      "permanentFailures": 0,
+      "contentUnusable": 0,
+      "rateLimited": 0,
+      "authRequired": 0,
+      "p1Eligible": 33,
+      "p2Retryable": 0,
+      "p3Review": 0,
+      "p4Blocked": 0
+    },
+    "verdict": "INSUFFICIENT DATA — ENGINE READY"
+  },
+  "bottleneck56": {
+    "code": "OUTCOME_MISSING",
+    "count": 28,
+    "total": 33,
+    "percentage": 84.8,
+    "recommendedAction": "Resolve Evidence"
+  },
+  "coverage52": {
+    "historicalEvents": 33,
+    "licensedSources": "33/33",
+    "fetchAttempted": "33/33",
+    "neverAttempted": 0,
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
+    "retryable": 0,
+    "permanent": 0,
+    "legacyFailures": 0,
+    "snapshots": "17/33",
+    "missingExtraction": 0,
+    "extractions": "33/33",
+    "outcomeEvidence": "5/33",
+    "verifiedSold": 0,
+    "soldWithoutPrice": 5,
+    "verifiedSalePrices": 0,
+    "comparableReady": 0,
+    "marketReadyTowns": 0,
+    "catalogueLeaks": 0
+  },
+  "catalogueLeaks": 0
+}

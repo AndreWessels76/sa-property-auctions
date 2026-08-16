@@ -1,6 +1,6 @@
 {
   "version": "historical-intelligence-5.4.0",
-  "generatedAt": "2026-08-16T06:39:25.170Z",
+  "generatedAt": "2026-08-16T08:41:15.781Z",
   "connectivity": {
     "status": "CONNECTED",
     "message": "Production database reachable"
@@ -10,10 +10,10 @@
     "licensedSources": "33/33",
     "fetchAttempted": "33/33",
     "neverAttempted": 0,
-    "fetchSuccessful": 29,
-    "fetchFailed": 4,
-    "legacyFailuresRequiringRefetch": 4,
-    "snapshots": 13,
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
+    "legacyFailuresRequiringRefetch": 0,
+    "snapshots": 17,
     "extractions": 33,
     "outcomeEvidence": 5,
     "verifiedSold": 0,
@@ -30,15 +30,15 @@
     "OUTCOME_FOUND": 5
   },
   "successRates": {
-    "fetchSuccessRate": 87.9,
-    "snapshotRate": 39.4,
+    "fetchSuccessRate": 100,
+    "snapshotRate": 51.5,
     "extractionRate": 100,
     "outcomeEvidenceRate": 15.2,
     "verifiedSalePriceRate": 0,
     "denominators": {
       "fetchAttempts": 33,
-      "fetchSuccessful": 29,
-      "snapshots": 13,
+      "fetchSuccessful": 33,
+      "snapshots": 17,
       "extractions": 33,
       "historicalEvents": 33,
       "outcomeEvidence": 5,
@@ -46,10 +46,10 @@
     }
   },
   "bottleneck": {
-    "code": "LEGACY_UNKNOWN_FAILURE",
-    "count": 4,
+    "code": "OUTCOME_MISSING",
+    "count": 28,
     "total": 33,
-    "recommendedAction": "Retry Legacy Failures (5)"
+    "recommendedAction": "Resolve Evidence (HI 4.2)"
   },
   "events": [
     {
@@ -61,22 +61,22 @@
       "auctionDate": "2026-08-11T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 4,
+      "recoveryPriority": 1,
       "evidenceState": "EXTRACTION_AVAILABLE",
-      "fetchState": "FETCH_HTTP_ERROR",
-      "httpStatus": null,
-      "errorCode": "CONTENT_UNAVAILABLE",
-      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
+      "errorCode": null,
+      "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
+      "snapshot": true,
       "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:47:03.891+00:00",
-      "attemptNumber": 21,
-      "nextAction": "REVIEW SOURCE"
+      "lastAttempt": "2026-08-16T08:37:29.64+00:00",
+      "attemptNumber": 22,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:1549f73a-684c-4497-9835-1b80041c9173",
@@ -113,22 +113,22 @@
       "auctionDate": "2026-08-04T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 4,
+      "recoveryPriority": 1,
       "evidenceState": "EXTRACTION_AVAILABLE",
-      "fetchState": "FETCH_HTTP_ERROR",
-      "httpStatus": null,
-      "errorCode": "CONTENT_UNAVAILABLE",
-      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
+      "errorCode": null,
+      "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
+      "snapshot": true,
       "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:47:06.228+00:00",
-      "attemptNumber": 21,
-      "nextAction": "REVIEW SOURCE"
+      "lastAttempt": "2026-08-16T08:37:34.109+00:00",
+      "attemptNumber": 22,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:66316a65-9ba8-41a1-b668-9a594b113129",
@@ -139,22 +139,22 @@
       "auctionDate": "2026-07-29T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 4,
+      "recoveryPriority": 1,
       "evidenceState": "EXTRACTION_AVAILABLE",
-      "fetchState": "FETCH_HTTP_ERROR",
-      "httpStatus": null,
-      "errorCode": "CONTENT_UNAVAILABLE",
-      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
+      "errorCode": null,
+      "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
+      "snapshot": true,
       "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:47:11.052+00:00",
-      "attemptNumber": 19,
-      "nextAction": "REVIEW SOURCE"
+      "lastAttempt": "2026-08-16T08:37:43.122+00:00",
+      "attemptNumber": 20,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:f9962d13-5821-4054-9934-1cabf293adc3",
@@ -165,22 +165,22 @@
       "auctionDate": "2026-07-29T00:00:00+00:00",
       "sourceUrl": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
       "sourceStatus": "LICENSED",
-      "recoveryPriority": 4,
+      "recoveryPriority": 1,
       "evidenceState": "EXTRACTION_AVAILABLE",
-      "fetchState": "FETCH_HTTP_ERROR",
-      "httpStatus": null,
-      "errorCode": "CONTENT_UNAVAILABLE",
-      "failureClassification": "LEGACY_UNKNOWN_FAILURE",
+      "fetchState": "EXTRACTION_AVAILABLE",
+      "httpStatus": 200,
+      "errorCode": null,
+      "failureClassification": "NONE",
       "retryable": false,
-      "snapshot": false,
+      "snapshot": true,
       "extraction": "SUCCESS",
       "outcome": "UNKNOWN",
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-15T12:47:08.741+00:00",
-      "attemptNumber": 19,
-      "nextAction": "REVIEW SOURCE"
+      "lastAttempt": "2026-08-16T08:37:38.657+00:00",
+      "attemptNumber": 20,
+      "nextAction": "RETRY_LATER"
     },
     {
       "observationId": "event:f79a330b-7779-4719-8c21-174252c9ab3f",
@@ -230,8 +230,8 @@
       "salePrice": "MISSING",
       "resolution": "INSUFFICIENT_DATA",
       "evidenceQuality": "MEDIUM",
-      "lastAttempt": "2026-08-14T09:13:11.625+00:00",
-      "attemptNumber": 1,
+      "lastAttempt": "2026-08-16T08:37:48.03+00:00",
+      "attemptNumber": 2,
       "nextAction": "RETRY_LATER"
     },
     {
@@ -912,15 +912,15 @@
     }
   ],
   "chainSuccessRates": {
-    "fetchSuccessRate": 87.9,
-    "snapshotRate": 44.8,
-    "extractionRate": 253.8,
+    "fetchSuccessRate": 100,
+    "snapshotRate": 51.5,
+    "extractionRate": 194.1,
     "outcomeEvidenceRate": 15.2,
     "salePriceRate": 0,
     "denominators": {
       "fetchAttempts": 33,
-      "successfulFetches": 29,
-      "snapshots": 13,
+      "successfulFetches": 33,
+      "snapshots": 17,
       "extractions": 33,
       "outcomeEvidence": 5
     }
@@ -959,13 +959,91 @@
   },
   "fetchResults": {
     "attempted": 33,
-    "successful": 19,
+    "successful": 23,
     "failed": 0,
     "retryable": 0,
-    "permanent": 4,
-    "legacy": 4
+    "permanent": 0,
+    "legacy": 0
   },
   "batchHistory": [
+    {
+      "batchId": "enrich_msvjy073",
+      "action": "enrichment_batch",
+      "operator": "hi56-resolve-evidence-batch1",
+      "started": "2026-08-16T08:37:48.03+00:00",
+      "completed": "2026-08-16T08:37:48.03+00:00",
+      "eventsSelected": 1,
+      "eventsSucceeded": 1,
+      "eventsFailed": 0,
+      "snapshotsCreated": 1,
+      "outcomesExtracted": 0,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "enrich_msvjxwe0",
+      "action": "enrichment_batch",
+      "operator": "hi56-resolve-evidence-batch1",
+      "started": "2026-08-16T08:37:43.122+00:00",
+      "completed": "2026-08-16T08:37:43.122+00:00",
+      "eventsSelected": 1,
+      "eventsSucceeded": 1,
+      "eventsFailed": 0,
+      "snapshotsCreated": 1,
+      "outcomesExtracted": 0,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "enrich_msvjxswi",
+      "action": "enrichment_batch",
+      "operator": "hi56-resolve-evidence-batch1",
+      "started": "2026-08-16T08:37:38.657+00:00",
+      "completed": "2026-08-16T08:37:38.657+00:00",
+      "eventsSelected": 1,
+      "eventsSucceeded": 1,
+      "eventsFailed": 0,
+      "snapshotsCreated": 1,
+      "outcomesExtracted": 0,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "enrich_msvjxpg3",
+      "action": "enrichment_batch",
+      "operator": "hi56-resolve-evidence-batch1",
+      "started": "2026-08-16T08:37:34.109+00:00",
+      "completed": "2026-08-16T08:37:34.109+00:00",
+      "eventsSelected": 1,
+      "eventsSucceeded": 1,
+      "eventsFailed": 0,
+      "snapshotsCreated": 1,
+      "outcomesExtracted": 0,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "enrich_msvjxluy",
+      "action": "enrichment_batch",
+      "operator": "hi56-resolve-evidence-batch1",
+      "started": "2026-08-16T08:37:29.64+00:00",
+      "completed": "2026-08-16T08:37:29.64+00:00",
+      "eventsSelected": 1,
+      "eventsSucceeded": 1,
+      "eventsFailed": 0,
+      "snapshotsCreated": 1,
+      "outcomesExtracted": 0,
+      "pricesVerified": 0
+    },
+    {
+      "batchId": "hea43_msvg6c8e",
+      "action": "acquire_p1",
+      "operator": "hi56-retry-legacy-batch1",
+      "started": "2026-08-16T06:52:27.888+00:00",
+      "completed": "2026-08-16T06:53:00.673+00:00",
+      "eventsSelected": 8,
+      "eventsSucceeded": 8,
+      "eventsFailed": 0,
+      "snapshotsCreated": 4,
+      "outcomesExtracted": 8,
+      "pricesVerified": 0
+    },
     {
       "batchId": "hi56_retry_lic_msvfkm7w",
       "action": "enrichment_batch",
@@ -1147,84 +1225,6 @@
       "snapshotsCreated": 0,
       "outcomesExtracted": 10,
       "pricesVerified": 0
-    },
-    {
-      "batchId": "hea43_mstd25o5",
-      "action": "acquire_p1",
-      "operator": "wesselsandre76@gmail.com",
-      "started": "2026-08-14T19:49:32.971+00:00",
-      "completed": "2026-08-14T19:49:43.151+00:00",
-      "eventsSelected": 10,
-      "eventsSucceeded": 0,
-      "eventsFailed": 10,
-      "snapshotsCreated": 0,
-      "outcomesExtracted": 10,
-      "pricesVerified": 0
-    },
-    {
-      "batchId": "hi51_legacy_mstchoam",
-      "action": "retry_legacy_failures",
-      "operator": "wesselsandre76@gmail.com",
-      "started": "2026-08-14T19:33:42.325+00:00",
-      "completed": "2026-08-14T19:34:19.183+00:00",
-      "eventsSelected": 10,
-      "eventsSucceeded": 10,
-      "eventsFailed": 0,
-      "snapshotsCreated": 5,
-      "outcomesExtracted": 10,
-      "pricesVerified": 0
-    },
-    {
-      "batchId": "hea43_mstcggzd",
-      "action": "acquire_p1",
-      "operator": "wesselsandre76@gmail.com",
-      "started": "2026-08-14T19:32:42.074+00:00",
-      "completed": "2026-08-14T19:32:53.107+00:00",
-      "eventsSelected": 10,
-      "eventsSucceeded": 0,
-      "eventsFailed": 10,
-      "snapshotsCreated": 0,
-      "outcomesExtracted": 4,
-      "pricesVerified": 0
-    },
-    {
-      "batchId": "hea43_mst33hn5",
-      "action": "acquire_p1",
-      "operator": "wesselsandre76@gmail.com",
-      "started": "2026-08-14T15:10:39.755+00:00",
-      "completed": "2026-08-14T15:10:50.213+00:00",
-      "eventsSelected": 10,
-      "eventsSucceeded": 0,
-      "eventsFailed": 10,
-      "snapshotsCreated": 0,
-      "outcomesExtracted": 4,
-      "pricesVerified": 0
-    },
-    {
-      "batchId": "hea43_msszo8lw",
-      "action": "acquire_p1",
-      "operator": "wesselsandre76@gmail.com",
-      "started": "2026-08-14T13:34:49.355+00:00",
-      "completed": "2026-08-14T13:34:59.288+00:00",
-      "eventsSelected": 10,
-      "eventsSucceeded": 0,
-      "eventsFailed": 10,
-      "snapshotsCreated": 0,
-      "outcomesExtracted": 4,
-      "pricesVerified": 0
-    },
-    {
-      "batchId": "enrich_batch_mssqijsg",
-      "action": "enrichment_batch",
-      "operator": "wesselsandre76@gmail.com",
-      "started": "2026-08-14T09:18:25.866+00:00",
-      "completed": "2026-08-14T09:18:32.654+00:00",
-      "eventsSelected": 7,
-      "eventsSucceeded": 0,
-      "eventsFailed": 7,
-      "snapshotsCreated": 0,
-      "outcomesExtracted": 0,
-      "pricesVerified": 0
     }
   ],
   "campaign": {
@@ -1232,12 +1232,12 @@
     "totalEvents": 33,
     "neverAttempted": 0,
     "fetchAttempted": 33,
-    "fetchSuccessful": 29,
-    "fetchFailed": 4,
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
     "remaining": 0,
     "progressRatio": 1,
     "progressBar": "████████████████████",
-    "summaryLine": "33 / 33 attempted · 29 successful · 4 failed · 0 remaining"
+    "summaryLine": "33 / 33 attempted · 33 successful · 0 failed · 0 remaining"
   },
   "campaign54": {
     "status": "CAMPAIGN_AWAITING_REVIEW",
@@ -1248,10 +1248,10 @@
     "total": 0,
     "completed": 0,
     "remaining": 0,
-    "successful": 29,
-    "failed": 4,
+    "successful": 33,
+    "failed": 0,
     "retryable": 0,
-    "permanent": 4,
+    "permanent": 0,
     "batchSize": 5,
     "plannedBatches": 0
   },
@@ -1259,11 +1259,11 @@
     "originalP1": 20,
     "processed": 20,
     "remaining": 0,
-    "blocked": 4,
-    "successful": 29,
-    "failed": 4,
+    "blocked": 0,
+    "successful": 33,
+    "failed": 0,
     "retryable": 0,
-    "reviewRequired": 37,
+    "reviewRequired": 33,
     "progressBar": "████████████████",
     "progressLabel": "20 / 20"
   },
@@ -1287,12 +1287,12 @@
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 29
+      "value": 33
     },
     {
       "key": "snapshots",
       "label": "Snapshots",
-      "value": 13
+      "value": 17
     },
     {
       "key": "extractions",
@@ -1329,12 +1329,12 @@
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 29
+      "value": 33
     },
     {
       "key": "snapshots",
       "label": "Snapshots",
-      "value": 13
+      "value": 17
     },
     {
       "key": "extractions",
@@ -1368,25 +1368,19 @@
     }
   ],
   "bottleneck53": {
-    "code": "LEGACY_UNKNOWN_FAILURE",
-    "count": 4,
+    "code": "SNAPSHOT_MISSING",
+    "count": 10,
     "total": 33,
-    "recommendedAction": "Retry Legacy (5)"
+    "recommendedAction": "Acquire P1 — successful fetch without snapshot"
   },
   "bottleneck54": {
-    "code": "FETCH_FAILURE",
-    "count": 4,
+    "code": "MISSING_SNAPSHOT",
+    "count": 10,
     "total": 33,
-    "percentage": 12.1,
-    "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
+    "percentage": 30.3,
+    "recommendedAction": "Acquire P1 — successful fetch without snapshot"
   },
   "bottleneckRanked53": [
-    {
-      "code": "LEGACY_UNKNOWN_FAILURE",
-      "count": 4,
-      "total": 33,
-      "recommendedAction": "Retry Legacy (5)"
-    },
     {
       "code": "SNAPSHOT_MISSING",
       "count": 10,
@@ -1407,13 +1401,6 @@
     }
   ],
   "bottleneckRanked54": [
-    {
-      "code": "FETCH_FAILURE",
-      "count": 4,
-      "total": 33,
-      "percentage": 12.1,
-      "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
-    },
     {
       "code": "MISSING_SNAPSHOT",
       "count": 10,
@@ -1439,7 +1426,7 @@
   "coverageRates": {
     "sourceCoverage": 100,
     "fetchCoverage": 100,
-    "snapshotCoverage": 39.4,
+    "snapshotCoverage": 51.5,
     "extractionCoverage": 100,
     "outcomeCoverage": 15.2,
     "salePriceCoverage": 0
@@ -1466,18 +1453,9 @@
       "observationId": "event:d4b95b88-2b87-4dd1-ac67-ba199829130b",
       "eventId": "d4b95b88-2b87-4dd1-ac67-ba199829130b",
       "propertyLabel": "Benoni",
-      "category": "source_unavailable",
-      "reason": "Source blocked, permanent failure, or unavailable",
-      "priority": 4,
-      "nextAction": "REVIEW SOURCE"
-    },
-    {
-      "observationId": "event:d4b95b88-2b87-4dd1-ac67-ba199829130b",
-      "eventId": "d4b95b88-2b87-4dd1-ac67-ba199829130b",
-      "propertyLabel": "Benoni",
       "category": "outcome",
       "reason": "Extraction complete but outcome unknown — do not infer SOLD",
-      "priority": 4,
+      "priority": 1,
       "nextAction": "Resolve Evidence"
     },
     {
@@ -1493,54 +1471,27 @@
       "observationId": "event:37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
       "eventId": "37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
       "propertyLabel": "Haenertsburg",
-      "category": "source_unavailable",
-      "reason": "Source blocked, permanent failure, or unavailable",
-      "priority": 4,
-      "nextAction": "REVIEW SOURCE"
-    },
-    {
-      "observationId": "event:37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
-      "eventId": "37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
-      "propertyLabel": "Haenertsburg",
       "category": "outcome",
       "reason": "Extraction complete but outcome unknown — do not infer SOLD",
-      "priority": 4,
+      "priority": 1,
       "nextAction": "Resolve Evidence"
     },
     {
       "observationId": "event:66316a65-9ba8-41a1-b668-9a594b113129",
       "eventId": "66316a65-9ba8-41a1-b668-9a594b113129",
       "propertyLabel": "Roodepoort",
-      "category": "source_unavailable",
-      "reason": "Source blocked, permanent failure, or unavailable",
-      "priority": 4,
-      "nextAction": "REVIEW SOURCE"
-    },
-    {
-      "observationId": "event:66316a65-9ba8-41a1-b668-9a594b113129",
-      "eventId": "66316a65-9ba8-41a1-b668-9a594b113129",
-      "propertyLabel": "Roodepoort",
       "category": "outcome",
       "reason": "Extraction complete but outcome unknown — do not infer SOLD",
-      "priority": 4,
+      "priority": 1,
       "nextAction": "Resolve Evidence"
     },
     {
       "observationId": "event:f9962d13-5821-4054-9934-1cabf293adc3",
       "eventId": "f9962d13-5821-4054-9934-1cabf293adc3",
       "propertyLabel": "of",
-      "category": "source_unavailable",
-      "reason": "Source blocked, permanent failure, or unavailable",
-      "priority": 4,
-      "nextAction": "REVIEW SOURCE"
-    },
-    {
-      "observationId": "event:f9962d13-5821-4054-9934-1cabf293adc3",
-      "eventId": "f9962d13-5821-4054-9934-1cabf293adc3",
-      "propertyLabel": "of",
       "category": "outcome",
       "reason": "Extraction complete but outcome unknown — do not infer SOLD",
-      "priority": 4,
+      "priority": 1,
       "nextAction": "Resolve Evidence"
     },
     {
@@ -1802,7 +1753,7 @@
       "Historical events: 33",
       "Licensed sources: 33/33",
       "Fetch attempted: 33/33",
-      "Fetch successful: 29"
+      "Fetch successful: 33"
     ],
     "tested": [
       "HI 5.3 campaign controller (batch limit 5)",
@@ -1810,18 +1761,17 @@
       "Ranked bottleneck + review queue"
     ],
     "recovered": [
-      "29 successful fetches in production",
-      "13/33 snapshots available",
+      "33 successful fetches in production",
+      "17/33 snapshots available",
       "33/33 extractions available",
       "5/33 outcome observations"
     ],
     "stillMissing": [
-      "4 legacy failures awaiting modern metadata retry",
       "No verified SOLD outcomes",
       "No verified sale prices"
     ],
     "reviewRequired": [
-      "37 review queue items"
+      "33 review queue items"
     ],
     "insufficientData": [
       "Sale statistics — INSUFFICIENT_DATA (no verified sale prices)",
@@ -1830,7 +1780,7 @@
     ]
   },
   "catalogueSafe": true,
-  "nextAdminAction": "PRIMARY BOTTLENECK FETCH_FAILURE 4/33 → Retry Failed (5) / Retry Network Failures (5)",
+  "nextAdminAction": "PRIMARY BOTTLENECK MISSING_SNAPSHOT 10/33 → Acquire P1 — successful fetch without snapshot",
   "gapEntries": [
     {
       "eventId": "d4b95b88-2b87-4dd1-ac67-ba199829130b",
@@ -1838,11 +1788,11 @@
       "town": "Benoni",
       "source": "https://bidderschoice.co.za/property-listings/insolvent-estate-online-auction-2-bedroom-unit-in-ss-the-orchards-crystal-park-ext-28-benoni/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-15T12:47:03.891+00:00",
-      "failure": "LEGACY_UNKNOWN_FAILURE",
-      "nextAction": "REVIEW SOURCE",
-      "priority": 4,
-      "group": "P4"
+      "lastAttempt": "2026-08-16T08:37:29.64+00:00",
+      "failure": null,
+      "nextAction": "RETRY_LATER",
+      "priority": 1,
+      "group": "P1"
     },
     {
       "eventId": "1549f73a-684c-4497-9835-1b80041c9173",
@@ -1862,11 +1812,11 @@
       "town": "Haenertsburg",
       "source": "https://bidderschoice.co.za/property-listings/online-auction-guest-farm-haenertsburg-magoebaskloof-limpopo/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-15T12:47:06.228+00:00",
-      "failure": "LEGACY_UNKNOWN_FAILURE",
-      "nextAction": "REVIEW SOURCE",
-      "priority": 4,
-      "group": "P4"
+      "lastAttempt": "2026-08-16T08:37:34.109+00:00",
+      "failure": null,
+      "nextAction": "RETRY_LATER",
+      "priority": 1,
+      "group": "P1"
     },
     {
       "eventId": "66316a65-9ba8-41a1-b668-9a594b113129",
@@ -1874,11 +1824,11 @@
       "town": "Roodepoort",
       "source": "https://bidderschoice.co.za/property-listings/church-premises-florida-roodepoort-online-auction/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-15T12:47:11.052+00:00",
-      "failure": "LEGACY_UNKNOWN_FAILURE",
-      "nextAction": "REVIEW SOURCE",
-      "priority": 4,
-      "group": "P4"
+      "lastAttempt": "2026-08-16T08:37:43.122+00:00",
+      "failure": null,
+      "nextAction": "RETRY_LATER",
+      "priority": 1,
+      "group": "P1"
     },
     {
       "eventId": "f9962d13-5821-4054-9934-1cabf293adc3",
@@ -1886,11 +1836,11 @@
       "town": "of",
       "source": "https://bidderschoice.co.za/property-listings/749ha-cattle-farm-springbokvlakte-limpopo-auction/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-15T12:47:08.741+00:00",
-      "failure": "LEGACY_UNKNOWN_FAILURE",
-      "nextAction": "REVIEW SOURCE",
-      "priority": 4,
-      "group": "P4"
+      "lastAttempt": "2026-08-16T08:37:38.657+00:00",
+      "failure": null,
+      "nextAction": "RETRY_LATER",
+      "priority": 1,
+      "group": "P1"
     },
     {
       "eventId": "f79a330b-7779-4719-8c21-174252c9ab3f",
@@ -1910,7 +1860,7 @@
       "town": "Groblersdal",
       "source": "https://bidderschoice.co.za/property-listings/online-insolvent-estate-auction-5-bedroom-residential-property-groblersdal-limpopo/",
       "currentState": "EXTRACTION_AVAILABLE",
-      "lastAttempt": "2026-08-14T09:13:11.625+00:00",
+      "lastAttempt": "2026-08-16T08:37:48.03+00:00",
       "failure": null,
       "nextAction": "RETRY_LATER",
       "priority": 1,

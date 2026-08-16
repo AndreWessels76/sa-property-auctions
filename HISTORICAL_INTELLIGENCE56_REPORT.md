@@ -1,6 +1,6 @@
 # Historical Intelligence 5.6 — Live Report
 
-Generated: 2026-08-16T06:39:25.170Z
+Generated: 2026-08-16T08:41:15.781Z
 
 ## VERDICT
 
@@ -13,13 +13,13 @@ Campaign engine ready — verified evidence thresholds not met
 **CAMPAIGN_AWAITING_REVIEW**
 
 P1 Progress [████████████████] 19 / 19 (100%)
-Remaining: 0 · Blocked: 4
+Remaining: 0 · Blocked: 0
 
 ## BOTTLENECK
 
-**LEGACY_UNKNOWN_FAILURE — 4/33**
+**OUTCOME_MISSING — 28/33**
 
-Recommended: Dry Run Legacy (5) → Retry Legacy (5)
+Recommended: Resolve Evidence
 
 ## PRODUCTION COUNTS
 
@@ -29,9 +29,9 @@ Recommended: Dry Run Legacy (5) → Retry Legacy (5)
 | Licensed Sources | 33/33 |
 | Fetch Attempted | 33 |
 | Never Attempted | 0 |
-| Fetch Successful | 29 |
-| Fetch Failed | 4 |
-| Snapshots | 13/33 |
+| Fetch Successful | 33 |
+| Fetch Failed | 0 |
+| Snapshots | 17/33 |
 | Extractions | 33/33 |
 | Outcome Evidence | 5/33 |
 | Verified SOLD | 0 |
@@ -40,14 +40,14 @@ Recommended: Dry Run Legacy (5) → Retry Legacy (5)
 | Comparable Ready | 0 |
 | Market Ready Towns | 0 |
 | Catalogue Leaks | 0 |
-| Legacy Unknown | 4 |
+| Legacy Unknown | 0 |
 
 ## EVIDENCE FUNNEL
 
 33 Licensed Sources
 ↓ 33 Fetch Attempted
-↓ 29 Fetch Successful
-↓ 13 Snapshots
+↓ 33 Fetch Successful
+↓ 17 Snapshots
 ↓ 33 Extractions
 ↓ 5 Outcome Evidence
 ↓ 0 Verified SOLD
@@ -57,10 +57,7 @@ Recommended: Dry Run Legacy (5) → Retry Legacy (5)
 
 ## NEXT CANDIDATES (≤5)
 
-- [LEGACY] **Benoni** (Benoni) — LEGACY_UNKNOWN_FAILURE → Retry Legacy
-- [LEGACY] **Haenertsburg** (Haenertsburg) — LEGACY_UNKNOWN_FAILURE → Retry Legacy
-- [LEGACY] **Roodepoort** (Roodepoort) — LEGACY_UNKNOWN_FAILURE → Retry Legacy
-- [LEGACY] **of** (of) — LEGACY_UNKNOWN_FAILURE → Retry Legacy
+- (none)
 
 ## DRY RUN P1 (5) — NO PRODUCTION WRITE
 
@@ -80,7 +77,7 @@ Rebuild: **ALLOWED**
 
 ## NEXT ADMIN ACTION
 
-LEGACY_UNKNOWN_FAILURE 4/33 → Dry Run Legacy (5) → Retry Legacy (5)
+OUTCOME_MISSING 28/33 → Resolve Evidence
 
 ## PRODUCTION WRITES
 

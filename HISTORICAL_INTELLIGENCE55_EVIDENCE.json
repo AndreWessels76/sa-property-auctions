@@ -1,6 +1,6 @@
 {
   "version": "historical-intelligence-5.5.0",
-  "generatedAt": "2026-08-16T06:39:25.170Z",
+  "generatedAt": "2026-08-16T08:41:15.781Z",
   "connectivity": {
     "status": "CONNECTED",
     "message": "Production database reachable"
@@ -17,11 +17,11 @@
     "originalP1": 19,
     "processed": 19,
     "remaining": 0,
-    "blocked": 4,
-    "successful": 29,
-    "failed": 4,
+    "blocked": 0,
+    "successful": 33,
+    "failed": 0,
     "retryable": 0,
-    "reviewRequired": 37,
+    "reviewRequired": 33,
     "progressBar": "████████████████",
     "progressLabel": "19 / 19"
   },
@@ -34,7 +34,7 @@
   },
   "recoveryLanes55": {
     "neverAttempted": 0,
-    "legacyUnknownFailures": 4,
+    "legacyUnknownFailures": 0,
     "retryableFailures": 0,
     "snapshotExtractionPending": 0,
     "note": "P1 never-attempted and legacy unknown failures are separate recovery lanes"
@@ -53,12 +53,12 @@
     {
       "key": "fetchSuccessful",
       "label": "Fetch Successful",
-      "value": 29
+      "value": 33
     },
     {
       "key": "snapshots",
       "label": "Snapshots",
-      "value": 13
+      "value": 17
     },
     {
       "key": "extractions",
@@ -92,20 +92,13 @@
     }
   ],
   "bottleneck55": {
-    "code": "FETCH_FAILURE",
-    "count": 4,
+    "code": "MISSING_SNAPSHOT",
+    "count": 10,
     "total": 33,
-    "percentage": 12.1,
-    "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
+    "percentage": 30.3,
+    "recommendedAction": "Acquire P1 — successful fetch without snapshot"
   },
   "bottleneckRanked55": [
-    {
-      "code": "FETCH_FAILURE",
-      "count": 4,
-      "total": 33,
-      "percentage": 12.1,
-      "recommendedAction": "Retry Failed (5) / Retry Network Failures (5)"
-    },
     {
       "code": "MISSING_SNAPSHOT",
       "count": 10,
@@ -139,12 +132,12 @@
     "licensedSources": "33/33",
     "fetchAttempted": "33/33",
     "neverAttempted": 0,
-    "fetchSuccessful": 29,
-    "fetchFailed": 4,
+    "fetchSuccessful": 33,
+    "fetchFailed": 0,
     "retryable": 0,
-    "permanent": 4,
-    "legacyFailures": 4,
-    "snapshots": "13/33",
+    "permanent": 0,
+    "legacyFailures": 0,
+    "snapshots": "17/33",
     "missingExtraction": 0,
     "extractions": "33/33",
     "outcomeEvidence": "5/33",
@@ -155,11 +148,11 @@
     "marketReadyTowns": 0,
     "catalogueLeaks": 0
   },
-  "nextAdminAction": "Retry Legacy Failures (5) — 4 legacy failures",
+  "nextAdminAction": "PRIMARY BOTTLENECK MISSING_SNAPSHOT → Acquire P1 — successful fetch without snapshot",
   "eventStateSample55": [
     {
       "observationId": "event:d4b95b88-2b87-4dd1-ac67-ba199829130b",
-      "state": "LEGACY_UNKNOWN_FAILURE",
+      "state": "EXTRACTED",
       "propertyLabel": "Benoni"
     },
     {
@@ -169,17 +162,17 @@
     },
     {
       "observationId": "event:37b0e59f-7a43-4a9f-a000-b50c3e323cd8",
-      "state": "LEGACY_UNKNOWN_FAILURE",
+      "state": "EXTRACTED",
       "propertyLabel": "Haenertsburg"
     },
     {
       "observationId": "event:66316a65-9ba8-41a1-b668-9a594b113129",
-      "state": "LEGACY_UNKNOWN_FAILURE",
+      "state": "EXTRACTED",
       "propertyLabel": "Roodepoort"
     },
     {
       "observationId": "event:f9962d13-5821-4054-9934-1cabf293adc3",
-      "state": "LEGACY_UNKNOWN_FAILURE",
+      "state": "EXTRACTED",
       "propertyLabel": "of"
     },
     {
@@ -289,7 +282,7 @@
       "Historical events: 33",
       "Licensed sources: 33/33",
       "Fetch attempted: 33/33",
-      "Fetch successful: 29"
+      "Fetch successful: 33"
     ],
     "tested": [
       "HI 5.5 orchestration over HI 5.4",
@@ -305,7 +298,7 @@
       "Market-ready towns"
     ],
     "reviewRequired": [
-      "37 review queue items"
+      "33 review queue items"
     ]
   },
   "productionWritesExecuted": [],

@@ -248,20 +248,77 @@ export class HistoricalIntelligence42Service {
     operator: string;
     action?: AdminResolutionAction;
   }) {
+    const limit = input.limit ?? 10;
     const events = await this.loadResolvedEvents();
-    const candidates = events
-      .filter((e) => e.resolution.state === "EXTRACTED" || e.resolution.state === "REVIEW_REQUIRED")
-      .slice(0, input.limit ?? 10);
+    const outcomeObs = await OutcomeIntelligenceRepository.listRecent(5000);
+    const provenOutcomeByListing = new Set(
+      outcomeObs
+        .filter(
+          (o) =>
+            o.listing_property_id &&
+            o.outcome &&
+            !["UNKNOWN", "COMPLETED_UNKNOWN", "EXPIRED"].includes(o.outcome),
+        )
+        .map((o) => o.listing_property_id as string),
+    );
+
+    // Existing HI 4.2 queue first.
+    const queue = events.filter(
+      (e) =>
+        e.resolution.state === "EXTRACTED" || e.resolution.state === "REVIEW_REQUIRED",
+    );
+
+    // When the admin queue is empty, resolve OUTCOME_MISSING / INSUFFICIENT_DATA
+    // from existing snapshots only (no live fetch) — same path Ops maps to
+    // "Resolve Evidence" for the OUTCOME_MISSING bottleneck.
+    const insufficient = events.filter((e) => {
+      const listingId = e.observation.listingPropertyId;
+      if (!listingId) return false;
+      if (e.resolution.state !== "INSUFFICIENT_DATA" && e.resolution.state !== "UNRESOLVED") {
+        return false;
+      }
+      return !provenOutcomeByListing.has(listingId);
+    });
+
+    const ranked = [...queue, ...insufficient].slice(0, limit);
 
     const results = [];
-    for (const c of candidates) {
-      const id = c.observation.auctionEventId ?? c.observation.listingPropertyId ?? c.observation.observationId;
+    for (const c of ranked) {
+      const listingId = c.observation.listingPropertyId;
+      let enrichment: Awaited<
+        ReturnType<typeof HistoricalEnrichmentService.enrichProperty>
+      > | null = null;
+
+      // Prefer existing snapshot text → DD + outcome persistence (no live fetch).
+      if (listingId && input.action !== "confirm_sold" && input.action !== "confirm_not_sold") {
+        enrichment = await HistoricalEnrichmentService.enrichProperty({
+          propertyId: listingId,
+          mode: "snapshot",
+          operator: input.operator,
+        });
+      }
+
+      const id =
+        c.observation.auctionEventId ??
+        c.observation.listingPropertyId ??
+        c.observation.observationId;
       const r = await this.resolveOne({
         eventId: id,
         action: input.action ?? "resolve_one",
         operator: input.operator,
       });
-      results.push(r);
+      results.push({
+        ...r,
+        enrichment: enrichment
+          ? {
+              ok: enrichment.ok,
+              status: enrichment.status,
+              outcome: enrichment.outcome,
+              salePrice: enrichment.salePrice,
+              message: enrichment.message,
+            }
+          : null,
+      });
     }
 
     return {

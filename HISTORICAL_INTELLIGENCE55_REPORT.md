@@ -1,6 +1,6 @@
 # Historical Intelligence 5.5 — Live Report
 
-Generated: 2026-08-16T06:39:25.170Z
+Generated: 2026-08-16T08:41:15.781Z
 
 ## VERDICT
 
@@ -28,9 +28,9 @@ Data coverage ready: **NO**
 | Licensed Sources | 33/33 |
 | Fetch Attempted | 33 |
 | Never Attempted | 0 |
-| Fetch Successful | 29 |
-| Fetch Failed | 4 |
-| Snapshots | 13/33 |
+| Fetch Successful | 33 |
+| Fetch Failed | 0 |
+| Snapshots | 17/33 |
 | Extractions | 33/33 |
 | Outcome Evidence | 5/33 |
 | Verified SOLD | 0 |
@@ -43,7 +43,7 @@ Data coverage ready: **NO**
 ## RECOVERY LANES
 
 Never attempted (P1): **0**
-Legacy unknown failures: **4**
+Legacy unknown failures: **0**
 Retryable failures: **0**
 Snapshot extraction pending: **0**
 
@@ -51,8 +51,8 @@ Snapshot extraction pending: **0**
 
 33 Licensed Sources
 ↓ 33 Fetch Attempted
-↓ 29 Fetch Successful
-↓ 13 Snapshots
+↓ 33 Fetch Successful
+↓ 17 Snapshots
 ↓ 33 Extractions
 ↓ 5 Outcome Evidence
 ↓ 0 Verified SOLD
@@ -62,9 +62,9 @@ Snapshot extraction pending: **0**
 
 ## BOTTLENECK
 
-**FETCH_FAILURE** — 4/33 (12.1%)
+**MISSING_SNAPSHOT** — 10/33 (30.3%)
 
-Recommended: Retry Failed (5) / Retry Network Failures (5)
+Recommended: Acquire P1 — successful fetch without snapshot
 
 ## BATCH PLAN
 
@@ -76,7 +76,7 @@ No P1 candidates remaining — do not auto-acquire
 - Historical events: 33
 - Licensed sources: 33/33
 - Fetch attempted: 33/33
-- Fetch successful: 29
+- Fetch successful: 33
 
 ## TESTED
 
@@ -96,7 +96,7 @@ No P1 candidates remaining — do not auto-acquire
 
 ## REVIEW REQUIRED
 
-- 37 review queue items
+- 33 review queue items
 
 ## PUBLIC SAFETY
 
@@ -105,7 +105,7 @@ Rebuild: **ALLOWED**
 
 ## NEXT ADMIN ACTION
 
-Retry Legacy Failures (5) — 4 legacy failures
+PRIMARY BOTTLENECK MISSING_SNAPSHOT → Acquire P1 — successful fetch without snapshot
 
 ## PRODUCTION WRITES
 

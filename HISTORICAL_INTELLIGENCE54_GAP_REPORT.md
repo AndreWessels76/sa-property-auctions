@@ -1,17 +1,14 @@
 # Historical Intelligence 5.4 — Gap Report
 
-Generated: 2026-08-16T06:39:25.170Z
-
-## P4
-
-- **Benoni** (Benoni) — EXTRACTION_AVAILABLE → REVIEW SOURCE
-- **Haenertsburg** (Haenertsburg) — EXTRACTION_AVAILABLE → REVIEW SOURCE
-- **Roodepoort** (Roodepoort) — EXTRACTION_AVAILABLE → REVIEW SOURCE
-- **of** (of) — EXTRACTION_AVAILABLE → REVIEW SOURCE
+Generated: 2026-08-16T08:41:15.781Z
 
 ## P1
 
+- **Benoni** (Benoni) — EXTRACTION_AVAILABLE → RETRY_LATER
 - **Secunda** (Secunda) — OUTCOME_FOUND → DO_NOT_RETRY
+- **Haenertsburg** (Haenertsburg) — EXTRACTION_AVAILABLE → RETRY_LATER
+- **Roodepoort** (Roodepoort) — EXTRACTION_AVAILABLE → RETRY_LATER
+- **of** (of) — EXTRACTION_AVAILABLE → RETRY_LATER
 - **Groblersdal** (Groblersdal) — EXTRACTION_AVAILABLE → RETRY_LATER
 - **Groblersdal** (Groblersdal) — EXTRACTION_AVAILABLE → RETRY_LATER
 - **Pre-fab wall** (Pre-fab wall) — OUTCOME_FOUND → RETRY_LATER
