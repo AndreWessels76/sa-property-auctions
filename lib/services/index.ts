@@ -31,6 +31,7 @@ export { HistoricalIntelligence55Service } from "./HistoricalIntelligence55Servi
 export { HistoricalIntelligence56Service } from "./HistoricalIntelligence56Service";
 export { AuctionEvidenceDossierService } from "./AuctionEvidenceDossierService";
 export { AuctionPartnerResultsIngestionService } from "./AuctionPartnerResultsIngestionService";
+export { AciCommandCentreService } from "./AciCommandCentreService";
 export { SourceRefetchService } from "./SourceRefetchService";
 export { AuctionPriceIntelligenceService } from "./AuctionPriceIntelligenceService";
 export { HistoricalIntelligenceService } from "./HistoricalIntelligenceService";

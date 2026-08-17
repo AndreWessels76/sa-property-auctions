@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Home,
   Network,
+  Crosshair,
 } from "lucide-react";
 
 /** Only ship links to pages that exist for closed beta. */
@@ -29,6 +30,11 @@ const menu = [
     name: "Operations",
     href: "/admin/operations",
     icon: Activity,
+  },
+  {
+    name: "ACI Command",
+    href: "/admin/aci",
+    icon: Crosshair,
   },
   {
     name: "Acquisition",
